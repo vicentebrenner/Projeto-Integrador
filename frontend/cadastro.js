@@ -3,27 +3,36 @@ document.addEventListener('DOMContentLoaded', function() {
     setupPasswordToggle('senha', 'toggleSenha');
     setupPasswordToggle('confirmarSenha', 'toggleConfirmarSenha');
 
-    const form = document.getElementById('formCadastro');
+    const cadastroStep = document.getElementById('cadastroStep');
+    const formCadastro = document.getElementById('formCadastro');
     const nomeInput = document.getElementById('nome');
     const emailInput = document.getElementById('email');
     const senhaInput = document.getElementById('senha');
     const confirmarSenhaInput = document.getElementById('confirmarSenha');
-    const mensagemErro = document.getElementById('mensagemErro');
+    const mensagemErroCadastro = document.getElementById('mensagemErroCadastro');
+
+    const verificacaoStep = document.getElementById('verificacaoStep');
+    const formVerificacao = document.getElementById('formVerificacao');
+    const codigoInput = document.getElementById('codigo');
+    const userEmailDisplay = document.getElementById('userEmailDisplay');
+    const mensagemErroVerificacao = document.getElementById('mensagemErroVerificacao');
+    
     const loginBox = document.querySelector('.loginBox');
+    const apiUrl = 'http://localhost:3000';
 
-    const mostrarErro = (mensagem) => {
-        mensagemErro.textContent = mensagem;
-        mensagemErro.classList.add('visivel');
+    const mostrarErro = (elemento, mensagem) => {
+        elemento.textContent = mensagem;
+        elemento.classList.add('visivel');
+    };
+    
+    const limparErro = (elemento) => {
+        elemento.textContent = '';
+        elemento.classList.remove('visivel');
     };
 
-    const limparErro = () => {
-        mensagemErro.textContent = '';
-        mensagemErro.classList.remove('visivel');
-    };
-
-    form.addEventListener('submit', async function(event) {
+    formCadastro.addEventListener('submit', async function(event) {
         event.preventDefault();
-        limparErro();
+        limparErro(mensagemErroCadastro);
 
         const nome = nomeInput.value;
         const email = emailInput.value;
@@ -31,56 +40,67 @@ document.addEventListener('DOMContentLoaded', function() {
         const confirmarSenha = confirmarSenhaInput.value;
 
         if (senha.length < 8) {
-            mostrarErro('A senha deve ter no mínimo 8 caracteres.');
+            mostrarErro(mensagemErroCadastro, 'A senha deve ter no mínimo 8 caracteres.');
             return;
         }
         if (senha !== confirmarSenha) {
-            mostrarErro('As senhas não coincidem.');
+            mostrarErro(mensagemErroCadastro, 'As senhas não coincidem.');
             return;
         }
 
         try {
-            // URL do servidor corrigida para localhost
-            const apiUrl = 'http://localhost:3000';
-
-            const response = await fetch(`${apiUrl}/register`, {
+            const response = await fetch(`${apiUrl}/register-request`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ nome, email, senha }),
             });
 
             const data = await response.json();
 
             if (!response.ok) {
-                throw new Error(data.error || 'Ocorreu um erro ao cadastrar.');
+                throw new Error(data.error || 'Ocorreu um erro ao iniciar o cadastro.');
             }
 
-            let countdown = 3;
+            userEmailDisplay.textContent = email;
+            cadastroStep.style.display = 'none';
+            verificacaoStep.style.display = 'block';
+
+        } catch (error) {
+            mostrarErro(mensagemErroCadastro, error.message);
+        }
+    });
+
+    formVerificacao.addEventListener('submit', async function(event) {
+        event.preventDefault();
+        limparErro(mensagemErroVerificacao);
+
+        const email = emailInput.value;
+        const code = codigoInput.value;
+
+        try {
+            const response = await fetch(`${apiUrl}/verify-code`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, code }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || 'Ocorreu um erro ao verificar o código.');
+            }
+
             const successMessage = `
-                <h2>Cadastro Realizado!</h2>
+                <h2>Conta Verificada!</h2>
                 <p class="recoveryInstruction">
-                    Sua conta foi criada com sucesso. Bem-vindo ao Music Makers!
+                    Seu cadastro foi concluído com sucesso. Bem-vindo ao Music Makers!
                 </p>
-                <p style="font-size: 0.8em; color: #888;">
-                    Você será redirecionado para a página de login em <span id="countdownTimer">${countdown}</span> segundos...
-                </p>
+                <a href="login.html" class="btnLoginSubmit" style="text-decoration: none; text-align: center; margin-top: 20px;">Fazer Login</a>
             `;
             loginBox.innerHTML = successMessage;
 
-            const countdownElement = document.getElementById('countdownTimer');
-            const intervalId = setInterval(function() {
-                countdown--;
-                countdownElement.textContent = countdown;
-                if (countdown <= 0) {
-                    clearInterval(intervalId);
-                    window.location.href = 'login.html';
-                }
-            }, 1000);
-
         } catch (error) {
-            mostrarErro(error.message);
+            mostrarErro(mensagemErroVerificacao, error.message);
         }
     });
 });
