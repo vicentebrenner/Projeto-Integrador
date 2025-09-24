@@ -206,7 +206,7 @@ h1, h2, h3 {
     margin-bottom: 5px;
 }
 
-.loginPageBody {
+.auth-page-body {
     background-color: var(--cor-primaria);
     display: flex;
     justify-content: center;
