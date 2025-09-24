@@ -9,33 +9,44 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </head>
 <body class="auth-page-body"> 
-    <div class="loginBox" id="cadastroStep">
-        <h2>Criar Conta</h2>
-        <form id="formCadastro">
-            <div class="inputGroup">
-                <input type="text" id="nome" required>
-                <label>Nome Completo</label>
-            </div>
-            <div class="inputGroup">
-                <input type="email" id="email" required>
-                <label>E-mail</label>
-            </div>
-            <div class="inputGroup">
-                <input type="password" id="senha" required>
-                <label>Senha</label>
-                </div>
-            <div class="inputGroup">
-                <input type="password" id="confirmarSenha" required>
-                <label>Confirmar Senha</label>
+    <div class="loginContainer">
+        <div class="loginBox">
+            <a href="index.html" class="logoLogin">MusicMakers</a>
+            <h2>Crie sua conta</h2>
+
+            <form id="formCadastro">
+                <div class="inputGroup">
+                    <label for="nome">Nome Completo</label>
+                    <input type="text" id="nome" name="nome" required>
+                    <div class="mensagemErro" id="erroNome"></div>
                 </div>
 
-            <button type="submit" class="btnLoginSubmit">Cadastrar</button>
+                <div class="inputGroup">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" name="email" required>
+                    <div class="mensagemErro" id="erroEmail"></div>
+                </div>
 
-            <div class="mensagem-erro" id="mensagemErroCadastro"></div>
-        </form>
+                <div class="inputGroup">
+                    <label for="senha">Senha</label>
+                    <input type="password" id="senha" name="senha" required>
+                    <div class="mensagemErro" id="erroSenha"></div>
+                </div>
 
-        <div class="registerLink">
-            <p>Já tem uma conta? <a href="login.html">Login</a></p>
+                <div class="inputGroup">
+                    <label for="confirmarSenha">Confirmar Senha</label>
+                    <input type="password" id="confirmarSenha" name="confirmarSenha" required>
+                    <div class="mensagemErro" id="erroConfirmarSenha"></div>
+                </div>
+                
+                <div class="mensagemErro geral" id="mensagemErroCadastro"></div>
+
+                <button type="submit" class="btnLoginSubmit">Cadastrar</button>
+
+                <div class="loginLinks">
+                    <p>Já tem uma conta? <a href="login.html">Faça login</a></p>
+                </div>
+            </form>
         </div>
     </div>
 
