@@ -1,4 +1,4 @@
-package com.musicMakers.domain.entity;
+package com.musicMakers.Projeto.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;

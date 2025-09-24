@@ -1,7 +1,8 @@
-package com.musicMakers.service;
+package com.musicMakers.Projeto.service;
 
-import com.musicMakers.domain.entity.Usuario;
-import com.musicMakers.repository.UsuarioRepository;
+import com.musicMakers.Projeto.domain.entity.Usuario;
+import com.musicMakers.Projeto.repository.UsuarioRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

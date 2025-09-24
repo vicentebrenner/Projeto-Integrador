@@ -1,7 +1,8 @@
-package com.musicMakers.repository;
+package com.musicMakers.Projeto.repository;
 
-import com.musicMakers.domain.entity.Aula;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.musicMakers.Projeto.domain.entity.Aula;
 
 public interface AulaRepository extends JpaRepository<Aula, Integer> {
 }

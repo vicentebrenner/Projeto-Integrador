@@ -1,4 +1,4 @@
-package com.musicMakers.domain.entity.pk;
+package com.musicMakers.Projeto.domain.entity.pk;
 
 import jakarta.persistence.Embeddable;
 import lombok.Data;
