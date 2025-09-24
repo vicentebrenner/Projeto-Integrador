@@ -2,11 +2,11 @@ package com.musicMakers.Projeto.service;
 
 import com.musicMakers.Projeto.domain.entity.Usuario;
 import com.musicMakers.Projeto.repository.UsuarioRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +18,9 @@ public class UsuarioService {
 
     @Transactional
     public Usuario salvar(Usuario usuario) {
+        if (usuario.getId() == null) { 
+            usuario.setDataCriacao(LocalDate.now());
+        }
         return usuarioRepository.save(usuario);
     }
 
