@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificar Conta - Music Makers</title>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body class="auth-page-body">
+
+    <div class="loginContainer">
+        <div class="loginBox">
+            <a href="index.html" class="logoLogin">MusicMakers</a>
+            <h2>Verifique sua conta</h2>
+            <p class="recoveryInstruction">
+                Enviamos um código de 6 dígitos para o seu e-mail. Por favor, insira-o abaixo para ativar sua conta.
+            </p>
+
+            <form id="formVerificacao">
+                <div class="inputGroup">
+                    <label for="codigo">Código de Verificação</label>
+                    <input type="text" id="codigo" name="codigo" required maxlength="6">
+                    <div class="mensagemErro" id="erroCodigo"></div>
+                </div>
+                
+                <div class="mensagemErro geral" id="mensagemErroVerificacao"></div>
+
+                <button type="submit" class="btnLoginSubmit">Verificar e Ativar</button>
+
+                <div class="loginLinks">
+                    <p>Não recebeu? <a href="#">Reenviar código</a></p>
+                    <a href="login.html">Voltar para o Login</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="verificar.js"></script>
+</body>
+</html>

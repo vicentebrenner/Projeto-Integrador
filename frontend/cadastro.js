@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const confirmarSenhaInput = document.getElementById('confirmarSenha');
     const mensagemErroCadastro = document.getElementById('mensagemErroCadastro');
     
-    const apiUrl = 'http://localhost:8080/api/usuarios';
+    const apiUrl = 'http://localhost:8080/auth/register-request';
 
     const mostrarErro = (mensagem) => {
         if (mensagemErroCadastro) {
@@ -49,9 +49,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 body: JSON.stringify({ nome, email, senha }),
             });
 
-            if (response.status === 201) { 
-                alert('Cadastro realizado com sucesso!');
-                window.location.href = 'login.html';
+            if (response.ok) { 
+                alert('Cadastro solicitado com sucesso! Um código de verificação foi enviado para o seu e-mail.');ação
+                localStorage.setItem('emailParaVerificacao', email);
+                window.location.href = 'verificar.html';
             } else {
                 const data = await response.json();
                 mostrarErro(data.message || 'Ocorreu um erro ao realizar o cadastro.');

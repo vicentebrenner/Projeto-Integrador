@@ -1,7 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
     
-    setupPasswordToggle('senha', 'toggleSenha');
-
     const loginForm = document.querySelector('.loginBox form');
     const emailInput = document.getElementById('email');
     const senhaInput = document.getElementById('senha');
@@ -14,10 +12,9 @@ document.addEventListener('DOMContentLoaded', function() {
             const senha = senhaInput.value;
 
             try {
-                // URL do servidor corrigida para localhost
-                const apiUrl = 'http://localhost:3000';
+                const apiUrl = 'http://localhost:8080/auth/login';
                 
-                const response = await fetch(`${apiUrl}/login`, {
+                const response = await fetch(apiUrl, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -25,13 +22,17 @@ document.addEventListener('DOMContentLoaded', function() {
                     body: JSON.stringify({ email, senha }),
                 });
 
-                const data = await response.json();
-
                 if (!response.ok) {
-                    throw new Error(data.error || 'Erro ao fazer login.');
+                    const errorMessage = await response.text();
+                    throw new Error(errorMessage || 'Erro ao fazer login.');
                 }
                 
-                localStorage.setItem('usuarioLogado', JSON.stringify(data.usuario));
+                const usuarioLogado = {
+                    nome: "Usuário",
+                    email: email
+                };
+                
+                localStorage.setItem('usuarioLogado', JSON.stringify(usuarioLogado));
                 
                 window.location.href = 'index.html';
 
