@@ -1,7 +1,8 @@
-package com.musicMakers.domain.entity;
+package com.musicMakers.Projeto.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.musicMakers.domain.entity.pk.ItemVendaPK;
+import com.musicMakers.Projeto.domain.entity.pk.ItemVendaPK;
+
 import jakarta.persistence.*;
 import lombok.Data;
 import java.math.BigDecimal;

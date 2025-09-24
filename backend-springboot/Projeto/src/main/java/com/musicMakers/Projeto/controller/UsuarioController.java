@@ -1,7 +1,8 @@
-package com.musicMakers.controller;
+package com.musicMakers.Projeto.controller;
 
-import com.musicMakers.domain.entity.Usuario;
-import com.musicMakers.service.UsuarioService;
+import com.musicMakers.Projeto.domain.entity.Usuario;
+import com.musicMakers.Projeto.service.UsuarioService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
