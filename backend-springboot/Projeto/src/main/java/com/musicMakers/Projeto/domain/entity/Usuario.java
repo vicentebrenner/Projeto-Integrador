@@ -28,6 +28,12 @@ public class Usuario {
     @Column(name = "data_criacao")
     private LocalDate dataCriacao;
 
+    @Column(name = "verification_code")
+    private String verificationCode;
+
+    @Column(name = "enabled")
+    private boolean enabled = false;
+
     @OneToMany(mappedBy = "usuario")
     private List<Venda> vendas;
 
