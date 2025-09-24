@@ -18,7 +18,7 @@ public class UsuarioService {
 
     @Transactional
     public Usuario salvar(Usuario usuario) {
-        if (usuario.getId() == null) { 
+        if (usuario.getId() == null) {
             usuario.setDataCriacao(LocalDate.now());
         }
         return usuarioRepository.save(usuario);
