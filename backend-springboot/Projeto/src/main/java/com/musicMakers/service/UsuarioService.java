@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class UsuarioService {
 
@@ -14,13 +17,21 @@ public class UsuarioService {
 
     @Transactional
     public Usuario salvar(Usuario usuario) {
-        // Você pode adicionar regras de negócio aqui antes de salvar
-        // Ex: Verificar se o e-mail já existe, criptografar a senha, etc.
         return usuarioRepository.save(usuario);
     }
 
-    // No futuro, você pode criar outros métodos aqui, como:
-    // - buscarPorId(Integer id)
-    // - listarTodos()
-    // - deletar(Integer id)
+    @Transactional(readOnly = true)
+    public Optional<Usuario> buscarPorId(Integer id) {
+        return usuarioRepository.findById(id);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Usuario> listarTodos() {
+        return usuarioRepository.findAll();
+    }
+
+    @Transactional
+    public void deletar(Integer id) {
+        usuarioRepository.deleteById(id);
+    }
 }
