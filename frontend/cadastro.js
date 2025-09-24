@@ -12,7 +12,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const confirmarSenhaInput = document.getElementById('confirmarSenha');
     const mensagemErroCadastro = document.getElementById('mensagemErroCadastro');
     
-    // CORREÇÃO: URL da sua API em Java (Spring Boot)
     const apiUrl = 'http://localhost:8080/api/usuarios';
 
     const mostrarErro = (mensagem) => {
@@ -50,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 body: JSON.stringify({ nome, email, senha }),
             });
 
-            if (response.status === 201) { // 201 é o status de "Criado com Sucesso"
+            if (response.status === 201) { 
                 alert('Cadastro realizado com sucesso!');
                 window.location.href = 'login.html';
             } else {
