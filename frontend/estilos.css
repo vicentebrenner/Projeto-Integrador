@@ -216,8 +216,8 @@ h1, h2, h3 {
 }
 
 .loginContainer {
-    width: 100%; /* Garante que o contêiner ocupe a largura */
-    padding: 0 20px; /* Ajusta o padding para ser nas laterais */
+    width: 100%;
+    padding: 0 20px;
     display: flex;
     justify-content: center;
 }
@@ -249,7 +249,7 @@ h1, h2, h3 {
 
 .inputGroup {
     text-align: left;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .inputGroup label {
@@ -320,7 +320,7 @@ h1, h2, h3 {
 }
 
 .loginLinks {
-    margin-top: 25px;
+    margin-top: 20px;
 }
 
 .loginLinks a {
