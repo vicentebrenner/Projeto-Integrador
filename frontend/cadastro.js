@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', function() {
-    
+    // Funções para mostrar e esconder a senha (se você tiver os botões no HTML)
+    // Se não tiver, pode remover estas duas linhas e a função setupPasswordToggle.
     setupPasswordToggle('senha', 'toggleSenha');
     setupPasswordToggle('confirmarSenha', 'toggleConfirmarSenha');
 
-    const cadastroStep = document.getElementById('cadastroStep');
     const formCadastro = document.getElementById('formCadastro');
     const nomeInput = document.getElementById('nome');
     const emailInput = document.getElementById('email');
@@ -11,26 +11,24 @@ document.addEventListener('DOMContentLoaded', function() {
     const confirmarSenhaInput = document.getElementById('confirmarSenha');
     const mensagemErroCadastro = document.getElementById('mensagemErroCadastro');
 
-    const verificacaoStep = document.getElementById('verificacaoStep');
-    const formVerificacao = document.getElementById('formVerificacao');
-    const codigoInput = document.getElementById('codigo');
-    const userEmailDisplay = document.getElementById('userEmailDisplay');
-    const mensagemErroVerificacao = document.getElementById('mensagemErroVerificacao');
-    
-    const loginBox = document.querySelector('.loginBox');
-    const apiUrl = 'http://localhost:3000';
+    // URL da sua API Spring Boot (Java)
+    const apiUrl = 'http://localhost:8080/api/usuarios';
 
+    // Função auxiliar para exibir mensagens de erro
     const mostrarErro = (elemento, mensagem) => {
         elemento.textContent = mensagem;
-        elemento.classList.add('visivel');
+        elemento.style.display = 'block'; // Mostra o elemento de erro
     };
     
+    // Função auxiliar para limpar mensagens de erro
     const limparErro = (elemento) => {
         elemento.textContent = '';
-        elemento.classList.remove('visivel');
+        elemento.style.display = 'none'; // Esconde o elemento de erro
     };
 
+    // Adiciona o "escutador" para o envio do formulário
     formCadastro.addEventListener('submit', async function(event) {
+        // Impede o comportamento padrão do formulário de recarregar a página
         event.preventDefault();
         limparErro(mensagemErroCadastro);
 
@@ -39,6 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const senha = senhaInput.value;
         const confirmarSenha = confirmarSenhaInput.value;
 
+        // --- Validações no Frontend ---
         if (senha.length < 8) {
             mostrarErro(mensagemErroCadastro, 'A senha deve ter no mínimo 8 caracteres.');
             return;
@@ -48,59 +47,52 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
+        // --- Envio dos dados para a API ---
         try {
-            const response = await fetch(`${apiUrl}/register-request`, {
+            const response = await fetch(apiUrl, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ nome, email, senha }),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                // Converte os dados para o formato JSON que o backend espera
+                body: JSON.stringify({
+                    nome: nome,
+                    email: email,
+                    senha: senha
+                }),
             });
 
-            const data = await response.json();
-
-            if (!response.ok) {
-                throw new Error(data.error || 'Ocorreu um erro ao iniciar o cadastro.');
+            // Se a resposta for 201 (Created), o cadastro foi um sucesso
+            if (response.status === 201) {
+                alert('Cadastro realizado com sucesso!');
+                // Redireciona o usuário para a página de login
+                window.location.href = 'login.html';
+            } else {
+                // Se o backend retornar um erro, tenta mostrar a mensagem
+                const data = await response.json();
+                mostrarErro(mensagemErroCadastro, data.message || 'Ocorreu um erro no cadastro.');
             }
-
-            userEmailDisplay.textContent = email;
-            cadastroStep.style.display = 'none';
-            verificacaoStep.style.display = 'block';
-
         } catch (error) {
-            mostrarErro(mensagemErroCadastro, error.message);
+            // Captura erros de conexão (ex: backend desligado)
+            console.error('Erro de conexão:', error);
+            mostrarErro(mensagemErroCadastro, 'Não foi possível conectar ao servidor. Tente novamente mais tarde.');
         }
     });
 
-    formVerificacao.addEventListener('submit', async function(event) {
-        event.preventDefault();
-        limparErro(mensagemErroVerificacao);
+    // Função para alternar a visibilidade da senha
+    function setupPasswordToggle(inputId, toggleId) {
+        const passwordInput = document.getElementById(inputId);
+        const toggleButton = document.getElementById(toggleId);
 
-        const email = emailInput.value;
-        const code = codigoInput.value;
-
-        try {
-            const response = await fetch(`${apiUrl}/verify-code`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, code }),
+        if (passwordInput && toggleButton) {
+            toggleButton.addEventListener('click', function() {
+                // Alterna o tipo do input entre 'password' e 'text'
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                // Alterna o ícone (ex: olho aberto/fechado)
+                this.classList.toggle('bi-eye');
+                this.classList.toggle('bi-eye-slash');
             });
-
-            const data = await response.json();
-
-            if (!response.ok) {
-                throw new Error(data.error || 'Ocorreu um erro ao verificar o código.');
-            }
-
-            const successMessage = `
-                <h2>Conta Verificada!</h2>
-                <p class="recoveryInstruction">
-                    Seu cadastro foi concluído com sucesso. Bem-vindo ao Music Makers!
-                </p>
-                <a href="login.html" class="btnLoginSubmit" style="text-decoration: none; text-align: center; margin-top: 20px;">Fazer Login</a>
-            `;
-            loginBox.innerHTML = successMessage;
-
-        } catch (error) {
-            mostrarErro(mensagemErroVerificacao, error.message);
         }
-    });
+    }
 });
