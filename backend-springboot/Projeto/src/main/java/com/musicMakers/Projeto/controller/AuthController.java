@@ -15,7 +15,7 @@ import java.util.Map; // 2. IMPORTAMOS A CLASSE MAP
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthController {
 
     @Autowired

@@ -5,11 +5,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy; // 1. NOVO IMPORT
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter; // 2. NOVO IMPORT
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -24,7 +24,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class SecurityConfig {
 
     @Autowired
-    private JwtAuthFilter jwtAuthFilter; // 3. INJETAMOS O NOSSO FILTRO
+    private JwtAuthFilter jwtAuthFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -37,15 +37,12 @@ public class SecurityConfig {
             .cors(withDefaults())
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/**").permitAll() // Rotas de autenticação são públicas
+                // ✅ MUDANÇA APLICADA AQUI
+                .requestMatchers("/api/auth/**").permitAll() // Rotas de autenticação são públicas
                 .anyRequest().authenticated() // TODAS as outras rotas exigem autenticação
             )
-            // 4. MUDANÇA IMPORTANTE: Sessão se torna STATELESS
-            // Dizemos ao Spring para não criar sessões, pois o JWT cuidará disso.
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             
-            // 5. MUDANÇA PRINCIPAL: Adicionamos nosso filtro na cadeia de segurança
-            // Nosso "porteiro" (JwtAuthFilter) vai rodar antes do filtro de login padrão.
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
             
         return http.build();
