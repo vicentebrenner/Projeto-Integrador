@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        const apiUrl = `http://localhost:8080/auth/verify-code?email=${encodeURIComponent(email)}&code=${encodeURIComponent(codigo)}`;
+        const apiUrl = `/api/auth/verify-code?email=${encodeURIComponent(email)}&code=${encodeURIComponent(codigo)}`;
 
         try {
             const response = await fetch(apiUrl, {

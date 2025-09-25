@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  # 1. Serviço do Banco de Dados PostgreSQL
+  db:
+    image: postgres:15-alpine
+    container_name: musicmakers-db
+    restart: always
+    environment:
+      POSTGRES_DB: music_makers_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root # A mesma senha do seu application.properties
+    ports:
+      # Expõe a porta do container na sua máquina para poder conectar com um cliente de BD
+      - "5432:5432"
+    volumes:
+      # Garante que os dados do banco persistam
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d music_makers_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # 2. Serviço do Backend Spring Boot
+  backend:
+    build:
+      context: ./backend-springboot/Projeto # O caminho para o seu projeto Spring Boot
+      dockerfile: Dockerfile
+    container_name: musicmakers-backend
+    restart: on-failure
+    depends_on:
+      db:
+        condition: service_healthy # Garante que o backend só suba depois que o banco estiver pronto
+    ports:
+      # Expõe a porta da API
+      - "8080:8080"
+    environment:
+      # Sobrescreve a URL do banco para que o backend encontre o container 'db'
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/music_makers_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=root
+      # As configurações de e-mail e JWT podem ser mantidas no seu application.properties
+      # ou movidas para cá para maior flexibilidade.
+
+  # 3. Serviço do Frontend com Nginx
+  frontend:
+    build:
+      context: ./frontend # O caminho para a pasta do seu frontend
+      dockerfile: Dockerfile
+    container_name: musicmakers-frontend
+    restart: always
+    ports:
+      # A porta principal que seu amigo vai acessar no navegador
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
+    driver: local

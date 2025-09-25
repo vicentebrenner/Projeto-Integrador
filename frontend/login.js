@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const senha = senhaInput.value;
 
             try {
-                const apiUrl = 'http://localhost:8080/auth/login';
+                const apiUrl = '/api/auth/login';
                 
                 const response = await fetch(apiUrl, {
                     method: 'POST',
