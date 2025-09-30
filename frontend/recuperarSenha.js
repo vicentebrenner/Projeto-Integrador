@@ -1,5 +1,3 @@
-// Arquivo: recuperarSenha.js
-
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.querySelector('.loginBox form'); 
     
@@ -12,7 +10,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const emailInput = document.getElementById('emailRecuperacao');
             const email = emailInput.value;
 
-            // URL do novo endpoint
             const apiUrl = '/api/auth/forgot-password';
 
             try {
