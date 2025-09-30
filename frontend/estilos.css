@@ -483,3 +483,39 @@ h1, h2, h3 {
 .perfil-dropdown a:hover {
     color: var(--cor-secundaria);
 }
+/* Adicione este bloco no final do seu estilos.css */
+
+.dashboard-hero {
+    background-color: var(--cor-fundo); /* Fundo claro para o painel */
+    padding-top: 100px; /* Espaço para o cabeçalho fixo */
+    padding-bottom: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--cor-texto);
+    position: relative;
+    min-height: 40vh; /* Garante que tenha uma boa altura na altura dos olhos */
+}
+
+.dashboard-hero h2 {
+    font-size: 2.5em;
+    color: var(--cor-primaria);
+    margin-bottom: 15px;
+    text-shadow: none; /* Remove o shadow usado na home */
+}
+
+.dashboard-hero p {
+    font-size: 1.2em;
+    color: #555;
+    margin-bottom: 30px;
+    text-shadow: none;
+}
+
+.dashboard-content .container {
+    padding: 30px 20px;
+    display: flex;
+    justify-content: space-around;
+    gap: 30px;
+    text-align: center;
+}

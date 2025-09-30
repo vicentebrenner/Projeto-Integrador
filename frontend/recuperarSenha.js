@@ -1,33 +1,46 @@
+// Arquivo: recuperarSenha.js
+
 document.addEventListener('DOMContentLoaded', function() {
-    const form = document.querySelector('.loginBox form');
-    const loginBox = document.querySelector('.loginBox');
+    const form = document.querySelector('.loginBox form'); 
+    
+    if (form) {
+        form.setAttribute('id', 'forgotPasswordForm'); 
+        
+        form.addEventListener('submit', async function(event) {
+            event.preventDefault();
 
-    form.addEventListener('submit', function(event) {
-        event.preventDefault();
+            const emailInput = document.getElementById('emailRecuperacao');
+            const email = emailInput.value;
 
-        let countdown = 5;
+            // URL do novo endpoint
+            const apiUrl = '/api/auth/forgot-password';
 
-        const confirmationMessage = `
-            <h2>Link Enviado!</h2>
-            <p class="recoveryInstruction">
-                Você receberá um link para redefinir sua senha em breve.
-            </p>
-            <p style="font-size: 0.8em; color: #888;">
-                Você será redirecionado para a página de login em <span id="countdownTimer">${countdown}</span> segundos...
-            </p>
-        `;
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email }),
+                });
 
-        loginBox.innerHTML = confirmationMessage;
+                const mensagem = await response.text();
 
-        const countdownElement = document.getElementById('countdownTimer');
+                const loginBox = document.querySelector('.loginBox');
+                if (loginBox) {
+                    loginBox.innerHTML = `
+                        <h2>Link Solicitado!</h2>
+                        <p class="recoveryInstruction">
+                            ${mensagem}
+                        </p>
+                        <div class="loginLinks">
+                           <a href="login.html">Voltar para o Login</a>
+                        </div>
+                    `;
+                }
 
-        const intervalId = setInterval(function() {
-            countdown--;
-            countdownElement.textContent = countdown;
-            if (countdown <= 0) {
-                clearInterval(intervalId);
-                window.location.href = 'login.html';
+            } catch (error) {
+                console.error('Erro na requisição:', error);
+                alert('Não foi possível conectar ao servidor de autenticação.');
             }
-        }, 1000);
-    });
+        });
+    }
 });

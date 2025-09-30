@@ -28,4 +28,26 @@ public class EmailService {
 
         mailSender.send(message);
     }
+    
+    public void sendResetPasswordEmail(String nome, String email, String resetLink) throws MessagingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+        helper.setFrom("\"Music Makers\" <no-reply@musicmakers.com>");
+        helper.setTo(email);
+        helper.setSubject("Redefinição de Senha Solicitada");
+
+        String htmlContent = "<p>Olá " + nome + ",</p>"
+                + "<p>Você solicitou a redefinição de sua senha. Clique no link abaixo para criar uma nova:</p>"
+                + "<p style='margin: 20px 0;'><a href=\"" + resetLink + "\" "
+                + "style='background-color: #f39c12; color: #2c3e50; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block; font-weight: 700;'>"
+                + "Redefinir Senha Agora"
+                + "</a></p>"
+                + "<p>Se você não solicitou isso, ignore este e-mail.</p>"
+                + "<p>Atenciosamente,<br>Equipe Music Makers</p>";
+        
+        helper.setText(htmlContent, true);
+
+        mailSender.send(message);
+    }
 }

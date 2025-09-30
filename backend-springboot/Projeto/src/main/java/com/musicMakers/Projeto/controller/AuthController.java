@@ -3,7 +3,7 @@ package com.musicMakers.Projeto.controller;
 import com.musicMakers.Projeto.domain.entity.Usuario;
 import com.musicMakers.Projeto.repository.UsuarioRepository;
 import com.musicMakers.Projeto.service.EmailService;
-import com.musicMakers.Projeto.service.TokenService; // 1. IMPORTAMOS O NOVO SERVIÇO
+import com.musicMakers.Projeto.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.SecureRandom;
-import java.util.Map; // 2. IMPORTAMOS A CLASSE MAP
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -28,7 +28,7 @@ public class AuthController {
     private EmailService emailService;
 
     @Autowired
-    private TokenService tokenService; // 3. INJETAMOS O TokenService
+    private TokenService tokenService;
 
     @PostMapping("/register-request")
     public ResponseEntity<String> registerRequest(@RequestBody Usuario novoUsuario) {
@@ -73,9 +73,8 @@ public class AuthController {
         return ResponseEntity.badRequest().body("Código de verificação inválido.");
     }
 
-    // 4. MÉTODO DE LOGIN ATUALIZADO
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Usuario loginRequest) { // Mudamos o tipo de retorno para ResponseEntity<?>
+    public ResponseEntity<?> login(@RequestBody Usuario loginRequest) { 
         Optional<Usuario> usuarioOpt = usuarioRepository.findByEmail(loginRequest.getEmail());
 
         if (usuarioOpt.isEmpty()) {
@@ -86,10 +85,9 @@ public class AuthController {
 
         if (passwordEncoder.matches(loginRequest.getSenha(), usuario.getSenha())) {
             if (usuario.isEnabled()) {
-                // SUCESSO! GERAMOS O TOKEN
                 String token = tokenService.generateToken(usuario);
 
-                // Retornamos um objeto JSON com o token e dados do usuário
+
                 return ResponseEntity.ok(Map.of(
                     "token", token,
                     "usuario", Map.of("nome", usuario.getNome(), "email", usuario.getEmail())
@@ -100,5 +98,62 @@ public class AuthController {
         }
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciais inválidas.");
+    }
+    
+    @PostMapping("/forgot-password")
+    public ResponseEntity<String> forgotPassword(@RequestBody Map<String, String> request) {
+        String email = request.get("email");
+        Optional<Usuario> usuarioOpt = usuarioRepository.findByEmail(email);
+
+        if (usuarioOpt.isEmpty()) {
+            return ResponseEntity.ok("Se o e-mail estiver cadastrado, você receberá um link para redefinir a senha.");
+        }
+
+        Usuario usuario = usuarioOpt.get();
+        
+        String resetToken = tokenService.generateToken(usuario);
+
+        usuario.setVerificationCode(resetToken);
+        usuarioRepository.save(usuario);
+
+        try {
+            String resetLink = "http://localhost/redefinir.html?token=" + resetToken; 
+            emailService.sendResetPasswordEmail(usuario.getNome(), usuario.getEmail(), resetLink);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body("Erro ao enviar e-mail de redefinição.");
+        }
+
+        return ResponseEntity.ok("Link de redefinição enviado para o seu e-mail. Verifique a caixa de entrada.");
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<String> resetPassword(@RequestBody Map<String, String> request) {
+        String token = request.get("token");
+        String novaSenha = request.get("novaSenha");
+
+        if (token == null || token.isEmpty()) {
+            return ResponseEntity.badRequest().body("Token de redefinição ausente.");
+        }
+
+        Optional<Usuario> usuarioOpt = usuarioRepository.findByVerificationCode(token);
+
+        if (usuarioOpt.isEmpty()) {
+            return ResponseEntity.badRequest().body("Token inválido ou expirado.");
+        }
+
+        Usuario usuario = usuarioOpt.get();
+        
+        if (!tokenService.validateToken(token, usuario.getEmail())) {
+            return ResponseEntity.badRequest().body("Token expirado. Solicite uma nova redefinição.");
+        }
+
+        usuario.setSenha(passwordEncoder.encode(novaSenha));
+        
+        usuario.setVerificationCode(null); 
+        
+        usuarioRepository.save(usuario);
+
+        return ResponseEntity.ok("Senha redefinida com sucesso. Você já pode fazer login.");
     }
 }
