@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel do Usuário - Music Makers</title>
+    <link rel="stylesheet" href="estilos.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+
+    <header class="cabecalho">
+        <div class="container">
+            <h1 class="logo">Music Makers</h1>
+            <nav class="menuPrincipal">
+                <ul>
+                    <li><a href="#conectar">Encontrar Músicos</a></li>
+                    <li><a href="#marketplace">Marketplace</a></li>
+                    <li><a href="#conteudo">Conteúdo</a></li>
+                    <li><a href="login.html" class="btnLogin">Login</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="dashboard-hero">
+        <div class="container">
+            <div class="heroTexto" id="boasVindasContainer">
+                <h2>Bem-vindo(a) de volta, <span id="nomeUsuario">Músico</span>!</h2>
+                <p>Seu Painel de Controle está aqui. Pronto para criar sua próxima obra?</p>
+                <a href="#minha-banda" class="btnCta">Gerenciar Minha Banda</a>
+            </div>
+        </div>
+    </main>
+    
+    <section class="dashboard-content">
+        <div class="container">
+            <div class="modulo">
+                <i class="fas fa-bell"></i>
+                <h3>Notificações Recentes</h3>
+                <p>Você tem 3 novas propostas de colaboração aguardando análise.</p>
+            </div>
+            <div class="modulo">
+                <i class="fas fa-graduation-cap"></i>
+                <h3>Seus Cursos</h3>
+                <p>Continue de onde parou: **Afinando o Violão - Aula 5**.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="rodape">
+        <div class="container">
+            <p>&copy; 2025 Music Makers - Todos os direitos reservados.</p>
+            <p>Uma plataforma de conexão para músicos independentes.</p>
+        </div>
+    </footer>
+
+    <script src="global.js"></script>
+    <script src="dashboard.js"></script> </body>
+</html>

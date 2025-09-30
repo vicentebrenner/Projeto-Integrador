@@ -1,65 +1,72 @@
-document.addEventListener('DOMContentLoaded', function() {
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro - Music Makers</title>
+
+    <link rel="stylesheet" href="estilos.css"> 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+</head>
+<body class="auth-page-body"> 
+    <div class="loginContainer">
+        <div class="loginBox">
+            <a href="index.html" class="logoLogin">MusicMakers</a>
+            <h2>Crie sua conta</h2>
+
+            <form id="formCadastro">
+                <div class="inputGroup">
+                    <label for="nome">Nome Completo</label>
+                    <input type="text" id="nome" name="nome" required>
+                    <div class="mensagemErro" id="erroNome"></div>
+                </div>
+
+                <div class="inputGroup">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" name="email" required>
+                    <div class="mensagemErro" id="erroEmail"></div>
+                </div>
+
+                <div class="inputGroup">
+                    <label for="senha">Senha</label>
+                    <div class="passwordWrapper">
+                        <input type="password" id="senha" name="senha" required>
+                        <i class="bi bi-eye-slash togglePasswordIcon" id="toggleSenha"></i>
+                    </div>
+                    <div class="mensagemErro" id="erroSenha"></div>
+                </div>
+
+                <div class="inputGroup">
+                    <label for="confirmarSenha">Confirmar Senha</label>
+                    <div class="passwordWrapper">
+                        <input type="password" id="confirmarSenha" name="confirmarSenha" required>
+                        <i class="bi bi-eye-slash togglePasswordIcon" id="toggleConfirmarSenha"></i>
+                    </div>
+                    <div class="mensagemErro" id="erroConfirmarSenha"></div>
+                </div>
+                
+                <div class="mensagemErro geral" id="mensagemErroCadastro"></div>
+
+                <button type="submit" class="btnLoginSubmit">Cadastrar</button>
+
+                <div class="loginLinks">
+                    <p>Já tem uma conta? <a href="login.html">Faça login</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="cadastro.js"></script>
+    <script src="utils.js"></script>
     
-    const formCadastro = document.getElementById('formCadastro');
-    if (!formCadastro) {
-        console.error('O formulário com id "formCadastro" não foi encontrado no HTML.');
-        return;
-    }
-    
-    const nomeInput = document.getElementById('nome');
-    const emailInput = document.getElementById('email');
-    const senhaInput = document.getElementById('senha');
-    const confirmarSenhaInput = document.getElementById('confirmarSenha');
-    const mensagemErroCadastro = document.getElementById('mensagemErroCadastro');
-    
-    const apiUrl = '/api/auth/register-request';
-
-    const mostrarErro = (mensagem) => {
-        if (mensagemErroCadastro) {
-            mensagemErroCadastro.textContent = mensagem;
-            mensagemErroCadastro.classList.add('visivel');
-        }
-    };
-    
-    const limparErro = () => {
-        if (mensagemErroCadastro) {
-            mensagemErroCadastro.textContent = '';
-            mensagemErroCadastro.classList.remove('visivel');
-        }
-    };
-
-    formCadastro.addEventListener('submit', async function(event) {
-        event.preventDefault();
-        limparErro();
-
-        const nome = nomeInput.value;
-        const email = emailInput.value;
-        const senha = senhaInput.value;
-        const confirmarSenha = confirmarSenhaInput.value;
-
-        if (senha !== confirmarSenha) {
-            mostrarErro('As senhas não coincidem.');
-            return;
-        }
-
-        try {
-            const response = await fetch(apiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ nome, email, senha }),
-            });
-
-            if (response.ok) { 
-                alert('Cadastro solicitado com sucesso! Um código de verificação foi enviado para o seu e-mail.');
-                localStorage.setItem('emailParaVerificacao', email);
-                window.location.href = 'verificar.html';
-            } else {
-                const data = await response.json();
-                mostrarErro(data.message || 'Ocorreu um erro ao realizar o cadastro.');
-            }
-        } catch (error) {
-            console.error('Erro de conexão:', error);
-            mostrarErro('Não foi possível conectar ao servidor. Verifique se o backend está rodando.');
-        }
-    });
-});
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Ativa o toggle para a Senha principal
+            setupPasswordToggle('senha', 'toggleSenha'); 
+            
+            // Ativa o toggle para Confirmar Senha
+            setupPasswordToggle('confirmarSenha', 'toggleConfirmarSenha'); 
+        });
+    </script>
+</body>
+</html>

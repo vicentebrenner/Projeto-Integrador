@@ -1,44 +1,55 @@
-document.addEventListener('DOMContentLoaded', function() {
-    
-    const loginForm = document.querySelector('.loginBox form');
-    const emailInput = document.getElementById('email');
-    const senhaInput = document.getElementById('senha');
-    
-    if (loginForm) {
-        loginForm.addEventListener('submit', async function(event) {
-            event.preventDefault();
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Music Makers</title>
+    <link rel="stylesheet" href="estilos.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+</head>
+<body class="auth-page-body">
 
-            const email = emailInput.value;
-            const senha = senhaInput.value;
+    <div class="loginContainer">
+        <div class="loginBox">
+            <a href="index.html" class="logoLogin">MusicMakers</a>
+            <h2>Acesse sua conta</h2>
 
-            try {
-                const apiUrl = '/api/auth/login';
-                
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ email, senha }),
-                });
+            <form id="formLogin">
+                <div class="inputGroup">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" name="email" required>
+                    <div class="mensagemErro" id="erroEmail"></div>
+                </div>
 
-                if (!response.ok) {
-                    const errorMessage = await response.text();
-                    throw new Error(errorMessage || 'Erro ao fazer login.');
-                }
+                <div class="inputGroup">
+                    <label for="senha">Senha</label>
+                    <div class="passwordWrapper">
+                        <input type="password" id="senha" name="senha" required>
+                        <i class="bi bi-eye-slash togglePasswordIcon" id="toggleSenha"></i>
+                    </div>
+                    <div class="mensagemErro" id="erroSenha"></div>
+                </div>
                 
-                const usuarioLogado = {
-                    nome: "Usuário",
-                    email: email
-                };
-                
-                localStorage.setItem('usuarioLogado', JSON.stringify(usuarioLogado));
-                
-                window.location.href = 'index.html';
+                <div class="mensagemErro geral" id="erroLogin"></div>
 
-            } catch (error) {
-                alert(`Falha no login: ${error.message}`);
-            }
+                <button type="submit" class="btnLoginSubmit">Entrar</button>
+
+                <div class="loginLinks">
+                    <a href="esqueceuSenha.html">Esqueceu sua senha?</a>
+                    <p>Não tem uma conta? <a href="cadastro.html">Cadastre-se</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="login.js"></script>
+    <script src="utils.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Chama a função do utils.js passando o ID do input de senha e o ID do ícone
+            setupPasswordToggle('senha', 'toggleSenha');
         });
-    }
-});
+    </script>
+</body>
+</html>

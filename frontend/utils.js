@@ -4,9 +4,13 @@ function setupPasswordToggle(inputId, toggleId) {
 
     if (input && icon) {
         icon.addEventListener('click', function() {
+            // 1. Alterna o tipo do campo
             const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
             input.setAttribute('type', type);
-            this.classList.toggle('fa-eye-slash');
+            
+            // 2. Alterna o ícone (bi-eye-slash <-> bi-eye)
+            this.classList.toggle('bi-eye-slash');
+            this.classList.toggle('bi-eye');
         });
     }
 }
