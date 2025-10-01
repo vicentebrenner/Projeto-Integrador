@@ -24,8 +24,19 @@
                 </div>
 
                 <div class="inputGroup">
+                    <label for="novaSenha">Nova Senha</label>
+                    <div class="passwordWrapper">
+                        <input type="password" id="novaSenha" name="novaSenha" required minlength="6">
+                        <i class="bi bi-eye-slash togglePasswordIcon" id="toggleNovaSenha"></i>
+                    </div>
+                </div>
+
+                <div class="inputGroup">
                     <label for="confirmarSenha">Confirmar Nova Senha</label>
-                    <input type="password" id="confirmarSenha" name="confirmarSenha" required minlength="6">
+                    <div class="passwordWrapper">
+                        <input type="password" id="confirmarSenha" name="confirmarSenha" required minlength="6">
+                        <i class="bi bi-eye-slash togglePasswordIcon" id="toggleConfirmarSenha"></i>
+                    </div>
                 </div>
                 
                 <div class="mensagemErro geral" id="mensagemErroRedefinicao"></div>
@@ -41,5 +52,14 @@
 
     <script src="utils.js"></script> 
     <script src="redefinir.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Ativa o toggle para a Nova Senha
+            setupPasswordToggle('novaSenha', 'toggleNovaSenha'); 
+            
+            // Ativa o toggle para Confirmar Nova Senha
+            setupPasswordToggle('confirmarSenha', 'toggleConfirmarSenha'); 
+        });
+    </script>
 </body>
 </html>

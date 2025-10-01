@@ -1,55 +1,70 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Music Makers</title>
-    <link rel="stylesheet" href="estilos.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-</head>
-<body class="auth-page-body">
+document.addEventListener('DOMContentLoaded', function() {
+    const formLogin = document.getElementById('formLogin');
+    if (!formLogin) {
+        console.error('O formulário de login não foi encontrado.');
+        return;
+    }
 
-    <div class="loginContainer">
-        <div class="loginBox">
-            <a href="index.html" class="logoLogin">MusicMakers</a>
-            <h2>Acesse sua conta</h2>
+    const emailInput = document.getElementById('email');
+    const senhaInput = document.getElementById('senha');
+    const erroLogin = document.getElementById('erroLogin');
 
-            <form id="formLogin">
-                <div class="inputGroup">
-                    <label for="email">E-mail</label>
-                    <input type="email" id="email" name="email" required>
-                    <div class="mensagemErro" id="erroEmail"></div>
-                </div>
+    // Função para mostrar mensagens de erro
+    const mostrarErro = (mensagem) => {
+        if (erroLogin) {
+            erroLogin.textContent = mensagem;
+            erroLogin.classList.add('visivel');
+        }
+    };
 
-                <div class="inputGroup">
-                    <label for="senha">Senha</label>
-                    <div class="passwordWrapper">
-                        <input type="password" id="senha" name="senha" required>
-                        <i class="bi bi-eye-slash togglePasswordIcon" id="toggleSenha"></i>
-                    </div>
-                    <div class="mensagemErro" id="erroSenha"></div>
-                </div>
+    formLogin.addEventListener('submit', async function(event) {
+        event.preventDefault(); // Impede o envio padrão do formulário
+        
+        // Limpa erros anteriores
+        if (erroLogin) erroLogin.classList.remove('visivel');
+
+        const email = emailInput.value;
+        const senha = senhaInput.value;
+
+        // Validação simples no frontend
+        if (!email || !senha) {
+            mostrarErro('Por favor, preencha todos os campos.');
+            return;
+        }
+
+        try {
+            // Faz a requisição para a API de login no backend
+            const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, senha }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                // Se o login for bem-sucedido (status 200 OK)
+                alert('Login realizado com sucesso!');
                 
-                <div class="mensagemErro geral" id="erroLogin"></div>
+                // Armazena os dados do usuário e o token no localStorage
+                localStorage.setItem('usuarioLogado', JSON.stringify(data.usuario));
+                localStorage.setItem('authToken', data.token);
 
-                <button type="submit" class="btnLoginSubmit">Entrar</button>
+                // Redireciona para a página do dashboard
+                window.location.href = 'dashboard.html';
 
-                <div class="loginLinks">
-                    <a href="esqueceuSenha.html">Esqueceu sua senha?</a>
-                    <p>Não tem uma conta? <a href="cadastro.html">Cadastre-se</a></p>
-                </div>
-            </form>
-        </div>
-    </div>
+            } else {
+                // Se houver erro (status 401, 403, etc.)
+                const mensagemErro = data.message || await response.text(); // Pega a mensagem de erro do backend
+                mostrarErro(mensagemErro);
+            }
 
-    <script src="login.js"></script>
-    <script src="utils.js"></script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Chama a função do utils.js passando o ID do input de senha e o ID do ícone
-            setupPasswordToggle('senha', 'toggleSenha');
-        });
-    </script>
-</body>
-</html>
+        } catch (error) {
+            // Erro de rede ou conexão
+            console.error('Erro na requisição de login:', error);
+            mostrarErro('Não foi possível conectar ao servidor. Verifique sua conexão ou se o backend está rodando.');
+        }
+    });
+});
