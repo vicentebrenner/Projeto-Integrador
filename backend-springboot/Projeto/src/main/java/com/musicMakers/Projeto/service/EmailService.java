@@ -17,7 +17,7 @@ public class EmailService {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
-        helper.setFrom("\"Music Makers\" <no-reply@musicmakers.com>");
+        helper.setFrom("\"Music Makers\" <vicentebrlives@gmail.com>");
         helper.setTo(email);
         helper.setSubject("Seu Código de Verificação");
 
@@ -33,7 +33,7 @@ public class EmailService {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
-        helper.setFrom("\"Music Makers\" <no-reply@musicmakers.com>");
+        helper.setFrom("\"Music Makers\" <vicentebrlives@gmail.com>");
         helper.setTo(email);
         helper.setSubject("Redefinição de Senha Solicitada");
 
