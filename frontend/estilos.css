@@ -1,3 +1,6 @@
+/* ==========================================================================
+   1. VARIÁVEIS GLOBAIS E RESET
+   ========================================================================== */
 :root {
     --cor-primaria: #2c3e50;
     --cor-secundaria: #f39c12;
@@ -21,7 +24,8 @@
 html,
 body {
     width: 100%;
-    overflow-x: hidden; 
+    overflow-x: hidden;
+    scroll-behavior: smooth; /* Adiciona rolagem suave */
 }
 
 body {
@@ -42,6 +46,9 @@ h1, h2, h3 {
     padding: 0 20px;
 }
 
+/* ==========================================================================
+   2. CABEÇALHO E NAVEGAÇÃO
+   ========================================================================== */
 .cabecalho {
     background-color: var(--cor-primaria);
     color: #fff;
@@ -52,6 +59,7 @@ h1, h2, h3 {
     left: 0;
     z-index: 1000;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: background-color 0.3s ease; /* Efeito suave */
 }
 
 .cabecalho .container {
@@ -64,6 +72,7 @@ h1, h2, h3 {
     font-size: 1.8em;
     font-weight: 700;
     color: var(--cor-secundaria);
+    text-decoration: none; /* Garante que o logo não seja sublinhado */
 }
 
 .menuPrincipal ul {
@@ -92,14 +101,20 @@ h1, h2, h3 {
     color: var(--cor-primaria);
     padding: 8px 18px;
     border-radius: 5px;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
+    border: none;
 }
 
 .btnLogin:hover {
     background-color: #e67e22;
     color: #fff;
+    transform: translateY(-2px); /* Efeito de levantar */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Sombra suave */
 }
 
+/* ==========================================================================
+   3. SEÇÃO HERO (PRINCIPAL)
+   ========================================================================== */
 .hero {
     background: url('https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=2070&auto=format&fit=crop') no-repeat center center/cover;
     height: 100vh;
@@ -147,14 +162,20 @@ h1, h2, h3 {
     font-weight: 700;
     border-radius: 5px;
     transition: all 0.3s ease;
+    border: none;
 }
 
 .btnCta:hover {
     background-color: #e67e22;
     color: #fff;
-    transform: translateY(-2px);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.25);
 }
 
+
+/* ==========================================================================
+   4. SEÇÃO DE MÓDULOS
+   ========================================================================== */
 .modulos {
     padding: 80px 0;
     background-color: #fff;
@@ -170,6 +191,12 @@ h1, h2, h3 {
 .modulo {
     flex-basis: 30%;
     padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Efeito suave */
+}
+
+.modulo:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
 }
 
 .modulo i {
@@ -182,6 +209,11 @@ h1, h2, h3 {
     background-color: #ecf0f1;
     border-radius: 50%;
     text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.modulo:hover i {
+    transform: scale(1.1);
 }
 
 .modulo h3 {
@@ -195,6 +227,10 @@ h1, h2, h3 {
     color: #555;
 }
 
+
+/* ==========================================================================
+   5. RODAPÉ
+   ========================================================================== */
 .rodape {
     background-color: var(--cor-primaria);
     color: var(--cor-texto-claro);
@@ -206,13 +242,16 @@ h1, h2, h3 {
     margin-bottom: 5px;
 }
 
+/* ==========================================================================
+   6. PÁGINAS DE AUTENTICAÇÃO (LOGIN, CADASTRO, ETC.)
+   ========================================================================== */
 .auth-page-body {
     background-color: var(--cor-primaria);
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    padding: 20px 0;
+    padding: 40px 0; /* Aumenta o padding para telas menores */
 }
 
 .loginContainer {
@@ -249,7 +288,7 @@ h1, h2, h3 {
 
 .inputGroup {
     text-align: left;
-    margin-bottom: 10px;
+    margin-bottom: 20px; /* Aumenta o espaçamento */
 }
 
 .inputGroup label {
@@ -266,13 +305,14 @@ h1, h2, h3 {
     border-radius: 5px;
     font-size: 1em;
     font-family: var(--fonte-secundaria);
-    transition: border-color 0.3s ease;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Adiciona transição de sombra */
     box-sizing: border-box;
 }
 
 .inputGroup input:focus {
     outline: none;
     border-color: var(--cor-secundaria);
+    box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.2); /* Efeito de foco mais visível */
 }
 
 .passwordWrapper {
@@ -281,7 +321,7 @@ h1, h2, h3 {
 }
 
 .passwordWrapper input {
-    padding-right: 40px; 
+    padding-right: 45px; /* Mais espaço para o ícone */
 }
 
 .togglePasswordIcon {
@@ -302,8 +342,8 @@ h1, h2, h3 {
     display: block;
     text-decoration: none;
     width: 100%;
-    padding: 12px;
-    margin-top: 10px;
+    padding: 14px; /* Botão um pouco maior */
+    margin-top: 20px; /* Mais espaço acima */
     border: none;
     border-radius: 5px;
     background-color: var(--cor-secundaria);
@@ -312,15 +352,22 @@ h1, h2, h3 {
     font-weight: 700;
     font-family: var(--fonte-principal);
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease; /* Transição para todos os efeitos */
 }
 
 .btnLoginSubmit:hover {
     background-color: #e67e22;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.btnLoginSubmit:active {
+    transform: translateY(0); /* Efeito de pressionar */
+    box-shadow: none;
 }
 
 .loginLinks {
-    margin-top: 20px;
+    margin-top: 25px; /* Mais espaço */
 }
 
 .loginLinks a {
@@ -332,6 +379,7 @@ h1, h2, h3 {
 
 .loginLinks a:hover {
     color: var(--cor-secundaria);
+    text-decoration: underline; /* Sublinhado ao passar o mouse */
 }
 
 .loginLinks p {
@@ -352,64 +400,36 @@ h1, h2, h3 {
     font-size: 0.9em;
     font-weight: 600;
     text-align: left;
-    margin-top: -10px;
+    margin-top: 5px; /* Ajuste fino */
     margin-bottom: 15px;
     min-height: 1.2em;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    max-height: 0; /* Animação de altura */
+    overflow: hidden;
+    transition: opacity 0.3s ease, max-height 0.3s ease;
 }
 
 .mensagemErro.visivel {
     opacity: 1;
+    max-height: 50px; /* Altura suficiente para o texto */
 }
 
 .inputErro {
     border-color: var(--cor-erro) !important;
+    animation: shake 0.4s;
 }
 
-@media (max-width: 768px) {
-    .cabecalho .container {
-        flex-direction: column;
-    }
-
-    .menuPrincipal {
-        margin-top: 15px;
-    }
-    
-    .menuPrincipal ul {
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-    }
-
-    .menuPrincipal ul li {
-        margin-left: 0;
-        margin-bottom: 10px;
-        width: 100%;
-        text-align: center;
-    }
-
-    .hero {
-        padding-top: 150px;
-    }
-
-    .hero h2 {
-        font-size: 2.2em;
-    }
-
-    .hero p {
-        font-size: 1.1em;
-    }
-
-    .modulos .container {
-        flex-direction: column;
-    }
-
-    .loginBox {
-        padding: 25px;
-    }
+/* Animação de "tremor" para erros */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
 }
 
+
+/* ==========================================================================
+   7. MENU DE PERFIL DO USUÁRIO
+   ========================================================================== */
 .perfil-container {
     position: relative;
     cursor: pointer;
@@ -428,11 +448,12 @@ h1, h2, h3 {
     font-weight: 700;
     font-family: var(--fonte-principal);
     border: 2px solid #fff;
-    transition: transform 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .perfil-icone:hover {
     transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(243, 156, 18, 0.7); /* Brilho ao redor */
 }
 
 .perfil-dropdown {
@@ -444,7 +465,7 @@ h1, h2, h3 {
     border-radius: 8px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.15);
     width: 200px;
-    padding: 15px;
+    padding: 10px 0; /* Ajuste no padding */
     z-index: 1100;
     opacity: 0;
     visibility: hidden;
@@ -463,12 +484,13 @@ h1, h2, h3 {
     font-weight: 600;
     color: var(--cor-primaria);
     word-wrap: break-word;
+    padding: 8px 15px; /* Padding interno */
 }
 
 .perfil-dropdown hr {
     border: none;
     border-top: 1px solid #eee;
-    margin: 10px 0;
+    margin: 8px 0;
 }
 
 .perfil-dropdown a {
@@ -476,40 +498,47 @@ h1, h2, h3 {
     text-decoration: none;
     font-weight: 600;
     display: block;
-    padding: 8px 0;
-    transition: color 0.2s ease;
+    padding: 8px 15px; /* Padding interno */
+    transition: color 0.2s ease, background-color 0.2s ease;
 }
 
 .perfil-dropdown a:hover {
     color: var(--cor-secundaria);
+    background-color: #f9f9f9; /* Fundo suave ao passar o mouse */
 }
-/* Adicione este bloco no final do seu estilos.css */
 
+/* ==========================================================================
+   8. DASHBOARD
+   ========================================================================== */
 .dashboard-hero {
-    background-color: var(--cor-fundo); /* Fundo claro para o painel */
-    padding-top: 100px; /* Espaço para o cabeçalho fixo */
-    padding-bottom: 50px;
+    background-color: var(--cor-fundo);
+    padding-top: 120px; /* Mais espaço para o cabeçalho */
+    padding-bottom: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
     color: var(--cor-texto);
-    position: relative;
-    min-height: 40vh; /* Garante que tenha uma boa altura na altura dos olhos */
+    min-height: 40vh;
 }
 
 .dashboard-hero h2 {
-    font-size: 2.5em;
+    font-size: 2.8em; /* Fonte um pouco maior */
     color: var(--cor-primaria);
     margin-bottom: 15px;
-    text-shadow: none; /* Remove o shadow usado na home */
+    text-shadow: none;
 }
 
 .dashboard-hero p {
-    font-size: 1.2em;
+    font-size: 1.3em; /* Fonte um pouco maior */
     color: #555;
     margin-bottom: 30px;
     text-shadow: none;
+}
+
+.dashboard-content {
+    padding: 40px 0 80px; /* Espaçamento ajustado */
+    background-color: #fff;
 }
 
 .dashboard-content .container {
@@ -518,4 +547,61 @@ h1, h2, h3 {
     justify-content: space-around;
     gap: 30px;
     text-align: center;
+}
+
+
+/* ==========================================================================
+   9. RESPONSIVIDADE (MEDIA QUERIES)
+   ========================================================================== */
+@media (max-width: 768px) {
+    .cabecalho {
+        padding: 10px 0;
+    }
+    
+    .cabecalho .container {
+        flex-direction: row; /* Mantém na mesma linha */
+        justify-content: space-between;
+        padding: 0 20px;
+    }
+
+    .menuPrincipal {
+        /* Escondido por padrão, precisaria de um botão de menu (hamburger) para exibir */
+        /* Para este exemplo, vamos apenas ajustar o layout */
+        margin-top: 0;
+    }
+    
+    .menuPrincipal ul {
+        flex-direction: row; /* Mantém na mesma linha */
+    }
+
+    /* Esconde os links de texto e mostra apenas login/perfil em telas pequenas */
+    .menuPrincipal ul li:not(:last-child) {
+        display: none;
+    }
+    
+    .menuPrincipal ul li {
+        margin-left: 15px;
+    }
+    
+    .hero {
+        padding-top: 100px;
+    }
+
+    .hero h2 {
+        font-size: 2.5em;
+    }
+
+    .hero p {
+        font-size: 1.2em;
+    }
+
+    .modulos .container,
+    .dashboard-content .container {
+        flex-direction: column;
+        gap: 40px;
+    }
+
+    .loginBox {
+        padding: 30px 25px;
+    }
 }

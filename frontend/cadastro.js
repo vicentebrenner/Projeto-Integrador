@@ -1,72 +1,72 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro - Music Makers</title>
+document.addEventListener('DOMContentLoaded', function() {
+    const formCadastro = document.getElementById('formCadastro');
+    if (!formCadastro) {
+        console.error('O formulário de cadastro não foi encontrado.');
+        return;
+    }
 
-    <link rel="stylesheet" href="estilos.css"> 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-</head>
-<body class="auth-page-body"> 
-    <div class="loginContainer">
-        <div class="loginBox">
-            <a href="index.html" class="logoLogin">MusicMakers</a>
-            <h2>Crie sua conta</h2>
+    const nomeInput = document.getElementById('nome');
+    const emailInput = document.getElementById('email');
+    const senhaInput = document.getElementById('senha');
+    const confirmarSenhaInput = document.getElementById('confirmarSenha');
+    const mensagemErroCadastro = document.getElementById('mensagemErroCadastro');
 
-            <form id="formCadastro">
-                <div class="inputGroup">
-                    <label for="nome">Nome Completo</label>
-                    <input type="text" id="nome" name="nome" required>
-                    <div class="mensagemErro" id="erroNome"></div>
-                </div>
+    const mostrarErro = (mensagem) => {
+        if (mensagemErroCadastro) {
+            mensagemErroCadastro.textContent = mensagem;
+            mensagemErroCadastro.classList.add('visivel');
+        }
+    };
 
-                <div class="inputGroup">
-                    <label for="email">E-mail</label>
-                    <input type="email" id="email" name="email" required>
-                    <div class="mensagemErro" id="erroEmail"></div>
-                </div>
+    formCadastro.addEventListener('submit', async function(event) {
+        event.preventDefault();
+        if (mensagemErroCadastro) mensagemErroCadastro.classList.remove('visivel');
 
-                <div class="inputGroup">
-                    <label for="senha">Senha</label>
-                    <div class="passwordWrapper">
-                        <input type="password" id="senha" name="senha" required>
-                        <i class="bi bi-eye-slash togglePasswordIcon" id="toggleSenha"></i>
-                    </div>
-                    <div class="mensagemErro" id="erroSenha"></div>
-                </div>
+        const nome = nomeInput.value;
+        const email = emailInput.value;
+        const senha = senhaInput.value;
+        const confirmarSenha = confirmarSenhaInput.value;
 
-                <div class="inputGroup">
-                    <label for="confirmarSenha">Confirmar Senha</label>
-                    <div class="passwordWrapper">
-                        <input type="password" id="confirmarSenha" name="confirmarSenha" required>
-                        <i class="bi bi-eye-slash togglePasswordIcon" id="toggleConfirmarSenha"></i>
-                    </div>
-                    <div class="mensagemErro" id="erroConfirmarSenha"></div>
-                </div>
+        // Validações no frontend
+        if (!nome || !email || !senha || !confirmarSenha) {
+            mostrarErro('Por favor, preencha todos os campos.');
+            return;
+        }
+        if (senha !== confirmarSenha) {
+            mostrarErro('As senhas não coincidem.');
+            return;
+        }
+        if (senha.length < 6) {
+            mostrarErro('A senha deve ter pelo menos 6 caracteres.');
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/auth/register-request', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nome, email, senha }),
+            });
+
+            const mensagem = await response.text();
+
+            if (response.ok) {
+                // Se o pré-cadastro for bem-sucedido
+                alert("Cadastro realizado com sucesso! " + mensagem); // Ex: "Código de verificação enviado para o seu e-mail."
                 
-                <div class="mensagemErro geral" id="mensagemErroCadastro"></div>
+                // Salva o e-mail para usar na página de verificação
+                localStorage.setItem('emailParaVerificacao', email);
+                
+                // Redireciona para a página de verificação de código
+                window.location.href = 'verificar.html';
+            } else {
+                // Se houver erro (Ex: e-mail já cadastrado)
+                mostrarErro(mensagem);
+            }
 
-                <button type="submit" class="btnLoginSubmit">Cadastrar</button>
-
-                <div class="loginLinks">
-                    <p>Já tem uma conta? <a href="login.html">Faça login</a></p>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <script src="cadastro.js"></script>
-    <script src="utils.js"></script>
-    
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Ativa o toggle para a Senha principal
-            setupPasswordToggle('senha', 'toggleSenha'); 
-            
-            // Ativa o toggle para Confirmar Senha
-            setupPasswordToggle('confirmarSenha', 'toggleConfirmarSenha'); 
-        });
-    </script>
-</body>
-</html>
+        } catch (error) {
+            console.error('Erro na requisição de cadastro:', error);
+            mostrarErro('Não foi possível conectar ao servidor. Verifique se o backend está rodando.');
+        }
+    });
+});
