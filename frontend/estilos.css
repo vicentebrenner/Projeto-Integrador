@@ -605,3 +605,240 @@ h1, h2, h3 {
         padding: 30px 25px;
     }
 }
+/* ==========================================================================
+   10. PÁGINA DE GESTÃO DA BANDA
+   ========================================================================== */
+.banda-container {
+    padding: 120px 0 80px;
+    background-color: #fff;
+}
+
+.banda-container h1 {
+    text-align: center;
+    color: var(--cor-primaria);
+    margin-bottom: 40px;
+    font-size: 2.5em;
+}
+
+.banda-tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+    border-bottom: 2px solid #eee;
+}
+
+.tab-link {
+    padding: 15px 30px;
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+    font-size: 1.1em;
+    font-weight: 600;
+    color: var(--cor-texto-claro);
+    transition: all 0.3s ease;
+    position: relative;
+    top: 2px;
+}
+
+.tab-link:hover {
+    color: var(--cor-secundaria);
+}
+
+.tab-link.ativo {
+    color: var(--cor-primaria);
+    border-bottom: 3px solid var(--cor-secundaria);
+}
+
+.tab-content {
+    display: none;
+    padding: 20px;
+    animation: fadeIn 0.5s;
+}
+
+.tab-content.ativo {
+    display: block;
+}
+
+.tab-content h2 {
+    color: var(--cor-primaria);
+    margin-bottom: 20px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+/* ==========================================================================
+   11. COMPONENTES DA PÁGINA DA BANDA
+   ========================================================================== */
+
+/* Layouts em Grid */
+.financeiro-grid, .membros-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 40px;
+    align-items: start;
+}
+
+/* Tabelas */
+.tabela-container {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.tabela-container h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: var(--cor-primaria);
+}
+
+.tabela-financeira, .tabela-membros {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tabela-financeira th, .tabela-financeira td,
+.tabela-membros th, .tabela-membros td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.tabela-financeira th, .tabela-membros th {
+    background-color: #ecf0f1;
+    font-weight: 600;
+}
+
+.tabela-financeira .receita {
+    color: var(--cor-sucesso);
+    font-weight: 700;
+}
+
+.tabela-financeira .despesa {
+    color: var(--cor-erro);
+    font-weight: 700;
+}
+
+/* Formulário */
+.form-container {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.form-container h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.btn-adicionar {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    background-color: var(--cor-secundaria);
+    color: var(--cor-primaria);
+    font-weight: 700;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-adicionar:hover {
+    background-color: #e67e22;
+}
+
+.btn-remover {
+    background: none;
+    border: none;
+    color: var(--cor-erro);
+    cursor: pointer;
+    font-size: 1.1em;
+}
+
+/* Gráfico */
+.grafico-container {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+/* Responsividade */
+@media (max-width: 992px) {
+    .financeiro-grid, .membros-grid {
+        grid-template-columns: 1fr;
+    }
+}
+/* ==========================================================================
+   12. SEÇÃO DE REPERTÓRIO
+   ========================================================================== */
+
+.repertorio-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+}
+
+.tabela-repertorio {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tabela-repertorio th, .tabela-repertorio td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.tabela-repertorio th {
+    background-color: #ecf0f1;
+}
+
+.btn-ver-partitura {
+    background-color: var(--cor-primaria);
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 0.9em;
+}
+
+.btn-ver-partitura:hover {
+    background-color: #34495e;
+}
+
+.btn-ver-partitura i {
+    margin-right: 5px;
+}
+
+.partitura-container {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.partitura-container h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: var(--cor-primaria);
+}
+
+#visualizadorPdf p {
+    text-align: center;
+    color: #777;
+    padding: 50px 0;
+}
+
+/* Responsividade para a nova seção */
+@media (max-width: 992px) {
+    .repertorio-grid {
+        grid-template-columns: 1fr;
+    }
+}
