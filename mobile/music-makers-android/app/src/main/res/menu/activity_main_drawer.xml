@@ -6,15 +6,36 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="@string/menu_home" />
+            android:icon="@drawable/icon_select"
+            android:title="Inicio" />
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/menu_gallery" />
+            android:id="@+id/band_data"
+            android:icon="@drawable/icon_select"
+            android:title="Dados da banda" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_slideshow" />
+            android:id="@+id/members"
+            android:icon="@drawable/icon_select"
+            android:title="Membros" />
+
+        <item
+            android:id="@+id/agenda"
+            android:icon="@drawable/icon_select"
+            android:title="Agenda" />
+
+        <item
+            android:id="@+id/musics"
+            android:icon="@drawable/icon_select"
+            android:title="Repertório" />
+
+        <item
+            android:id="@+id/invites"
+            android:icon="@drawable/icon_select"
+            android:title="Convites" />
+
+        <item
+            android:id="@+id/financial"
+            android:icon="@drawable/icon_select"
+            android:title="Financeiro" />
+
     </group>
 </menu>
