@@ -38,22 +38,30 @@ public class AuthController {
 
         novoUsuario.setSenha(passwordEncoder.encode(novoUsuario.getSenha()));
 
-        String verificationCode = String.format("%06d", new SecureRandom().nextInt(999999));
-        novoUsuario.setVerificationCode(verificationCode);
-        novoUsuario.setEnabled(false);
+        // O código de verificação não é mais necessário
+        // String verificationCode = String.format("%06d", new SecureRandom().nextInt(999999));
+        // novoUsuario.setVerificationCode(verificationCode);
+        
+        // MODIFICADO: Habilita o usuário diretamente ao se cadastrar
+        novoUsuario.setEnabled(true); 
 
         usuarioRepository.save(novoUsuario);
 
+        /* O envio de e-mail foi comentado, pois não é mais necessário para a verificação
         try {
             emailService.sendVerificationEmail(novoUsuario.getNome(), novoUsuario.getEmail(), verificationCode);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().body("Erro ao enviar e-mail de verificação.");
         }
+        */
 
-        return ResponseEntity.ok("Código de verificação enviado para o seu e-mail.");
+        // MODIFICADO: Retorna uma mensagem de sucesso direto
+        return ResponseEntity.ok("Cadastro realizado com sucesso!");
     }
 
+    // O restante do arquivo continua igual...
+    
     @PostMapping("/verify-code")
     public ResponseEntity<String> verifyCode(@RequestParam String email, @RequestParam String code) {
         Optional<Usuario> usuarioOpt = usuarioRepository.findByEmail(email);

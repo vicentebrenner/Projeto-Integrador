@@ -32,7 +32,7 @@ public class Usuario {
     private String verificationCode;
 
     @Column(name = "enabled")
-    private boolean enabled = false;
+    private boolean enabled = true; //MODIFICADO: Valor padrão alterado para true
 
     // --- MÉTODOS MANUAIS PARA CORRIGIR ERROS DO VS CODE ---
 
@@ -95,4 +95,3 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario")
     private List<Inscricao> inscricoes;
 }
-

@@ -51,14 +51,14 @@ document.addEventListener('DOMContentLoaded', function() {
             const mensagem = await response.text();
 
             if (response.ok) {
-                // Se o pré-cadastro for bem-sucedido
-                alert("Cadastro realizado com sucesso! " + mensagem); // Ex: "Código de verificação enviado para o seu e-mail."
+                // Se o cadastro for bem-sucedido
+                alert("Cadastro realizado com sucesso!"); // MENSAGEM AJUSTADA
                 
-                // Salva o e-mail para usar na página de verificação
-                localStorage.setItem('emailParaVerificacao', email);
+                // A linha abaixo foi removida pois não é mais necessária
+                // localStorage.setItem('emailParaVerificacao', email);
                 
-                // Redireciona para a página de verificação de código
-                window.location.href = 'verificar.html';
+                // Redireciona para a página de login
+                window.location.href = 'login.html'; // MODIFICADO
             } else {
                 // Se houver erro (Ex: e-mail já cadastrado)
                 mostrarErro(mensagem);
