@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão da Banda - Music Makers</title>
+    <link rel="stylesheet" href="estilos.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <header class="cabecalho">
+        <div class="container">
+            <h1 class="logo"><a href="dashboard.html" style="color: var(--cor-secundaria); text-decoration: none;">Music Makers</a></h1>
+            <nav class="menuPrincipal">
+                <ul>
+                    </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="banda-container">
+        <div class="container">
+            <h1>Gerenciamento da Banda</h1>
+            
+            <div class="banda-tabs">
+                <button class="tab-link ativo" data-tab="agenda">Agenda</button>
+                <button class="tab-link" data-tab="financeiro">Financeiro</button>
+                <button class="tab-link" data-tab="membros">Membros</button>
+                <button class="tab-link" data-tab="repertorio">Repertório</button>
+            </div>
+
+            <div id="agenda" class="tab-content ativo">
+                <h2>Agenda e Eventos</h2>
+                <p>Aqui você verá um calendário completo com ensaios, shows e outros compromissos da banda.</p>
+            </div>
+
+            <div id="financeiro" class="tab-content">
+                <h2>Controle Financeiro</h2>
+                <div class="financeiro-grid">
+                    <div class="grafico-container">
+                        <h3>Balanço Mensal (Receitas x Despesas)</h3>
+                        <canvas id="graficoFinanceiro"></canvas>
+                    </div>
+                    <div class="tabela-container">
+                        <h3>Últimas Transações</h3>
+                        <table class="tabela-financeira">
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Descrição</th>
+                                    <th>Valor</th>
+                                </tr>
+                            </thead>
+                            <tbody id="corpoTabelaFinanceira"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="membros" class="tab-content">
+                <h2>Membros da Banda</h2>
+                <div class="membros-grid">
+                    <div class="tabela-container">
+                        <h3>Integrantes Atuais</h3>
+                        <table class="tabela-membros">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Instrumento</th>
+                                    <th>Ação</th>
+                                </tr>
+                            </thead>
+                            <tbody id="corpoTabelaMembros"></tbody>
+                        </table>
+                    </div>
+                    <div class="form-container">
+                        <h3>Adicionar Novo Membro</h3>
+                        <form id="formAdicionarMembro">
+                            <div class="inputGroup">
+                                <label for="nomeMembro">Nome do Músico</label>
+                                <input type="text" id="nomeMembro" required>
+                            </div>
+                            <div class="inputGroup">
+                                <label for="instrumentoMembro">Instrumento</label>
+                                <input type="text" id="instrumentoMembro" required>
+                            </div>
+                            <button type="submit" class="btn-adicionar">Adicionar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div id="repertorio" class="tab-content">
+                <h2>Repertório e Partituras</h2>
+                <div class="repertorio-grid">
+                    <div class="tabela-container">
+                        <h3>Músicas</h3>
+                        <table class="tabela-repertorio">
+                            <thead>
+                                <tr>
+                                    <th>Música</th>
+                                    <th>Origem</th>
+                                    <th>Ação</th>
+                                </tr>
+                            </thead>
+                            <tbody id="corpoTabelaRepertorio"></tbody>
+                        </table>
+                    </div>
+                    <div class="partitura-container">
+                        <h3>Visualizador de Partitura</h3>
+                        <div id="visualizadorPdf">
+                            <p>Selecione uma música na lista para ver a partitura.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="rodape">
+        <div class="container">
+            <p>&copy; 2025 Music Makers.</p>
+        </div>
+    </footer>
+
+    <script src="global.js"></script>
+    <script src="banda.js"></script>
+</body>
+</html>

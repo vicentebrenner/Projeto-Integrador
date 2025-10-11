@@ -52,4 +52,5 @@ document.addEventListener('DOMContentLoaded', function() {
             mostrarErro('Não foi possível conectar ao servidor.');
         }
     });
+    
 });
