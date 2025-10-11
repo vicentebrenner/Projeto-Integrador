@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel do Usuário - Music Makers</title>
+    <title>Painel da Banda - Music Makers</title>
     <link rel="stylesheet" href="estilos.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,9 +17,9 @@
             <h1 class="logo">Music Makers</h1>
             <nav class="menuPrincipal">
                 <ul>
-                    <li><a href="#conectar">Encontrar Músicos</a></li>
-                    <li><a href="#marketplace">Marketplace</a></li>
-                    <li><a href="#conteudo">Conteúdo</a></li>
+                    <li><a href="banda.html">Minha Banda</a></li>
+                    <li><a href="#agenda">Agenda</a></li>
+                    <li><a href="#financeiro">Financeiro</a></li>
                     <li><a href="login.html" class="btnLogin">Login</a></li>
                 </ul>
             </nav>
@@ -29,9 +29,9 @@
     <main class="dashboard-hero">
         <div class="container">
             <div class="heroTexto" id="boasVindasContainer">
-                <h2>Bem-vindo(a) de volta, <span id="nomeUsuario">Músico</span>!</h2>
-                <p>Seu Painel de Controle está aqui. Pronto para criar sua próxima obra?</p>
-                <a href="#minha-banda" class="btnCta">Gerenciar Minha Banda</a>
+                <h2 id="mensagemBoasVindas">Painel da sua Banda, <span id="nomeUsuario">Músico</span>!</h2>
+                <p>Tudo o que você precisa para organizar o som.</p>
+                <a href="banda.html" class="btnCta">Ver agenda completa</a>
             </div>
         </div>
     </main>
@@ -39,14 +39,19 @@
     <section class="dashboard-content">
         <div class="container">
             <div class="modulo">
-                <i class="fas fa-bell"></i>
-                <h3>Notificações Recentes</h3>
-                <p>Você tem 3 novas propostas de colaboração aguardando análise.</p>
+                <i class="fas fa-calendar-check"></i>
+                <h3>Próximos Eventos</h3>
+                <p>Ensaio geral na sexta-feira, 20h.</p>
             </div>
             <div class="modulo">
-                <i class="fas fa-graduation-cap"></i>
-                <h3>Seus Cursos</h3>
-                <p>Continue de onde parou: **Afinando o Violão - Aula 5**.</p>
+                <i class="fas fa-cash-register"></i>
+                <h3>Últimas Atividades Financeiras</h3>
+                <p>Recebimento de cachê: R$ 500,00.</p>
+            </div>
+            <div class="modulo">
+                <i class="fas fa-music"></i>
+                <h3>Repertório Atual</h3>
+                <p>15 músicas cadastradas. Última adição: "Rock Novo".</p>
             </div>
         </div>
     </section>
@@ -54,10 +59,10 @@
     <footer class="rodape">
         <div class="container">
             <p>&copy; 2025 Music Makers - Todos os direitos reservados.</p>
-            <p>Uma plataforma de conexão para músicos independentes.</p>
         </div>
     </footer>
 
     <script src="global.js"></script>
-    <script src="dashboard.js"></script> </body>
+    <script src="dashboard.js"></script> 
+</body>
 </html>

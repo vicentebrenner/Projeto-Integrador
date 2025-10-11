@@ -34,10 +34,13 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .cors(withDefaults())
+            // ✅ A MUDANÇA ESTÁ AQUI: Aplica explicitamente a configuração do seu bean de CORS
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+            
+            // Desabilita a proteção CSRF, que é necessária para APIs stateless
             .csrf(csrf -> csrf.disable())
+            
             .authorizeHttpRequests(auth -> auth
-                // ✅ MUDANÇA APLICADA AQUI
                 .requestMatchers("/api/auth/**").permitAll() // Rotas de autenticação são públicas
                 .anyRequest().authenticated() // TODAS as outras rotas exigem autenticação
             )
