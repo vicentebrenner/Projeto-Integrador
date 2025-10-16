@@ -24,8 +24,8 @@ public class AuthController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private EmailService emailService;
+    // @Autowired  // <-- PASSO 1: Comente a injeção de dependência.
+    // private EmailService emailService;
 
     @Autowired
     private TokenService tokenService;
@@ -37,30 +37,15 @@ public class AuthController {
         }
 
         novoUsuario.setSenha(passwordEncoder.encode(novoUsuario.getSenha()));
-
-        // O código de verificação não é mais necessário
-        // String verificationCode = String.format("%06d", new SecureRandom().nextInt(999999));
-        // novoUsuario.setVerificationCode(verificationCode);
         
-        // MODIFICADO: Habilita o usuário diretamente ao se cadastrar
         novoUsuario.setEnabled(true); 
 
         usuarioRepository.save(novoUsuario);
 
-        /* O envio de e-mail foi comentado, pois não é mais necessário para a verificação
-        try {
-            emailService.sendVerificationEmail(novoUsuario.getNome(), novoUsuario.getEmail(), verificationCode);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().body("Erro ao enviar e-mail de verificação.");
-        }
-        */
+        // O bloco de envio de e-mail já estava comentado, o que é perfeito.
 
-        // MODIFICADO: Retorna uma mensagem de sucesso direto
         return ResponseEntity.ok("Cadastro realizado com sucesso!");
     }
-
-    // O restante do arquivo continua igual...
     
     @PostMapping("/verify-code")
     public ResponseEntity<String> verifyCode(@RequestParam String email, @RequestParam String code) {
@@ -95,7 +80,6 @@ public class AuthController {
             if (usuario.isEnabled()) {
                 String token = tokenService.generateToken(usuario);
 
-
                 return ResponseEntity.ok(Map.of(
                     "token", token,
                     "usuario", Map.of("nome", usuario.getNome(), "email", usuario.getEmail())
@@ -124,13 +108,15 @@ public class AuthController {
         usuario.setVerificationCode(resetToken);
         usuarioRepository.save(usuario);
 
+        /* <-- PASSO 2: Comente o bloco que envia o e-mail.
         try {
             String resetLink = "http://localhost/redefinir.html?token=" + resetToken; 
             emailService.sendResetPasswordEmail(usuario.getNome(), usuario.getEmail(), resetLink);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.internalServerError().body("Erro ao enviar e-mail de redefinição.");
+            return ResponseEntity.internalServerError().body("Erro ao enviar e--mail de redefinição.");
         }
+        */
 
         return ResponseEntity.ok("Link de redefinição enviado para o seu e-mail. Verifique a caixa de entrada.");
     }
