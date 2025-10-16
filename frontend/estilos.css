@@ -842,3 +842,716 @@ h1, h2, h3 {
         grid-template-columns: 1fr;
     }
 }
+/* ==========================================================================
+   13. ESTILOS DO MODAL
+   ========================================================================== */
+.membros-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.btn-adicionar-principal {
+    background-color: var(--cor-secundaria);
+    color: var(--cor-primaria);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.btn-adicionar-principal:hover {
+    background-color: #e67e22;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+.btn-adicionar-principal i {
+    margin-right: 8px;
+}
+
+.modal {
+    display: none; 
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.6);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 30px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 10px;
+    position: relative;
+    animation: slideDown 0.4s;
+}
+
+.close-button {
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+}
+
+@keyframes slideDown {
+    from {top: -100px; opacity: 0}
+    to {top: 0; opacity: 1}
+}
+/* ==========================================================================
+   16. REDESIGN GERAL (CLEAN & MARKETING)
+   ========================================================================== */
+body {
+    background-color: #f8f9fa; /* Um cinza muito claro, quase branco */
+}
+
+.banda-container {
+    padding-top: 100px;
+    padding-bottom: 80px;
+}
+
+.banda-container h1 {
+    font-size: 2.8em;
+    color: var(--cor-primaria);
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.banda-tabs {
+    border-bottom: 1px solid #dee2e6; /* Borda mais suave */
+    margin-bottom: 40px;
+}
+
+.tab-link {
+    padding: 15px 25px;
+    font-size: 1.05em;
+    font-weight: 600;
+    color: #6c757d; /* Cinza para abas inativas */
+    border-bottom: 3px solid transparent;
+}
+
+.tab-link.ativo {
+    color: var(--cor-primaria);
+    border-bottom-color: var(--cor-secundaria);
+}
+
+.card-style {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    padding: 25px;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+.card-style:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+.tabela-container {
+    padding: 0; /* O padding agora está no card-style */
+}
+.tabela-container h3, .grafico-container h3, .partitura-container h3 {
+    padding: 20px 25px;
+    margin: -25px -25px 20px -25px;
+    border-bottom: 1px solid #eee;
+}
+
+/* ==========================================================================
+   17. ESTILOS DA NOVA AGENDA
+   ========================================================================== */
+.agenda-list {
+    display: grid;
+    gap: 20px;
+}
+
+.agenda-item {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    border-left: 5px solid var(--cor-secundaria);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+.agenda-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+.agenda-item.show { border-left-color: #3498db; } /* Azul para show */
+.agenda-item.gravacao { border-left-color: #9b59b6; } /* Roxo para gravação */
+.agenda-item.ensaio { border-left-color: var(--cor-sucesso); } /* Verde para ensaio */
+
+.agenda-data {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-right: 20px;
+    background-color: #f1f3f5;
+    border-radius: 8px;
+    padding: 10px;
+    width: 65px;
+    height: 65px;
+}
+.agenda-data .dia {
+    font-size: 1.8em;
+    font-weight: 700;
+    color: var(--cor-primaria);
+    line-height: 1;
+}
+.agenda-data .mes {
+    font-size: 0.8em;
+    font-weight: 700;
+    color: #6c757d;
+    text-transform: uppercase;
+}
+
+.agenda-details {
+    flex-grow: 1;
+}
+.agenda-details h4 {
+    margin: 0 0 5px 0;
+    font-size: 1.2em;
+    color: var(--cor-primaria);
+}
+.agenda-details p {
+    margin: 0;
+    color: #6c757d;
+}
+.agenda-details p i {
+    margin-right: 8px;
+    color: var(--cor-secundaria);
+}
+
+.agenda-actions .btn-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1em;
+    color: #adb5bd;
+    padding: 5px;
+    margin-left: 10px;
+}
+.agenda-actions .btn-icon:hover {
+    color: var(--cor-primaria);
+}
+.agenda-actions .btn-remover:hover {
+    color: var(--cor-erro);
+}
+/* ==========================================================================
+   16. REDESIGN GERAL (CLEAN & MARKETING)
+   ========================================================================== */
+body {
+    background-color: #f8f9fa;
+}
+.banda-container {
+    padding-top: 100px;
+    padding-bottom: 80px;
+}
+.banda-container h1 {
+    font-size: 2.8em;
+    color: var(--cor-primaria);
+    margin-bottom: 30px;
+    text-align: center;
+}
+.banda-tabs {
+    border-bottom: 1px solid #dee2e6;
+    margin-bottom: 40px;
+}
+.tab-link {
+    padding: 15px 25px;
+    font-size: 1.05em;
+    font-weight: 600;
+    color: #6c757d;
+    border-bottom: 3px solid transparent;
+}
+.tab-link.ativo {
+    color: var(--cor-primaria);
+    border-bottom-color: var(--cor-secundaria);
+}
+.content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+.content-header h2 {
+    margin: 0;
+}
+.card-style {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.07);
+    padding: 25px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card-style:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+.table-wrapper {
+    overflow-x: auto;
+}
+.tabela-moderna {
+    width: 100%;
+    border-collapse: collapse;
+}
+.tabela-moderna th, .tabela-moderna td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #f1f3f5;
+}
+.tabela-moderna th {
+    font-size: 0.85em;
+    text-transform: uppercase;
+    color: #6c757d;
+    background-color: transparent;
+}
+
+/* ==========================================================================
+   17. ESTILOS DA NOVA AGENDA
+   ========================================================================== */
+.agenda-list {
+    display: grid;
+    gap: 20px;
+}
+.agenda-item {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.07);
+    border-left: 5px solid var(--cor-secundaria);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.agenda-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+.agenda-item.show { border-left-color: #3498db; }
+.agenda-item.gravacao { border-left-color: #9b59b6; }
+.agenda-item.ensaio { border-left-color: var(--cor-sucesso); }
+
+.agenda-data {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-right: 25px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 10px;
+    width: 65px;
+    height: 65px;
+    text-align: center;
+}
+.agenda-data .dia {
+    font-size: 1.8em;
+    font-weight: 700;
+    color: var(--cor-primaria);
+    line-height: 1;
+}
+.agenda-data .mes {
+    font-size: 0.8em;
+    font-weight: 700;
+    color: #6c757d;
+    text-transform: uppercase;
+}
+.agenda-details {
+    flex-grow: 1;
+}
+.agenda-details h4 {
+    margin: 0 0 5px 0;
+    font-size: 1.2em;
+    color: var(--cor-primaria);
+}
+.agenda-details p {
+    margin: 0;
+    color: #6c757d;
+    font-size: 0.95em;
+}
+.agenda-details p i {
+    margin-right: 8px;
+    width: 15px;
+    text-align: center;
+    color: var(--cor-secundaria);
+}
+.agenda-actions .btn-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1em;
+    color: #adb5bd;
+    padding: 5px;
+    margin-left: 10px;
+    transition: color 0.2s ease;
+}
+.agenda-actions .btn-icon:hover {
+    color: var(--cor-primaria);
+}
+.agenda-actions .btn-remover:hover {
+    color: var(--cor-erro);
+}
+/* Adicione ao final do seu estilos.css */
+
+/* Ajuste no grid financeiro */
+.financeiro-grid {
+    grid-template-columns: 1fr 1fr; /* Duas colunas iguais */
+}
+.full-width {
+    grid-column: 1 / -1; /* Ocupa a largura total */
+}
+
+/* Card da IA */
+.ai-insights-card h3 i {
+    color: var(--cor-secundaria);
+    margin-right: 10px;
+    animation: pulse 2s infinite;
+}
+
+.ai-insights-content .loading-ai {
+    text-align: center;
+    color: #6c757d;
+    padding: 20px;
+}
+
+.insight-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 15px;
+    font-size: 0.95em;
+}
+.insight-item i {
+    margin-top: 4px;
+    margin-right: 12px;
+    color: #3498db; /* Azul para insights */
+}
+.insight-item.alert i {
+    color: #e67e22; /* Laranja para alertas */
+}
+.insight-item.success i {
+    color: var(--cor-sucesso); /* Verde para sucessos */
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+/* ==========================================================================
+   18. REDESIGN FINANCEIRO (CLEAN & ORGANIZADO)
+   ========================================================================== */
+
+/* Layout principal da aba financeira */
+.financeiro-main-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* Coluna da esquerda 2x maior que a da direita */
+    gap: 30px;
+    margin-top: 40px;
+}
+
+/* Coluna de Análises (Direita) */
+.analysis-column {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+/* Gráfico de Pizza */
+.chart-container {
+    position: relative;
+    height: 250px; /* Ajuste a altura conforme necessário */
+}
+
+/* Tabela de transações mais limpa */
+.tabela-moderna .categoria-tag {
+    background-color: #ecf0f1;
+    color: #7f8c8d;
+    font-size: 0.8em;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+.tabela-moderna td.receita {
+    color: var(--cor-sucesso);
+    font-weight: 600;
+}
+.tabela-moderna td.despesa {
+    color: var(--cor-erro);
+    font-weight: 600;
+}
+
+/* Responsividade para o novo layout */
+@media (max-width: 992px) {
+    .financeiro-main-grid {
+        grid-template-columns: 1fr; /* Uma coluna em telas menores */
+    }
+    .metricas-grid {
+        grid-template-columns: 1fr; /* Uma coluna em telas bem pequenas */
+    }
+}
+/* ==========================================================================
+   19. REDESIGN DO PAINEL FINANCEIRO
+   ========================================================================== */
+.content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    flex-wrap: wrap; /* Para telas menores */
+    gap: 15px;
+}
+.filter-group {
+    display: flex;
+    background-color: #e9ecef;
+    border-radius: 8px;
+    padding: 5px;
+}
+.filter-btn {
+    border: none;
+    background-color: transparent;
+    padding: 8px 15px;
+    border-radius: 6px;
+    font-weight: 600;
+    color: #6c757d;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+.filter-btn.ativo {
+    background-color: #fff;
+    color: var(--cor-primaria);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Gráfico de Evolução */
+#graficoEvolucao {
+    height: 300px !important;
+}
+
+/* Correção dos botões de Receita/Despesa no Modal */
+.tipo-transacao-group label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px; /* Espaço entre ícone e texto */
+}
+.tipo-transacao-group input[type="radio"]:checked + label {
+    background-color: var(--cor-primaria);
+    color: #fff;
+    border-color: var(--cor-primaria);
+}
+#tipoReceita:checked + label { background-color: var(--cor-sucesso); border-color: var(--cor-sucesso); }
+#tipoDespesa:checked + label { background-color: var(--cor-erro); border-color: var(--cor-erro); }
+/* ==========================================================================
+   20. REFINAMENTO DO PAINEL FINANCEIRO
+   ========================================================================== */
+
+/* Ajustes no cabeçalho do conteúdo */
+.content-header {
+    align-items: center;
+    gap: 20px;
+}
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-left: auto; /* Joga os botões para a direita */
+}
+
+/* Gráfico principal com mais destaque */
+.chart-container {
+    height: 350px;
+    margin-top: 20px;
+}
+
+/* Grid inferior para tabela e IA */
+.financeiro-bottom-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
+    margin-top: 30px;
+}
+
+/* Botões de Receita/Despesa no Modal (CORRIGIDO) */
+.tipo-transacao-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+.tipo-transacao-group input[type="radio"] {
+    display: none; /* Esconde o botão de rádio original */
+}
+.tipo-transacao-group label {
+    padding: 12px;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+.tipo-transacao-group label:hover {
+    border-color: var(--cor-secundaria);
+}
+.tipo-transacao-group input[type="radio"]:checked + label {
+    color: #fff;
+}
+#tipoReceita:checked + label {
+    background-color: var(--cor-sucesso);
+    border-color: var(--cor-sucesso);
+}
+#tipoDespesa:checked + label {
+    background-color: var(--cor-erro);
+    border-color: var(--cor-erro);
+}
+
+/* Responsividade */
+@media (max-width: 992px) {
+    .financeiro-bottom-grid {
+        grid-template-columns: 1fr;
+    }
+}
+@media (max-width: 768px) {
+    .header-actions {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+/* ==========================================================================
+   20. REFINAMENTO DO PAINEL FINANCEIRO
+   ========================================================================== */
+.content-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 25px; flex-wrap: wrap; gap: 20px;
+}
+.header-actions {
+    display: flex; align-items: center; gap: 20px; margin-left: auto;
+}
+.filter-group {
+    display: flex; background-color: #e9ecef; border-radius: 8px; padding: 5px;
+}
+.filter-btn {
+    border: none; background-color: transparent; padding: 8px 15px; border-radius: 6px;
+    font-weight: 600; color: #6c757d; cursor: pointer; transition: all 0.2s ease-in-out;
+}
+.filter-btn.ativo {
+    background-color: #fff; color: var(--cor-primaria); box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.chart-container {
+    height: 350px; margin-top: 20px;
+}
+.financeiro-bottom-grid {
+    display: grid; grid-template-columns: 2fr 1fr; gap: 30px; margin-top: 30px;
+}
+
+/* BOTÕES DE RECEITA/DESPESA NO MODAL (NOVO DESIGN) */
+.tipo-transacao-group {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+}
+.tipo-transacao-group input[type="radio"] { display: none; }
+.tipo-transacao-group label {
+    padding: 12px; border: 2px solid #e9ecef; border-radius: 8px; text-align: center;
+    font-weight: 600; cursor: pointer; transition: all 0.2s ease-in-out;
+}
+.tipo-transacao-group label:hover { border-color: #bdc3c7; }
+.tipo-transacao-group input[type="radio"]:checked + label { color: #fff; }
+#tipoReceita:checked + label { background-color: var(--cor-sucesso); border-color: var(--cor-sucesso); }
+#tipoDespesa:checked + label { background-color: var(--cor-erro); border-color: var(--cor-erro); }
+
+@media (max-width: 992px) { .financeiro-bottom-grid { grid-template-columns: 1fr; } }
+@media (max-width: 768px) { .header-actions { width: 100%; flex-direction: column; align-items: stretch; } }
+/* ==========================================================================
+   20. REFINAMENTO DO PAINEL FINANCEIRO
+   ========================================================================== */
+.content-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap: wrap; gap: 20px; }
+.header-actions { display: flex; align-items: center; gap: 20px; margin-left: auto; }
+.filter-group { display: flex; background-color: #e9ecef; border-radius: 8px; padding: 5px; }
+.filter-btn { border: none; background-color: transparent; padding: 8px 15px; border-radius: 6px; font-weight: 600; color: #6c757d; cursor: pointer; transition: all 0.2s ease-in-out; }
+.filter-btn.ativo { background-color: #fff; color: var(--cor-primaria); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+.chart-container { height: 350px; margin-top: 20px; }
+.financeiro-bottom-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; margin-top: 30px; }
+.tabela-moderna .categoria-tag { background-color: #ecf0f1; color: #7f8c8d; font-size: 0.8em; padding: 4px 8px; border-radius: 4px; font-weight: 600; }
+
+/* BOTÕES DE RECEITA/DESPESA (NOVO DESIGN) */
+.tipo-transacao-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.tipo-transacao-group input[type="radio"] { display: none; }
+.tipo-transacao-group label { padding: 12px; border: 2px solid #e9ecef; border-radius: 8px; text-align: center; font-weight: 600; cursor: pointer; transition: all 0.2s ease-in-out; }
+.tipo-transacao-group label:hover { border-color: #bdc3c7; }
+.tipo-transacao-group input[type="radio"]:checked + label { color: #fff; font-weight: 700; }
+#tipoReceita:checked + label { background-color: var(--cor-sucesso); border-color: var(--cor-sucesso); }
+#tipoDespesa:checked + label { background-color: var(--cor-erro); border-color: var(--cor-erro); }
+
+@media (max-width: 992px) { .financeiro-bottom-grid { grid-template-columns: 1fr; } }
+@media (max-width: 768px) { .header-actions { width: 100%; flex-direction: column; align-items: stretch; } }
+/* ==========================================================================
+   18. REDESIGN FINANCEIRO (CLEAN & ORGANIZADO)
+   ========================================================================== */
+
+/* Layout principal da aba financeira */
+.financeiro-main-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* Coluna da esquerda 2x maior que a da direita */
+    gap: 30px;
+    margin-top: 40px;
+}
+
+/* Coluna de Análises (Direita) */
+.analysis-column {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+/* Gráfico de Pizza */
+.chart-container {
+    position: relative;
+    height: 250px; /* Ajuste a altura conforme necessário */
+}
+
+/* Tabela de transações mais limpa */
+.tabela-moderna .categoria-tag {
+    background-color: #ecf0f1;
+    color: #7f8c8d;
+    font-size: 0.8em;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+.tabela-moderna td.receita {
+    color: var(--cor-sucesso);
+    font-weight: 600;
+}
+.tabela-moderna td.despesa {
+    color: var(--cor-erro);
+    font-weight: 600;
+}
+
+/* Responsividade para o novo layout */
+@media (max-width: 992px) {
+    .financeiro-main-grid {
+        grid-template-columns: 1fr; /* Uma coluna em telas menores */
+    }
+    .metricas-grid {
+        grid-template-columns: 1fr; /* Uma coluna em telas bem pequenas */
+    }
+}
