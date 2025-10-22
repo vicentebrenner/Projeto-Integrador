@@ -1,315 +1,197 @@
 <!DOCTYPE html>
-
 <html lang="pt-BR">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Gestão da Banda - Music Makers</title>
-
     <link rel="stylesheet" href="estilos.css">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+    <script src="https://cdn.jsdelivr.net/npm/date-fns"></script>
 </head>
-
 <body>
 
-
-
     <header class="cabecalho">
-
         <div class="container">
-
             <h1 class="logo"><a href="dashboard.html" style="color: var(--cor-secundaria); text-decoration: none;">Music Makers</a></h1>
-
             <nav class="menuPrincipal">
-
                 <ul>
-
                     </ul>
-
             </nav>
-
         </div>
-
     </header>
 
-
-
     <main class="banda-container">
-
         <div class="container">
-
             <h1>Gerenciamento da Banda</h1>
 
-           
-
             <div class="banda-tabs">
-
                 <button class="tab-link ativo" data-tab="agenda">Agenda</button>
-
                 <button class="tab-link" data-tab="financeiro">Financeiro</button>
-
                 <button class="tab-link" data-tab="membros">Membros</button>
-
                 <button class="tab-link" data-tab="repertorio">Repertório</button>
-
             </div>
-
-
 
             <div id="agenda" class="tab-content ativo">
-
                 <div class="content-header">
-
                     <h2>Próximos Eventos</h2>
-
                     <button id="abrirModalEventoBtn" class="btn-adicionar-principal"><i class="fas fa-calendar-plus"></i> Novo Evento</button>
-
                 </div>
-
-                <div id="agendaList" class="agenda-list"></div>
-
+                <div id="agendaList" class="agenda-list">
+                    <p>Carregando agenda...</p>
+                </div>
             </div>
-
-
 
             <div id="financeiro" class="tab-content">
-
                 <div class="content-header">
-
                     <h2>Painel Financeiro</h2>
-
-                    <button id="abrirModalTransacaoBtn" class="btn-adicionar-principal"><i class="fas fa-plus"></i> Nova Transação</button>
-
+                    <div class="header-actions">
+                        <button id="abrirModalTransacaoBtn" class="btn-adicionar-principal"><i class="fas fa-plus"></i> Nova Transação</button>
+                    </div>
                 </div>
-
                 <div class="metricas-grid">
-
                     <div class="metrica-card"><h4><i class="fas fa-wallet"></i> Saldo Atual</h4><p id="saldoAtual">R$ 0,00</p></div>
-
                     <div class="metrica-card receita"><h4><i class="fas fa-arrow-up"></i> Receita do Mês</h4><p id="receitaMes">R$ 0,00</p></div>
-
                     <div class="metrica-card despesa"><h4><i class="fas fa-arrow-down"></i> Despesa do Mês</h4><p id="despesaMes">R$ 0,00</p></div>
-
                 </div>
-
-                <div class="financeiro-main-grid">
-
+                <div class="card-style full-width" style="margin-top: 30px;">
+                    <h3>Evolução Financeira (Receita x Despesa)</h3>
+                    <div class="chart-container">
+                        <canvas id="graficoEvolucao"></canvas>
+                    </div>
+                </div>
+                <div class="financeiro-bottom-grid">
                     <div class="card-style">
-
                         <h3>Histórico de Transações</h3>
-
                         <div class="table-wrapper">
-
                             <table class="tabela-moderna">
-
                                 <thead><tr><th>Data</th><th>Descrição</th><th>Categoria</th><th>Valor</th></tr></thead>
-
-                                <tbody id="corpoTabelaFinanceira"></tbody>
-
+                                <tbody id="corpoTabelaFinanceira">
+                                    <tr><td colspan="4">Carregando transações...</td></tr>
+                                </tbody>
                             </table>
-
                         </div>
-
                     </div>
-
-                    <div class="analysis-column">
-
-                        <div class="card-style ai-insights-card">
-
-                            <h3><i class="fas fa-robot"></i> Análise da IA</h3>
-
-                            <div id="aiInsightsContent" class="ai-insights-content"><p class="loading-ai">Analisando...</p></div>
-
+                    <div class="card-style ai-insights-card">
+                        <h3><i class="fas fa-robot"></i> Análise da IA</h3>
+                        <div id="aiInsightsContent" class="ai-insights-content">
+                            <p class="loading-ai">Analisando...</p>
                         </div>
-
-                        <div class="card-style">
-
-                            <h3>Despesas por Categoria</h3>
-
-                            <div class="chart-container"><canvas id="graficoCategorias"></canvas></div>
-
-                        </div>
-
                     </div>
-
                 </div>
-
             </div>
-
-
 
             <div id="membros" class="tab-content">
-
                 <div class="content-header">
-
                     <h2>Integrantes Atuais</h2>
-
-                    <button id="abrirModalMembroBtn" class="btn-adicionar-principal"><i class="fas fa-plus"></i> Adicionar Membro</button>
-
+                    <button id="abrirModalMembroBtn" class="btn-adicionar-principal"><i class="fas fa-user-plus"></i> Convidar Membro por E-mail</button>
+                </div>
+                <div class="card-style">
+                    <div class="table-wrapper">
+                        <table class="tabela-moderna">
+                            <thead><tr><th>Nome</th><th>E-mail</th><th>Instrumento</th><th>Ação</th></tr></thead>
+                            <tbody id="corpoTabelaMembros">
+                                <tr><td colspan="4">Carregando membros...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
-                <div class="card-style">
-
-                    <div class="table-wrapper">
-
-                        <table class="tabela-moderna">
-
-                            <thead><tr><th>Nome</th><th>Instrumento</th><th>Ação</th></tr></thead>
-
-                            <tbody id="corpoTabelaMembros"></tbody>
-
-                        </table>
-
-                    </div>
-
+                <div id="convitesPendentesContainer" class="card-style" style="margin-top: 30px;">
+                    <h3>Convites Pendentes</h3>
+                    <ul id="listaConvitesPendentes" class="lista-convites">
+                        <li>Carregando convites...</li>
+                    </ul>
                 </div>
 
             </div>
-
-
 
             <div id="repertorio" class="tab-content">
-
-                <div class="content-header"><h2>Repertório e Partituras</h2></div>
-
-                <div class="repertorio-grid">
-
-                    <div class="card-style">
-
-                        <h3>Músicas</h3>
-
-                        <div class="table-wrapper">
-
-                            <table class="tabela-moderna">
-
-                                <thead><tr><th>Música</th><th>Origem</th><th>Ação</th></tr></thead>
-
-                                <tbody id="corpoTabelaRepertorio"></tbody>
-
-                            </table>
-
-                        </div>
-
-                    </div>
-
-                    <div class="card-style">
-
-                        <h3>Visualizador de Partitura</h3>
-
-                        <div id="visualizadorPdf"><p>Selecione uma música para ver a partitura.</p></div>
-
-                    </div>
-
+                <div class="content-header">
+                     <h2>Repertório e Partituras</h2>
+                     <button id="abrirModalMusicaBtn" class="btn-adicionar-principal"><i class="fas fa-music"></i> Adicionar Música</button>
                 </div>
-
+                <div class="repertorio-grid">
+                    <div class="card-style">
+                        <h3>Músicas</h3>
+                        <div class="table-wrapper">
+                            <table class="tabela-moderna">
+                                <thead><tr><th>Música</th><th>Origem</th><th>Ação</th></tr></thead>
+                                <tbody id="corpoTabelaRepertorio">
+                                    <tr><td colspan="3">Carregando repertório...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card-style">
+                        <h3>Visualizador de Partitura</h3>
+                        <div id="visualizadorPdf"><p>Selecione uma música para ver a partitura.</p></div>
+                    </div>
+                </div>
             </div>
-
         </div>
-
     </main>
 
-
-
     <div id="membroModal" class="modal">
-
         <div class="modal-content">
-
             <span class="close-button">&times;</span>
-
-            <h3>Adicionar Novo Membro</h3>
-
+            <h3>Convidar Membro para a Banda</h3>
+            <p class="modal-description">Digite o e-mail do usuário já cadastrado no Music Makers e o instrumento que ele tocará nesta banda. Ele receberá um convite.</p>
             <form id="formAdicionarMembro">
-
-                <div class="inputGroup"><label for="nomeMembro">Nome</label><input type="text" id="nomeMembro" name="nomeMembro" required></div>
-
-                <div class="inputGroup"><label for="instrumentoMembro">Instrumento</label><input type="text" id="instrumentoMembro" name="instrumentoMembro" required></div>
-
-                <button type="submit" class="btn-adicionar">Salvar</button>
-
+                <div class="inputGroup"><label for="emailMembro">E-mail do Membro</label><input type="email" id="emailMembro" name="emailMembro" placeholder="exemplo@email.com" required></div>
+                <div class="inputGroup"><label for="instrumentoMembro">Instrumento na Banda</label><input type="text" id="instrumentoMembro" name="instrumentoMembro" required></div>
+                 <button type="submit" class="btn-adicionar">Enviar Convite</button>
             </form>
-
         </div>
-
     </div>
-
-
 
     <div id="eventoModal" class="modal">
-
         <div class="modal-content">
-
             <span class="close-button">&times;</span>
-
             <h3>Adicionar Novo Evento</h3>
-
             <form id="formAdicionarEvento">
-
                 <div class="inputGroup"><label for="tituloEvento">Título</label><input type="text" id="tituloEvento" name="tituloEvento" required></div>
-
                 <div class="inputGroup"><label for="dataEvento">Data</label><input type="date" id="dataEvento" name="dataEvento" required></div>
-
                 <div class="inputGroup"><label for="localEvento">Local</label><input type="text" id="localEvento" name="localEvento" required></div>
-
-                <div class="inputGroup"><label for="tipoEvento">Tipo</label><select id="tipoEvento" name="tipoEvento" required><option value="ensaio">Ensaio</option><option value="show">Show</option><option value="gravacao">Gravação</option></select></div>
-
+                <div class="inputGroup"><label for="tipoEvento">Tipo</label><select id="tipoEvento" name="tipoEvento" required><option value="" disabled selected>Selecione...</option><option value="ensaio">Ensaio</option><option value="show">Show</option><option value="gravacao">Gravação</option><option value="outro">Outro</option></select></div>
                 <button type="submit" class="btn-adicionar">Salvar Evento</button>
-
             </form>
-
         </div>
-
     </div>
-
-
 
     <div id="transacaoModal" class="modal">
-
         <div class="modal-content">
-
             <span class="close-button">&times;</span>
-
             <h3>Nova Transação</h3>
-
             <form id="formAdicionarTransacao">
-
-                <div class="inputGroup"><label>Tipo</label><div class="tipo-transacao-group"><input type="radio" id="tipoReceita" name="tipo" value="RECEITA" checked><label for="tipoReceita">Receita</label><input type="radio" id="tipoDespesa" name="tipo" value="DESPESA"><label for="tipoDespesa">Despesa</label></div></div>
-
+                <div class="inputGroup"><label>Tipo</label><div class="tipo-transacao-group"><input type="radio" id="tipoReceita" name="tipo" value="RECEITA" checked><label for="tipoReceita"><i class="fas fa-plus-circle"></i> Receita</label><input type="radio" id="tipoDespesa" name="tipo" value="DESPESA"><label for="tipoDespesa"><i class="fas fa-minus-circle"></i> Despesa</label></div></div>
                 <div class="inputGroup"><label for="descricaoTransacao">Descrição</label><input type="text" id="descricaoTransacao" name="descricao" required></div>
-
-                <div class="inputGroup"><label for="valorTransacao">Valor</label><input type="number" step="0.01" id="valorTransacao" name="valor" required></div>
-
+                <div class="inputGroup"><label for="valorTransacao">Valor (R$)</label><input type="number" step="0.01" id="valorTransacao" name="valor" placeholder="Ex: 50.00" required></div>
                 <div class="inputGroup"><label for="dataTransacao">Data</label><input type="date" id="dataTransacao" name="data" required></div>
-
-                <div class="inputGroup"><label for="categoriaTransacao">Categoria</label><select id="categoriaTransacao" name="categoria" required><option value="Show">Show</option><option value="Merchandising">Merchandising</option><option value="Transporte">Transporte</option><option value="Equipamento">Equipamento</option><option value="Estúdio">Estúdio</option><option value="Outros">Outros</option></select></div>
-
+                <div class="inputGroup"><label for="categoriaTransacao">Categoria</label><select id="categoriaTransacao" name="categoria" required><option value="" disabled selected>Selecione...</option><option value="Show">Show</option><option value="Merchandising">Merchandising</option><option value="Transporte">Transporte</option><option value="Equipamento">Equipamento</option><option value="Alimentação">Alimentação</option><option value="Estúdio">Estúdio</option><option value="Marketing">Marketing</option><option value="Outros">Outros</option></select></div>
                 <button type="submit" class="btn-adicionar">Salvar Transação</button>
-
             </form>
-
         </div>
-
     </div>
 
-
+    <div id="musicaModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3>Adicionar Música ao Repertório</h3>
+            <form id="formAdicionarMusica">
+                <div class="inputGroup"><label for="nomeMusica">Nome da Música</label><input type="text" id="nomeMusica" name="nomeMusica" required></div>
+                <div class="inputGroup"><label for="origemMusica">Origem (Artista/Compositor)</label><input type="text" id="origemMusica" name="origemMusica"></div>
+                <div class="inputGroup"><label for="partituraMusica">Partitura (PDF)</label><input type="file" id="partituraMusica" name="partituraMusica" accept=".pdf"><small>Opcional. Selecione um arquivo PDF.</small></div>
+                <button type="submit" class="btn-adicionar">Salvar Música</button>
+            </form>
+        </div>
+    </div>
 
     <footer class="rodape"><div class="container"><p>&copy; 2025 Music Makers.</p></div></footer>
-
     <div id="snackbar"></div>
 
-
-
     <script src="global.js"></script>
-
     <script src="banda.js"></script>
-
 </body>
-
 </html>
