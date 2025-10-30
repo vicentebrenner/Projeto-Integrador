@@ -29,7 +29,7 @@
 }
 
 html {
-    scroll-behavior: smooth;
+    scroll-behavior: smooth; /* <-- ISSO FAZ A ROLAGEM FUNCIONAR SUAVEMENTE */
 }
 
 body {
@@ -66,15 +66,15 @@ a:hover {
    2. CABEÇALHO E NAVEGAÇÃO
    ========================================================================== */
 .cabecalho {
-    background-color: #fff; /* Fundo branco */
-    color: var(--cor-texto);
+    background-color: var(--cor-primaria); /* <-- AZUL ESCURO */
+    color: #fff; /* <-- TEXTO BRANCO */
     padding: 15px 0;
     position: fixed;
     width: 100%;
     top: 0;
     left: 0;
     z-index: 1000;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08); /* Sombra mais sutil */
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
     transition: background-color 0.3s ease;
 }
 
@@ -87,15 +87,15 @@ a:hover {
 .logo {
     font-size: 1.8em;
     font-weight: 700;
-    color: var(--cor-primaria);
+    color: #fff; /* <-- BRANCO */
     text-decoration: none;
 }
-.logo a { /* Garante que o link dentro do h1 tenha a cor correta */
-    color: var(--cor-primaria);
+.logo a {
+    color: #fff; /* <-- BRANCO */
     text-decoration: none;
 }
 .logo a:hover {
-     color: var(--cor-secundaria);
+     color: var(--cor-secundaria); /* Laranja no hover */
 }
 
 
@@ -110,14 +110,14 @@ a:hover {
 }
 
 .menuPrincipal a {
-    color: var(--cor-texto); /* Texto escuro */
+    color: #fff; /* <-- BRANCO */
     text-decoration: none;
     font-weight: 600;
     transition: color 0.3s ease;
 }
 
 .menuPrincipal a:hover {
-    color: var(--cor-secundaria);
+    color: var(--cor-secundaria); /* Laranja no hover */
 }
 
 .btnLogin {
@@ -141,7 +141,8 @@ a:hover {
    ========================================================================== */
 .hero {
     background: url('https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=2070&auto=format&fit=crop') no-repeat center center/cover;
-    height: 100vh;
+    height: 90vh; /* Um pouco menor para ver que há mais conteúdo */
+    min-height: 600px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -158,12 +159,14 @@ a:hover {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.65);
+    /* MUDANÇA AQUI: Filtro reduzido para 0.35 (bem mais claro) */
+    background-color: rgba(0, 0, 0, 0.35); 
 }
 
 .heroTexto {
     z-index: 10;
     max-width: 700px; /* Limitar largura do texto */
+    position: relative; /* <-- MUDANÇA AQUI: Garante que o z-index funcione */
 }
 
 .hero h2 {
@@ -199,36 +202,121 @@ a:hover {
 }
 
 /* ==========================================================================
-   4. SEÇÃO DE MÓDULOS (PÁGINA INICIAL)
+   4. NOVA SEÇÃO DE CAMINHOS (index.html)
    ========================================================================== */
-.modulos {
+.caminhos {
     padding: 80px 0;
-    background-color: var(--cor-fundo-card); /* Branco */
+    background-color: var(--cor-fundo-card); /* Fundo branco para esta seção */
 }
 
-.modulos .container {
+.caminhos .container {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Duas colunas */
+    gap: 40px;
+    align-items: stretch; /* Faz os cards terem a mesma altura */
+}
+
+.caminho-card {
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--border-radius-padrao);
+    padding: 40px;
+    text-align: center;
+    box-shadow: var(--sombra-card);
+    transition: all 0.3s ease;
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.caminho-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--sombra-card-hover);
+    border-color: var(--cor-secundaria);
+}
+
+.caminho-card i {
+    font-size: 3.5em;
+    color: var(--cor-secundaria);
+    margin-bottom: 25px;
+}
+
+.caminho-card h3 {
+    font-size: 1.8em;
+    color: var(--cor-primaria);
+    margin-bottom: 15px;
+}
+
+.caminho-card p {
+    font-size: 1em;
+    color: #555;
+    line-height: 1.7;
+    margin-bottom: 30px;
+    flex-grow: 1; /* Empurra o botão para baixo */
+}
+
+/* Botão com Borda Laranja */
+.btnCta-outline {
+    background-color: transparent;
+    color: var(--cor-secundaria);
+    padding: 14px 30px;
+    text-decoration: none;
+    font-size: 1em;
+    font-weight: 700;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    border: 2px solid var(--cor-secundaria);
+    display: inline-block; /* Para o botão não ocupar 100% */
+}
+
+.btnCta-outline:hover {
+    background-color: var(--cor-secundaria);
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(243, 156, 18, 0.3);
+}
+
+
+/* ==========================================================================
+   5. SEÇÃO DE FUNCIONALIDADES (Antiga .modulos)
+   ========================================================================== */
+.funcionalidades {
+    padding: 80px 0;
+    background-color: var(--cor-fundo); /* Fundo cinza claro, como pedido */
+}
+
+.section-titulo {
+    text-align: center;
+    font-size: 2.2em;
+    color: var(--cor-primaria);
+    margin-bottom: 50px;
+}
+
+.funcionalidades-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 colunas */
     gap: 30px;
     text-align: center;
 }
 
 .modulo {
-    flex-basis: 30%;
+    /* Módulo agora é um card branco no fundo cinza */
+    background-color: var(--cor-fundo-card);
+    border-radius: var(--border-radius-padrao);
+    box-shadow: var(--sombra-card);
     padding: 30px 20px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .modulo:hover {
     transform: translateY(-5px);
-    box-shadow: var(--sombra-card-hover); /* Usar variável */
+    box-shadow: var(--sombra-card-hover);
 }
 
 .modulo i {
-    font-size: 3.5em; /* Ícone maior */
+    font-size: 3em; /* Ícone um pouco menor que o da seção .caminhos */
     color: var(--cor-secundaria);
     margin-bottom: 25px;
-    display: inline-block; /* Para aplicar transform */
+    display: inline-block;
     transition: transform 0.3s ease;
 }
 
@@ -237,25 +325,52 @@ a:hover {
 }
 
 .modulo h3 {
-    font-size: 1.4em; /* Tamanho ajustado */
+    font-size: 1.3em;
     color: var(--cor-primaria);
     margin-bottom: 15px;
 }
 
 .modulo p {
-    font-size: 1em;
+    font-size: 0.95em;
     color: #555;
+    line-height: 1.6;
 }
 
 /* ==========================================================================
-   5. RODAPÉ
+   6. SEÇÃO CTA FINAL
+   ========================================================================== */
+.cta-final {
+    padding: 80px 0;
+    background-color: var(--cor-fundo-card); /* Fundo branco */
+    text-align: center;
+}
+
+.cta-final h2 {
+    font-size: 2.2em;
+    color: var(--cor-primaria);
+    margin-bottom: 15px;
+}
+
+.cta-final p {
+    font-size: 1.2em;
+    color: #555;
+    margin-bottom: 30px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+/* O estilo .btnCta já existe e será aplicado aqui */
+
+
+/* ==========================================================================
+   7. RODAPÉ
    ========================================================================== */
 .rodape {
     background-color: var(--cor-primaria);
     color: var(--cor-texto-claro);
     text-align: center;
     padding: 40px 0; /* Mais padding */
-    margin-top: auto; /* Garante que fique no final, se o conteúdo for curto */
+    margin-top: auto;
 }
 
 .rodape p {
@@ -264,7 +379,7 @@ a:hover {
 }
 
 /* ==========================================================================
-   6. PÁGINAS DE AUTENTICAÇÃO (LOGIN, CADASTRO, ETC.)
+   8. PÁGINAS DE AUTENTICAÇÃO (LOGIN, CADASTRO, ETC.)
    ========================================================================== */
 .auth-page-body {
     background-color: var(--cor-primaria);
@@ -454,7 +569,7 @@ a:hover {
 }
 
 /* ==========================================================================
-   7. MENU DE PERFIL DO USUÁRIO
+   9. MENU DE PERFIL DO USUÁRIO
    ========================================================================== */
 .perfil-container {
     position: relative;
@@ -473,7 +588,7 @@ a:hover {
     font-size: 1.2em;
     font-weight: 700;
     font-family: var(--fonte-principal);
-    border: 2px solid #fff;
+    /* border: 2px solid #fff; */ /* Removida a borda que ficava estranha no azul */
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -537,7 +652,7 @@ a:hover {
 }
 
 /* ==========================================================================
-   8. DASHBOARD
+   10. DASHBOARD
    ========================================================================== */
 .dashboard-hero {
     background-color: var(--cor-fundo);
@@ -579,7 +694,7 @@ a:hover {
 }
 
 /* ==========================================================================
-   9. PÁGINA DE GESTÃO DA BANDA (banda.html)
+   11. PÁGINA DE GESTÃO DA BANDA (banda.html)
    ========================================================================== */
 .banda-container {
     padding-top: 100px; /* Espaço para o header */
@@ -699,7 +814,7 @@ a:hover {
 }
 
 /* ==========================================================================
-   10. COMPONENTES DA PÁGINA DA BANDA (Tabelas, Grids, etc.)
+   12. COMPONENTES DA PÁGINA DA BANDA (Tabelas, Grids, etc.)
    ========================================================================== */
 
 /* Tabelas */
@@ -832,7 +947,7 @@ a:hover {
 }
 
 /* ==========================================================================
-   11. ESTILOS DA AGENDA
+   13. ESTILOS DA AGENDA
    ========================================================================== */
 .agenda-list {
     display: grid;
@@ -874,7 +989,7 @@ a:hover {
 .agenda-actions { margin-left: 15px; } /* Espaço para os botões */
 
 /* ==========================================================================
-   12. ESTILOS DO MODAL
+   14. ESTILOS DO MODAL
    ========================================================================== */
 .modal {
     display: none; position: fixed; z-index: 2000; left: 0; top: 0;
@@ -915,7 +1030,7 @@ a:hover {
 #tipoDespesa:checked + label { background-color: var(--cor-erro); border-color: var(--cor-erro); }
 
 /* ==========================================================================
-   13. SNACKBAR (Notificações)
+   15. SNACKBAR (Notificações)
    ========================================================================== */
 #snackbar {
     visibility: hidden; min-width: 250px; margin-left: -125px; background-color: var(--cor-primaria); color: #fff;
@@ -930,10 +1045,21 @@ a:hover {
 
 
 /* ==========================================================================
-   14. RESPONSIVIDADE (MEDIA QUERIES)
+   16. RESPONSIVIDADE (MEDIA QUERIES)
    ========================================================================== */
 @media (max-width: 992px) {
     .container { max-width: 90%; }
+    
+    /* Coluna única para os cards de caminho */
+    .caminhos .container {
+        grid-template-columns: 1fr;
+    }
+
+    /* 2 colunas para funcionalidades */
+    .funcionalidades-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
     .financeiro-main-grid, .financeiro-bottom-grid, .repertorio-grid {
         grid-template-columns: 1fr; /* Coluna única */
     }
@@ -957,8 +1083,16 @@ a:hover {
     .hero p { font-size: 1.1em; }
     .btnCta { padding: 12px 25px; font-size: 1em; }
 
-    .modulos .container, .dashboard-content .container {
-        flex-direction: column; gap: 40px;
+    /* 1 coluna para funcionalidades em telas menores */
+    .funcionalidades-grid,
+    .dashboard-content .container {
+        flex-direction: column; 
+        gap: 20px; /* Gap menor */
+        grid-template-columns: 1fr;
+    }
+    
+    .modulo { /* Reduz o padding no mobile */
+        padding: 25px 20px;
     }
 
     .banda-container h1 { font-size: 2.2em; }
@@ -978,10 +1112,17 @@ a:hover {
     .btnLoginSubmit, .btn-adicionar { font-size: 1em; padding: 12px; }
     .banda-container h1 { font-size: 1.8em; }
     .content-header h2 { font-size: 1.5em; }
+
+    .caminho-card {
+        padding: 30px 25px;
+    }
+    .caminho-card h3 {
+        font-size: 1.5em;
+    }
 }
 /* ==========================================================================
    (Adicionar ao final ou em seção apropriada)
-   15. ESTILOS ADICIONAIS PARA UPLOAD DE PARTITURA
+   17. ESTILOS ADICIONAIS PARA UPLOAD DE PARTITURA
    ========================================================================== */
 
 /* Estilo para o input[type=file] (pode ser personalizado mais) */
@@ -1021,7 +1162,7 @@ a:hover {
 }
 /* ==========================================================================
    (Adicionar ao final ou em seção apropriada)
-   16. ESTILOS ADICIONAIS PARA MODAL MEMBRO
+   18. ESTILOS ADICIONAIS PARA MODAL MEMBRO
    ========================================================================== */
 
 .modal-content p.modal-description {
@@ -1039,7 +1180,7 @@ a:hover {
 }
 /* ==========================================================================
    (Adicionar ao final ou em seção apropriada)
-   17. ESTILOS PARA CONVITES PENDENTES
+   19. ESTILOS PARA CONVITES PENDENTES
    ========================================================================== */
 
 .lista-convites {
@@ -1088,4 +1229,97 @@ a:hover {
 
 .btn-cancelar-convite:hover {
     color: var(--cor-erro); /* Vermelho ao passar o mouse */
+}
+/* ==========================================================================
+   (Adicionar ao final do CSS)
+   20. ESTILOS PARA PERFIL DE MÚSICO (perfil-musico.html)
+   ========================================================================== */
+
+/* Estilo para Textarea (Formulário de Bio) */
+.inputGroup textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid var(--cor-borda);
+    border-radius: 5px;
+    font-size: 1em;
+    font-family: var(--fonte-secundaria);
+    line-height: 1.6;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    resize: vertical; /* Permite redimensionar apenas verticalmente */
+}
+
+.inputGroup textarea:focus {
+    outline: none;
+    border-color: var(--cor-secundaria);
+    box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.2);
+}
+
+/* Grid do Portfólio */
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* Grid responsivo */
+    gap: 30px;
+    margin-top: 20px;
+}
+
+/* Card individual do vídeo */
+.video-card {
+    background-color: var(--cor-fundo-card);
+    border-radius: var(--border-radius-padrao);
+    box-shadow: var(--sombra-card);
+    overflow: hidden; /* Garante que o iframe não vaze */
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.video-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--sombra-card-hover);
+}
+
+/* Container do Embed (para manter a proporção) */
+.video-embed {
+    position: relative;
+    padding-bottom: 56.25%; /* Proporção 16:9 (9 / 16 * 100) */
+    height: 0;
+    overflow: hidden;
+}
+
+.video-embed iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+.video-card h4 {
+    font-size: 1.1em;
+    font-weight: 600;
+    color: var(--cor-primaria);
+    padding: 15px 20px 10px 20px;
+    margin: 0;
+    flex-grow: 1; /* Tenta ocupar espaço */
+}
+
+.video-actions {
+    display: flex;
+    justify-content: flex-end; /* Alinha o botão à direita */
+    padding: 0px 15px 15px 20px;
+}
+
+/* Botão de remover (usa .btn-icon, já existente) */
+.video-actions .btn-remover:hover {
+    color: var(--cor-erro);
+}
+
+/* Mensagem de "Nenhum vídeo" */
+.portfolio-grid .loading-ai { /* Reutilizando estilo */
+    grid-column: 1 / -1; /* Ocupa a grid inteira */
+    text-align: center;
+    color: var(--cor-texto-claro);
+    padding: 40px;
+    font-style: italic;
 }

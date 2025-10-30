@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Music Makers - A gestão completa para sua banda</title>
+    <title>Music Makers - Gestão e Recrutamento para sua banda</title>
     <link rel="stylesheet" href="estilos.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,44 +17,82 @@
             <h1 class="logo">Music Makers</h1>
             <nav class="menuPrincipal">
                 <ul>
-                    <li><a href="#agenda">Agenda</a></li>
-                    <li><a href="#financeiro">Financeiro</a></li>
-                    <li><a href="#shows">Shows</a></li>
+                    <li><a href="#funcionalidades">Funcionalidades</a></li>
+                    <li><a href="#recrutamento">Recrutamento</a></li>
                     <li><a href="login.html" class="btnLogin">Login</a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
-    <main class="hero">
-        <div class="container">
-            <div class="heroTexto">
-                <h2>A gestão completa para sua banda.</h2>
-                <p>Organize seus ensaios, gerencie suas finanças e planeje seus shows em um só lugar.</p>
-                <a href="cadastro.html" class="btnCta">Gerencie sua banda agora</a>
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div class="heroTexto">
+                    <h2>A conexão completa para sua banda.</h2>
+                    <p>Gerencie sua equipe, finanças e agenda. Encontre os músicos que faltam.</p>
+                    <a href="cadastro.html" class="btnCta">Comece Agora</a>
+                </div>
             </div>
-        </div>
-    </main>
+        </section>
 
-    <section class="modulos">
-        <div class="container">
-            <div class="modulo" id="agenda">
-                <i class="fas fa-calendar-alt"></i>
-                <h3>Agenda de Ensaios</h3>
-                <p>Marque ensaios, defina repertórios e notifique todos os membros da banda.</p>
+        <section id="caminhos" class="caminhos">
+            <div class="container">
+                <div class="caminho-card" id="caminho-gestor">
+                    <i class="fas fa-users"></i>
+                    <h3>Para sua Banda (Gestor)</h3>
+                    <p>Gerencie agenda, finanças, repertório e logística. Publique vagas para encontrar novos membros.</p>
+                    <a href="cadastro.html" class="btnCta-outline">Gerenciar Minha Banda</a>
+                </div>
+                <div class="caminho-card" id="caminho-musico">
+                    <i class="fas fa-guitar"></i>
+                    <h3>Para Você (Músico)</h3>
+                    <p>Crie seu perfil profissional, envie vídeos e encontre bandas que precisam do seu talento.</p>
+                    <a href="cadastro.html" class="btnCta-outline">Criar Perfil de Músico</a>
+                </div>
             </div>
-            <div class="modulo" id="financeiro">
-                <i class="fas fa-dollar-sign"></i>
-                <h3>Controle Financeiro</h3>
-                <p>Registre os cachês, despesas e lucros da banda de forma simples e transparente.</p>
+        </section>
+
+        <section id="funcionalidades" class="funcionalidades">
+            <div class="container">
+                <h2 class="section-titulo">Uma plataforma completa</h2>
+                <div class="funcionalidades-grid">
+                    
+                    <div class="modulo" id="agenda">
+                        <i class="fas fa-calendar-alt"></i>
+                        <h3>Agenda de Ensaios</h3>
+                        <p>Marque ensaios, defina repertórios e notifique todos os membros.</p>
+                    </div>
+                    
+                    <div class="modulo" id="financeiro">
+                        <i class="fas fa-dollar-sign"></i>
+                        <h3>Controle Financeiro</h3>
+                        <p>Registre os cachês, despesas e lucros de forma transparente.</p>
+                    </div>
+                    
+                    <div class="modulo" id="shows">
+                         <i class="fas fa-guitar"></i>
+                        <h3>Gestão de Shows</h3>
+                        <p>Cadastre seus próximos shows e organize a logística.</p>
+                    </div>
+
+                    <div class="modulo" id="recrutamento">
+                        <i class="fas fa-user-plus"></i>
+                       <h3>Recrutamento</h3>
+                       <p>Publique vagas e receba currículos e vídeos de músicos talentosos.</p>
+                   </div>
+                </div>
             </div>
-            <div class="modulo" id="shows">
-                 <i class="fas fa-guitar"></i>
-                <h3>Gestão de Shows</h3>
-                <p>Cadastre seus próximos shows, controle a venda de ingressos e organize a logística.</p>
+        </section>
+
+        <section class="cta-final">
+            <div class="container">
+                <h2>Pronto para organizar ou encontrar sua banda?</h2>
+                <p>Comece gratuitamente e leve sua música para o próximo nível.</p>
+                <a href="cadastro.html" class="btnCta">Crie sua conta</a>
             </div>
-        </div>
-    </section>
+        </section>
+    </main>
 
     <footer class="rodape">
         <div class="container">
