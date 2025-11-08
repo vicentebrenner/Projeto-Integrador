@@ -2,39 +2,47 @@ package br.com.musicmaker.ui.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
+import android:view.View
+import android:view.ViewGroup
+import android.widget.Toast // Importamos o Toast para mensagens
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import br.com.musicmaker.R
 import br.com.musicmaker.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
 
-private var _binding: FragmentHomeBinding? = null
-  // This property is only valid between onCreateView and
-  // onDestroyView.
-  private val binding get() = _binding!!
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
 
-  override fun onCreateView(
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    savedInstanceState: Bundle?
-  ): View {
-    val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
-
-    _binding = FragmentHomeBinding.inflate(inflater, container, false)
-    val root: View = binding.root
-
-    val textView: TextView = binding.textHome
-    homeViewModel.text.observe(viewLifecycleOwner) {
-      textView.text = it
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        return binding.root
     }
-    return root
-  }
 
-override fun onDestroyView() {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // --- LÓGICA ATUALIZADA ---
+
+        // 1. Clique do Botão GESTOR (leva para o Login)
+        binding.buttonGestor.setOnClickListener {
+            findNavController().navigate(R.id.action_nav_home_to_loginFragment)
+        }
+
+        // 2. Clique do Botão MÚSICO (mostra mensagem "em breve")
+        binding.buttonMusico.setOnClickListener {
+            // No futuro, isso levará para a tela de Perfil de Músico
+            Toast.makeText(requireContext(), "Funcionalidade 'Perfil de Músico' em breve!", Toast.LENGTH_SHORT).show()
+        }
+    }
+    // --- FIM DA LÓGICA ATUALIZADA ---
+
+    override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }

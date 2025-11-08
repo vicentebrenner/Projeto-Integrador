@@ -1,15 +1,24 @@
 document.addEventListener('DOMContentLoaded', function() {
 
-    // --- VERIFICA LOGIN ---
-    const usuarioLogado = JSON.parse(localStorage.getItem('usuarioLogado'));
+    // --- VERIFICA LOGIN (MODO DE TESTE) ---
+    
+    // 1. Comente a linha original que busca no localStorage
+    // const usuarioLogado = JSON.parse(localStorage.getItem('usuarioLogado'));
+
+    // 2. Crie um usuário "fake" para testar
+    const usuarioLogado = { nome: "Músico de Teste" };
+
+    // 3. Comente o bloco 'if' que redireciona
+    /*
     if (!usuarioLogado) {
         window.location.href = 'login.html'; // Redireciona se não estiver logado
         return;
     }
+    */
 
-    // --- DADOS SIMULADOS (Em um app real, viriam do backend) ---
+    // --- DADOS SIMULADOS (Agora o código abaixo funciona) ---
     let dadosPerfil = {
-        nome: usuarioLogado.nome || "Músico",
+        nome: usuarioLogado.nome || "Músico", // Usará "Músico de Teste"
         local: "Porto Alegre/RS",
         instrumentos: "Guitarra e Vocal",
         bio: "Músico experiente procurando banda de rock autoral. Minhas principais influências são Foo Fighters, QOTSA e Audioslave. Aberto para ensaios 2x por semana.",
@@ -75,11 +84,11 @@ document.addEventListener('DOMContentLoaded', function() {
             item.className = 'video-card';
             item.innerHTML = `
                 <div class="video-embed">
-                    <iframe 
-                        src="${videoEmbedUrl}" 
-                        title="${video.titulo}" 
-                        frameborder="0" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    <iframe
+                        src="${videoEmbedUrl}"
+                        title="${video.titulo}"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowfullscreen>
                     </iframe>
                 </div>
@@ -172,7 +181,7 @@ document.addEventListener('DOMContentLoaded', function() {
             dadosPerfil.local = document.getElementById('perfilLocal').value;
             dadosPerfil.instrumentos = document.getElementById('perfilInstrumentos').value;
             dadosPerfil.bio = document.getElementById('perfilBio').value;
-            
+
             showSnackbar("Perfil salvo com sucesso!");
             // Em um app real, enviaria 'dadosPerfil' para o backend
         });
@@ -184,7 +193,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (btnRemover && btnRemover.dataset.tipo === 'video') {
             const index = parseInt(btnRemover.dataset.index);
             if (!isNaN(index) && index < dadosPerfil.videos.length) {
-                
+
                 // Confirmação antes de remover
                 if (confirm(`Tem certeza que deseja remover o vídeo "${dadosPerfil.videos[index].titulo}"?`)) {
                     dadosPerfil.videos.splice(index, 1); // Remove o vídeo

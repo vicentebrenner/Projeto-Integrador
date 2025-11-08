@@ -27,19 +27,26 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "17"
     }
+
+    // --- ESTA É A CORREÇÃO ---
+    // O 'buildFeatures' deve ficar DENTRO do bloco 'android'
     buildFeatures {
         viewBinding = true
     }
-}
+
+} // <-- Esta é a ÚNICA chave que fecha o 'android'
 
 dependencies {
-
+    // ADICIONE ESTAS TRÊS LINHAS:
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.kotlinx.coroutines.android)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
