@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Makers - Gestão e Recrutamento para sua banda</title>
+    <link rel="stylesheet" href="estilos.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+
+<header class="cabecalho">
+    <div class="container">
+        <h1 class="logo">Music Makers</h1>
+        <nav class="menuPrincipal">
+            <ul>
+                <li><a href="#funcionalidades">Funcionalidades</a></li>
+                <li><a href="#recrutamento">Recrutamento</a></li>
+                <li><a href="#" id="btn-acessar-login" class="btnLogin">Login</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <section class="hero">
+        <div class="container">
+            <div class="heroTexto">
+                <h2>A conexão completa para sua banda.</h2>
+                <p>Gerencie sua equipe, finanças e agenda. Encontre os músicos que faltam.</p>
+                <a href="#" id="btn-cta-hero" class="btnCta">Comece Agora</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="caminhos" class="caminhos">
+        <div class="container">
+            <div class="caminho-card" id="caminho-gestor">
+                <i class="fas fa-users"></i>
+                <h3>Para sua Banda (Gestor)</h3>
+                <p>Gerencie agenda, finanças, repertório e logística. Publique vagas para encontrar novos membros.</p>
+                <a href="#" id="btn-acessar-gestor" class="btnCta-outline">Gerenciar Minha Banda</a>
+            </div>
+            <div class="caminho-card" id="caminho-musico">
+                <i class="fas fa-guitar"></i>
+                <h3>Para Você (Músico)</h3>
+                <p>Crie seu perfil profissional, envie vídeos e encontre bandas que precisam do seu talento.</p>
+                <a href="#" id="btn-acessar-musico" class="btnCta-outline">Criar Perfil de Músico</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="funcionalidades" class="funcionalidades">
+        <div class="container">
+            <h2 class="section-titulo">Uma plataforma completa</h2>
+            <div class="funcionalidades-grid">
+
+                <div class="modulo" id="agenda">
+                    <i class="fas fa-calendar-alt"></i>
+                    <h3>Agenda de Ensaios</h3>
+                    <p>Marque ensaios, defina repertórios e notifique todos os membros.</p>
+                </div>
+
+                <div class="modulo" id="financeiro">
+                    <i class="fas fa-dollar-sign"></i>
+                    <h3>Controle Financeiro</h3>
+                    <p>Registre os cachês, despesas e lucros de forma transparente.</p>
+                </div>
+
+                <div class="modulo" id="shows">
+                    <i class="fas fa-guitar"></i>
+                    <h3>Gestão de Shows</h3>
+                    <p>Cadastre seus próximos shows e organize a logística.</p>
+                </div>
+
+                <div class="modulo" id="recrutamento">
+                    <i class="fas fa-user-plus"></i>
+                    <h3>Recrutamento</h3>
+                    <p>Publique vagas e receba currículos e vídeos de músicos talentosos.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-final">
+        <div class="container">
+            <h2>Pronto para organizar ou encontrar sua banda?</h2>
+            <p>Comece gratuitamente e leve sua música para o próximo nível.</p>
+            <a href="#" id="btn-cta-final" class="btnCta">Crie sua conta</a>
+        </div>
+    </section>
+</main>
+
+<footer class="rodape">
+    <div class="container">
+        <p>&copy; 2025 Music Makers - Todos os direitos reservados.</p>
+        <p>A plataforma completa para a gestão da sua banda.</p>
+    </div>
+</footer>
+
+<script src="global.js"></script>
+
+<script type="text/javascript">
+
+    // --- Função Helper para Lógica de Clique ---
+    function ligarBotao(idDoBotao, acao) {
+        const botao = document.getElementById(idDoBotao);
+        if (!botao) {
+            console.warn(`Botão com ID "${idDoBotao}" não encontrado.`);
+            return;
+        }
+
+        botao.addEventListener("click", function(event) {
+            event.preventDefault(); // Impede o link de navegar (href="#")
+
+            if (acao === 'login') {
+                // Tenta chamar a ponte do Kotlin
+                if (typeof Android !== "undefined" && typeof Android.irParaTelaDeLogin === "function") {
+                    Android.irParaTelaDeLogin();
+                } else {
+                    alert("Erro de interface nativa [irParaTelaDeLogin]");
+                }
+            }
+            else if (acao === 'emBreve') {
+                alert("Funcionalidade em breve!");
+            }
+            // (futuramente, podemos ter uma acao === 'cadastro')
+        });
+    }
+
+    // --- Ligar os botões para o LOGIN NATIVO ---
+    ligarBotao("btn-acessar-gestor", "login"); // Botão "Gerenciar Minha Banda"
+    ligarBotao("btn-acessar-login", "login"); // Botão "Login" no header
+
+    // --- Ligar os botões de CADASTRO (que ainda não temos) ---
+    // Vamos tratar o cadastro como parte do fluxo de login por enquanto
+    ligarBotao("btn-cta-hero", "login"); // Botão "Comece Agora"
+    ligarBotao("btn-cta-final", "login"); // Botão "Crie sua conta"
+
+    // --- Ligar os botões "Em Breve" ---
+    ligarBotao("btn-acessar-musico", "emBreve"); // Botão "Criar Perfil de Músico"
+
+</script>
+
+</body>
+</html>

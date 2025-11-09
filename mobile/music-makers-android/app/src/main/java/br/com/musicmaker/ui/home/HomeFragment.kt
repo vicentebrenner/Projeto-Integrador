@@ -2,8 +2,8 @@ package br.com.musicmaker.ui.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android:view.View
-import android:view.ViewGroup
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast // Importamos o Toast para mensagens
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -24,10 +24,11 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    // --- ESTA É A CORREÇÃO ---
+    // A função 'onViewCreated' original estava com os parâmetros errados.
+    // A forma correta (com 'view' e 'savedInstanceState') é esta:
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // --- LÓGICA ATUALIZADA ---
 
         // 1. Clique do Botão GESTOR (leva para o Login)
         binding.buttonGestor.setOnClickListener {
@@ -40,7 +41,7 @@ class HomeFragment : Fragment() {
             Toast.makeText(requireContext(), "Funcionalidade 'Perfil de Músico' em breve!", Toast.LENGTH_SHORT).show()
         }
     }
-    // --- FIM DA LÓGICA ATUALIZADA ---
+    // --- FIM DA CORREÇÃO ---
 
     override fun onDestroyView() {
         super.onDestroyView()

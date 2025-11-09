@@ -1,0 +1,1325 @@
+/* ==========================================================================
+   1. VARIÁVEIS GLOBAIS E RESET
+   ========================================================================== */
+:root {
+    --cor-primaria: #2c3e50;    /* Azul escuro */
+    --cor-secundaria: #f39c12;   /* Laranja */
+    --cor-sucesso: #2ecc71;      /* Verde */
+    --cor-erro: #e74c3c;        /* Vermelho */
+    --cor-info: #3498db;        /* Azul claro */
+    --cor-aviso: #f1c40f;       /* Amarelo */
+    --cor-texto: #34495e;       /* Cinza azulado escuro */
+    --cor-texto-claro: #95a5a6; /* Cinza claro */
+    --cor-fundo: #f8f9fa;       /* Cinza muito claro */
+    --cor-fundo-card: #ffffff;   /* Branco */
+    --cor-borda: #dee2e6;       /* Cinza borda */
+    --fonte-principal: 'Montserrat', sans-serif;
+    --fonte-secundaria: 'Open Sans', sans-serif;
+    --sombra-card: 0 6px 20px rgba(0, 0, 0, 0.07);
+    --sombra-card-hover: 0 10px 25px rgba(0, 0, 0, 0.1);
+    --border-radius-padrao: 12px; /* Aumentar o raio */
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth; /* <-- ISSO FAZ A ROLAGEM FUNCIONAR SUAVEMENTE */
+}
+
+body {
+    font-family: var(--fonte-secundaria);
+    color: var(--cor-texto);
+    line-height: 1.6;
+    background-color: var(--cor-fundo);
+    width: 100%;
+    overflow-x: hidden;
+}
+
+h1, h2, h3, h4 {
+    font-family: var(--fonte-principal);
+    font-weight: 700;
+    color: var(--cor-primaria); /* Cor padrão para títulos */
+}
+
+.container {
+    max-width: 1200px; /* Um pouco mais largo */
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+a {
+    color: var(--cor-secundaria);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+a:hover {
+    color: #e67e22; /* Laranja mais escuro */
+}
+
+/* ==========================================================================
+   2. CABEÇALHO E NAVEGAÇÃO
+   ========================================================================== */
+.cabecalho {
+    background-color: var(--cor-primaria); /* <-- AZUL ESCURO */
+    color: #fff; /* <-- TEXTO BRANCO */
+    padding: 15px 0;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    transition: background-color 0.3s ease;
+}
+
+.cabecalho .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.8em;
+    font-weight: 700;
+    color: #fff; /* <-- BRANCO */
+    text-decoration: none;
+}
+.logo a {
+    color: #fff; /* <-- BRANCO */
+    text-decoration: none;
+}
+.logo a:hover {
+     color: var(--cor-secundaria); /* Laranja no hover */
+}
+
+
+.menuPrincipal ul {
+    list-style: none;
+    display: flex;
+    align-items: center;
+}
+
+.menuPrincipal ul li {
+    margin-left: 30px; /* Mais espaçamento */
+}
+
+.menuPrincipal a {
+    color: #fff; /* <-- BRANCO */
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.menuPrincipal a:hover {
+    color: var(--cor-secundaria); /* Laranja no hover */
+}
+
+.btnLogin {
+    background-color: var(--cor-secundaria);
+    color: #fff; /* Texto branco para contraste */
+    padding: 10px 20px; /* Um pouco maior */
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    border: none;
+    font-weight: 700;
+}
+
+.btnLogin:hover {
+    background-color: #e67e22;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* ==========================================================================
+   3. SEÇÃO HERO (PÁGINA INICIAL)
+   ========================================================================== */
+.hero {
+    background: url('https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=2070&auto=format&fit=crop') no-repeat center center/cover;
+    height: 90vh; /* Um pouco menor para ver que há mais conteúdo */
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #fff;
+    position: relative;
+    padding-top: 70px; /* Espaço para o header fixo */
+}
+
+.hero::after { /* Overlay escuro */
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* MUDANÇA AQUI: Filtro reduzido para 0.35 (bem mais claro) */
+    background-color: rgba(0, 0, 0, 0.35); 
+}
+
+.heroTexto {
+    z-index: 10;
+    max-width: 700px; /* Limitar largura do texto */
+    position: relative; /* <-- MUDANÇA AQUI: Garante que o z-index funcione */
+}
+
+.hero h2 {
+    font-size: 3.2em; /* Ajuste no tamanho */
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
+    color: #fff; /* Título branco no hero */
+}
+
+.hero p {
+    font-size: 1.3em; /* Ajuste no tamanho */
+    margin: 0 auto 35px; /* Mais margem inferior */
+    text-shadow: 1px 1px 6px rgba(0,0,0,0.8);
+}
+
+.btnCta {
+    background-color: var(--cor-secundaria);
+    color: #fff; /* Texto branco */
+    padding: 15px 35px; /* Botão mais largo */
+    text-decoration: none;
+    font-size: 1.1em; /* Ajuste no tamanho */
+    font-weight: 700;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    border: none;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.btnCta:hover {
+    background-color: #e67e22;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+}
+
+/* ==========================================================================
+   4. NOVA SEÇÃO DE CAMINHOS (index.html)
+   ========================================================================== */
+.caminhos {
+    padding: 80px 0;
+    background-color: var(--cor-fundo-card); /* Fundo branco para esta seção */
+}
+
+.caminhos .container {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Duas colunas */
+    gap: 40px;
+    align-items: stretch; /* Faz os cards terem a mesma altura */
+}
+
+.caminho-card {
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--border-radius-padrao);
+    padding: 40px;
+    text-align: center;
+    box-shadow: var(--sombra-card);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.caminho-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--sombra-card-hover);
+    border-color: var(--cor-secundaria);
+}
+
+.caminho-card i {
+    font-size: 3.5em;
+    color: var(--cor-secundaria);
+    margin-bottom: 25px;
+}
+
+.caminho-card h3 {
+    font-size: 1.8em;
+    color: var(--cor-primaria);
+    margin-bottom: 15px;
+}
+
+.caminho-card p {
+    font-size: 1em;
+    color: #555;
+    line-height: 1.7;
+    margin-bottom: 30px;
+    flex-grow: 1; /* Empurra o botão para baixo */
+}
+
+/* Botão com Borda Laranja */
+.btnCta-outline {
+    background-color: transparent;
+    color: var(--cor-secundaria);
+    padding: 14px 30px;
+    text-decoration: none;
+    font-size: 1em;
+    font-weight: 700;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    border: 2px solid var(--cor-secundaria);
+    display: inline-block; /* Para o botão não ocupar 100% */
+}
+
+.btnCta-outline:hover {
+    background-color: var(--cor-secundaria);
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(243, 156, 18, 0.3);
+}
+
+
+/* ==========================================================================
+   5. SEÇÃO DE FUNCIONALIDADES (Antiga .modulos)
+   ========================================================================== */
+.funcionalidades {
+    padding: 80px 0;
+    background-color: var(--cor-fundo); /* Fundo cinza claro, como pedido */
+}
+
+.section-titulo {
+    text-align: center;
+    font-size: 2.2em;
+    color: var(--cor-primaria);
+    margin-bottom: 50px;
+}
+
+.funcionalidades-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 colunas */
+    gap: 30px;
+    text-align: center;
+}
+
+.modulo {
+    /* Módulo agora é um card branco no fundo cinza */
+    background-color: var(--cor-fundo-card);
+    border-radius: var(--border-radius-padrao);
+    box-shadow: var(--sombra-card);
+    padding: 30px 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.modulo:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--sombra-card-hover);
+}
+
+.modulo i {
+    font-size: 3em; /* Ícone um pouco menor que o da seção .caminhos */
+    color: var(--cor-secundaria);
+    margin-bottom: 25px;
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.modulo:hover i {
+    transform: scale(1.1);
+}
+
+.modulo h3 {
+    font-size: 1.3em;
+    color: var(--cor-primaria);
+    margin-bottom: 15px;
+}
+
+.modulo p {
+    font-size: 0.95em;
+    color: #555;
+    line-height: 1.6;
+}
+
+/* ==========================================================================
+   6. SEÇÃO CTA FINAL
+   ========================================================================== */
+.cta-final {
+    padding: 80px 0;
+    background-color: var(--cor-fundo-card); /* Fundo branco */
+    text-align: center;
+}
+
+.cta-final h2 {
+    font-size: 2.2em;
+    color: var(--cor-primaria);
+    margin-bottom: 15px;
+}
+
+.cta-final p {
+    font-size: 1.2em;
+    color: #555;
+    margin-bottom: 30px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+/* O estilo .btnCta já existe e será aplicado aqui */
+
+
+/* ==========================================================================
+   7. RODAPÉ
+   ========================================================================== */
+.rodape {
+    background-color: var(--cor-primaria);
+    color: var(--cor-texto-claro);
+    text-align: center;
+    padding: 40px 0; /* Mais padding */
+    margin-top: auto;
+}
+
+.rodape p {
+    margin-bottom: 8px;
+    font-size: 0.9em;
+}
+
+/* ==========================================================================
+   8. PÁGINAS DE AUTENTICAÇÃO (LOGIN, CADASTRO, ETC.)
+   ========================================================================== */
+.auth-page-body {
+    background-color: var(--cor-primaria);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 40px 20px; /* Padding responsivo */
+}
+
+.loginContainer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.loginBox {
+    background-color: var(--cor-fundo-card);
+    padding: 40px 35px; /* Padding ajustado */
+    border-radius: var(--border-radius-padrao);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    width: 100%;
+    max-width: 420px; /* Um pouco mais largo */
+    text-align: center;
+}
+
+.logoLogin {
+    font-family: var(--fonte-principal);
+    font-size: 2.2em; /* Tamanho ajustado */
+    font-weight: 700;
+    color: var(--cor-secundaria);
+    text-decoration: none;
+    display: block;
+    margin-bottom: 25px;
+}
+
+.loginBox h2 {
+    color: var(--cor-primaria);
+    margin-bottom: 30px;
+    font-size: 1.6em; /* Tamanho ajustado */
+}
+
+.inputGroup {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.inputGroup label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555;
+    font-size: 0.9em; /* Tamanho ajustado */
+}
+
+.inputGroup input,
+.inputGroup select { /* Aplicar estilo também a selects */
+    width: 100%;
+    padding: 12px 15px; /* Padding ajustado */
+    border: 1px solid var(--cor-borda);
+    border-radius: 5px;
+    font-size: 1em;
+    font-family: var(--fonte-secundaria);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box; /* Garante padding correto */
+    appearance: none; /* Remove aparência padrão do select */
+}
+/* Estilo específico para select (seta) */
+.inputGroup select {
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2334495e' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E") no-repeat right 15px center/12px 12px;
+}
+
+
+.inputGroup input:focus,
+.inputGroup select:focus {
+    outline: none;
+    border-color: var(--cor-secundaria);
+    box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.2);
+}
+
+.passwordWrapper {
+    position: relative;
+    width: 100%;
+}
+
+.passwordWrapper input {
+    padding-right: 45px;
+}
+
+.togglePasswordIcon {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #aaa;
+    transition: color 0.3s ease;
+}
+
+.togglePasswordIcon:hover {
+    color: var(--cor-texto);
+}
+
+.btnLoginSubmit, .btn-adicionar { /* Estilo unificado para botões de submit/adicionar */
+    display: block;
+    text-decoration: none;
+    width: 100%;
+    padding: 14px;
+    margin-top: 25px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--cor-secundaria);
+    color: #fff; /* Texto branco */
+    font-size: 1.1em;
+    font-weight: 700;
+    font-family: var(--fonte-principal);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btnLoginSubmit:hover, .btn-adicionar:hover {
+    background-color: #e67e22;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.btnLoginSubmit:active, .btn-adicionar:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+.loginLinks {
+    margin-top: 25px;
+}
+
+.loginLinks a {
+    color: var(--cor-primaria);
+    font-size: 0.9em;
+}
+
+.loginLinks a:hover {
+    color: var(--cor-secundaria);
+    text-decoration: underline;
+}
+
+.loginLinks p {
+    margin-top: 15px;
+    font-size: 0.9em;
+    color: #555;
+}
+
+.recoveryInstruction {
+    font-size: 0.95em;
+    color: #555;
+    margin-bottom: 30px;
+    line-height: 1.5;
+}
+
+.mensagemErro {
+    color: var(--cor-erro);
+    font-size: 0.85em; /* Menor */
+    font-weight: 600;
+    text-align: left;
+    margin-top: 6px; /* Mais próximo do campo */
+    margin-bottom: 10px; /* Menos espaço abaixo */
+    min-height: 1.1em;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: opacity 0.3s ease, max-height 0.3s ease;
+}
+
+.mensagemErro.visivel {
+    opacity: 1;
+    max-height: 40px; /* Altura ajustada */
+}
+
+.inputErro {
+    border-color: var(--cor-erro) !important;
+    animation: shake 0.4s;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+/* ==========================================================================
+   9. MENU DE PERFIL DO USUÁRIO
+   ========================================================================== */
+.perfil-container {
+    position: relative;
+    cursor: pointer;
+}
+
+.perfil-icone {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--cor-secundaria);
+    color: #fff; /* Inicial branca */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2em;
+    font-weight: 700;
+    font-family: var(--fonte-principal);
+    /* border: 2px solid #fff; */ /* Removida a borda que ficava estranha no azul */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.perfil-icone:hover {
+    transform: scale(1.05); /* Efeito mais sutil */
+    box-shadow: 0 0 10px rgba(243, 156, 18, 0.5);
+}
+
+.perfil-dropdown {
+    position: absolute;
+    top: 55px; /* Ajuste para não colar no ícone */
+    right: 0;
+    background-color: var(--cor-fundo-card);
+    color: var(--cor-texto);
+    border-radius: 8px; /* Borda mais suave */
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1); /* Sombra mais definida */
+    width: 220px; /* Mais largo */
+    padding: 10px 0;
+    z-index: 1100;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s 0.3s; /* Transição de visibilidade */
+}
+
+.perfil-dropdown.ativo {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s 0s;
+}
+
+.perfil-dropdown p {
+    margin: 0;
+    font-weight: 600;
+    color: var(--cor-primaria);
+    word-wrap: break-word;
+    padding: 10px 15px; /* Padding ajustado */
+    font-size: 0.95em;
+}
+
+.perfil-dropdown hr {
+    border: none;
+    border-top: 1px solid #eee;
+    margin: 8px 0;
+}
+
+.perfil-dropdown a {
+    color: var(--cor-primaria);
+    text-decoration: none;
+    font-weight: 600;
+    display: block;
+    padding: 10px 15px; /* Padding ajustado */
+    transition: color 0.2s ease, background-color 0.2s ease;
+    font-size: 0.95em;
+}
+
+.perfil-dropdown a:hover {
+    color: var(--cor-secundaria);
+    background-color: #f1f3f5; /* Fundo suave */
+}
+
+/* ==========================================================================
+   10. DASHBOARD
+   ========================================================================== */
+.dashboard-hero {
+    background-color: var(--cor-fundo);
+    padding-top: 120px;
+    padding-bottom: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--cor-texto);
+    min-height: 40vh;
+}
+
+.dashboard-hero h2 {
+    font-size: 2.5em; /* Ajuste no tamanho */
+    color: var(--cor-primaria);
+    margin-bottom: 15px;
+}
+.dashboard-hero h2 #nomeUsuario { /* Span com o nome */
+    color: var(--cor-secundaria);
+}
+
+.dashboard-hero p {
+    font-size: 1.2em; /* Ajuste no tamanho */
+    color: #555;
+    margin-bottom: 30px;
+}
+
+.dashboard-content {
+    padding: 60px 0 80px; /* Espaçamento ajustado */
+    background-color: var(--cor-fundo-card);
+}
+
+.dashboard-content .container {
+    display: flex;
+    justify-content: space-around;
+    gap: 30px;
+    text-align: center;
+}
+
+/* ==========================================================================
+   11. PÁGINA DE GESTÃO DA BANDA (banda.html)
+   ========================================================================== */
+.banda-container {
+    padding-top: 100px; /* Espaço para o header */
+    padding-bottom: 80px;
+    min-height: calc(100vh - 100px - 78px); /* Tenta preencher a altura (viewport - header - footer) */
+    display: flex;
+    flex-direction: column;
+}
+
+.banda-container h1 {
+    font-size: 2.8em;
+    color: var(--cor-primaria);
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.banda-tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+    border-bottom: 1px solid var(--cor-borda);
+    flex-wrap: wrap; /* Permite que as abas quebrem linha */
+}
+
+.tab-link {
+    padding: 15px 25px;
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+    font-size: 1.05em;
+    font-weight: 600;
+    color: #6c757d; /* Cinza para inativas */
+    transition: all 0.3s ease;
+    position: relative;
+    border-bottom: 3px solid transparent; /* Borda inferior invisível */
+    margin-bottom: -1px; /* Alinha com a borda principal */
+}
+
+.tab-link:hover {
+    color: var(--cor-primaria);
+}
+
+.tab-link.ativo {
+    color: var(--cor-primaria);
+    border-bottom-color: var(--cor-secundaria);
+}
+
+.tab-content {
+    display: none;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.tab-content.ativo {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Header dentro das abas */
+.content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px; /* Mais espaço */
+    flex-wrap: wrap; /* Quebra linha em telas pequenas */
+    gap: 15px;
+}
+.content-header h2 {
+    margin: 0;
+    font-size: 1.8em; /* Ajuste no tamanho */
+}
+
+/* Botão principal de adicionar */
+.btn-adicionar-principal {
+    background-color: var(--cor-secundaria);
+    color: #fff; /* Texto branco */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.95em; /* Ajuste */
+}
+.btn-adicionar-principal:hover {
+    background-color: #e67e22;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+.btn-adicionar-principal i {
+    margin-right: 8px;
+}
+
+/* Estilo unificado para cards */
+.card-style {
+    background-color: var(--cor-fundo-card);
+    border-radius: var(--border-radius-padrao);
+    box-shadow: var(--sombra-card);
+    padding: 25px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 30px; /* Espaço entre cards empilhados */
+}
+.card-style:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--sombra-card-hover);
+}
+.card-style h3 { /* Título dentro do card */
+    padding: 0 0 15px 0; /* Padding inferior */
+    margin: -25px -25px 25px -25px; /* Puxa para as bordas e adiciona margem */
+    padding-left: 25px; /* Alinha com o conteúdo */
+    padding-top: 20px;
+    border-bottom: 1px solid #eee; /* Linha divisória */
+    font-size: 1.3em;
+}
+
+/* ==========================================================================
+   12. COMPONENTES DA PÁGINA DA BANDA (Tabelas, Grids, etc.)
+   ========================================================================== */
+
+/* Tabelas */
+.table-wrapper { /* Para rolagem horizontal em telas pequenas */
+    overflow-x: auto;
+}
+.tabela-moderna {
+    width: 100%;
+    border-collapse: collapse;
+}
+.tabela-moderna th,
+.tabela-moderna td {
+    padding: 15px; /* Mais padding */
+    text-align: left;
+    border-bottom: 1px solid #f1f3f5; /* Borda bem sutil */
+    font-size: 0.95em; /* Tamanho ligeiramente menor */
+    vertical-align: middle; /* Alinha verticalmente */
+}
+.tabela-moderna th {
+    font-size: 0.8em; /* Header menor */
+    text-transform: uppercase;
+    color: var(--cor-texto-claro);
+    background-color: transparent;
+    font-weight: 700; /* Mais forte */
+}
+.tabela-moderna tr:last-child td {
+    border-bottom: none; /* Remove borda da última linha */
+}
+.tabela-moderna tr:hover {
+    background-color: #f8f9fa; /* Fundo suave ao passar o mouse */
+}
+/* Botões dentro da tabela */
+.tabela-moderna .btn-icon {
+    background: none; border: none; cursor: pointer; font-size: 1.1em; color: var(--cor-texto-claro); padding: 5px; margin-left: 10px; transition: color 0.2s ease;
+}
+.tabela-moderna .btn-icon:hover { color: var(--cor-primaria); }
+.tabela-moderna .btn-remover:hover { color: var(--cor-erro); }
+.btn-ver-partitura {
+    background-color: var(--cor-primaria); color: #fff; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; transition: background-color 0.3s; font-size: 0.85em;
+}
+.btn-ver-partitura:hover { background-color: #34495e; }
+.btn-ver-partitura i { margin-right: 5px; }
+
+/* Grid Financeiro */
+.metricas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsivo */
+    gap: 20px;
+    margin-bottom: 30px;
+}
+.metrica-card {
+    background-color: var(--cor-fundo-card);
+    padding: 20px;
+    border-radius: var(--border-radius-padrao);
+    box-shadow: var(--sombra-card);
+    text-align: center;
+}
+.metrica-card h4 {
+    margin: 0 0 10px 0;
+    font-size: 0.9em;
+    color: var(--cor-texto-claro);
+    text-transform: uppercase;
+    font-weight: 600;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.metrica-card p {
+    margin: 0;
+    font-size: 1.8em; /* Valor destacado */
+    font-weight: 700;
+    color: var(--cor-primaria);
+}
+.metrica-card.receita p { color: var(--cor-sucesso); }
+.metrica-card.receita h4 i { color: var(--cor-sucesso); }
+.metrica-card.despesa p { color: var(--cor-erro); }
+.metrica-card.despesa h4 i { color: var(--cor-erro); }
+
+/* Gráfico de Linha (Evolução) */
+.chart-container {
+    position: relative;
+    height: 350px; /* Altura padrão */
+    width: 100%;
+}
+.full-width { /* Helper para ocupar toda a largura da grid pai */
+    grid-column: 1 / -1;
+}
+
+/* Grid Inferior Financeiro */
+.financeiro-bottom-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* Tabela maior, IA menor */
+    gap: 30px;
+    margin-top: 30px;
+}
+
+/* Card da IA */
+.ai-insights-card h3 i {
+    color: var(--cor-secundaria);
+    margin-right: 10px;
+    animation: pulse 2s infinite ease-in-out;
+}
+.ai-insights-content .loading-ai {
+    text-align: center; color: var(--cor-texto-claro); padding: 30px 0; font-style: italic;
+}
+.ai-insights-content .loading-ai i { margin-right: 8px; }
+.insight-item { display: flex; align-items: flex-start; margin-bottom: 18px; font-size: 0.95em; line-height: 1.5; }
+.insight-item i { margin-top: 4px; margin-right: 12px; color: var(--cor-info); width: 16px; text-align: center; }
+.insight-item.alert i { color: var(--cor-aviso); } /* Amarelo para alertas */
+.insight-item.success i { color: var(--cor-sucesso); }
+.insight-item p { margin: 0; }
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+/* Grid Repertório */
+.repertorio-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    align-items: start;
+}
+.partitura-container {
+    /* O estilo agora vem do .card-style */
+}
+#visualizadorPdf p { text-align: center; color: var(--cor-texto-claro); padding: 50px 0; font-style: italic; }
+#visualizadorPdf embed { /* Garantir que o embed ocupe o espaço */
+    display: block;
+}
+
+/* ==========================================================================
+   13. ESTILOS DA AGENDA
+   ========================================================================== */
+.agenda-list {
+    display: grid;
+    gap: 20px;
+}
+.agenda-item {
+    display: flex;
+    align-items: center;
+    background-color: var(--cor-fundo-card);
+    padding: 15px 20px; /* Padding ajustado */
+    border-radius: var(--border-radius-padrao);
+    box-shadow: var(--sombra-card);
+    border-left: 5px solid var(--cor-secundaria); /* Cor padrão */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.agenda-item:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--sombra-card-hover);
+}
+/* Cores por tipo de evento */
+.agenda-item.show { border-left-color: var(--cor-info); } /* Azul para show */
+.agenda-item.gravacao { border-left-color: #9b59b6; } /* Roxo para gravação */
+.agenda-item.ensaio { border-left-color: var(--cor-sucesso); } /* Verde para ensaio */
+.agenda-item.outro { border-left-color: var(--cor-texto-claro); } /* Cinza para outros */
+
+.agenda-data {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    margin-right: 20px; background-color: #f1f3f5; border-radius: 8px; padding: 10px;
+    width: 60px; height: 60px; text-align: center; flex-shrink: 0; /* Não encolher */
+}
+.agenda-data .dia { font-size: 1.6em; font-weight: 700; color: var(--cor-primaria); line-height: 1; }
+.agenda-data .mes { font-size: 0.75em; font-weight: 700; color: #6c757d; text-transform: uppercase; }
+
+.agenda-details { flex-grow: 1; }
+.agenda-details h4 { margin: 0 0 5px 0; font-size: 1.15em; color: var(--cor-primaria); }
+.agenda-details p { margin: 0; color: #6c757d; font-size: 0.9em; }
+.agenda-details p i { margin-right: 8px; width: 14px; text-align: center; color: var(--cor-texto-claro); }
+
+.agenda-actions { margin-left: 15px; } /* Espaço para os botões */
+
+/* ==========================================================================
+   14. ESTILOS DO MODAL
+   ========================================================================== */
+.modal {
+    display: none; position: fixed; z-index: 2000; left: 0; top: 0;
+    width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.6);
+    animation: fadeInModalBg 0.4s;
+}
+
+.modal-content {
+    background-color: #fefefe; margin: 10vh auto; /* Centraliza verticalmente */ padding: 30px 35px; border: none;
+    width: 90%; max-width: 500px; border-radius: var(--border-radius-padrao); position: relative;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2); animation: slideDownModal 0.4s ease-out;
+}
+
+.modal-content h3 { /* Título do modal */
+    text-align: center; margin-top: 0; margin-bottom: 30px; font-size: 1.5em;
+}
+
+.close-button {
+    color: #aaa; position: absolute; top: 15px; right: 20px; font-size: 28px;
+    font-weight: bold; cursor: pointer; line-height: 1; transition: color 0.2s;
+}
+.close-button:hover, .close-button:focus { color: var(--cor-erro); }
+
+@keyframes fadeInModalBg { from { background-color: rgba(0,0,0,0); } to { background-color: rgba(0,0,0,0.6); } }
+@keyframes slideDownModal { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+/* Botões tipo transação no modal */
+.tipo-transacao-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px;}
+.tipo-transacao-group input[type="radio"] { display: none; }
+.tipo-transacao-group label {
+    padding: 12px; border: 2px solid var(--cor-borda); border-radius: 8px; text-align: center;
+    font-weight: 600; cursor: pointer; transition: all 0.2s ease-in-out; display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.tipo-transacao-group label i { font-size: 1.1em; }
+.tipo-transacao-group label:hover { border-color: #bdc3c7; }
+.tipo-transacao-group input[type="radio"]:checked + label { color: #fff; font-weight: 700; }
+#tipoReceita:checked + label { background-color: var(--cor-sucesso); border-color: var(--cor-sucesso); }
+#tipoDespesa:checked + label { background-color: var(--cor-erro); border-color: var(--cor-erro); }
+
+/* ==========================================================================
+   15. SNACKBAR (Notificações)
+   ========================================================================== */
+#snackbar {
+    visibility: hidden; min-width: 250px; margin-left: -125px; background-color: var(--cor-primaria); color: #fff;
+    text-align: center; border-radius: 5px; padding: 16px; position: fixed; z-index: 3000;
+    left: 50%; bottom: 30px; font-size: 1em; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+#snackbar.show {
+    visibility: visible; animation: fadeInSnackbar 0.5s, fadeOutSnackbar 0.5s 2.5s;
+}
+@keyframes fadeInSnackbar { from { bottom: 0; opacity: 0; } to { bottom: 30px; opacity: 1; } }
+@keyframes fadeOutSnackbar { from { bottom: 30px; opacity: 1; } to { bottom: 0; opacity: 0; } }
+
+
+/* ==========================================================================
+   16. RESPONSIVIDADE (MEDIA QUERIES)
+   ========================================================================== */
+@media (max-width: 992px) {
+    .container { max-width: 90%; }
+    
+    /* Coluna única para os cards de caminho */
+    .caminhos .container {
+        grid-template-columns: 1fr;
+    }
+
+    /* 2 colunas para funcionalidades */
+    .funcionalidades-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .financeiro-main-grid, .financeiro-bottom-grid, .repertorio-grid {
+        grid-template-columns: 1fr; /* Coluna única */
+    }
+    .metricas-grid {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    }
+    .content-header { justify-content: center; text-align: center; } /* Centraliza header */
+    .header-actions { margin-left: 0; width: 100%; justify-content: center; } /* Centraliza ações */
+}
+
+@media (max-width: 768px) {
+    .cabecalho .container { flex-direction: row; padding: 0 15px; } /* Ajuste padding */
+    .logo { font-size: 1.6em; }
+    /* Esconder links de texto no menu principal em telas pequenas */
+    .menuPrincipal ul li:not(:last-child):not(.perfil-container) {
+        display: none;
+    }
+     .menuPrincipal ul li { margin-left: 15px; } /* Menos espaço */
+
+    .hero h2 { font-size: 2.2em; }
+    .hero p { font-size: 1.1em; }
+    .btnCta { padding: 12px 25px; font-size: 1em; }
+
+    /* 1 coluna para funcionalidades em telas menores */
+    .funcionalidades-grid,
+    .dashboard-content .container {
+        flex-direction: column; 
+        gap: 20px; /* Gap menor */
+        grid-template-columns: 1fr;
+    }
+    
+    .modulo { /* Reduz o padding no mobile */
+        padding: 25px 20px;
+    }
+
+    .banda-container h1 { font-size: 2.2em; }
+    .banda-tabs { justify-content: flex-start; overflow-x: auto; /* Permite rolar as abas */ }
+    .tab-link { padding: 12px 18px; font-size: 0.95em; white-space: nowrap; /* Não quebra linha */ }
+
+    .metricas-grid { grid-template-columns: 1fr; } /* Uma coluna sempre */
+    .metrica-card p { font-size: 1.6em; }
+
+    .modal-content { margin: 10vh auto; width: 95%; padding: 25px; }
+}
+
+@media (max-width: 480px) {
+    .loginBox { padding: 30px 20px; }
+    .logoLogin { font-size: 2em; }
+    .loginBox h2 { font-size: 1.4em; }
+    .btnLoginSubmit, .btn-adicionar { font-size: 1em; padding: 12px; }
+    .banda-container h1 { font-size: 1.8em; }
+    .content-header h2 { font-size: 1.5em; }
+
+    .caminho-card {
+        padding: 30px 25px;
+    }
+    .caminho-card h3 {
+        font-size: 1.5em;
+    }
+}
+/* ==========================================================================
+   (Adicionar ao final ou em seção apropriada)
+   17. ESTILOS ADICIONAIS PARA UPLOAD DE PARTITURA
+   ========================================================================== */
+
+/* Estilo para o input[type=file] (pode ser personalizado mais) */
+.inputGroup input[type="file"] {
+    padding: 10px; /* Ajuste padding */
+    border: 1px dashed var(--cor-borda); /* Borda tracejada */
+    background-color: #f8f9fa; /* Fundo levemente diferente */
+    cursor: pointer;
+}
+
+.inputGroup input[type="file"]:hover {
+    border-color: var(--cor-secundaria);
+    background-color: #f1f3f5;
+}
+
+/* Estilo para a mensagem <small> abaixo do input */
+.inputGroup small {
+    display: block; /* Garante que fique abaixo */
+    margin-top: 5px;
+    font-size: 0.8em;
+    color: var(--cor-texto-claro);
+}
+
+/* Ajuste no botão de ver partitura para ficar mais claro o clique */
+.btn-ver-partitura {
+    /* (Estilos existentes) */
+    display: inline-flex; /* Para alinhar ícone e texto */
+    align-items: center;
+    gap: 5px;
+}
+
+/* Garantir que o embed ocupe espaço no visualizador */
+#visualizadorPdf embed {
+    display: block;
+    border: 1px solid var(--cor-borda); /* Adiciona uma borda sutil */
+    min-height: 500px; /* Garante altura mínima */
+}
+/* ==========================================================================
+   (Adicionar ao final ou em seção apropriada)
+   18. ESTILOS ADICIONAIS PARA MODAL MEMBRO
+   ========================================================================== */
+
+.modal-content p.modal-description {
+    font-size: 0.9em;
+    color: #555;
+    margin-bottom: 25px; /* Espaço antes do formulário */
+    text-align: center;
+    line-height: 1.5;
+}
+
+/* Ajuste na tabela de membros para espaçamento */
+.tabela-moderna td:nth-child(2), /* Coluna Email */
+.tabela-moderna th:nth-child(2) {
+    min-width: 180px; /* Garante um espaço mínimo para o email */
+}
+/* ==========================================================================
+   (Adicionar ao final ou em seção apropriada)
+   19. ESTILOS PARA CONVITES PENDENTES
+   ========================================================================== */
+
+.lista-convites {
+    list-style: none; /* Remove marcadores padrão */
+    padding: 0;
+    margin: 0;
+}
+
+.lista-convites li {
+    display: flex;
+    justify-content: space-between; /* Alinha itens nas extremidades */
+    align-items: center;
+    padding: 12px 0; /* Espaçamento vertical */
+    border-bottom: 1px solid #f1f3f5; /* Linha divisória sutil */
+    font-size: 0.95em;
+}
+
+.lista-convites li:last-child {
+    border-bottom: none; /* Remove borda do último item */
+}
+
+.lista-convites li span {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Espaço entre ícone e texto */
+    color: var(--cor-texto);
+}
+
+.lista-convites li i.fa-user-clock {
+    color: var(--cor-texto-claro); /* Ícone cinza */
+}
+
+.lista-convites li strong {
+    color: var(--cor-primaria); /* Nome destacado */
+}
+
+.btn-cancelar-convite {
+    background: none;
+    border: none;
+    color: var(--cor-texto-claro); /* Cinza claro por padrão */
+    cursor: pointer;
+    font-size: 1.2em; /* Ícone um pouco maior */
+    padding: 5px;
+    transition: color 0.2s ease;
+}
+
+.btn-cancelar-convite:hover {
+    color: var(--cor-erro); /* Vermelho ao passar o mouse */
+}
+/* ==========================================================================
+   (Adicionar ao final do CSS)
+   20. ESTILOS PARA PERFIL DE MÚSICO (perfil-musico.html)
+   ========================================================================== */
+
+/* Estilo para Textarea (Formulário de Bio) */
+.inputGroup textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid var(--cor-borda);
+    border-radius: 5px;
+    font-size: 1em;
+    font-family: var(--fonte-secundaria);
+    line-height: 1.6;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    resize: vertical; /* Permite redimensionar apenas verticalmente */
+}
+
+.inputGroup textarea:focus {
+    outline: none;
+    border-color: var(--cor-secundaria);
+    box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.2);
+}
+
+/* Grid do Portfólio */
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* Grid responsivo */
+    gap: 30px;
+    margin-top: 20px;
+}
+
+/* Card individual do vídeo */
+.video-card {
+    background-color: var(--cor-fundo-card);
+    border-radius: var(--border-radius-padrao);
+    box-shadow: var(--sombra-card);
+    overflow: hidden; /* Garante que o iframe não vaze */
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.video-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--sombra-card-hover);
+}
+
+/* Container do Embed (para manter a proporção) */
+.video-embed {
+    position: relative;
+    padding-bottom: 56.25%; /* Proporção 16:9 (9 / 16 * 100) */
+    height: 0;
+    overflow: hidden;
+}
+
+.video-embed iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+.video-card h4 {
+    font-size: 1.1em;
+    font-weight: 600;
+    color: var(--cor-primaria);
+    padding: 15px 20px 10px 20px;
+    margin: 0;
+    flex-grow: 1; /* Tenta ocupar espaço */
+}
+
+.video-actions {
+    display: flex;
+    justify-content: flex-end; /* Alinha o botão à direita */
+    padding: 0px 15px 15px 20px;
+}
+
+/* Botão de remover (usa .btn-icon, já existente) */
+.video-actions .btn-remover:hover {
+    color: var(--cor-erro);
+}
+
+/* Mensagem de "Nenhum vídeo" */
+.portfolio-grid .loading-ai { /* Reutilizando estilo */
+    grid-column: 1 / -1; /* Ocupa a grid inteira */
+    text-align: center;
+    color: var(--cor-texto-claro);
+    padding: 40px;
+    font-style: italic;
+}

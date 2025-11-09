@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redefinir Senha - Music Makers</title>
+    <link rel="stylesheet" href="estilos.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+</head>
+<body class="auth-page-body">
+
+    <div class="loginContainer">
+        <div class="loginBox">
+            <a href="index.html" class="logoLogin">MusicMakers</a>
+            <h2>Crie sua Nova Senha</h2>
+            <p class="recoveryInstruction">
+                Insira e confirme sua nova senha abaixo.
+            </p>
+            
+            <form id="resetPasswordForm">
+                <div class="inputGroup">
+                    <label for="novaSenha">Nova Senha</label>
+                    <input type="password" id="novaSenha" name="novaSenha" required minlength="6">
+                </div>
+
+                <div class="inputGroup">
+                    <label for="novaSenha">Nova Senha</label>
+                    <div class="passwordWrapper">
+                        <input type="password" id="novaSenha" name="novaSenha" required minlength="6">
+                        <i class="bi bi-eye-slash togglePasswordIcon" id="toggleNovaSenha"></i>
+                    </div>
+                </div>
+
+                <div class="inputGroup">
+                    <label for="confirmarSenha">Confirmar Nova Senha</label>
+                    <div class="passwordWrapper">
+                        <input type="password" id="confirmarSenha" name="confirmarSenha" required minlength="6">
+                        <i class="bi bi-eye-slash togglePasswordIcon" id="toggleConfirmarSenha"></i>
+                    </div>
+                </div>
+                
+                <div class="mensagemErro geral" id="mensagemErroRedefinicao"></div>
+
+                <button type="submit" class="btnLoginSubmit">Redefinir Senha</button>
+
+                <div class="loginLinks">
+                    <p>Lembrou da senha? <a href="login.html">Faça login</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="utils.js"></script> 
+    <script src="redefinir.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Ativa o toggle para a Nova Senha
+            setupPasswordToggle('novaSenha', 'toggleNovaSenha'); 
+            
+            // Ativa o toggle para Confirmar Nova Senha
+            setupPasswordToggle('confirmarSenha', 'toggleConfirmarSenha'); 
+        });
+    </script>
+</body>
+</html>

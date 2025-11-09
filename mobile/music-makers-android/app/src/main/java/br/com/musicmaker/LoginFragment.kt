@@ -13,11 +13,18 @@ import androidx.navigation.fragment.findNavController
 import br.com.musicmaker.databinding.FragmentLoginBinding
 import kotlinx.coroutines.launch
 import java.lang.Exception
+// Adicione esta importação manualmente se estiver faltando
+import br.com.musicmaker.R
 
 class LoginFragment : Fragment() {
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
+
+    // Define os nomes das chaves como constantes
+    private val PREFS_NAME = "MUSIC_MAKERS_PREFS"
+    private val TOKEN_KEY = "JWT_TOKEN"
+    private val NOME_KEY = "NOME_USUARIO"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,20 +65,28 @@ class LoginFragment : Fragment() {
 
                 if (response.isSuccessful && response.body() != null) {
                     // SUCESSO!
-                    val token = response.body()!!.token
-                    val nomeUsuario = response.body()!!.usuario.nome
+                    val loginResponse = response.body()!! // Pega a resposta
+                    val token = loginResponse.token
+                    val nomeUsuario = loginResponse.usuario.nome
 
-                    salvarToken(token)
+                    // <-- MUDANÇA 1: Salva o token E o nome
+                    salvarToken(token, nomeUsuario)
+
                     Toast.makeText(requireContext(), "Bem-vindo, $nomeUsuario!", Toast.LENGTH_LONG).show()
 
-                    // Navega para a Home (use o ID da "seta" que você criou no Dia 6)
-                    // Verifique o ID em 'mobile_navigation.xml' se der erro aqui
-                   // findNavController().navigate(R.id.action_loginFragment_to_nav_home)
+                    // Esconde o loading antes de navegar
+                    binding.loginButton.isEnabled = true
+                    binding.loginProgressbar.visibility = View.GONE
+
+                    // --- MUDANÇA TEMPORÁRIA ---
+                    // A linha de navegação está comentada para quebrar o loop
+                    // findNavController().navigate(R.id.action_loginFragment_to_webFragment)
+
+
 
                 } else {
                     // FALHA (Ex: senha errada)
                     Toast.makeText(requireContext(), "E-mail ou senha inválidos", Toast.LENGTH_LONG).show()
-                    // --- FIM DA LÓGICA DE CARREGAMENTO (EM CASO DE FALHA) ---
                     binding.loginButton.isEnabled = true // Reabilita o botão
                     binding.loginProgressbar.visibility = View.GONE // Esconde o ProgressBar
                 }
@@ -80,18 +95,18 @@ class LoginFragment : Fragment() {
                 // ERRO DE REDE (Ex: backend desligado)
                 Log.e("LoginFragment", "Erro de conexão", e)
                 Toast.makeText(requireContext(), "Erro de conexão. Verifique o backend.", Toast.LENGTH_LONG).show()
-                // --- FIM DA LÓGICA DE CARREGAMENTO (EM CASO DE ERRO) ---
                 binding.loginButton.isEnabled = true // Reabilita o botão
                 binding.loginProgressbar.visibility = View.GONE // Esconde o ProgressBar
             }
         }
     }
 
-    // Função para salvar o token
-    private fun salvarToken(token: String) {
-        val sharedPref = activity?.getSharedPreferences("MUSIC_MAKERS_PREFS", Context.MODE_PRIVATE) ?: return
+    // <-- MUDANÇA 3: Função para salvar o token E o nome
+    private fun salvarToken(token: String, nomeUsuario: String) {
+        val sharedPref = activity?.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE) ?: return
         with (sharedPref.edit()) {
-            putString("JWT_TOKEN", token)
+            putString(TOKEN_KEY, token)
+            putString(NOME_KEY, nomeUsuario) // Salva o nome também
             apply()
         }
     }
