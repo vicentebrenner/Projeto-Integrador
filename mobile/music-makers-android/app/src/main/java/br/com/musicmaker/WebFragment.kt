@@ -25,7 +25,8 @@ class WebFragment : Fragment() {
     private val TOKEN_KEY = "JWT_TOKEN"
     private val NOME_KEY = "NOME_USUARIO"
 
-    private lateinit aSall sharedPref: SharedPreferences
+    // --- CORREÇÃO APLICADA AQUI ---
+    private lateinit var sharedPref: SharedPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -88,9 +89,8 @@ class WebFragment : Fragment() {
                 // Navega para o LoginFragment nativo
                 Log.d("WebAppInterface", "Navegando para o LoginFragment...")
 
-                // --- MUDANÇA TEMPORÁRIA ---
-                // Comentamos esta linha para quebrar o "loop de compilação"
-                // findNavController().navigate(R.id.action_webFragment_to_loginFragment)
+                // --- CORREÇÃO APLICADA AQUI (LINHA DESCOMENTADA) ---
+                findNavController().navigate(R.id.action_webFragment_to_loginFragment)
             }
         }
 

@@ -10,4 +10,8 @@
     <string name="menu_home">Início</string>
     <string name="menu_gallery">Dados da banda</string>
     <string name="menu_slideshow">Slideshow</string>
+    <string name="fragment_login_label">Login</string>
+    <string name="fragment_web_label">Music Makers</string>
+
+
 </resources>
