@@ -6,39 +6,52 @@
     app:startDestination="@id/webFragment">
 
     <fragment
-        android:id="@+id/nav_home"
-        android:name="br.com.musicmaker.ui.home.HomeFragment"
-        android:label="Music Makers"
-        tools:layout="@layout/fragment_home" >
-        <action
-            android:id="@+id/action_nav_home_to_loginFragment"
-            app:destination="@id/loginFragment" />
-    </fragment>
-
-
-    <fragment
         android:id="@+id/loginFragment"
         android:name="br.com.musicmaker.LoginFragment"
-        android:label="Login"
+
+        android:label="@string/fragment_login_label"
+
         tools:layout="@layout/fragment_login">
 
         <action
             android:id="@+id/action_loginFragment_to_webFragment"
-            app:destination="@id/webFragment"
-            app:popUpTo="@id/webFragment"
-            app:popUpToInclusive="true" />
+            app:destination="@id/webFragment" />
     </fragment>
-
 
     <fragment
         android:id="@+id/webFragment"
         android:name="br.com.musicmaker.WebFragment"
-        android:label="Music Makers"
-        tools:layout="@layout/fragment_web" >
+
+        android:label="@string/fragment_web_label"
+
+        tools:layout="@layout/fragment_web">
 
         <action
             android:id="@+id/action_webFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
     </fragment>
+
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="br.com.musicmaker.ui.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_gallery"
+        android:name="br.com.musicmaker.ui.gallery.GalleryFragment"
+        android:label="@string/menu_gallery"
+        tools:layout="@layout/fragment_gallery" />
+
+    <fragment
+        android:id="@+id/nav_slideshow"
+        android:name="br.com.musicmaker.ui.slideshow.SlideshowFragment"
+        android:label="@string/menu_slideshow"
+        tools:layout="@layout/fragment_slideshow" />
+
+    <action
+        android:id="@+id/action_global_webFragment"
+        app:destination="@id/webFragment" />
 
 </navigation>

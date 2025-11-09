@@ -78,9 +78,8 @@ class LoginFragment : Fragment() {
                     binding.loginButton.isEnabled = true
                     binding.loginProgressbar.visibility = View.GONE
 
-                    // --- MUDANÇA TEMPORÁRIA ---
-                    // A linha de navegação está comentada para quebrar o loop
-                    // findNavController().navigate(R.id.action_loginFragment_to_webFragment)
+                    // --- CORREÇÃO APLICADA AQUI (LINHA DESCOMENTADA) ---
+                    findNavController().navigate(R.id.action_loginFragment_to_webFragment)
 
 
 
