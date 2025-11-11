@@ -24,6 +24,9 @@ class WebFragment : Fragment() {
     private val PREFS_NAME = "MUSIC_MAKERS_PREFS"
     private val TOKEN_KEY = "JWT_TOKEN"
     private val NOME_KEY = "NOME_USUARIO"
+    // Flag temporária para pular o fluxo de login e ir direto ao dashboard.
+    // Ajuste para `false` quando a autenticação real for restabelecida.
+    private val SKIP_AUTH = true
 
     // --- CORREÇÃO APLICADA AQUI ---
     private lateinit var sharedPref: SharedPreferences
@@ -60,6 +63,12 @@ class WebFragment : Fragment() {
     }
 
     private fun carregarPaginaInicial() {
+        if (SKIP_AUTH) {
+            Log.d("WebFragment", "Skip auth ativado, carregando dashboard diretamente.")
+            binding.webView.loadUrl("file:///android_asset/dashboard.html")
+            return
+        }
+
         // 1. O "Cérebro": Verifica se o token existe
         val token = sharedPref.getString(TOKEN_KEY, null)
 

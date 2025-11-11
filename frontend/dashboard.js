@@ -1,9 +1,27 @@
 document.addEventListener('DOMContentLoaded', function() {
+    const appConfig = window.__APP_CONFIG__ || {};
+    const { skipAuth = false, placeholderUser } = appConfig;
+
+    if (skipAuth && placeholderUser) {
+        const existingUser = localStorage.getItem('usuarioLogado');
+        if (!existingUser) {
+            localStorage.setItem('usuarioLogado', JSON.stringify(placeholderUser));
+        }
+        if (!localStorage.getItem('authToken')) {
+            localStorage.setItem('authToken', 'skip-auth-token');
+        }
+    }
+
     // 1. Verifica se o usuário está logado
-    const usuarioLogadoString = localStorage.getItem('usuarioLogado');
+    let usuarioLogadoString = localStorage.getItem('usuarioLogado');
     if (!usuarioLogadoString) {
-        window.location.href = 'login.html';
-        return; 
+        if (skipAuth && placeholderUser) {
+            usuarioLogadoString = JSON.stringify(placeholderUser);
+            localStorage.setItem('usuarioLogado', usuarioLogadoString);
+        } else {
+            window.location.href = 'login.html';
+            return; 
+        }
     }
     
     // 2. Personaliza a mensagem de boas-vindas

@@ -1,5 +1,14 @@
 document.addEventListener('DOMContentLoaded', function() {
+    const appConfig = window.__APP_CONFIG__ || {};
+    const { skipAuth = false, placeholderUser } = appConfig;
+
     const menuPrincipalUl = document.querySelector('.menuPrincipal ul');
+    if (skipAuth && placeholderUser && !localStorage.getItem('usuarioLogado')) {
+        localStorage.setItem('usuarioLogado', JSON.stringify(placeholderUser));
+    }
+    if (skipAuth && !localStorage.getItem('authToken')) {
+        localStorage.setItem('authToken', 'skip-auth-token');
+    }
     const usuarioLogado = JSON.parse(localStorage.getItem('usuarioLogado'));
 
     if (usuarioLogado && menuPrincipalUl) {
