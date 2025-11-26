@@ -57,25 +57,21 @@
         <div class="container">
             <h2 class="section-titulo">Uma plataforma completa</h2>
             <div class="funcionalidades-grid">
-
                 <div class="modulo" id="agenda">
                     <i class="fas fa-calendar-alt"></i>
                     <h3>Agenda de Ensaios</h3>
                     <p>Marque ensaios, defina repertórios e notifique todos os membros.</p>
                 </div>
-
                 <div class="modulo" id="financeiro">
                     <i class="fas fa-dollar-sign"></i>
                     <h3>Controle Financeiro</h3>
                     <p>Registre os cachês, despesas e lucros de forma transparente.</p>
                 </div>
-
                 <div class="modulo" id="shows">
                     <i class="fas fa-guitar"></i>
                     <h3>Gestão de Shows</h3>
                     <p>Cadastre seus próximos shows e organize a logística.</p>
                 </div>
-
                 <div class="modulo" id="recrutamento">
                     <i class="fas fa-user-plus"></i>
                     <h3>Recrutamento</h3>
@@ -108,42 +104,55 @@
     // --- Função Helper para Lógica de Clique ---
     function ligarBotao(idDoBotao, acao) {
         const botao = document.getElementById(idDoBotao);
-        if (!botao) {
-            console.warn(`Botão com ID "${idDoBotao}" não encontrado.`);
-            return;
-        }
+        if (!botao) return;
 
         botao.addEventListener("click", function(event) {
-            event.preventDefault(); // Impede o link de navegar (href="#")
+            event.preventDefault();
 
-            if (acao === 'login') {
-                // Tenta chamar a ponte do Kotlin
+            if (acao === 'emBreve') {
+                alert("Funcionalidade em breve!");
+            } else {
                 if (typeof Android !== "undefined" && typeof Android.irParaTelaDeLogin === "function") {
                     Android.irParaTelaDeLogin();
                 } else {
                     alert("Erro de interface nativa [irParaTelaDeLogin]");
                 }
             }
-            else if (acao === 'emBreve') {
-                alert("Funcionalidade em breve!");
-            }
-            // (futuramente, podemos ter uma acao === 'cadastro')
         });
     }
 
-    // --- Ligar os botões para o LOGIN NATIVO ---
-    ligarBotao("btn-acessar-gestor", "login"); // Botão "Gerenciar Minha Banda"
-    ligarBotao("btn-acessar-login", "login"); // Botão "Login" no header
+    // --- Ligar os botões ---
+    ligarBotao("btn-acessar-gestor", "login");
+    ligarBotao("btn-acessar-login", "login");
+    ligarBotao("btn-cta-hero", "login");
+    ligarBotao("btn-cta-final", "login");
+    ligarBotao("btn-acessar-musico", "login");
 
-    // --- Ligar os botões de CADASTRO (que ainda não temos) ---
-    // Vamos tratar o cadastro como parte do fluxo de login por enquanto
-    ligarBotao("btn-cta-hero", "login"); // Botão "Comece Agora"
-    ligarBotao("btn-cta-final", "login"); // Botão "Crie sua conta"
+    // --- Gerenciamento de abas (Banda / Músico) ---
+    function abrirBanda() {
+        document.getElementById('caminho-gestor').style.display = 'block';
+        document.getElementById('caminho-musico').style.display = 'block';
+        localStorage.setItem('ultimaAba', 'banda');
+    }
 
-    // --- Ligar os botões "Em Breve" ---
-    ligarBotao("btn-acessar-musico", "emBreve"); // Botão "Criar Perfil de Músico"
+    function abrirMusico() {
+        document.getElementById('caminho-gestor').style.display = 'none';
+        document.getElementById('caminho-musico').style.display = 'block';
+        localStorage.setItem('ultimaAba', 'musico');
+    }
+
+    // --- Lógica para abrir a aba correta pelo hash ---
+    window.onload = function() {
+        if (window.location.hash === "#musico") {
+            abrirMusico();
+        } else {
+            abrirBanda();
+        }
+    };
 
 </script>
 
 </body>
 </html>
+
+

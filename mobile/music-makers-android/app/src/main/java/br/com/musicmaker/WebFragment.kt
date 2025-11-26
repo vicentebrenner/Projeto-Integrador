@@ -25,7 +25,6 @@ class WebFragment : Fragment() {
     private val TOKEN_KEY = "JWT_TOKEN"
     private val NOME_KEY = "NOME_USUARIO"
 
-    // --- CORREÇÃO APLICADA AQUI ---
     private lateinit var sharedPref: SharedPreferences
 
     override fun onCreateView(
@@ -59,60 +58,96 @@ class WebFragment : Fragment() {
         }
     }
 
+    // --- MUDANÇA 1 (PARA APRESENTAÇÃO) ---
     private fun carregarPaginaInicial() {
-        // 1. O "Cérebro": Verifica se o token existe
-        val token = sharedPref.getString(TOKEN_KEY, null)
-
-        if (token.isNullOrEmpty()) {
-            // Se NÃO tem token, carrega o index.html (tela de escolha)
-            Log.d("WebFragment", "Nenhum token encontrado, carregando index.html")
-            binding.webView.loadUrl("file:///android_asset/index.html")
-        } else {
-            // Se TEM token, vai direto para o dashboard
-            Log.d("WebFragment", "Token encontrado, carregando dashboard.html")
-            binding.webView.loadUrl("file:///android_asset/dashboard.html")
-        }
+        // Carrega o index.html para que o usuário veja os botões de perfil.
+        // A lógica de "pular o login" está no index.html.
+        Log.d("WebFragment", "Modo de apresentação: Carregando index.html")
+        binding.webView.loadUrl("file:///android_asset/index.html")
     }
+    // --- FIM DA MUDANÇA 1 ---
 
     // --- CLASSE DA "PONTE" (JavaScript -> Kotlin) ---
     // Esta classe interna contém os métodos que o JavaScript pode chamar
     private inner class WebAppInterface(private val context: Context) {
 
         /**
-         * O JavaScript (do index.html) vai chamar esta função
-         * quando o usuário clicar em "Gestor".
+         * O JavaScript (do dashboard.html) VAI chamar esta função.
+         * Vamos interceptá-la!
          */
+        // --- MUDANÇA 4 (A MAIS IMPORTANTE) ---
         @JavascriptInterface
         fun irParaTelaDeLogin() {
             // Esta função roda na thread principal do App
             activity?.runOnUiThread {
-                // Navega para o LoginFragment nativo
-                Log.d("WebAppInterface", "Navegando para o LoginFragment...")
+                // EM VEZ DE IR PARA O LOGIN NATIVO, vamos ler o localStorage
+                // que o index.html salvou e carregar a página WEB correta.
+                Log.d("WebAppInterface", "BYPASS: irParaTelaDeLogin() foi chamado!")
 
-                // --- CORREÇÃO APLICADA AQUI (LINHA DESCOMENTADA) ---
-                findNavController().navigate(R.id.action_webFragment_to_loginFragment)
+                // Pega o 'tipoPerfil' que o index.html salvou
+                binding.webView.evaluateJavascript("localStorage.getItem('tipoPerfil')") { tipo ->
+                    // tipo pode ser "banda", "musico", "null" (string), ou null (objeto)
+
+                    // 1. Remove as aspas, se existirem (e checa se é nulo)
+                    val perfilLimpo = tipo?.replace("\"", "")
+
+                    if (perfilLimpo == "banda") {
+                        Log.d("WebAppInterface", "Perfil é 'banda', carregando agenda.html")
+
+                        // ***** ATENÇÃO: TROQUE "agenda.html" PELO NOME CORRETO *****
+                        // (Ex: "gestao.html", "dashboard_banda.html", etc.)
+                        binding.webView.loadUrl("file:///android_asset/agenda.html")
+
+                    } else if (perfilLimpo == "musico") {
+                        Log.d("WebAppInterface", "Perfil é 'musico', carregando perfil-musico.html")
+
+                        // ***** CORREÇÃO APLICADA AQUI *****
+                        // Agora está usando "perfil-musico.html" com hífen
+                        binding.webView.loadUrl("file:///android_asset/perfil-musico.html")
+
+                    } else {
+                        // Fallback: Se algo der errado (tipo é null, "null", ou outro valor)
+                        Log.w("WebAppInterface", "Perfil não encontrado no localStorage (valor recebido: $tipo), voltando ao dashboard.")
+                        binding.webView.loadUrl("file:///android_asset/dashboard.html")
+                    }
+                }
+
+                // Lógica original (REMOVIDA PARA APRESENTAÇÃO):
+                // Log.d("WebAppInterface", "Navegando para o LoginFragment...")
+                // findNavController().navigate(R.id.action_webFragment_to_loginFragment)
             }
         }
+        // --- FIM DA MUDANÇA 4 ---
 
         /**
          * O JavaScript (do dashboard.js) vai chamar esta função
          * para pegar o token de autenticação.
          */
+        // --- MUDANÇA 2 (PARA APRESENTAÇÃO) ---
         @JavascriptInterface
         fun getAuthToken(): String? {
             Log.d("WebAppInterface", "JavaScript pediu o token")
-            return sharedPref.getString(TOKEN_KEY, null)
+
+            // Retorna um "token falso" para que o dashboard.html
+            // pense que o usuário está logado.
+            val tokenReal = sharedPref.getString(TOKEN_KEY, null)
+            return tokenReal ?: "FAKE_TOKEN_PARA_APRESENTAÇÃO"
         }
+        // --- FIM DA MUDANÇA 2 ---
 
         /**
          * O JavaScript (do dashboard.js) vai chamar esta função
          * para pegar o nome do usuário.
          */
+        // --- MUDANÇA 3 (PARA APRESENTAÇÃO) ---
         @JavascriptInterface
         fun getNomeUsuario(): String? {
             Log.d("WebAppInterface", "JavaScript pediu o nome do usuário")
-            return sharedPref.getString(NOME_KEY, null)
+            // Retorna um nome de teste para a apresentação
+            val nomeSalvo = sharedPref.getString(NOME_KEY, null)
+            return nomeSalvo ?: "Usuário Teste"
         }
+        // --- FIM DA MUDANÇA 3 ---
 
         /**
          * O JavaScript (do global.js) vai chamar esta função
@@ -129,11 +164,9 @@ class WebFragment : Fragment() {
                 .apply()
 
             // 2. Recarrega a página (na thread principal)
-            // Como o token foi removido, a lógica do 'carregarPaginaInicial()'
-            // vai carregar o 'index.html' automaticamente.
             activity?.runOnUiThread {
                 Log.d("WebAppInterface", "Token removido, recarregando o app.")
-                // Carrega o index.html (que é a nossa página de "logout")
+                // Volta para o index.html
                 binding.webView.loadUrl("file:///android_asset/index.html")
             }
         }
