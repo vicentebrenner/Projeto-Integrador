@@ -1,11 +1,10 @@
 document.addEventListener('DOMContentLoaded', function() {
     
-    // --- CÓDIGO DO OLHINHO (NOVO) ---
+    // --- CÓDIGO DO OLHINHO ---
     // Verifica se a função existe (carregada do utils.js) e a executa
     if (typeof setupPasswordToggle === 'function') {
         setupPasswordToggle('senha', 'toggleSenha');
     }
-    // --------------------------------
 
     const formLogin = document.getElementById('formLogin');
     if (!formLogin) {
@@ -56,8 +55,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Se o login for bem-sucedido (status 200 OK)
                 alert('Login realizado com sucesso!');
                 
-                // Armazena os dados do usuário e o token no localStorage
-                localStorage.setItem('usuarioLogado', JSON.stringify(data.usuario));
+                // --- CORREÇÃO AQUI ---
+                // O backend retorna dados soltos (token, id, nome, role).
+                // Precisamos criar o objeto 'usuario' manualmente para salvar no localStorage.
+                const usuarioParaSalvar = {
+                    id: data.id,
+                    nome: data.nome,
+                    tipoUsuario: data.role
+                };
+
+                localStorage.setItem('usuarioLogado', JSON.stringify(usuarioParaSalvar));
                 localStorage.setItem('authToken', data.token);
 
                 // Redireciona para a página do dashboard
@@ -65,14 +72,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
             } else {
                 // Se houver erro (status 401, 403, etc.)
-                const mensagemErro = data.message || await response.text(); // Pega a mensagem de erro do backend
+                // Tenta pegar a mensagem do JSON ou usa o texto puro da resposta
+                const mensagemErro = data.message || data || 'Erro ao realizar login'; 
                 mostrarErro(mensagemErro);
             }
 
         } catch (error) {
-            // Erro de rede ou conexão
+            // Erro de rede ou conexão (ex: backend desligado)
             console.error('Erro na requisição de login:', error);
-            mostrarErro('Não foi possível conectar ao servidor. Verifique sua conexão ou se o backend está rodando.');
+            mostrarErro('Não foi possível conectar ao servidor. Verifique se o backend está rodando.');
         }
     });
 });
