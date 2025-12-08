@@ -8,13 +8,13 @@
     
     <style>
         /* =========================================
-           ESTILOS MODERNOS E TEMÁTICOS (REPLICADO)
+           ESTILOS MODERNOS (Idêntico ao Login)
            ========================================= */
         body {
             margin: 0;
             padding: 0;
             font-family: 'Open Sans', sans-serif;
-            overflow-y: auto; /* Permite rolar se o cadastro for longo */
+            overflow-y: auto; /* Permite rolar pois o cadastro é maior */
             background: linear-gradient(-45deg, #011029, #0f3460, #16213e, #011029);
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
@@ -41,7 +41,7 @@
             z-index: 0;
             margin: 0;
             padding: 0;
-            pointer-events: none; /* Para não atrapalhar o scroll */
+            pointer-events: none;
         }
 
         .music-notes li {
@@ -54,6 +54,7 @@
             bottom: -150px;
         }
 
+        /* Notas espalhadas */
         .music-notes li:nth-child(1){ left: 25%; font-size: 80px; animation-delay: 0s; }
         .music-notes li:nth-child(2){ left: 10%; font-size: 40px; animation-delay: 2s; animation-duration: 12s; }
         .music-notes li:nth-child(3){ left: 70%; font-size: 60px; animation-delay: 4s; }
@@ -88,7 +89,7 @@
             border-radius: 20px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.2);
             width: 100%;
-            max-width: 500px;
+            max-width: 500px; /* Um pouco mais largo que o login */
             text-align: center;
         }
 
@@ -160,7 +161,7 @@
             z-index: 2;
         }
         
-        /* Correção para o ícone de toggle não colidir com o input */
+        /* Estilo do Olhinho (Direita) */
         .input-wrapper .togglePasswordIcon {
             position: absolute;
             right: 15px;
@@ -293,6 +294,8 @@
                     <div class="input-wrapper">
                         <i class="bi bi-lock field-icon"></i>
                         <input type="password" id="senha" name="senha" required placeholder="Crie uma senha">
+                        
+                        <i class="bi bi-eye-slash togglePasswordIcon" id="toggleSenha"></i>
                     </div>
                     <div class="mensagemErro" id="erroSenha"></div>
                 </div>
@@ -302,6 +305,8 @@
                     <div class="input-wrapper">
                         <i class="bi bi-lock-fill field-icon"></i>
                         <input type="password" id="confirmarSenha" name="confirmarSenha" required placeholder="Repita a senha">
+                        
+                        <i class="bi bi-eye-slash togglePasswordIcon" id="toggleConfirmarSenha"></i>
                     </div>
                     <div class="mensagemErro" id="erroConfirmarSenha"></div>
                 </div>
