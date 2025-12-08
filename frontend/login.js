@@ -1,4 +1,12 @@
 document.addEventListener('DOMContentLoaded', function() {
+    
+    // --- CÓDIGO DO OLHINHO (NOVO) ---
+    // Verifica se a função existe (carregada do utils.js) e a executa
+    if (typeof setupPasswordToggle === 'function') {
+        setupPasswordToggle('senha', 'toggleSenha');
+    }
+    // --------------------------------
+
     const formLogin = document.getElementById('formLogin');
     if (!formLogin) {
         console.error('O formulário de login não foi encontrado.');
@@ -34,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         try {
             // Faz a requisição para a API de login no backend
-            const response = await fetch('/api/auth/login', {
+            const response = await fetch('http://localhost:8080/api/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

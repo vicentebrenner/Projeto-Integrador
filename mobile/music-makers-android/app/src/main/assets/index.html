@@ -101,58 +101,52 @@
 
 <script type="text/javascript">
 
-    // --- Função Helper para Lógica de Clique ---
-    function ligarBotao(idDoBotao, acao) {
+    // --- LÓGICA DE NAVEGAÇÃO CORRIGIDA ---
+
+    // Função que configura o botão para salvar o tipo de perfil antes de chamar o Android
+    function configurarBotao(idDoBotao, tipoDePerfil) {
         const botao = document.getElementById(idDoBotao);
-        if (!botao) return;
+
+        if (!botao) {
+            console.warn(`Botão ${idDoBotao} não encontrado.`);
+            return;
+        }
 
         botao.addEventListener("click", function(event) {
-            event.preventDefault();
+            event.preventDefault(); // Impede o comportamento padrão do link
 
-            if (acao === 'emBreve') {
-                alert("Funcionalidade em breve!");
+            // 1. SALVA A ESCOLHA: Define qual perfil o usuário quer acessar
+            // Isso sobrescreve qualquer escolha anterior ("banda" ou "musico")
+            localStorage.setItem('tipoPerfil', tipoDePerfil);
+            console.log(`Perfil definido para: ${tipoDePerfil}`);
+
+            // 2. CHAMA O ANDROID: O WebFragment vai ler o 'tipoPerfil' que acabamos de salvar
+            if (typeof Android !== "undefined" && typeof Android.irParaTelaDeLogin === "function") {
+                Android.irParaTelaDeLogin();
             } else {
-                if (typeof Android !== "undefined" && typeof Android.irParaTelaDeLogin === "function") {
-                    Android.irParaTelaDeLogin();
-                } else {
-                    alert("Erro de interface nativa [irParaTelaDeLogin]");
-                }
+                // Fallback para testes no navegador do computador
+                console.log("Android não detectado. Simulando navegação...");
+                if (tipoDePerfil === 'banda') window.location.href = 'banda.html';
+                else if (tipoDePerfil === 'musico') window.location.href = 'perfil-musico.html';
+                else window.location.href = 'dashboard.html';
             }
         });
     }
 
-    // --- Ligar os botões ---
-    ligarBotao("btn-acessar-gestor", "login");
-    ligarBotao("btn-acessar-login", "login");
-    ligarBotao("btn-cta-hero", "login");
-    ligarBotao("btn-cta-final", "login");
-    ligarBotao("btn-acessar-musico", "login");
+    // --- CONFIGURAÇÃO DOS BOTÕES ---
 
-    // --- Gerenciamento de abas (Banda / Músico) ---
-    function abrirBanda() {
-        document.getElementById('caminho-gestor').style.display = 'block';
-        document.getElementById('caminho-musico').style.display = 'block';
-        localStorage.setItem('ultimaAba', 'banda');
-    }
+    // 1. Botão "Gerenciar Minha Banda" -> Salva "banda" e vai para banda.html
+    configurarBotao("btn-acessar-gestor", "banda");
 
-    function abrirMusico() {
-        document.getElementById('caminho-gestor').style.display = 'none';
-        document.getElementById('caminho-musico').style.display = 'block';
-        localStorage.setItem('ultimaAba', 'musico');
-    }
+    // 2. Botão "Criar Perfil de Músico" -> Salva "musico" e vai para perfil-musico.html
+    configurarBotao("btn-acessar-musico", "musico");
 
-    // --- Lógica para abrir a aba correta pelo hash ---
-    window.onload = function() {
-        if (window.location.hash === "#musico") {
-            abrirMusico();
-        } else {
-            abrirBanda();
-        }
-    };
+    // 3. Botões genéricos de Login/CTA -> Salva "dashboard" (ou padrão)
+    configurarBotao("btn-acessar-login", "dashboard");
+    configurarBotao("btn-cta-hero", "dashboard");
+    configurarBotao("btn-cta-final", "dashboard");
 
 </script>
 
 </body>
 </html>
-
-
