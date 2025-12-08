@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
 
 @Service
@@ -19,8 +21,8 @@ public class TokenService {
     @Value("${jwt.secret}")
     private String secretKey;
 
-    // Tempo de expiração do token em milissegundos (aqui definido para 24 horas)
-    private final long expirationTime = 86400000; // 24 * 60 * 60 * 1000
+    // Tempo de expiração do token em milissegundos (86400000 ms = 24 horas)
+    private final long expirationTime = 86400000;
 
     /**
      * Gera a chave de assinatura usada pelo JWT a partir da chave secreta.
@@ -36,12 +38,18 @@ public class TokenService {
      * @return Uma string que representa o token JWT.
      */
     public String generateToken(Usuario usuario) {
+        // Cria um mapa para armazenar informações extras (Claims) no token
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("id", usuario.getId());           // Útil para o frontend saber o ID do user
+        claims.put("role", usuario.getTipoUsuario()); // Útil para controle de acesso (frontend)
+
         return Jwts.builder()
-                .setSubject(usuario.getEmail()) // Define o "dono" do token (geralmente o email ou id)
-                .setIssuedAt(new Date(System.currentTimeMillis())) // Data de criação do token
-                .setExpiration(new Date(System.currentTimeMillis() + expirationTime)) // Data de expiração do token
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256) // Assina o token com a chave e o algoritmo
-                .compact(); // Constrói a string final do token
+                .setClaims(claims) // Injeta os dados extras
+                .setSubject(usuario.getEmail()) // O "subject" continua sendo o email
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .compact();
     }
 
     /**
@@ -106,5 +114,3 @@ public class TokenService {
         return (username.equals(userEmail) && !isTokenExpired(token));
     }
 }
-
-
