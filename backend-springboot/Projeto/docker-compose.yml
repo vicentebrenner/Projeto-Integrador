@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: musicmakers-db
+    environment:
+      - POSTGRES_DB=musicmakers_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+     - "5433:5432"
+    volumes:
+      - postgres_data_new:/var/lib/postgresql/data
+    networks:
+      - musicmakers-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: 
+      context: .
+    container_name: musicmakers-backend
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_HOST=db
+      - DB_NAME=musicmakers_db
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      # Habilitar Flyway para rodar a migração ao iniciar
+      - SPRING_FLYWAY_ENABLED=true
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - musicmakers-network
+
+volumes:
+  postgres_data_new:
+
+networks:
+  musicmakers-network:

@@ -8,59 +8,74 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.lang.NonNull;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Collections;
 
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
 
     @Autowired
     private TokenService tokenService;
+    
     @Autowired
     private UsuarioRepository usuarioRepository;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
+    protected void doFilterInternal(
+            @NonNull HttpServletRequest request,
+            @NonNull HttpServletResponse response,
+            @NonNull FilterChain filterChain 
+    ) throws ServletException, IOException {
 
         final String authHeader = request.getHeader("Authorization");
         final String userEmail;
         final String jwtToken;
 
-        // 1. Verifica se o cabeçalho de autorização existe e começa com "Bearer "
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            filterChain.doFilter(request, response); // Se não, continua para o próximo filtro
+            filterChain.doFilter(request, response);
             return;
         }
 
-        // 2. Extrai o token do cabeçalho (remove o "Bearer ")
         jwtToken = authHeader.substring(7);
-        userEmail = tokenService.extractUsername(jwtToken); // Extrai o email do usuário de dentro do token
+        userEmail = tokenService.extractUsername(jwtToken);
 
-        // 3. Se o token contém um email e o usuário ainda não está autenticado...
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             
-            // 4. Busca o usuário no banco de dados
-            UserDetails userDetails = this.usuarioRepository.findByEmail(userEmail)
-                    .map(usuario -> new User(usuario.getEmail(), usuario.getSenha(), new ArrayList<>()))
-                    .orElse(null);
+            // Busca o usuário. Como agora retorna Optional, usamos .orElse(null) com segurança
+            var usuarioOptional = this.usuarioRepository.findByEmail(userEmail);
 
-            // 5. Valida o token
-            if (userDetails != null && tokenService.validateToken(jwtToken, userDetails.getUsername())) {
-                // 6. Se o token for válido, configura a autenticação no contexto do Spring Security
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities());
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+            if (usuarioOptional.isPresent()) {
+                var usuario = usuarioOptional.get();
+                
+                // MUDANÇA IMPORTANTE: Carregamos o tipo de usuário como uma Authority (Role)
+                // Adicionamos o prefixo "ROLE_" que é padrão do Spring Security
+                var authorities = Collections.singletonList(
+                        new SimpleGrantedAuthority("ROLE_" + usuario.getTipoUsuario())
+                );
+
+                UserDetails userDetails = new User(
+                        usuario.getEmail(), 
+                        usuario.getSenha(), 
+                        authorities // Passamos a lista com a Role aqui (antes estava vazia)
+                );
+
+                if (tokenService.validateToken(jwtToken, userDetails.getUsername())) {
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                            userDetails, null, userDetails.getAuthorities());
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                }
             }
         }
-        filterChain.doFilter(request, response); // Passa a requisição para o próximo filtro na cadeia
+        filterChain.doFilter(request, response);
     }
 }
