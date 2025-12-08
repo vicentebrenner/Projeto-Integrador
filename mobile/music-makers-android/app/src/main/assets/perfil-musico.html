@@ -9,98 +9,99 @@
 </head>
 <body>
 
-    <header class="cabecalho">
-        <div class="container">
-            <h1 class="logo"><a href="dashboard.html" style="color: var(--cor-secundaria); text-decoration: none;">Music Makers</a></h1>
-            <nav class="menuPrincipal">
-                <ul>
-                    </ul>
-            </nav>
+<header class="cabecalho">
+    <div class="container">
+        <h1 class="logo"><a href="dashboard.html" style="color: var(--cor-secundaria); text-decoration: none;">Music Makers</a></h1>
+        <nav class="menuPrincipal">
+            <ul>
+                <li><a href="#" id="btn-logout-musico" class="btnLogin">Sair</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main class="banda-container">
+    <div class="container">
+        <h1>Meu Perfil de Músico</h1>
+
+        <div class="banda-tabs">
+            <button class="tab-link ativo" data-tab="perfil">Minhas Informações</button>
+            <button class="tab-link" data-tab="portfolio">Portfólio (Vídeos)</button>
+            <button class="tab-link" data-tab="vagas">Buscar Vagas</button>
         </div>
-    </header>
 
-    <main class="banda-container">
-        <div class="container">
-            <h1>Meu Perfil de Músico</h1>
-
-            <div class="banda-tabs">
-                <button class="tab-link ativo" data-tab="perfil">Minhas Informações</button>
-                <button class="tab-link" data-tab="portfolio">Portfólio (Vídeos)</button>
-                <button class="tab-link" data-tab="vagas">Buscar Vagas</button>
+        <div id="perfil" class="tab-content ativo">
+            <div class="content-header">
+                <h2>Minhas Informações</h2>
             </div>
-
-            <div id="perfil" class="tab-content ativo">
-                <div class="content-header">
-                    <h2>Minhas Informações</h2>
-                </div>
-                <div class="card-style">
-                    <h3>Editar Perfil</h3>
-                    <form id="formPerfilMusico">
-                        <div class="inputGroup">
-                            <label for="perfilNome">Seu Nome</label>
-                            <input type="text" id="perfilNome" name="perfilNome" value="Seu Nome (Carregado do Login)" disabled>
-                            <small>Seu nome é vinculado à sua conta.</small>
-                        </div>
-                        <div class="inputGroup">
-                            <label for="perfilLocal">Localização</label>
-                            <input type="text" id="perfilLocal" name="perfilLocal" placeholder="Ex: Porto Alegre/RS" required>
-                        </div>
-                        <div class="inputGroup">
-                            <label for="perfilInstrumentos">Instrumentos Principais</label>
-                            <input type="text" id="perfilInstrumentos" name="perfilInstrumentos" placeholder="Ex: Guitarra Solo, Vocal, Baixo" required>
-                        </div>
-                        <div class="inputGroup">
-                            <label for="perfilBio">Sua Bio (Currículo)</label>
-                            <textarea id="perfilBio" name="perfilBio" rows="6" placeholder="Fale sobre sua experiência, influências, e o que você procura em uma banda..."></textarea>
-                        </div>
-                        <button type="submit" class="btn-adicionar" style="max-width: 250px;">Salvar Informações</button>
-                    </form>
-                </div>
-            </div>
-
-            <div id="portfolio" class="tab-content">
-                <div class="content-header">
-                    <h2>Meu Portfólio de Vídeos</h2>
-                    <button id="abrirModalVideoBtn" class="btn-adicionar-principal"><i class="fas fa-video"></i> Adicionar Vídeo</button>
-                </div>
-                <div id="portfolioGrid" class="portfolio-grid">
+            <div class="card-style">
+                <h3>Editar Perfil</h3>
+                <form id="formPerfilMusico">
+                    <div class="inputGroup">
+                        <label for="perfilNome">Seu Nome</label>
+                        <input type="text" id="perfilNome" name="perfilNome" value="Seu Nome (Carregado do Login)" disabled>
+                        <small>Seu nome é vinculado à sua conta.</small>
                     </div>
-            </div>
-
-            <div id="vagas" class="tab-content">
-                <div class="content-header">
-                    <h2>Vagas em Aberto</h2>
-                </div>
-                <div class="card-style">
-                    <p>Em breve! Aqui você poderá ver as vagas publicadas por bandas e se candidatar.</p>
-                </div>
+                    <div class="inputGroup">
+                        <label for="perfilLocal">Localização</label>
+                        <input type="text" id="perfilLocal" name="perfilLocal" placeholder="Ex: Porto Alegre/RS" required>
+                    </div>
+                    <div class="inputGroup">
+                        <label for="perfilInstrumentos">Instrumentos Principais</label>
+                        <input type="text" id="perfilInstrumentos" name="perfilInstrumentos" placeholder="Ex: Guitarra Solo, Vocal, Baixo" required>
+                    </div>
+                    <div class="inputGroup">
+                        <label for="perfilBio">Sua Bio (Currículo)</label>
+                        <textarea id="perfilBio" name="perfilBio" rows="6" placeholder="Fale sobre sua experiência, influências, e o que você procura em uma banda..."></textarea>
+                    </div>
+                    <button type="submit" class="btn-adicionar" style="max-width: 250px;">Salvar Informações</button>
+                </form>
             </div>
         </div>
-    </main>
 
-    <div id="videoModal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h3>Adicionar Vídeo do YouTube</h3>
-            <form id="formAdicionarVideo">
-                <div class="inputGroup">
-                    <label for="videoTitulo">Título do Vídeo</label>
-                    <input type="text" id="videoTitulo" name="videoTitulo" placeholder="Ex: Meu Solo de Guitarra (Cover)" required>
-                </div>
-                <div class="inputGroup">
-                    <label for="videoUrl">Link do Vídeo (YouTube)</label>
-                    <input type="url" id="videoUrl" name="videoUrl" placeholder="https://www.youtube.com/watch?v=..." required>
-                    <small>Copie e cole o link completo da barra de endereços.</small>
-                </div>
-                <button type="submit" class="btn-adicionar">Salvar Vídeo</button>
-            </form>
+        <div id="portfolio" class="tab-content">
+            <div class="content-header">
+                <h2>Meu Portfólio de Vídeos</h2>
+                <button id="abrirModalVideoBtn" class="btn-adicionar-principal"><i class="fas fa-video"></i> Adicionar Vídeo</button>
+            </div>
+            <div id="portfolioGrid" class="portfolio-grid">
+            </div>
+        </div>
+
+        <div id="vagas" class="tab-content">
+            <div class="content-header">
+                <h2>Vagas em Aberto</h2>
+            </div>
+            <div class="card-style">
+                <p>Em breve! Aqui você poderá ver as vagas publicadas por bandas e se candidatar.</p>
+            </div>
         </div>
     </div>
+</main>
+
+<div id="videoModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h3>Adicionar Vídeo do YouTube</h3>
+        <form id="formAdicionarVideo">
+            <div class="inputGroup">
+                <label for="videoTitulo">Título do Vídeo</label>
+                <input type="text" id="videoTitulo" name="videoTitulo" placeholder="Ex: Meu Solo de Guitarra (Cover)" required>
+            </div>
+            <div class="inputGroup">
+                <label for="videoUrl">Link do Vídeo (YouTube)</label>
+                <input type="url" id="videoUrl" name="videoUrl" placeholder="https://www.youtube.com/watch?v=..." required>
+                <small>Copie e cole o link completo da barra de endereços.</small>
+            </div>
+            <button type="submit" class="btn-adicionar">Salvar Vídeo</button>
+        </form>
+    </div>
+</div>
 
 
-    <footer class="rodape"><div class="container"><p>&copy; 2025 Music Makers.</p></div></footer>
-    <div id="snackbar"></div>
+<footer class="rodape"><div class="container"><p>&copy; 2025 Music Makers.</p></div></footer>
+<div id="snackbar"></div>
 
-    <script src="global.js"></script>
-    <script src="perfil-musico.js"></script> </body>
+<script src="global.js"></script>
+<script src="perfil-musico.js"></script> </body>
 </html>
