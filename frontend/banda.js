@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
         { data: '2025-11-02', descricao: 'Gasolina Viagem', valor: 75.00, tipo: 'DESPESA', categoria: 'Transporte' },
     ];
     let dadosRepertorio = [
-        { nome: 'Du, du liegst mir im Herzen', origem: 'Folclore Alemão', partituraUrl: 'Du, Du Acordeon 2.pdf' },
+        { nome: 'Querência Amada', origem: 'Teixeirinha', partituraUrl: null },
         { nome: 'Lili Marleen', origem: 'Hans Leip', partituraUrl: null },
         { nome: 'Música Nova', origem: 'Autoral', partituraUrl: null }
     ];
@@ -548,7 +548,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const pdfViewer = document.getElementById('visualizadorPdf');
             if(pdfViewer && pdfUrl) {
                  // Usa <embed> para visualização inline
-                 pdfViewer.innerHTML = `<embed src="${pdfUrl}" type="application/pdf" width="100%" height="600px" />`;
+                 pdfViewer.innerHTML = `<embed src="${pdfUrl}" type="application/pdf" width="100%" height="900px" />`;
             } else if (pdfViewer) {
                  pdfViewer.innerHTML = '<p>Erro ao carregar a partitura.</p>';
             }

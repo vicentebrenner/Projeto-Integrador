@@ -4,27 +4,303 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Music Makers</title>
-    <link rel="stylesheet" href="estilos.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    
+    <style>
+        /* =========================================
+           ESTILOS MODERNOS E TEMÁTICOS
+           ========================================= */
+        
+        /* Fundo Animado com Gradiente */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Open Sans', sans-serif;
+            overflow: hidden; /* Remove barras de rolagem */
+            background: linear-gradient(-45deg, #011029, #0f3460, #16213e, #011029);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Animação dos Símbolos Musicais no Fundo */
+        .music-notes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0; /* Atrás de tudo */
+            margin: 0;
+            padding: 0;
+        }
+
+        .music-notes li {
+            position: absolute;
+            display: block;
+            list-style: none;
+            color: rgba(255, 255, 255, 0.15); /* Branco bem transparente */
+            font-size: 20px;
+            animation: floatUp 25s linear infinite;
+            bottom: -150px;
+        }
+
+        /* Configuração de cada nota/símbolo (Posição, Tamanho, Velocidade) */
+        .music-notes li:nth-child(1){ left: 25%; font-size: 80px; animation-delay: 0s; }
+        .music-notes li:nth-child(2){ left: 10%; font-size: 40px; animation-delay: 2s; animation-duration: 12s; }
+        .music-notes li:nth-child(3){ left: 70%; font-size: 60px; animation-delay: 4s; }
+        .music-notes li:nth-child(4){ left: 40%; font-size: 50px; animation-delay: 0s; animation-duration: 18s; }
+        .music-notes li:nth-child(5){ left: 65%; font-size: 30px; animation-delay: 0s; }
+        .music-notes li:nth-child(6){ left: 75%; font-size: 90px; animation-delay: 3s; }
+        .music-notes li:nth-child(7){ left: 35%; font-size: 70px; animation-delay: 7s; }
+        .music-notes li:nth-child(8){ left: 50%; font-size: 45px; animation-delay: 15s; animation-duration: 45s; }
+        .music-notes li:nth-child(9){ left: 20%; font-size: 35px; animation-delay: 2s; animation-duration: 35s; }
+        .music-notes li:nth-child(10){ left: 85%; font-size: 80px; animation-delay: 0s; animation-duration: 11s; }
+
+        @keyframes floatUp {
+            0%{ transform: translateY(0) rotate(0deg); opacity: 1; }
+            100%{ transform: translateY(-1000px) rotate(360deg); opacity: 0; }
+        }
+
+        /* Container Central */
+        .loginContainer {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* Caixa de Login (Vidro Estático) */
+        .loginBox {
+            background: rgba(255, 255, 255, 0.9); /* Branco translúcido */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            padding: 40px 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 450px; /* Um pouco menor para ficar elegante */
+            text-align: center;
+        }
+
+        /* Ícone de Cadeado Animado (Pulsando) */
+        .icon-lock-container {
+            width: 80px;
+            height: 80px;
+            background: rgba(250, 152, 72, 0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px auto;
+            animation: pulseGlow 3s infinite;
+        }
+
+        .icon-lock {
+            font-size: 2.5rem;
+            color: #fa9848;
+        }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 0 0 rgba(250, 152, 72, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(250, 152, 72, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(250, 152, 72, 0); }
+        }
+
+        .logoLogin {
+            color: #011029;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-decoration: none;
+            font-size: 1.8rem;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            margin-bottom: 25px;
+            font-size: 1.5em;
+            color: #011029;
+            font-weight: 600;
+        }
+
+        /* Inputs Estilizados */
+        .inputGroup {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .inputGroup label {
+            font-size: 0.9em;
+            color: #011029;
+            font-weight: 700;
+            margin-left: 5px;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        /* Ícone Padrão (Esquerda) */
+        .input-wrapper i.field-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #aaa;
+            transition: color 0.3s;
+            z-index: 2;
+        }
+
+        /* Ícone de Toggle Senha (Direita) - CORREÇÃO IMPORTANTE */
+        .input-wrapper .togglePasswordIcon {
+            position: absolute;
+            right: 15px;
+            left: auto; /* Anula o left do estilo padrão */
+            top: 50%;
+            transform: translateY(-50%);
+            color: #aaa;
+            cursor: pointer;
+            z-index: 3;
+        }
+        .input-wrapper .togglePasswordIcon:hover {
+            color: #fa9848;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            padding: 15px 45px 15px 45px; /* Espaço para ícones dos dois lados */
+            border: 2px solid #eee;
+            border-radius: 12px;
+            font-size: 1em;
+            outline: none;
+            transition: all 0.3s;
+            background: #f9f9f9;
+            box-sizing: border-box;
+        }
+
+        .input-wrapper input:focus {
+            border-color: #fa9848;
+            background: #fff;
+            box-shadow: 0 5px 15px rgba(250, 152, 72, 0.15);
+        }
+
+        .input-wrapper input:focus + i.field-icon {
+            color: #fa9848;
+        }
+
+        /* Mensagem de Erro */
+        .mensagemErro {
+            color: #e74c3c;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-top: 5px;
+            min-height: 1.2em;
+            display: none; /* Escondido por padrão */
+        }
+        .mensagemErro.visivel {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* Botão Interativo */
+        .btnLoginSubmit {
+            background: linear-gradient(45deg, #fa9848, #e67e22);
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 700;
+            font-size: 1.1em;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .btnLoginSubmit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(230, 126, 34, 0.4);
+            background: linear-gradient(45deg, #e67e22, #d35400);
+        }
+
+        .loginLinks {
+            margin-top: 25px;
+        }
+
+        .loginLinks a {
+            font-weight: 600;
+            color: #011029;
+            transition: color 0.3s;
+            text-decoration: none;
+            font-size: 0.9em;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .loginLinks a:hover {
+            color: #fa9848;
+        }
+        .loginLinks p {
+            margin-top: 15px;
+            font-size: 0.9em;
+            color: #555;
+        }
+    </style>
 </head>
-<body class="auth-page-body">
+<body>
+
+    <ul class="music-notes">
+        <li>&#9835;</li> <li>&#9833;</li> <li>&#9834;</li> <li>&#9836;</li> <li>&#9835;</li>
+        <li>&#9833;</li> <li>&#9834;</li> <li>&#9836;</li> <li>&#9835;</li> <li>&#9833;</li>
+    </ul>
 
     <div class="loginContainer">
         <div class="loginBox">
+            
             <a href="index.html" class="logoLogin">MusicMakers</a>
+            
+            <div class="icon-lock-container">
+                <i class="bi bi-person-circle icon-lock"></i> </div>
+
             <h2>Acesse sua conta</h2>
 
             <form id="formLogin">
                 <div class="inputGroup">
                     <label for="email">E-mail</label>
-                    <input type="email" id="email" name="email" required>
+                    <div class="input-wrapper">
+                        <i class="bi bi-envelope field-icon"></i>
+                        <input type="email" id="email" name="email" required placeholder="seu@email.com">
+                    </div>
                     <div class="mensagemErro" id="erroEmail"></div>
                 </div>
 
                 <div class="inputGroup">
                     <label for="senha">Senha</label>
-                    <div class="passwordWrapper">
-                        <input type="password" id="senha" name="senha" required>
+                    <div class="input-wrapper">
+                        <i class="bi bi-lock field-icon"></i>
+                        <input type="password" id="senha" name="senha" required placeholder="Sua senha">
                         <i class="bi bi-eye-slash togglePasswordIcon" id="toggleSenha"></i>
                     </div>
                     <div class="mensagemErro" id="erroSenha"></div>
@@ -42,7 +318,7 @@
         </div>
     </div>
 
-    <script src="login.js"></script>
     <script src="utils.js"></script>
+    <script src="login.js"></script>
 </body>
 </html>

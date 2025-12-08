@@ -14,3 +14,5 @@ function setupPasswordToggle(inputId, toggleId) {
         });
     }
 }
+
+

@@ -1,4 +1,12 @@
 document.addEventListener('DOMContentLoaded', function() {
+    
+    // --- CÓDIGO DO OLHINHO (NOVO) ---
+    // Verifica se a função existe (carregada do utils.js) e a executa
+    if (typeof setupPasswordToggle === 'function') {
+        setupPasswordToggle('senha', 'toggleSenha');
+    }
+    // --------------------------------
+
     const formLogin = document.getElementById('formLogin');
     if (!formLogin) {
         console.error('O formulário de login não foi encontrado.');

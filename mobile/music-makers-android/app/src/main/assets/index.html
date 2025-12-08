@@ -57,25 +57,21 @@
         <div class="container">
             <h2 class="section-titulo">Uma plataforma completa</h2>
             <div class="funcionalidades-grid">
-
                 <div class="modulo" id="agenda">
                     <i class="fas fa-calendar-alt"></i>
                     <h3>Agenda de Ensaios</h3>
                     <p>Marque ensaios, defina repertórios e notifique todos os membros.</p>
                 </div>
-
                 <div class="modulo" id="financeiro">
                     <i class="fas fa-dollar-sign"></i>
                     <h3>Controle Financeiro</h3>
                     <p>Registre os cachês, despesas e lucros de forma transparente.</p>
                 </div>
-
                 <div class="modulo" id="shows">
                     <i class="fas fa-guitar"></i>
                     <h3>Gestão de Shows</h3>
                     <p>Cadastre seus próximos shows e organize a logística.</p>
                 </div>
-
                 <div class="modulo" id="recrutamento">
                     <i class="fas fa-user-plus"></i>
                     <h3>Recrutamento</h3>
@@ -105,43 +101,50 @@
 
 <script type="text/javascript">
 
-    // --- Função Helper para Lógica de Clique ---
-    function ligarBotao(idDoBotao, acao) {
+    // --- LÓGICA DE NAVEGAÇÃO CORRIGIDA ---
+
+    // Função que configura o botão para salvar o tipo de perfil antes de chamar o Android
+    function configurarBotao(idDoBotao, tipoDePerfil) {
         const botao = document.getElementById(idDoBotao);
+
         if (!botao) {
-            console.warn(`Botão com ID "${idDoBotao}" não encontrado.`);
+            console.warn(`Botão ${idDoBotao} não encontrado.`);
             return;
         }
 
         botao.addEventListener("click", function(event) {
-            event.preventDefault(); // Impede o link de navegar (href="#")
+            event.preventDefault(); // Impede o comportamento padrão do link
 
-            if (acao === 'login') {
-                // Tenta chamar a ponte do Kotlin
-                if (typeof Android !== "undefined" && typeof Android.irParaTelaDeLogin === "function") {
-                    Android.irParaTelaDeLogin();
-                } else {
-                    alert("Erro de interface nativa [irParaTelaDeLogin]");
-                }
+            // 1. SALVA A ESCOLHA: Define qual perfil o usuário quer acessar
+            // Isso sobrescreve qualquer escolha anterior ("banda" ou "musico")
+            localStorage.setItem('tipoPerfil', tipoDePerfil);
+            console.log(`Perfil definido para: ${tipoDePerfil}`);
+
+            // 2. CHAMA O ANDROID: O WebFragment vai ler o 'tipoPerfil' que acabamos de salvar
+            if (typeof Android !== "undefined" && typeof Android.irParaTelaDeLogin === "function") {
+                Android.irParaTelaDeLogin();
+            } else {
+                // Fallback para testes no navegador do computador
+                console.log("Android não detectado. Simulando navegação...");
+                if (tipoDePerfil === 'banda') window.location.href = 'banda.html';
+                else if (tipoDePerfil === 'musico') window.location.href = 'perfil-musico.html';
+                else window.location.href = 'dashboard.html';
             }
-            else if (acao === 'emBreve') {
-                alert("Funcionalidade em breve!");
-            }
-            // (futuramente, podemos ter uma acao === 'cadastro')
         });
     }
 
-    // --- Ligar os botões para o LOGIN NATIVO ---
-    ligarBotao("btn-acessar-gestor", "login"); // Botão "Gerenciar Minha Banda"
-    ligarBotao("btn-acessar-login", "login"); // Botão "Login" no header
+    // --- CONFIGURAÇÃO DOS BOTÕES ---
 
-    // --- Ligar os botões de CADASTRO (que ainda não temos) ---
-    // Vamos tratar o cadastro como parte do fluxo de login por enquanto
-    ligarBotao("btn-cta-hero", "login"); // Botão "Comece Agora"
-    ligarBotao("btn-cta-final", "login"); // Botão "Crie sua conta"
+    // 1. Botão "Gerenciar Minha Banda" -> Salva "banda" e vai para banda.html
+    configurarBotao("btn-acessar-gestor", "banda");
 
-    // --- Ligar os botões "Em Breve" ---
-    ligarBotao("btn-acessar-musico", "emBreve"); // Botão "Criar Perfil de Músico"
+    // 2. Botão "Criar Perfil de Músico" -> Salva "musico" e vai para perfil-musico.html
+    configurarBotao("btn-acessar-musico", "musico");
+
+    // 3. Botões genéricos de Login/CTA -> Salva "dashboard" (ou padrão)
+    configurarBotao("btn-acessar-login", "dashboard");
+    configurarBotao("btn-cta-hero", "dashboard");
+    configurarBotao("btn-cta-final", "dashboard");
 
 </script>
 

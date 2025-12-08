@@ -944,6 +944,8 @@ a:hover {
 #visualizadorPdf p { text-align: center; color: var(--cor-texto-claro); padding: 50px 0; font-style: italic; }
 #visualizadorPdf embed { /* Garantir que o embed ocupe o espaço */
     display: block;
+    border: 1px solid var(--cor-borda); /* Adiciona uma borda sutil */
+    height: 900px; /* <--- ALTERADO AQUI PARA 900PX */
 }
 
 /* ==========================================================================
@@ -1158,7 +1160,7 @@ a:hover {
 #visualizadorPdf embed {
     display: block;
     border: 1px solid var(--cor-borda); /* Adiciona uma borda sutil */
-    min-height: 500px; /* Garante altura mínima */
+    height: 900px; /* <--- ALTERADO PARA 900PX */
 }
 /* ==========================================================================
    (Adicionar ao final ou em seção apropriada)
