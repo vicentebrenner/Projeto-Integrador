@@ -7,7 +7,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     ports:
-     - "5433:5432"
+      - "5433:5432"
     volumes:
       - postgres_data_new:/var/lib/postgresql/data
     networks:
@@ -30,11 +30,19 @@ services:
       - DB_USER=postgres
       - DB_PASSWORD=postgres
       - SPRING_FLYWAY_ENABLED=true
-      - SPRING_WEB_RESOURCES_STATIC_LOCATIONS=classpath:/static/,file:/app/resources/static/
-    volumes:
-      - ./src/main/resources/static:/app/resources/static
+      # --- ALTERAÇÃO COMENTADA (DESATIVADA) ---
+      # - SPRING_WEB_RESOURCES_STATIC_LOCATIONS=classpath:/static/,file:/app/resources/static/
     depends_on:
       db:
         condition: service_healthy
     networks:
       - musicmakers-network
+    # --- VOLUME COMENTADO (DESATIVADO) ---
+    # volumes:
+    #   - ./src/main/resources/static:/app/resources/static
+
+volumes:
+  postgres_data_new:
+
+networks:
+  musicmakers-network:
