@@ -14,11 +14,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const perfilLi = document.createElement('li');
         perfilLi.classList.add('perfil-container');
         
+        // MUDANÇA AQUI: Link para o perfil adicionado acima do botão de Sair
         perfilLi.innerHTML = `
             <div class="perfil-icone" id="perfilIcone">${inicial}</div>
             <div class="perfil-dropdown" id="perfilDropdown">
                 <p>Olá, ${nome.split(' ')[0]}!</p>
                 <hr>
+                <a href="perfil-musico.html">Meu Perfil Músico</a>
                 <a href="#" id="btnLogout">Sair</a>
             </div>
         `;
