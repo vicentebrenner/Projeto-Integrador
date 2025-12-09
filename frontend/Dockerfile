@@ -1,11 +1,10 @@
-# Usamos a imagem oficial do Nginx, que é um servidor web leve e performático
 FROM nginx:1.25-alpine
 
 # Remove a configuração padrão do Nginx
 RUN rm /etc/nginx/conf.d/default.conf
 
-# Copia a nossa configuração personalizada para o Nginx
+# Copia a nossa configuração personalizada
 COPY nginx.conf /etc/nginx/conf.d/
 
-# Copia todos os arquivos do frontend (HTML, CSS, JS) para a pasta que o Nginx serve
+# Copia os arquivos do site (O PONTO E O CAMINHO DEVEM ESTAR NA MESMA LINHA)
 COPY . /usr/share/nginx/html

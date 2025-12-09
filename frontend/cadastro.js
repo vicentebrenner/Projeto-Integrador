@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (temErro) return;
 
             try {
-                const response = await fetch('http://localhost:8080/api/auth/register', {
+                const response = await fetch('http://18.229.124.123:8080/api/auth/register', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ nome, email, senha })
