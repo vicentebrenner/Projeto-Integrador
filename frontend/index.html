@@ -4,100 +4,164 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Music Makers - Gestão e Recrutamento para sua banda</title>
+    <meta name="description" content="Music Makers é a plataforma completa para gestão de bandas: organize agenda, finanças, repertório e encontre músicos talentosos.">
     <link rel="stylesheet" href="estilos.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
 
     <header class="cabecalho">
         <div class="container">
-            <h1 class="logo">Music Makers</h1>
+            <a href="index.html" class="logo">
+                <img src="logo.png" alt="Music Makers" class="logo-img">
+            </a>
             <nav class="menuPrincipal">
                 <ul>
                     <li><a href="#funcionalidades">Funcionalidades</a></li>
-                    <li><a href="#recrutamento">Recrutamento</a></li>
-                    <li><a href="login.html" class="btnLogin">Login</a></li>
+                    <li><a href="#como-funciona">Como Funciona</a></li>
+                    <li><a href="login.html" class="btnLogin">Entrar</a></li>
+                    <li><a href="cadastro.html" class="btnCadastro">Cadastre-se Grátis</a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
     <main>
+        <!-- HERO -->
         <section class="hero">
-            <div class="container">
+            <div class="container hero-split">
                 <div class="heroTexto">
-                    <h2>A conexão completa para sua banda.</h2>
-                    <p>Gerencie sua equipe, finanças e agenda. Encontre os músicos que faltam.</p>
-                    <a href="cadastro.html" class="btnCta">Comece Agora</a>
+                    <span class="hero-badge"><i class="fas fa-bolt"></i> Plataforma para gestão de bandas</span>
+                    <h2>Organize sua banda.<br>Encontre novos talentos.<br><span class="destaque-laranja">Faça música acontecer.</span></h2>
+                    <p>Gerencie agenda, finanças, repertório e conecte-se com músicos em um só lugar. Sem complicação, sem papelada.</p>
+                    <div class="hero-buttons">
+                        <a href="cadastro.html" class="btnCta btnCta-grande">Começar Gratuitamente</a>
+                        <a href="#como-funciona" class="btnCta-ghost">Como Funciona</a>
+                    </div>
+                </div>
+                <div class="hero-imagem">
+                    <img src="hero-mockup.png" alt="Dashboard Music Makers - Gestão de bandas">
                 </div>
             </div>
         </section>
 
+        <!-- CAMINHOS -->
         <section id="caminhos" class="caminhos">
             <div class="container">
                 <div class="caminho-card" id="caminho-gestor">
-                    <i class="fas fa-users"></i>
-                    <h3>Para sua Banda (Gestor)</h3>
-                    <p>Gerencie agenda, finanças, repertório e logística. Publique vagas para encontrar novos membros.</p>
-                    <a href="cadastro.html" class="btnCta-outline">Gerenciar Minha Banda</a>
+                    <div class="caminho-icon-wrap">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Para sua Banda</h3>
+                    <p>Gerencie agenda, finanças, repertório e logística. Publique vagas para encontrar novos membros talentosos.</p>
+                    <a href="cadastro.html" class="btnCta-outline"><i class="fas fa-arrow-right"></i> Gerenciar Minha Banda</a>
                 </div>
                 <div class="caminho-card" id="caminho-musico">
-                    <i class="fas fa-guitar"></i>
-                    <h3>Para Você (Músico)</h3>
-                    <p>Crie seu perfil profissional, envie vídeos e encontre bandas que precisam do seu talento.</p>
-                    <a href="cadastro.html" class="btnCta-outline">Criar Perfil de Músico</a>
+                    <div class="caminho-icon-wrap">
+                        <i class="fas fa-guitar"></i>
+                    </div>
+                    <h3>Para Você, Músico</h3>
+                    <p>Crie seu perfil profissional, envie vídeos de performance e encontre bandas que precisam do seu talento.</p>
+                    <a href="cadastro.html" class="btnCta-outline"><i class="fas fa-arrow-right"></i> Criar Perfil de Músico</a>
                 </div>
             </div>
         </section>
 
+        <!-- FUNCIONALIDADES -->
         <section id="funcionalidades" class="funcionalidades">
             <div class="container">
-                <h2 class="section-titulo">Uma plataforma completa</h2>
+                <span class="section-badge">Tudo em um só lugar</span>
+                <h2 class="section-titulo">Uma plataforma completa para sua banda</h2>
+                <p class="section-subtitulo">Ferramentas poderosas, simples de usar. Foco no que importa: fazer música.</p>
                 <div class="funcionalidades-grid">
                     
                     <div class="modulo" id="agenda">
-                        <i class="fas fa-calendar-alt"></i>
+                        <div class="modulo-icon"><i class="fas fa-calendar-alt"></i></div>
                         <h3>Agenda de Ensaios</h3>
-                        <p>Marque ensaios, defina repertórios e notifique todos os membros.</p>
+                        <p>Marque ensaios, defina repertórios e notifique todos os membros automaticamente.</p>
                     </div>
                     
                     <div class="modulo" id="financeiro">
-                        <i class="fas fa-dollar-sign"></i>
+                        <div class="modulo-icon"><i class="fas fa-chart-pie"></i></div>
                         <h3>Controle Financeiro</h3>
-                        <p>Registre os cachês, despesas e lucros de forma transparente.</p>
+                        <p>Registre cachês, despesas e lucros de forma transparente com gráficos visuais.</p>
                     </div>
                     
                     <div class="modulo" id="shows">
-                         <i class="fas fa-guitar"></i>
+                        <div class="modulo-icon"><i class="fas fa-microphone-alt"></i></div>
                         <h3>Gestão de Shows</h3>
-                        <p>Cadastre seus próximos shows e organize a logística.</p>
+                        <p>Cadastre seus próximos shows, organize a logística e controle setlists.</p>
                     </div>
 
                     <div class="modulo" id="recrutamento">
-                        <i class="fas fa-user-plus"></i>
-                       <h3>Recrutamento</h3>
-                       <p>Publique vagas e receba currículos e vídeos de músicos talentosos.</p>
-                   </div>
+                        <div class="modulo-icon"><i class="fas fa-user-plus"></i></div>
+                        <h3>Recrutamento</h3>
+                        <p>Publique vagas e receba perfis e vídeos de músicos talentosos da sua região.</p>
+                    </div>
                 </div>
             </div>
         </section>
 
+        <!-- COMO FUNCIONA -->
+        <section id="como-funciona" class="como-funciona">
+            <div class="container">
+                <span class="section-badge">Simples e rápido</span>
+                <h2 class="section-titulo">Como o Music Makers funciona?</h2>
+                <p class="section-subtitulo">Em 3 passos simples, sua banda estará organizada.</p>
+                <div class="passos-grid">
+                    <div class="passo">
+                        <div class="passo-numero">1</div>
+                        <h3>Crie sua conta</h3>
+                        <p>Cadastre-se gratuitamente como gestor de banda ou músico independente.</p>
+                    </div>
+                    <div class="passo-seta"><i class="fas fa-chevron-right"></i></div>
+                    <div class="passo">
+                        <div class="passo-numero">2</div>
+                        <h3>Configure sua banda</h3>
+                        <p>Adicione membros, crie a agenda de ensaios e organize o repertório.</p>
+                    </div>
+                    <div class="passo-seta"><i class="fas fa-chevron-right"></i></div>
+                    <div class="passo">
+                        <div class="passo-numero">3</div>
+                        <h3>Gerencie tudo</h3>
+                        <p>Controle finanças, acompanhe shows e encontre novos talentos no mapa.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA FINAL -->
         <section class="cta-final">
             <div class="container">
-                <h2>Pronto para organizar ou encontrar sua banda?</h2>
-                <p>Comece gratuitamente e leve sua música para o próximo nível.</p>
-                <a href="cadastro.html" class="btnCta">Crie sua conta</a>
+                <h2>Pronto para levar sua banda ao próximo nível?</h2>
+                <div class="cta-final-buttons">
+                    <a href="cadastro.html" class="btnCta btnCta-grande">Criar Minha Conta Grátis</a>
+                </div>
             </div>
         </section>
     </main>
 
     <footer class="rodape">
         <div class="container">
-            <p>&copy; 2025 Music Makers - Todos os direitos reservados.</p>
-            <p>A plataforma completa para a gestão da sua banda.</p>
+            <div class="rodape-content">
+                <div class="rodape-brand">
+                    <h3 class="rodape-logo">Music Makers</h3>
+                    <p class="rodape-tagline">A plataforma completa para a gestão da sua banda.</p>
+                </div>
+                <div class="rodape-links">
+                    <a href="#funcionalidades">Funcionalidades</a>
+                    <a href="#como-funciona">Como Funciona</a>
+                    <a href="login.html">Login</a>
+                    <a href="cadastro.html">Cadastro</a>
+                </div>
+            </div>
+            <div class="rodape-divider"></div>
+            <div class="rodape-bottom">
+                <p>&copy; 2025 Music Makers. Todos os direitos reservados.</p>
+            </div>
         </div>
     </footer>
 
