@@ -183,7 +183,7 @@ a:hover {
    3. SEÇÃO HERO (PÁGINA INICIAL)
    ========================================================================== */
 .hero {
-    background: url('hero-bg.png') no-repeat center center/cover;
+    background: url('assets/hero-bg.png') no-repeat center center/cover;
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -790,73 +790,135 @@ a:hover {
 /* ==========================================================================
    7. RODAPÉ
    ========================================================================== */
-.rodape {
+.footer {
     background-color: var(--cor-primaria);
     color: rgba(255, 255, 255, 0.7);
-    padding: 50px 0 30px;
+    padding: 20px 0 20px;
     margin-top: auto;
 }
 
-.rodape-content {
+.footer-content {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-    gap: 40px;
-}
-
-.rodape-brand {
-    max-width: 360px;
-}
-
-.rodape-logo {
-    font-family: var(--fonte-principal);
-    font-size: 1.5em;
-    font-weight: 700;
-    color: #fff;
-    margin-bottom: 10px;
-}
-
-.rodape-tagline {
-    font-size: 0.9em;
-    line-height: 1.6;
-    color: rgba(255, 255, 255, 0.55);
-}
-
-.rodape-links {
-    display: flex;
-    gap: 28px;
     align-items: center;
+    gap: 40px;
     flex-wrap: wrap;
-    padding-top: 6px;
 }
 
-.rodape-links a {
-    color: rgba(255, 255, 255, 0.7);
-    text-decoration: none;
-    font-size: 0.9em;
-    font-weight: 500;
+.footer-logo-img {
+    max-width: 150px;
+    height: auto;
+    transition: transform 0.3s ease;
+}
+
+.footer-logo-img:hover {
+    transform: scale(1.05);
+}
+
+.footer-address {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}
+
+.footer-address h4 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+    color: #fff;
+    font-weight: 600;
+}
+
+.footer-social h4 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+    color: #fff;
+    font-weight: 600;
+    width: 100%;
+    text-align: left;
+}
+
+.footer-address p {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0;
+}
+
+/* Área das Redes Sociais */
+.footer-social {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.footer-social .social-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.footer-social .social-list li {
+    display: flex;
+    align-items: center;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.footer-social .social-list a {
+    color: inherit;
+    margin-left: 8px;
+    display: flex;
+    align-items: center;
     transition: color 0.3s ease;
 }
 
-.rodape-links a:hover {
-    color: var(--cor-secundaria);
+.footer-social .social-list a:hover {
+    color: #FFFFFF;
 }
 
-.rodape-divider {
+/* Divisor e Bottom */
+.footer-divider {
     height: 1px;
     background-color: rgba(255, 255, 255, 0.1);
     margin: 30px 0 20px;
 }
 
-.rodape-bottom {
+.footer-bottom {
     text-align: center;
 }
 
-.rodape-bottom p {
+.footer-bottom p {
     font-size: 0.82em;
     color: rgba(255, 255, 255, 0.4);
     margin: 0;
     letter-spacing: 0.3px;
+}
+
+/* Ajuste para telas pequenas (Celulares) */
+@media (max-width: 768px) {
+    .footer-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 30px;
+    }
+
+    .footer-address {
+        margin-right: 0;
+        text-align: center;
+    }
+
+    .footer-social {
+        align-items: center;
+    }
+
+    .footer-social .social-list {
+        justify-content: center;
+    }
 }
 
 /* ==========================================================================
