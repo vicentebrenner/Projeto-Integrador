@@ -211,10 +211,10 @@ a:hover {
 }
 
 .hero h2 {
-    font-size: 3.2em;
+    font-size: 2.8em;
     font-weight: 800;
-    margin-bottom: 22px;
-    line-height: 1.15;
+    margin-bottom: 24px;
+    line-height: 1.2;
     color: #fff;
     letter-spacing: -0.5px;
 }
@@ -224,11 +224,11 @@ a:hover {
 }
 
 .hero p {
-    font-size: 1.15em;
+    font-size: 1.25em;
     margin-bottom: 35px;
-    color: rgba(255,255,255,0.75);
-    max-width: 520px;
-    line-height: 1.7;
+    color: rgba(255,255,255,0.85);
+    max-width: 600px;
+    line-height: 1.6;
 }
 
 .hero-buttons {
