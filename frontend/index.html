@@ -13,9 +13,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 </head>
 
 <body>
@@ -58,25 +56,42 @@
             <div class="container">
                 <div class="caminho-card" id="caminho-gestor">
                     <div class="caminho-icon-wrap">
-                        <i class="fas fa-users"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#fa9848" viewBox="0 0 16 16">
+                            <path d="M2 3a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 0-1h-11A.5.5 0 0 0 2 3m2-2a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 0-1h-7A.5.5 0 0 0 4 1m2.765 5.576A.5.5 0 0 0 6 7v5a.5.5 0 0 0 .765.424l4-2.5a.5.5 0 0 0 0-.848z"/>
+                            <path d="M1.5 14.5A1.5 1.5 0 0 1 0 13V6a1.5 1.5 0 0 1 1.5-1.5h13A1.5 1.5 0 0 1 16 6v7a1.5 1.5 0 0 1-1.5 1.5zm13-1a.5.5 0 0 0 .5-.5V6a.5.5 0 0 0-.5-.5h-13A.5.5 0 0 0 1 6v7a.5.5 0 0 0 .5.5z"/>
+                        </svg>
                     </div>
                     <h3>Para sua Banda</h3>
                     <p>Gerencie agenda, finanças, repertório e logística. Publique vagas para encontrar novos membros
                         talentosos.</p>
-                    <a href="cadastro.html" class="btnCta btnCta-grande"><i class="fas fa-arrow-right"></i> Gerenciar
-                        Minha
-                        Banda</a>
+                    <a href="cadastro.html" class="btnCta btnCta-grande">
+                        Gerenciar Minha Banda
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                            viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
+                        </svg>
+                    </a>
                 </div>
                 <div class="caminho-card" id="caminho-musico">
                     <div class="caminho-icon-wrap">
-                        <i class="fas fa-guitar"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#fa9848" viewBox="0 0 16 16">
+                            <path d="M6 13c0 1.105-1.12 2-2.5 2S1 14.105 1 13s1.12-2 2.5-2 2.5.896 2.5 2m9-2c0 1.105-1.12 2-2.5 2s-2.5-.895-2.5-2 1.12-2 2.5-2 2.5.895 2.5 2"/>
+                            <path fill-rule="evenodd" d="M14 11V2h1v9zM6 3v10H5V3z"/>
+                            <path d="M5 2.905a1 1 0 0 1 .9-.995l8-.8a1 1 0 0 1 1.1.995V3L5 4z"/>
+                        </svg>
                     </div>
                     <h3>Para Você, Músico</h3>
                     <p>Crie seu perfil profissional, envie vídeos de performance e encontre bandas que precisam do seu
                         talento.</p>
-                    <a href="cadastro.html" class="btnCta btnCta-grande"><i class="fas fa-arrow-right"></i> Criar Perfil
-                        de
-                        Músico</a>
+                    <a href="cadastro.html" class="btnCta btnCta-grande">
+                        Criar Perfil de Músico
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                            viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
+                        </svg>
+                    </a>
                 </div>
             </div>
         </section>
@@ -91,25 +106,46 @@
                 <div class="funcionalidades-grid">
 
                     <div class="modulo" id="agenda">
-                        <div class="modulo-icon"><i class="fas fa-calendar-alt"></i></div>
+                        <div class="modulo-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#fa9848" viewBox="0 0 16 16">
+                                <path d="M6.445 11.688V6.354h-.633A13 13 0 0 0 4.5 7.16v.695c.375-.257.969-.62 1.258-.777h.012v4.61zm1.188-1.305c.047.64.594 1.406 1.703 1.406 1.258 0 2-1.066 2-2.871 0-1.934-.781-2.668-1.953-2.668-.926 0-1.797.672-1.797 1.809 0 1.16.824 1.77 1.676 1.77.746 0 1.23-.376 1.383-.79h.027c-.004 1.316-.461 2.164-1.305 2.164-.664 0-1.008-.45-1.05-.82zm2.953-2.317c0 .696-.559 1.18-1.184 1.18-.601 0-1.144-.383-1.144-1.2 0-.823.582-1.21 1.168-1.21.633 0 1.16.398 1.16 1.23"/>
+                                <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
+                            </svg>
+                        </div>
                         <h3>Agenda de Ensaios</h3>
                         <p>Marque ensaios, defina repertórios e notifique todos os membros automaticamente.</p>
                     </div>
 
                     <div class="modulo" id="financeiro">
-                        <div class="modulo-icon"><i class="fas fa-chart-pie"></i></div>
+                        <div class="modulo-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#fa9848" viewBox="0 0 16 16">
+                                <path d="M0 5a5 5 0 0 0 4.027 4.905 6.5 6.5 0 0 1 .544-2.073C3.695 7.536 3.132 6.864 3 5.91h-.5v-.426h.466V5.05q-.001-.07.004-.135H2.5v-.427h.511C3.236 3.24 4.213 2.5 5.681 2.5c.316 0 .59.031.819.085v.733a3.5 3.5 0 0 0-.815-.082c-.919 0-1.538.466-1.734 1.252h1.917v.427h-1.98q-.004.07-.003.147v.422h1.983v.427H3.93c.118.602.468 1.03 1.005 1.229a6.5 6.5 0 0 1 4.97-3.113A5.002 5.002 0 0 0 0 5m16 5.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0m-7.75 1.322c.069.835.746 1.485 1.964 1.562V14h.54v-.62c1.259-.086 1.996-.74 1.996-1.69 0-.865-.563-1.31-1.57-1.54l-.426-.1V8.374c.54.06.884.347.966.745h.948c-.07-.804-.779-1.433-1.914-1.502V7h-.54v.629c-1.076.103-1.808.732-1.808 1.622 0 .787.544 1.288 1.45 1.493l.358.085v1.78c-.554-.08-.92-.376-1.003-.787zm1.96-1.895c-.532-.12-.82-.364-.82-.732 0-.41.311-.719.824-.809v1.54h-.005zm.622 1.044c.645.145.943.38.943.796 0 .474-.37.8-1.02.86v-1.674z"/>
+                            </svg>
+                        </div>
                         <h3>Controle Financeiro</h3>
                         <p>Registre cachês, despesas e lucros de forma transparente com gráficos visuais.</p>
                     </div>
 
                     <div class="modulo" id="shows">
-                        <div class="modulo-icon"><i class="fas fa-microphone-alt"></i></div>
+                        <div class="modulo-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#fa9848" viewBox="0 0 16 16">
+                                <path d="M7.752.066a.5.5 0 0 1 .496 0l3.75 2.143a.5.5 0 0 1 .252.434v3.995l3.498 2A.5.5 0 0 1 16 9.07v4.286a.5.5 0 0 1-.252.434l-3.75 2.143a.5.5 0 0 1-.496 0l-3.502-2-3.502 2.001a.5.5 0 0 1-.496 0l-3.75-2.143A.5.5 0 0 1 0 13.357V9.071a.5.5 0 0 1 .252-.434L3.75 6.638V2.643a.5.5 0 0 1 .252-.434zM4.25 7.504 1.508 9.071l2.742 1.567 2.742-1.567zM7.5 9.933l-2.75 1.571v3.134l2.75-1.571zm1 3.134 2.75 1.571v-3.134L8.5 9.933zm.508-3.996 2.742 1.567 2.742-1.567-2.742-1.567zm2.242-2.433V3.504L8.5 5.076V8.21zM7.5 8.21V5.076L4.75 3.504v3.134zM5.258 2.643 8 4.21l2.742-1.567L8 1.076zM15 9.933l-2.75 1.571v3.134L15 13.067zM3.75 14.638v-3.134L1 9.933v3.134z"/>
+                            </svg>
+                        </div>
                         <h3>Gestão de Shows</h3>
                         <p>Cadastre seus próximos shows, organize a logística e controle setlists.</p>
                     </div>
 
                     <div class="modulo" id="recrutamento">
-                        <div class="modulo-icon"><i class="fas fa-user-plus"></i></div>
+                        <div class="modulo-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#fa9848"
+                                viewBox="0 0 16 16">
+                                <path
+                                    d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" />
+                                <path
+                                    d="M8.256 14a4.474 4.474 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10c.26 0 .507.009.74.025.226-.341.496-.65.804-.918C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4s1 1 1 1h5.256Z" />
+                            </svg>
+                        </div>
                         <h3>Recrutamento</h3>
                         <p>Publique vagas e receba perfis e vídeos de músicos talentosos da sua região.</p>
                     </div>
@@ -129,7 +165,12 @@
                     <!-- FLUXO GESTOR -->
                     <div class="passo-board board-gestor">
                         <div class="board-header">
-                            <div class="board-icon"><i class="fas fa-chess-king"></i></div>
+                            <div class="board-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="white" viewBox="-1 -1 18 18">
+                                    <path d="M4 16s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-5.95a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"/>
+                                    <path d="M2 1a2 2 0 0 0-2 2v9.5A1.5 1.5 0 0 0 1.5 14h.653a5.4 5.4 0 0 1 1.066-2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v9h-2.219c.554.654.89 1.373 1.066 2h.653a1.5 1.5 0 0 0 1.5-1.5V3a2 2 0 0 0-2-2z"/>
+                                </svg>
+                            </div>
                             <h3>Para Gestor</h3>
                             <p>Assuma o controle total da sua banda</p>
                         </div>
@@ -168,7 +209,13 @@
                     <!-- FLUXO MÚSICO -->
                     <div class="passo-board board-musico">
                         <div class="board-header">
-                            <div class="board-icon"><i class="fas fa-guitar"></i></div>
+                            <div class="board-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="white" viewBox="0 0 16 16">
+                                    <path d="M9 13c0 1.105-1.12 2-2.5 2S4 14.105 4 13s1.12-2 2.5-2 2.5.895 2.5 2"/>
+                                    <path fill-rule="evenodd" d="M9 3v10H8V3z"/>
+                                    <path d="M8 2.82a1 1 0 0 1 .804-.98l3-.6A1 1 0 0 1 13 2.22V4L8 5z"/>
+                                </svg>
+                            </div>
                             <h3>Para Músico</h3>
                             <p>Mostre seu talento e consiga novos palcos</p>
                         </div>
