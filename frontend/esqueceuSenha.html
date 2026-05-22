@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recuperar Senha - Music Makers</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -94,6 +95,7 @@
 
         /* Caixa de Login (Vidro Estático) */
         .loginBox {
+            position: relative; /* Para posicionar a seta de voltar */
             background: rgba(255, 255, 255, 0.9); /* Branco translúcido */
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
@@ -105,6 +107,31 @@
             max-width: 500px;
             text-align: center;
             /* Removi transform-style e transition de movimento */
+        }
+
+        /* Botão de Voltar para o Login */
+        .btn-back {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #011029;
+            font-size: 1.5rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.03);
+            z-index: 5;
+        }
+
+        .btn-back:hover {
+            color: #fa9848;
+            background: rgba(250, 152, 72, 0.1);
+            transform: translateX(-3px);
         }
 
         /* Ícone de Cadeado Animado (Pulsando) */
@@ -280,6 +307,7 @@
 
     <div class="loginContainer">
         <div class="loginBox">
+            <a href="login.html" class="btn-back" title="Voltar para o Login"><i class="bi bi-arrow-left"></i></a>
             
             <div class="icon-lock-container">
                 <i class="fa-solid fa-unlock-keyhole icon-lock"></i>
@@ -306,14 +334,11 @@
                 </button>
             </form>
 
-            <div class="loginLinks">
-                <a href="login.html">
-                    <i class="fa-solid fa-arrow-left" style="margin-right: 5px;"></i> Voltar para o Login
-                </a>
-            </div>
+
         </div>
     </div>
 
+    <script src="scripts/utils.js"></script>
     <script src="scripts/recuperarSenha.js"></script>
 
     <script>

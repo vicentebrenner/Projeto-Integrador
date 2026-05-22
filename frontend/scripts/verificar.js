@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        const apiUrl = `/api/auth/verify-code?email=${encodeURIComponent(email)}&code=${encodeURIComponent(codigo)}`;
+        const apiUrl = getApiUrl(`/api/auth/verify-code?email=${encodeURIComponent(email)}&code=${encodeURIComponent(codigo)}`);
 
         try {
             const response = await fetch(apiUrl, {
@@ -40,9 +40,10 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             if (response.ok) {
-                alert('Conta verificada com sucesso!');
-                localStorage.removeItem('emailParaVerificacao');
-                window.location.href = 'login.html';
+                showSuccessPopup('Conta verificada com sucesso!', () => {
+                    localStorage.removeItem('emailParaVerificacao');
+                    window.location.href = 'login.html';
+                });
             } else {
                 const errorText = await response.text();
                 mostrarErro(errorText || 'Código de verificação inválido.');

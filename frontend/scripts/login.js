@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         try {
             // Faz a requisição para a API de login no backend
-            const response = await fetch('http://18.229.124.123:8080/api/auth/login', {
+            const response = await fetch(getApiUrl('/api/auth/login'), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -49,13 +49,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 body: JSON.stringify({ email, senha }),
             });
 
-            const data = await response.json();
+            let data;
+            const contentType = response.headers.get('content-type');
+            if (contentType && contentType.includes('application/json')) {
+                data = await response.json();
+            } else {
+                data = await response.text();
+            }
 
             if (response.ok) {
                 // Se o login for bem-sucedido (status 200 OK)
-                alert('Login realizado com sucesso!');
-                
-                // --- CORREÇÃO AQUI ---
                 // O backend retorna dados soltos (token, id, nome, role).
                 // Precisamos criar o objeto 'usuario' manualmente para salvar no localStorage.
                 const usuarioParaSalvar = {
@@ -67,16 +70,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 localStorage.setItem('usuarioLogado', JSON.stringify(usuarioParaSalvar));
                 localStorage.setItem('authToken', data.token);
 
-                // Redireciona para a página do dashboard
-                window.location.href = 'dashboard.html';
-
+                showSuccessPopup('Login realizado com sucesso!', () => {
+                    // Redireciona conforme o tipo de usuário (Músico -> perfil-musico.html, Gestor -> dashboard.html)
+                    if (usuarioParaSalvar.tipoUsuario === 'GESTOR') {
+                        window.location.href = 'dashboard.html';
+                    } else {
+                        window.location.href = 'perfil-musico.html';
+                    }
+                });
             } else {
                 // Se houver erro (status 401, 403, etc.)
-                // Tenta pegar a mensagem do JSON ou usa o texto puro da resposta
-                const mensagemErro = data.message || data || 'Erro ao realizar login'; 
+                const mensagemErro = (data && typeof data === 'object') ? (data.message || 'Erro ao realizar login') : (data || 'Erro ao realizar login'); 
                 mostrarErro(mensagemErro);
             }
-
         } catch (error) {
             // Erro de rede ou conexão (ex: backend desligado)
             console.error('Erro na requisição de login:', error);

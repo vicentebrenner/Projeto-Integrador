@@ -1,20 +1,17 @@
 document.addEventListener('DOMContentLoaded', function() {
 
-    // --- VERIFICA LOGIN (MODO DE TESTE) ---
-    
-    // 1. Comente a linha original que busca no localStorage
-    // const usuarioLogado = JSON.parse(localStorage.getItem('usuarioLogado'));
-
-    // 2. Crie um usuário "fake" para testar
-    const usuarioLogado = { nome: "Músico de Teste" };
-
-    // 3. Comente o bloco 'if' que redireciona
-    /*
-    if (!usuarioLogado) {
+    // --- VERIFICA LOGIN E PERMISSÃO ---
+    const usuarioLogadoString = localStorage.getItem('usuarioLogado');
+    if (!usuarioLogadoString) {
         window.location.href = 'login.html'; // Redireciona se não estiver logado
         return;
     }
-    */
+
+    const usuarioLogado = JSON.parse(usuarioLogadoString);
+    if (usuarioLogado && usuarioLogado.tipoUsuario !== 'MUSICO') {
+        window.location.href = 'dashboard.html'; // Redireciona gestor para o painel da banda
+        return;
+    }
 
     // --- DADOS SIMULADOS (Agora o código abaixo funciona) ---
     let dadosPerfil = {

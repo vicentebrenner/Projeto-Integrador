@@ -53,11 +53,7 @@ public class SecurityConfig {
 public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
     
-    configuration.setAllowedOrigins(Arrays.asList(
-        "http://localhost",           // Para seus testes locais funcionarem
-        "http://localhost:80",        // Variação local
-        "http://18.229.124.123"       // 🟢 O IP DA SUA AWS (Sem a porta 80, pois é padrão)
-    ));
+    configuration.setAllowedOriginPatterns(Arrays.asList("*"));
     
     configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
     configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));

@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const emailInput = document.getElementById('emailRecuperacao');
             const email = emailInput.value;
 
-            const apiUrl = '/api/auth/forgot-password';
+            const apiUrl = getApiUrl('/api/auth/forgot-password');
 
             try {
                 const response = await fetch(apiUrl, {

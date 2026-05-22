@@ -12,6 +12,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     try {
         const usuarioLogado = JSON.parse(usuarioLogadoString);
+        
+        // Apenas GESTOR pode acessar a dashboard da banda
+        if (usuarioLogado && usuarioLogado.tipoUsuario !== 'GESTOR') {
+            window.location.href = 'perfil-musico.html';
+            return;
+        }
+
         if (usuarioLogado && usuarioLogado.nome && nomeUsuarioElement) {
             const primeiroNome = usuarioLogado.nome.split(' ')[0];
             

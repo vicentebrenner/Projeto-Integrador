@@ -60,8 +60,10 @@ public class AuthController {
 
         usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
 
-        if (usuario.getTipoUsuario() == null || usuario.getTipoUsuario().isEmpty()) {
+        if (usuario.getTipoUsuario() == null || usuario.getTipoUsuario().trim().isEmpty()) {
             usuario.setTipoUsuario("MUSICO");
+        } else {
+            usuario.setTipoUsuario(usuario.getTipoUsuario().trim().toUpperCase());
         }
 
         usuarioRepository.save(usuario);

@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             try {
-                const response = await fetch('/api/auth/reset-password', {
+                const response = await fetch(getApiUrl('/api/auth/reset-password'), {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -48,8 +48,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 const mensagem = await response.text();
 
                 if (response.ok) {
-                    alert('Senha redefinida com sucesso!');
-                    window.location.href = 'login.html';
+                    showSuccessPopup('Senha redefinida com sucesso!', () => {
+                        window.location.href = 'login.html';
+                    });
                 } else {
                     mostrarErro(mensagem || 'Ocorreu um erro ao redefinir a senha.');
                 }

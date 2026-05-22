@@ -85,6 +85,7 @@
 
         /* Caixa de Login (Vidro Estático) */
         .loginBox {
+            position: relative; /* Para posicionar a seta de voltar */
             background: rgba(255, 255, 255, 0.9); /* Branco translúcido */
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
@@ -95,6 +96,31 @@
             width: 100%;
             max-width: 450px; /* Um pouco menor para ficar elegante */
             text-align: center;
+        }
+
+        /* Botão de Voltar para a Home */
+        .btn-back {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #011029;
+            font-size: 1.5rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.03);
+            z-index: 5;
+        }
+
+        .btn-back:hover {
+            color: #fa9848;
+            background: rgba(250, 152, 72, 0.1);
+            transform: translateX(-3px);
         }
 
         /* Ícone de Cadeado Animado (Pulsando) */
@@ -278,7 +304,7 @@
 
     <div class="loginContainer">
         <div class="loginBox">
-            
+            <a href="index.html" class="btn-back" title="Voltar para a Página Inicial"><i class="bi bi-arrow-left"></i></a>
             <a href="index.html" class="logoLogin">MusicMakers</a>
             
             <div class="icon-lock-container">
@@ -318,6 +344,9 @@
                         <a href="cadastro.html" class="btn-cadastro-outline">Cadastre-se</a>
                     </div>
                 </div>
+            </form>
+        </div>
+    </div>
 
     <script src="scripts/utils.js"></script>
     <script src="scripts/login.js"></script>

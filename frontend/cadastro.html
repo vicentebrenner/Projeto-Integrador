@@ -77,36 +77,62 @@
             width: 100%;
             display: flex;
             justify-content: center;
-            padding: 40px 20px;
+            padding: 15px 20px;
         }
 
         .loginBox {
+            position: relative; /* Para posicionar a seta de voltar */
             background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.5);
-            padding: 40px 40px;
+            padding: 25px 35px;
             border-radius: 20px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.2);
             width: 100%;
-            max-width: 500px; /* Um pouco mais largo que o login */
+            max-width: 460px; /* Um pouco mais largo que o login */
             text-align: center;
         }
 
+        /* Botão de Voltar para a Home */
+        .btn-back {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #011029;
+            font-size: 1.5rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.03);
+            z-index: 5;
+        }
+
+        .btn-back:hover {
+            color: #fa9848;
+            background: rgba(250, 152, 72, 0.1);
+            transform: translateX(-3px);
+        }
+
         .icon-lock-container {
-            width: 80px;
-            height: 80px;
+            width: 50px;
+            height: 50px;
             background: rgba(250, 152, 72, 0.15);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 20px auto;
+            margin: 0 auto 10px auto;
             animation: pulseGlow 3s infinite;
         }
 
         .icon-lock {
-            font-size: 2.5rem;
+            font-size: 1.8rem;
             color: #fa9848;
         }
 
@@ -127,14 +153,14 @@
         }
 
         h2 {
-            margin-bottom: 25px;
-            font-size: 1.5em;
+            margin-bottom: 15px;
+            font-size: 1.35em;
             color: #011029;
             font-weight: 600;
         }
 
         .inputGroup {
-            margin-bottom: 20px;
+            margin-bottom: 12px;
             text-align: left;
         }
 
@@ -178,7 +204,7 @@
 
         .input-wrapper input {
             width: 100%;
-            padding: 15px 45px 15px 45px;
+            padding: 11px 40px 11px 40px;
             border: 2px solid #eee;
             border-radius: 12px;
             font-size: 1em;
@@ -214,7 +240,7 @@
         .btnLoginSubmit {
             background: linear-gradient(45deg, #fa9848, #e67e22);
             border: none;
-            padding: 16px;
+            padding: 12px 16px;
             border-radius: 12px;
             color: white;
             font-weight: 700;
@@ -237,7 +263,7 @@
         }
 
         .loginLinks {
-            margin-top: 25px;
+            margin-top: 15px;
         }
         .loginLinks p {
             font-size: 0.9em;
@@ -252,6 +278,55 @@
         .loginLinks a:hover {
             color: #fa9848;
         }
+
+        /* Seletor de Tipo de Conta Premium */
+        .role-selector {
+            display: flex;
+            gap: 15px;
+            margin-top: 5px;
+        }
+        .role-option {
+            flex: 1;
+            background: #f9f9f9;
+            border: 2px solid #eee;
+            border-radius: 12px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            user-select: none;
+        }
+        .role-option i {
+            font-size: 1.5rem;
+            color: #aaa;
+            transition: color 0.3s ease;
+        }
+        .role-option span {
+            font-size: 0.9em;
+            font-weight: 700;
+            color: #555;
+            transition: color 0.3s ease;
+        }
+        .role-option:hover {
+            border-color: #fa9848;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(250, 152, 72, 0.1);
+        }
+        .role-option.active {
+            background: #fff;
+            border-color: #fa9848;
+            box-shadow: 0 5px 15px rgba(250, 152, 72, 0.2);
+        }
+        .role-option.active i {
+            color: #fa9848;
+        }
+        .role-option.active span {
+            color: #011029;
+        }
     </style>
 </head>
 <body> 
@@ -263,6 +338,7 @@
 
     <div class="loginContainer">
         <div class="loginBox">
+            <a href="index.html" class="btn-back" title="Voltar para a Página Inicial"><i class="bi bi-arrow-left"></i></a>
             <a href="index.html" class="logoLogin">MusicMakers</a>
             
             <div class="icon-lock-container">
@@ -301,14 +377,18 @@
                 </div>
 
                 <div class="inputGroup">
-                    <label for="confirmarSenha">Confirmar Senha</label>
-                    <div class="input-wrapper">
-                        <i class="bi bi-lock-fill field-icon"></i>
-                        <input type="password" id="confirmarSenha" name="confirmarSenha" required placeholder="Repita a senha">
-                        
-                        <i class="bi bi-eye-slash togglePasswordIcon" id="toggleConfirmarSenha"></i>
+                    <label>Tipo de Conta</label>
+                    <div class="role-selector">
+                        <div class="role-option active" data-role="MUSICO">
+                            <i class="bi bi-music-note-beamed"></i>
+                            <span>Músico</span>
+                        </div>
+                        <div class="role-option" data-role="GESTOR">
+                            <i class="bi bi-people-fill"></i>
+                            <span>Gestor de Banda</span>
+                        </div>
                     </div>
-                    <div class="mensagemErro" id="erroConfirmarSenha"></div>
+                    <input type="hidden" id="tipoUsuario" name="tipoUsuario" value="MUSICO">
                 </div>
                 
                 <div class="mensagemErro geral" id="mensagemErroCadastro"></div>

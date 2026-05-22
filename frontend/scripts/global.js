@@ -10,17 +10,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const nome = usuarioLogado.nome;
         const inicial = nome ? nome.charAt(0).toUpperCase() : '?';
+        const tipoUsuario = usuarioLogado.tipoUsuario || 'MUSICO';
 
         const perfilLi = document.createElement('li');
         perfilLi.classList.add('perfil-container');
         
-        // MUDANÇA AQUI: Link para o perfil adicionado acima do botão de Sair
+        const linkPerfil = tipoUsuario === 'GESTOR' 
+            ? `<a href="dashboard.html">Painel da Banda</a>` 
+            : `<a href="perfil-musico.html">Meu Perfil Músico</a>`;
+
         perfilLi.innerHTML = `
             <div class="perfil-icone" id="perfilIcone">${inicial}</div>
             <div class="perfil-dropdown" id="perfilDropdown">
                 <p>Olá, ${nome.split(' ')[0]}!</p>
                 <hr>
-                <a href="perfil-musico.html">Meu Perfil Músico</a>
+                ${linkPerfil}
                 <a href="#" id="btnLogout">Sair</a>
             </div>
         `;
