@@ -4036,13 +4036,17 @@ a:hover {
 
 .modal-boas-vindas {
     background: #ffffff;
-    border-radius: 20px;
+    border-radius: 24px;
     width: 100%;
-    max-width: 560px;
-    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
-    overflow: hidden;
+    max-width: 420px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow:
+        0 0 0 1px rgba(250, 152, 72, 0.15),
+        0 20px 60px rgba(0, 0, 0, 0.5),
+        0 0 80px rgba(250, 152, 72, 0.15);
     position: relative;
-    animation: modalSlideIn 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    animation: modalSlideIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
 
 .modal-overlay.sair .modal-boas-vindas {
@@ -4050,21 +4054,22 @@ a:hover {
 }
 
 @keyframes modalSlideIn {
-    from { opacity: 0; transform: translateY(40px) scale(0.95); }
-    to   { opacity: 1; transform: translateY(0)   scale(1);    }
+    from { opacity: 0; transform: translateY(50px) scale(0.9); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 @keyframes modalSlideOut {
-    from { opacity: 1; transform: translateY(0)    scale(1);    }
-    to   { opacity: 0; transform: translateY(20px) scale(0.96); }
+    from { opacity: 1; transform: translateY(0) scale(1); }
+    to   { opacity: 0; transform: translateY(20px) scale(0.95); }
 }
 
 .modal-topo {
     background: linear-gradient(135deg, #011029 0%, #032554 60%, #041e4a 100%);
-    padding: 36px 36px 28px;
+    padding: 36px 32px 28px;
     text-align: center;
     position: relative;
     overflow: hidden;
+    border-radius: 24px 24px 0 0;
 }
 
 .modal-topo::before,
@@ -4075,44 +4080,31 @@ a:hover {
 }
 
 .modal-topo::before {
-    width: 200px;
-    height: 200px;
+    width: 180px;
+    height: 180px;
     background: rgba(250, 152, 72, 0.15);
-    top: -80px;
-    right: -60px;
+    top: -70px;
+    right: -50px;
 }
 
 .modal-topo::after {
-    width: 130px;
-    height: 130px;
+    width: 120px;
+    height: 120px;
     background: rgba(52, 152, 219, 0.2);
-    bottom: -50px;
-    left: -40px;
-}
-
-.modal-icone {
-    width: 68px;
-    height: 68px;
-    background: linear-gradient(135deg, #fa9848, #e67e22);
-    border-radius: 18px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 18px;
-    box-shadow: 0 8px 24px rgba(250, 152, 72, 0.4);
-    position: relative;
-    z-index: 2;
+    bottom: -40px;
+    left: -30px;
 }
 
 .modal-topo h2 {
     color: #ffffff;
     font-family: 'Montserrat', sans-serif;
-    font-size: 1.75em;
-    font-weight: 700;
-    margin-bottom: 8px;
+    font-size: 1.9em;
+    font-weight: 800;
+    margin-bottom: 10px;
     position: relative;
     z-index: 2;
     line-height: 1.2;
+    letter-spacing: -0.3px;
 }
 
 .modal-topo h2 span {
@@ -4120,77 +4112,86 @@ a:hover {
 }
 
 .modal-topo p {
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(255, 255, 255, 0.85);
     font-size: 0.95em;
+    font-weight: 600;
     position: relative;
     z-index: 2;
     line-height: 1.5;
+    margin: 0;
+}
+
+.modal-topo p span {
+    color: #fa9848;
 }
 
 .modal-corpo {
-    padding: 32px 36px;
+    padding: 24px 24px 20px;
 }
 
 .modal-cards {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
-    margin-bottom: 28px;
+    gap: 10px;
+    margin-bottom: 20px;
 }
 
 .modal-card {
     background: #f8f9fa;
     border: 1px solid #dee2e6;
     border-radius: 12px;
-    padding: 18px 12px;
+    padding: 14px 10px;
     text-align: center;
     transition: all 0.3s ease;
+    cursor: default;
 }
 
 .modal-card:hover {
-    border-color: rgba(250, 152, 72, 0.4);
-    background: rgba(250, 152, 72, 0.04);
+    border-color: rgba(250, 152, 72, 0.5);
+    background: rgba(250, 152, 72, 0.05);
     transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
+    box-shadow: 0 6px 16px rgba(250, 152, 72, 0.15);
 }
 
 .modal-card svg {
     display: block;
-    margin: 0 auto 10px;
+    margin: 0 auto 8px;
 }
 
 .modal-card h4 {
     font-family: 'Montserrat', sans-serif;
     font-size: 0.78em;
     color: #011029;
-    margin-bottom: 4px;
+    margin-bottom: 3px;
     font-weight: 700;
 }
 
 .modal-card p {
-    font-size: 0.76em;
-    color: #95a5a6;
-    line-height: 1.4;
+    font-size: 0.78em;
+    color: #555;
+    line-height: 1.3;
     margin: 0;
+    font-weight: 600;
 }
 
 .modal-divisor {
     height: 1px;
     background: #dee2e6;
-    margin: 0 0 24px;
+    margin: 0 0 18px;
 }
 
 .modal-descricao {
-    font-size: 0.93em;
-    color: #555;
-    line-height: 1.65;
-    margin-bottom: 26px;
+    font-size: 0.95em;
+    color: #333;
+    font-weight: 500;
+    line-height: 1.6;
+    margin-bottom: 20px;
     text-align: center;
 }
 
 .modal-acoes {
     display: flex;
-    gap: 12px;
+    gap: 10px;
     flex-direction: column;
 }
 
@@ -4198,40 +4199,62 @@ a:hover {
     background: linear-gradient(135deg, #fa9848, #e67e22);
     color: #fff;
     border: none;
-    border-radius: 10px;
-    padding: 14px 24px;
+    border-radius: 12px;
+    padding: 13px 24px;
     font-family: 'Montserrat', sans-serif;
     font-weight: 700;
-    font-size: 0.95em;
+    font-size: 0.92em;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(250, 152, 72, 0.35);
+    box-shadow: 0 4px 15px rgba(250, 152, 72, 0.4);
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
     text-decoration: none;
+    letter-spacing: 0.3px;
 }
 
 .modal-btn-primario:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(250, 152, 72, 0.5);
+    box-shadow: 0 8px 25px rgba(250, 152, 72, 0.6);
+    color: #fff;
 }
 
 .modal-btn-secundario {
     background: transparent;
-    color: #95a5a6;
-    border: none;
+    color: #fa9848;
+    border: 1.5px solid rgba(250, 152, 72, 0.35);
     border-radius: 10px;
-    padding: 10px 24px;
-    font-family: 'Open Sans', sans-serif;
-    font-size: 0.85em;
+    padding: 11px 24px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.88em;
+    font-weight: 600;
     cursor: pointer;
-    transition: color 0.2s ease;
+    transition: all 0.2s ease;
     width: 100%;
 }
 
 .modal-btn-secundario:hover {
-    color: #011029; 
+    background: rgba(250, 152, 72, 0.06);
+    border-color: #fa9848;
+    color: #e67e22;
+}
+
+@media (max-width: 480px) {
+    .modal-boas-vindas  { border-radius: 20px; max-width: 100%; }
+    .modal-topo         { padding: 28px 22px 22px; }
+    .modal-topo h2      { font-size: 1.5em; }
+    .modal-corpo        { padding: 20px 18px; }
+    .modal-cards        { grid-template-columns: 1fr; gap: 8px; }
+
+    .modal-card {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-align: left;
+        padding: 12px 14px;
+    }
+
+    .modal-card svg { margin: 0; flex-shrink: 0; }
 }
