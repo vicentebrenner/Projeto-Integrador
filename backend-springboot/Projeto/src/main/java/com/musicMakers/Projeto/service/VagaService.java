@@ -29,3 +29,5 @@ public class VagaService {
         return vagaRepository.save(vaga);
     }
 }
+
+

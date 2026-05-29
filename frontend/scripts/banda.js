@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const MESES = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
     const DIAS_SEMANA = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
-    const HORAS = Array.from({length:18}, (_,i) => i + 6); // 06h – 23h
+    const HORAS = Array.from({length:24}, (_,i) => i); // 00h – 23h
 
     const COR_TIPO = { show:'#fa9848', ensaio:'#10b981', gravacao:'#8b5cf6', outro:'#3b82f6' };
 
@@ -286,68 +286,95 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         wrap.appendChild(header);
 
-        // Corpo com linhas de hora
+        // Corpo Grid Engine
         const body = document.createElement('div');
-        body.className = 'cal-week-body';
+        body.className = 'cal-week-body cal-grid-engine';
 
-        HORAS.forEach(hora => {
-            const row = document.createElement('div');
-            row.className = 'cal-week-row';
+        // Linhas de Tempo e Divisórias Horizontais
+        HORAS.forEach((hora, index) => {
             const timeLabel = document.createElement('div');
-            timeLabel.className = 'cal-time-label';
-            timeLabel.textContent = `${String(hora).padStart(2,'0')}:00`;
-            row.appendChild(timeLabel);
+            timeLabel.className = 'cal-time-label-wrapper';
+            timeLabel.style.gridRow = `${index + 1}`;
+            timeLabel.style.gridColumn = '1';
+            timeLabel.innerHTML = `<span class="cal-time-label">${String(hora).padStart(2,'0')}:00</span>`;
+            body.appendChild(timeLabel);
 
-            semana.forEach(day => {
-                const cell = document.createElement('div');
-                cell.className = 'cal-week-cell';
-                cell.dataset.date = isoDate(day);
-                cell.dataset.hora = hora;
+            const gridLine = document.createElement('div');
+            gridLine.className = 'cal-grid-line';
+            gridLine.style.gridRow = `${index + 1}`;
+            gridLine.style.gridColumn = '2 / -1';
+            body.appendChild(gridLine);
+        });
 
-                // Linha da hora atual
-                if (isoDate(day) === isoToday() && CAL.today.getHours() === hora) {
-                    const currentLine = document.createElement('div');
-                    currentLine.className = 'cal-current-time';
-                    currentLine.style.top = `${(CAL.today.getMinutes()/60)*100}%`;
-                    cell.appendChild(currentLine);
-                }
+        // Colunas de Dias
+        semana.forEach((day, index) => {
+            const col = document.createElement('div');
+            col.className = 'cal-day-col';
+            col.style.gridRow = '1 / -1';
+            col.style.gridColumn = `${index + 2}`;
+            col.dataset.date = isoDate(day);
 
-                // Eventos com horário nessa célula
-                eventosDosDia(isoDate(day)).forEach(ev => {
-                    const evHora = parseInt((ev.hora || '00:00').split(':')[0]);
-                    if (evHora === hora) {
-                        const chip = document.createElement('div');
-                        chip.className = 'cal-week-event';
-                        chip.style.background = COR_TIPO[ev.tipo] || COR_TIPO.outro;
-                        chip.innerHTML = `<strong>${ev.titulo}</strong><small>${ev.hora || ''} · ${ev.local || ''}</small>`;
-                        chip.draggable = true;
-                        chip.dataset.idx = dadosAgenda.indexOf(ev);
-                        chip.addEventListener('dragstart', onDragStart);
-                        chip.addEventListener('click', e => { e.stopPropagation(); mostrarPopoverEvento(ev, chip); });
-                        cell.appendChild(chip);
-                    }
-                });
+            // Linha da hora atual
+            if (isoDate(day) === isoToday()) {
+                const currentLine = document.createElement('div');
+                currentLine.className = 'cal-current-time';
+                const totalMinutes = CAL.today.getHours() * 60 + CAL.today.getMinutes();
+                currentLine.style.top = `${(totalMinutes / (24 * 60)) * 100}%`;
+                col.appendChild(currentLine);
+            }
 
-                cell.addEventListener('dragover', e => { e.preventDefault(); cell.classList.add('cal-drop-over'); });
-                cell.addEventListener('dragleave', () => cell.classList.remove('cal-drop-over'));
-                cell.addEventListener('drop', e => {
-                    e.preventDefault(); cell.classList.remove('cal-drop-over');
-                    onDrop(isoDate(day), hora);
-                });
-                cell.addEventListener('click', () => abrirModalNovaData(isoDate(day), hora));
-                row.appendChild(cell);
+            // Eventos com horário nessa célula
+            eventosDosDia(isoDate(day)).forEach(ev => {
+                const evParts = (ev.hora || '00:00').split(':');
+                const evHora = parseInt(evParts[0], 10);
+                const evMin = parseInt(evParts[1] || '0', 10);
+
+                const startMinutes = evHora * 60 + evMin;
+                const duracaoHoras = ev.tipo === 'show' ? 3 : (ev.tipo === 'ensaio' ? 2 : 1.5);
+                const duracaoMinutes = duracaoHoras * 60;
+
+                const chip = document.createElement('div');
+                chip.className = 'cal-week-event';
+                chip.style.borderLeftColor = COR_TIPO[ev.tipo] || COR_TIPO.outro;
+                chip.style.top = `${(startMinutes / (24 * 60)) * 100}%`;
+                chip.style.height = `calc(${(duracaoMinutes / (24 * 60)) * 100}% - 2px)`;
+
+                chip.innerHTML = `<strong>${ev.titulo}</strong><small>${ev.hora || ''} · ${ev.local || ''}</small>`;
+                chip.draggable = true;
+                chip.dataset.idx = dadosAgenda.indexOf(ev);
+                chip.addEventListener('dragstart', onDragStart);
+                chip.addEventListener('click', e => { e.stopPropagation(); mostrarPopoverEvento(ev, chip); });
+                col.appendChild(chip);
             });
-            body.appendChild(row);
+
+            col.addEventListener('dragover', e => { e.preventDefault(); col.classList.add('cal-drop-over'); });
+            col.addEventListener('dragleave', () => col.classList.remove('cal-drop-over'));
+            col.addEventListener('drop', e => {
+                e.preventDefault(); col.classList.remove('cal-drop-over');
+                const rect = col.getBoundingClientRect();
+                const y = e.clientY - rect.top;
+                const dropMinutes = (y / rect.height) * (24 * 60);
+                const dropHour = Math.floor(dropMinutes / 60);
+                onDrop(isoDate(day), dropHour);
+            });
+            col.addEventListener('click', (e) => {
+                if (e.target === col) {
+                    const rect = col.getBoundingClientRect();
+                    const y = e.clientY - rect.top;
+                    const clickMinutes = (y / rect.height) * (24 * 60);
+                    const clickHour = Math.floor(clickMinutes / 60);
+                    abrirModalNovaData(isoDate(day), clickHour);
+                }
+            });
+            body.appendChild(col);
         });
 
         wrap.appendChild(body);
         container.appendChild(wrap);
 
         // Scroll até hora atual
-        const scrollTarget = HORAS.indexOf(Math.max(6, CAL.today.getHours() - 1));
-        if (scrollTarget >= 0) {
-            setTimeout(() => { body.scrollTop = scrollTarget * 60; }, 50);
-        }
+        const scrollTarget = Math.max(0, CAL.today.getHours() - 2);
+        setTimeout(() => { body.scrollTop = scrollTarget * 60; }, 50);
     }
 
     // ---- VISÃO DIA ----
@@ -356,47 +383,87 @@ document.addEventListener('DOMContentLoaded', function() {
         const wrap = document.createElement('div');
         wrap.className = 'cal-day-wrap';
 
-        HORAS.forEach(hora => {
-            const row = document.createElement('div');
-            row.className = 'cal-day-row';
+        const header = document.createElement('div');
+        header.className = 'cal-week-header';
+        const cornerEl = document.createElement('div');
+        cornerEl.className = 'cal-week-corner';
+        header.appendChild(cornerEl);
+
+        const colHead = document.createElement('div');
+        colHead.className = 'cal-week-head-col' + (iso === isoToday() ? ' hoje' : '');
+        colHead.style.flex = "1";
+        colHead.innerHTML = `<span class="cal-dow-label">${DIAS_SEMANA[date.getDay()]}</span><span class="cal-day-badge${iso===isoToday()?' hoje':''}">${date.getDate()}</span>`;
+        header.appendChild(colHead);
+        wrap.appendChild(header);
+
+        const body = document.createElement('div');
+        body.className = 'cal-week-body cal-grid-engine cal-grid-day';
+
+        HORAS.forEach((hora, index) => {
             const timeLabel = document.createElement('div');
-            timeLabel.className = 'cal-time-label';
-            timeLabel.textContent = `${String(hora).padStart(2,'0')}:00`;
-            row.appendChild(timeLabel);
+            timeLabel.className = 'cal-time-label-wrapper';
+            timeLabel.style.gridRow = `${index + 1}`;
+            timeLabel.style.gridColumn = '1';
+            timeLabel.innerHTML = `<span class="cal-time-label">${String(hora).padStart(2,'0')}:00</span>`;
+            body.appendChild(timeLabel);
 
-            const cell = document.createElement('div');
-            cell.className = 'cal-day-cell';
-            cell.dataset.date = iso;
-            cell.dataset.hora = hora;
-
-            if (iso === isoToday() && CAL.today.getHours() === hora) {
-                const currentLine = document.createElement('div');
-                currentLine.className = 'cal-current-time';
-                currentLine.style.top = `${(CAL.today.getMinutes()/60)*100}%`;
-                cell.appendChild(currentLine);
-            }
-
-            eventosDosDia(iso).forEach(ev => {
-                const evHora = parseInt((ev.hora || '00:00').split(':')[0]);
-                if (evHora === hora) {
-                    const chip = document.createElement('div');
-                    chip.className = 'cal-day-event';
-                    chip.style.background = COR_TIPO[ev.tipo] || COR_TIPO.outro;
-                    chip.innerHTML = `<strong>${ev.titulo}</strong><span>${ev.hora||''} · ${ev.local||''}</span>`;
-                    chip.addEventListener('click', e => { e.stopPropagation(); mostrarPopoverEvento(ev, chip); });
-                    cell.appendChild(chip);
-                }
-            });
-
-            cell.addEventListener('click', () => abrirModalNovaData(iso, hora));
-            row.appendChild(cell);
-            wrap.appendChild(row);
+            const gridLine = document.createElement('div');
+            gridLine.className = 'cal-grid-line';
+            gridLine.style.gridRow = `${index + 1}`;
+            gridLine.style.gridColumn = '2';
+            body.appendChild(gridLine);
         });
 
-        // Linha de hora atual no dia
-        const scrollTarget = HORAS.indexOf(Math.max(6, CAL.today.getHours() - 1));
+        const col = document.createElement('div');
+        col.className = 'cal-day-col';
+        col.style.gridRow = '1 / -1';
+        col.style.gridColumn = `2`;
+        col.dataset.date = iso;
+
+        if (iso === isoToday()) {
+            const currentLine = document.createElement('div');
+            currentLine.className = 'cal-current-time';
+            const totalMinutes = CAL.today.getHours() * 60 + CAL.today.getMinutes();
+            currentLine.style.top = `${(totalMinutes / (24 * 60)) * 100}%`;
+            col.appendChild(currentLine);
+        }
+
+        eventosDosDia(iso).forEach(ev => {
+            const evParts = (ev.hora || '00:00').split(':');
+            const evHora = parseInt(evParts[0], 10);
+            const evMin = parseInt(evParts[1] || '0', 10);
+
+            const startMinutes = evHora * 60 + evMin;
+            const duracaoHoras = ev.tipo === 'show' ? 3 : (ev.tipo === 'ensaio' ? 2 : 1.5);
+            const duracaoMinutes = duracaoHoras * 60;
+
+            const chip = document.createElement('div');
+            chip.className = 'cal-day-event';
+            chip.style.borderLeftColor = COR_TIPO[ev.tipo] || COR_TIPO.outro;
+            chip.style.top = `${(startMinutes / (24 * 60)) * 100}%`;
+            chip.style.height = `calc(${(duracaoMinutes / (24 * 60)) * 100}% - 2px)`;
+
+            chip.innerHTML = `<strong>${ev.titulo}</strong><span>${ev.hora||''} · ${ev.local||''}</span>`;
+            chip.addEventListener('click', e => { e.stopPropagation(); mostrarPopoverEvento(ev, chip); });
+            col.appendChild(chip);
+        });
+
+        col.addEventListener('click', (e) => {
+            if (e.target === col) {
+                const rect = col.getBoundingClientRect();
+                const y = e.clientY - rect.top;
+                const clickMinutes = (y / rect.height) * (24 * 60);
+                const clickHour = Math.floor(clickMinutes / 60);
+                abrirModalNovaData(iso, clickHour);
+            }
+        });
+        body.appendChild(col);
+
+        wrap.appendChild(body);
         container.appendChild(wrap);
-        setTimeout(() => { wrap.scrollTop = scrollTarget * 60; }, 50);
+
+        const scrollTarget = Math.max(0, CAL.today.getHours() - 2);
+        setTimeout(() => { body.scrollTop = scrollTarget * 60; }, 50);
     }
 
     // ---- MINI-CALENDÁRIO ----
@@ -702,6 +769,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 tabela.innerHTML = '<p class="empty-state"><i class="fas fa-search"></i><br>Nenhuma transação no período.</p>';
             }
 
+            const fragment = document.createDocumentFragment();
             dadosFiltrados.forEach(item => {
                 const valor = parseFloat(item.valor);
                 const dataItem = new Date(item.data + "T12:00:00");
@@ -741,8 +809,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         ${isDespesa ? '-' : '+'} R$ ${valor.toFixed(2).replace('.', ',')}
                     </div>
                 `;
-                tabela.appendChild(div);
+                fragment.appendChild(div);
             });
+            tabela.appendChild(fragment);
         }
 
         // Atualiza KPIs
@@ -933,6 +1002,7 @@ document.addEventListener('DOMContentLoaded', function() {
         tabela.innerHTML = '';
         // Modificado: colspan para 4
         if (dadosMembros.length === 0) { tabela.innerHTML = '<tr><td colspan="4">Nenhum membro cadastrado nesta banda.</td></tr>'; return; }
+        const fragment = document.createDocumentFragment();
         dadosMembros.forEach((membro, index) => {
             const tr = document.createElement('tr');
             // Modificado: Adiciona coluna de email
@@ -941,8 +1011,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 <td>${membro.email}</td>
                 <td>${membro.instrumento}</td>
                 <td><button class="btn-icon btn-remover" data-tipo="membro" data-index="${index}" title="Remover membro"><i class="fas fa-trash-alt"></i></button></td>`;
-            tabela.appendChild(tr);
+            fragment.appendChild(tr);
         });
+        tabela.appendChild(fragment);
     }
 
     // NOVA Função para carregar convites pendentes
@@ -956,6 +1027,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
+        const fragment = document.createDocumentFragment();
         dadosConvitesPendentes.forEach((convite, index) => {
             const li = document.createElement('li');
             li.innerHTML = `
@@ -967,8 +1039,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     <i class="fas fa-times-circle"></i>
                 </button>
             `;
-            listaUl.appendChild(li);
+            fragment.appendChild(li);
         });
+        listaUl.appendChild(fragment);
     }
 
 
@@ -982,6 +1055,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return; 
         }
         
+        const fragment = document.createDocumentFragment();
         dadosRepertorio.forEach((musica, index) => {
             const card = document.createElement('div');
             card.className = 'repertorio-card-modern';
@@ -997,8 +1071,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     ${musica.partituraUrl ? `<button class="btn-ver-partitura-modern" data-partitura-url="${musica.partituraUrl}" title="Ver Partitura"><i class="fas fa-eye"></i> Ver</button>` : '<span class="no-sheet">Sem Partitura</span>'}
                     <button class="btn-icon-modern btn-remover" data-tipo="repertorio" data-index="${index}" title="Remover música"><i class="fas fa-trash-alt"></i></button>
                 </div>`;
-            containerCards.appendChild(card);
+            fragment.appendChild(card);
         });
+        containerCards.appendChild(fragment);
     }
 
     // Removida função carregarAnaliseIA
@@ -1012,19 +1087,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (modal && abrirBtn && closeButton && form) {
             abrirBtn.onclick = () => { modal.style.display = "block"; };
-            const closeModal = () => { modal.style.display = "none"; form.reset(); }; // Limpa o form ao fechar
+            const closeModal = () => {
+                modal.classList.add('fade-out');
+                setTimeout(() => {
+                    modal.style.display = "none";
+                    modal.classList.remove('fade-out');
+                    form.reset();
+                }, 300);
+            };
             closeButton.onclick = closeModal;
             window.addEventListener('click', (event) => {
                 if (event.target == modal) {
-                    closeModal(); // Limpa o form ao fechar clicando fora
+                    closeModal();
                 }
             });
 
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
-                onSave(this); // Chama a função específica de salvar
-                // Não chama closeModal aqui se onSave já faz validações que podem impedir o fechamento
-                // A função onSave será responsável por chamar closeModal se tudo der certo
+                onSave(this, closeModal);
             });
         } else {
              console.error(`Erro ao configurar o modal: ${modalId}, ${abrirBtnId}, ${formId}`);
@@ -1032,12 +1112,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Configura os modais específicos
-    setupModal('transacaoModal', 'abrirModalTransacaoBtn', 'formAdicionarTransacao', (form) => {
+    setupModal('transacaoModal', 'abrirModalTransacaoBtn', 'formAdicionarTransacao', (form, closeModal) => {
         const valor = parseFloat(form.valor.value);
         if (isNaN(valor) || valor <= 0) {
             showSnackbar("Valor inválido.");
-            // Não fecha o modal aqui, permite corrigir
-            document.getElementById(form.id).querySelector('.close-button').onclick(); // Fecha manualmente se der erro
             return;
         }
         dadosFinanceiros.push({
@@ -1048,21 +1126,16 @@ document.addEventListener('DOMContentLoaded', function() {
             categoria: form.categoria.value
         });
         carregarFinanceiro(); // Atualiza a tabela e o gráfico
-        showSnackbar("Transação adicionada!");
-        document.getElementById(form.id).querySelector('.close-button').onclick(); // Fecha modal
+        showSnackbar("Salvo com sucesso!");
+        if (closeModal) closeModal();
     });
 
-    // Modificado: Setup do Modal de Membro para ENVIAR CONVITE
-    setupModal('membroModal', 'abrirModalMembroBtn', 'formAdicionarMembro', (form) => {
+    setupModal('membroModal', 'abrirModalMembroBtn', 'formAdicionarMembro', (form, closeModal) => {
         const emailConvidado = form.emailMembro.value.trim().toLowerCase();
         const instrumentoConvidado = form.instrumentoMembro.value.trim();
-        const modalContent = form.closest('.modal-content'); // Para fechar
-        const closeButton = modalContent ? modalContent.querySelector('.close-button') : null;
-
 
         if (!emailConvidado || !instrumentoConvidado) {
             showSnackbar("Preencha o e-mail e o instrumento.");
-             if(closeButton) closeButton.onclick(); // Fecha modal se der erro
             return;
         }
 
@@ -1070,7 +1143,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const jaEhMembro = dadosMembros.some(membro => membro.email === emailConvidado);
         if (jaEhMembro) {
             showSnackbar(`Este usuário já faz parte da banda.`);
-             if(closeButton) closeButton.onclick(); // Fecha modal se der erro
             return;
         }
 
@@ -1078,7 +1150,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const convitePendente = dadosConvitesPendentes.some(convite => convite.emailConvidado === emailConvidado);
         if (convitePendente) {
             showSnackbar(`Já existe um convite pendente para ${emailConvidado}.`);
-             if(closeButton) closeButton.onclick(); // Fecha modal se der erro
             return;
         }
 
@@ -1087,8 +1158,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (!usuarioEncontrado) {
             showSnackbar(`Erro: Usuário com e-mail ${emailConvidado} não encontrado no Music Makers.`);
-             if(closeButton) closeButton.onclick(); // Fecha modal se der erro
-            // *** LÓGICA REAL (Backend): A API retornaria um erro aqui ***
             return;
         }
 
@@ -1101,12 +1170,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         carregarConvitesPendentes(); // Atualiza a lista de convites na tela
-        showSnackbar(`Convite enviado para ${usuarioEncontrado.nome} (${emailConvidado})!`);
-        if(closeButton) closeButton.onclick(); // Fecha modal após sucesso
-
+        showSnackbar("Salvo com sucesso!");
+        if (closeModal) closeModal();
     });
 
-    setupModal('eventoModal', 'abrirModalEventoBtn', 'formAdicionarEvento', (form) => {
+    setupModal('eventoModal', 'abrirModalEventoBtn', 'formAdicionarEvento', (form, closeModal) => {
         dadosAgenda.push({
             titulo: form.tituloEvento.value,
             data: form.dataEvento.value,
@@ -1117,18 +1185,16 @@ document.addEventListener('DOMContentLoaded', function() {
         renderCal();
         renderMini();
         renderProximosEventos();
-        showSnackbar("Evento adicionado!");
-        document.getElementById(form.id).querySelector('.close-button').onclick();
+        showSnackbar("Salvo com sucesso!");
+        if (closeModal) closeModal();
     });
 
 
-    setupModal('musicaModal', 'abrirModalMusicaBtn', 'formAdicionarMusica', (form) => {
+    setupModal('musicaModal', 'abrirModalMusicaBtn', 'formAdicionarMusica', (form, closeModal) => {
         const nomeMusica = form.nomeMusica.value;
         const origemMusica = form.origemMusica.value;
         const fileInput = form.partituraMusica;
         let partituraUrlTemp = null; // Usaremos URL temporária
-        const closeButton = document.getElementById(form.id).querySelector('.close-button');
-
 
         // Verifica se um arquivo foi selecionado e é PDF
         if (fileInput.files.length > 0) {
@@ -1138,7 +1204,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log("URL temporária criada:", partituraUrlTemp);
             } else {
                 showSnackbar("Erro: Selecione um arquivo PDF.");
-                 if(closeButton) closeButton.onclick(); // Fecha modal
                 return; // Impede o salvamento se não for PDF
             }
         }
@@ -1151,8 +1216,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         carregarRepertorio(); // Atualiza a tabela
-        showSnackbar("Música adicionada ao repertório!");
-        if(closeButton) closeButton.onclick(); // Fecha modal
+        showSnackbar("Salvo com sucesso!");
+        if (closeModal) closeModal(); // Fecha modal animado
     });
 
     // --- EVENTOS DE CLIQUE GERAIS (Delegação de eventos) ---
