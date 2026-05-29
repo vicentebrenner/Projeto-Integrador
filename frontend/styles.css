@@ -2654,13 +2654,20 @@ a:hover {
     color: var(--cor-primaria); margin-bottom: 4px;
 }
 .cal-event-chip {
-    display: block; color: #fff; border-radius: 4px;
-    padding: 2px 6px; font-size: 0.72em; font-weight: 600;
-    margin-bottom: 2px; white-space: nowrap; overflow: hidden;
+    display: block; color: #fff; border-radius: 6px;
+    padding: 4px 8px; font-size: 0.75em; font-weight: 600;
+    margin-bottom: 4px; white-space: nowrap; overflow: hidden;
     text-overflow: ellipsis; cursor: pointer;
-    transition: opacity 0.2s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border: 1px solid rgba(255,255,255,0.1);
+    transition: all 0.25s ease;
 }
-.cal-event-chip:hover { opacity: 0.85; }
+.cal-event-chip:hover {
+    opacity: 1;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    filter: brightness(1.1);
+}
 .cal-mais-eventos { font-size: 0.72em; color: var(--cor-texto-claro); font-weight: 600; padding: 2px 4px; }
 
 /* ---- Visão Semana / Dia (grade horária) ---- */
@@ -2685,6 +2692,12 @@ a:hover {
     width: 32px; height: 32px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
     font-size: 1em; font-weight: 800; color: var(--cor-primaria);
+    transition: all 0.3s ease;
+}
+.cal-week-head-col.hoje .cal-day-badge {
+    background: var(--cor-primaria);
+    color: #fff;
+    box-shadow: 0 0 15px rgba(250, 152, 72, 0.4); /* Glow para o dia atual */
 }
 .cal-week-body {
     flex: 1; overflow-y: auto;
@@ -2692,58 +2705,105 @@ a:hover {
 }
 .cal-week-body::-webkit-scrollbar { width: 4px; }
 .cal-week-body::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 4px; }
-.cal-week-row {
+.cal-grid-engine {
     display: grid;
     grid-template-columns: 60px repeat(7, 1fr);
-    min-height: 60px;
-    border-bottom: 1px solid rgba(0,0,0,0.04);
+    grid-template-rows: repeat(24, 60px); /* 24 hours, 60px each */
 }
-.cal-time-label {
-    width: 60px; padding: 4px 8px;
-    font-size: 0.72em; color: var(--cor-texto-claro);
-    text-align: right; flex-shrink: 0;
+.cal-grid-engine.cal-grid-day {
+    grid-template-columns: 60px 1fr;
 }
-.cal-week-cell, .cal-day-cell {
-    border-left: 1px solid rgba(0,0,0,0.05);
-    padding: 2px 4px;
+.cal-time-label-wrapper {
+    text-align: right;
+    padding: 6px 10px;
+    font-size: 0.75em;
+    font-weight: 600;
+    color: var(--cor-texto-claro);
+    opacity: 0.7;
+    position: relative;
+    top: -10px; /* Alinhar o texto com a linha divisória superior */
+}
+.cal-grid-line {
+    border-top: 1px solid rgba(0,0,0,0.02); /* Linha fina e elegante atravessando a grade */
+    pointer-events: none; /* Para não bloquear cliques */
+}
+.cal-day-col {
+    border-left: 1px solid rgba(0,0,0,0.02);
     position: relative;
     cursor: pointer;
-    transition: background 0.15s;
+    transition: background 0.2s;
 }
-.cal-week-cell:hover, .cal-day-cell:hover { background: #f8f9fa; }
-.cal-week-cell.cal-drop-over, .cal-day-cell.cal-drop-over { background: rgba(1,16,41,0.07); }
-.cal-week-event {
-    background: var(--cor-secundaria);
-    color: #fff; border-radius: 6px;
-    padding: 4px 8px; font-size: 0.76em;
-    margin-bottom: 2px; cursor: pointer;
-    display: flex; flex-direction: column; gap: 1px;
-    overflow: hidden; transition: opacity 0.2s;
+.cal-day-col:hover { 
+    background: rgba(0,0,0,0.01); 
 }
-.cal-week-event:hover { opacity: 0.88; }
-.cal-week-event strong { font-size: 0.9em; line-height: 1.2; }
-.cal-week-event small { opacity: 0.85; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cal-day-col.cal-drop-over { 
+    background: rgba(1,16,41,0.04); 
+}
 
-/* Visão Dia */
-.cal-day-wrap { overflow-y: auto; }
-.cal-day-row { display: flex; min-height: 60px; border-bottom: 1px solid rgba(0,0,0,0.04); }
-.cal-day-cell { flex: 1; border-left: 1px solid rgba(0,0,0,0.05); padding: 2px 8px; position: relative; cursor: pointer; }
-.cal-day-event {
-    background: var(--cor-secundaria);
-    color: #fff; border-radius: 8px;
-    padding: 8px 12px; font-size: 0.85em;
-    margin-bottom: 4px; cursor: pointer;
-    display: flex; flex-direction: column; gap: 2px;
+.cal-week-event {
+    position: absolute;
+    left: 2px;
+    right: 2px;
+    background: rgba(255, 255, 255, 0.85); /* Glassmorphism */
+    backdrop-filter: blur(4px);
+    color: var(--cor-primaria); /* Texto escuro */
+    border-radius: 6px;
+    padding: 6px 10px; font-size: 0.8em;
+    cursor: pointer;
+    display: flex; flex-direction: column; gap: 4px;
+    overflow: hidden; transition: all 0.25s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    border: 1px solid rgba(0,0,0,0.05);
+    border-left: 4px solid var(--cor-secundaria); /* Faixa colorida da categoria, ajustada via JS */
+    min-height: 50px; /* Garante tamanho mínimo */
+    z-index: 2;
 }
+.cal-week-event:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.12);
+    z-index: 10;
+}
+.cal-week-event strong { font-size: 0.95em; font-weight: 800; line-height: 1.2; letter-spacing: 0.3px; color: var(--cor-primaria); }
+.cal-week-event small { font-size: 0.85em; opacity: 0.8; font-weight: 600; color: var(--cor-texto-claro); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* Visão Dia Antiga removida, reaproveitando Grid Engine */
+.cal-day-wrap { overflow-y: auto; display: flex; flex-direction: column; flex: 1; }
+.cal-day-event {
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    background: rgba(255, 255, 255, 0.85); /* Glassmorphism */
+    backdrop-filter: blur(4px);
+    color: var(--cor-primaria);
+    border-radius: 8px;
+    padding: 12px 16px; font-size: 0.9em;
+    cursor: pointer;
+    display: flex; flex-direction: column; gap: 6px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    border: 1px solid rgba(0,0,0,0.05);
+    border-left: 5px solid var(--cor-secundaria);
+    transition: all 0.25s ease;
+    min-height: 50px;
+    z-index: 2;
+}
+.cal-day-event:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    z-index: 10;
+}
+.cal-day-event strong { font-size: 1.1em; font-weight: 800; color: var(--cor-primaria); }
+.cal-day-event span { font-size: 0.9em; font-weight: 600; color: var(--cor-texto-claro); }
 
 /* Linha de hora atual */
 .cal-current-time {
     position: absolute; left: 0; right: 0; height: 2px;
-    background: #ea4335; z-index: 5; pointer-events: none;
+    background: #fa9848; z-index: 5; pointer-events: none;
+    box-shadow: 0 0 10px rgba(250, 152, 72, 0.6); /* Glow no current time */
 }
 .cal-current-time::before {
     content: ''; position: absolute; left: -5px; top: -4px;
-    width: 10px; height: 10px; border-radius: 50%; background: #ea4335;
+    width: 10px; height: 10px; border-radius: 50%; background: #fa9848;
+    box-shadow: 0 0 8px rgba(250, 152, 72, 0.8);
 }
 
 /* ---- Popover de Evento (Google Calendar Style) ---- */
@@ -2870,14 +2930,20 @@ a:hover {
 .cal-proximo-item {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 10px 8px;
-    border-radius: 10px;
+    gap: 12px;
+    padding: 12px 10px;
+    border-radius: 12px;
     cursor: pointer;
-    transition: background 0.2s;
-    margin-bottom: 4px;
+    transition: all 0.25s ease;
+    margin-bottom: 6px;
+    border: 1px solid transparent;
 }
-.cal-proximo-item:hover { background: rgba(0,0,0,0.04); }
+.cal-proximo-item:hover {
+    background: #ffffff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    border-color: rgba(0,0,0,0.03);
+    transform: translateX(2px);
+}
 .cal-prox-date {
     display: flex;
     flex-direction: column;
@@ -3131,10 +3197,10 @@ a:hover {
 .modal-content {
     background: #ffffff;
     margin: 8vh auto;
-    padding: 45px 40px;
+    padding: 30px 40px;
     border: 1px solid rgba(250, 152, 72, 0.15);
     width: 90%;
-    max-width: 520px;
+    max-width: 480px;
     border-radius: 24px;
     position: relative;
     box-shadow: 0 25px 60px rgba(1, 16, 41, 0.2);
@@ -3146,7 +3212,7 @@ a:hover {
 .modal-content h3 {
     text-align: center;
     margin-top: 0;
-    margin-bottom: 35px;
+    margin-bottom: 25px;
     font-size: 1.8em;
     color: var(--cor-primaria);
     font-weight: 800;
@@ -3201,11 +3267,37 @@ a:hover {
     }
 }
 
+.modal.fade-out {
+    animation: fadeOutModalBg 0.3s forwards;
+}
+
+.modal.fade-out .modal-content {
+    animation: zoomOutModal 0.3s forwards;
+}
+
+@keyframes fadeOutModalBg {
+    from { background-color: rgba(1, 16, 41, 0.5); backdrop-filter: blur(8px); opacity: 1; }
+    to { background-color: rgba(1, 16, 41, 0); backdrop-filter: blur(0px); opacity: 0; }
+}
+
+@keyframes zoomOutModal {
+    from { transform: scale(1); opacity: 1; }
+    to { transform: scale(0.9); opacity: 0; }
+}
+
+.form-row {
+    display: flex;
+    gap: 15px;
+}
+.form-row .inputGroup {
+    flex: 1;
+}
+
 /* Estilos refinados para inputs no Modal */
 .modal-content .inputGroup label {
     font-weight: 700;
     color: var(--cor-primaria);
-    margin-bottom: 10px;
+    margin-bottom: 6px;
 }
 
 .modal-content .inputGroup input, 
@@ -3213,7 +3305,7 @@ a:hover {
     background-color: #f8f9fa;
     border: 2px solid transparent;
     border-radius: 12px;
-    padding: 15px;
+    padding: 12px 15px;
     transition: all 0.3s ease;
 }
 
@@ -3237,7 +3329,7 @@ a:hover {
 }
 
 .tipo-transacao-group label {
-    padding: 15px;
+    padding: 12px;
     border: 2px solid #eee;
     background: #f8f9fa;
     border-radius: 12px;
