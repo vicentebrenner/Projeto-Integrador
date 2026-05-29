@@ -1,13 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
 
-    // --- CÓDIGO DO OLHINHO (NOVO) ---
-    // Ativa a função para o campo de Senha
     if (typeof setupPasswordToggle === 'function') {
         setupPasswordToggle('senha', 'toggleSenha');
     }
-    // --------------------------------
 
-    // --- LÓGICA DAS ABAS (Mantida) ---
     const tabs = document.querySelectorAll('.tab-link');
     const contents = document.querySelectorAll('.tab-content');
     tabs.forEach(tab => {
@@ -20,10 +16,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // --- DADOS DE EXEMPLO (Mantido) ---
-    // ... (Seu código original de dados aqui, se houver) ...
-    // Vou incluir a parte do formulário de cadastro que é o principal desta página
-
     const formCadastro = document.getElementById('formCadastro');
     const nomeInput = document.getElementById('nome');
     const emailInput = document.getElementById('email');
@@ -31,7 +23,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const erroGeral = document.getElementById('mensagemErroCadastro');
     const tipoUsuarioInput = document.getElementById('tipoUsuario');
 
-    // --- SELEÇÃO DE TIPO DE CONTA ---
     const roleOptions = document.querySelectorAll('.role-option');
     if (roleOptions && tipoUsuarioInput) {
         roleOptions.forEach(option => {
@@ -43,7 +34,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Função auxiliar para mostrar erro
     const mostrarErro = (elementoId, mensagem) => {
         const el = document.getElementById(elementoId);
         if (el) {
@@ -70,12 +60,12 @@ document.addEventListener('DOMContentLoaded', function () {
             const tipoUsuario = tipoUsuarioInput ? tipoUsuarioInput.value : 'MUSICO';
             let temErro = false;
 
-            // Validações básicas
             if (!nome) { mostrarErro('erroNome', 'Nome é obrigatório.'); temErro = true; }
             if (!email) { mostrarErro('erroEmail', 'E-mail é obrigatório.'); temErro = true; }
             if (senha.length < 6) { mostrarErro('erroSenha', 'A senha deve ter no mínimo 6 caracteres.'); temErro = true; }
 
             if (temErro) return;
+
             try {
                 const response = await fetch(getApiUrl('/api/auth/register'), {
                     method: 'POST',
@@ -92,7 +82,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
 
                 if (response.ok) {
-                    // Tenta fazer login automático pós-cadastro
                     try {
                         const loginResponse = await fetch(getApiUrl('/api/auth/login'), {
                             method: 'POST',
@@ -117,13 +106,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
                             localStorage.setItem('usuarioLogado', JSON.stringify(usuarioParaSalvar));
                             localStorage.setItem('authToken', loginData.token);
+                            localStorage.setItem('primeiroAcesso', 'true');
 
                             showSuccessPopup('Cadastro realizado com sucesso!', () => {
-                                if (usuarioParaSalvar.tipoUsuario === 'GESTOR') {
-                                    window.location.href = 'dashboard.html';
-                                } else {
-                                    window.location.href = 'perfil-musico.html';
-                                }
+                                window.location.href = 'index.html';
                             });
                             return;
                         }
@@ -131,7 +117,6 @@ document.addEventListener('DOMContentLoaded', function () {
                         console.error('Erro no login automático pós-cadastro:', loginErr);
                     }
 
-                    // Caso o login automático falhe, redireciona para a tela de login como fallback
                     showSuccessPopup('Cadastro realizado com sucesso! Faça login.', () => {
                         window.location.href = 'login.html';
                     });

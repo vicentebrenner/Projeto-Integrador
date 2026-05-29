@@ -4002,4 +4002,236 @@ a:hover {
         min-width: 0;
         overflow: hidden;
     }
-}
+}
+/* ============================================================
+   MODAL DE BOAS-VINDAS
+   ============================================================ */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: rgba(1, 10, 26, 0.75);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    animation: overlayFadeIn 0.4s ease forwards;
+}
+
+.modal-overlay.sair {
+    animation: overlayFadeOut 0.35s ease forwards;
+}
+
+@keyframes overlayFadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@keyframes overlayFadeOut {
+    from { opacity: 1; }
+    to   { opacity: 0; }
+}
+
+.modal-boas-vindas {
+    background: #ffffff;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 560px;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+    overflow: hidden;
+    position: relative;
+    animation: modalSlideIn 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.modal-overlay.sair .modal-boas-vindas {
+    animation: modalSlideOut 0.3s ease forwards;
+}
+
+@keyframes modalSlideIn {
+    from { opacity: 0; transform: translateY(40px) scale(0.95); }
+    to   { opacity: 1; transform: translateY(0)   scale(1);    }
+}
+
+@keyframes modalSlideOut {
+    from { opacity: 1; transform: translateY(0)    scale(1);    }
+    to   { opacity: 0; transform: translateY(20px) scale(0.96); }
+}
+
+.modal-topo {
+    background: linear-gradient(135deg, #011029 0%, #032554 60%, #041e4a 100%);
+    padding: 36px 36px 28px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.modal-topo::before,
+.modal-topo::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+}
+
+.modal-topo::before {
+    width: 200px;
+    height: 200px;
+    background: rgba(250, 152, 72, 0.15);
+    top: -80px;
+    right: -60px;
+}
+
+.modal-topo::after {
+    width: 130px;
+    height: 130px;
+    background: rgba(52, 152, 219, 0.2);
+    bottom: -50px;
+    left: -40px;
+}
+
+.modal-icone {
+    width: 68px;
+    height: 68px;
+    background: linear-gradient(135deg, #fa9848, #e67e22);
+    border-radius: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 18px;
+    box-shadow: 0 8px 24px rgba(250, 152, 72, 0.4);
+    position: relative;
+    z-index: 2;
+}
+
+.modal-topo h2 {
+    color: #ffffff;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.75em;
+    font-weight: 700;
+    margin-bottom: 8px;
+    position: relative;
+    z-index: 2;
+    line-height: 1.2;
+}
+
+.modal-topo h2 span {
+    color: #fa9848;
+}
+
+.modal-topo p {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.95em;
+    position: relative;
+    z-index: 2;
+    line-height: 1.5;
+}
+
+.modal-corpo {
+    padding: 32px 36px;
+}
+
+.modal-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 28px;
+}
+
+.modal-card {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 12px;
+    padding: 18px 12px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.modal-card:hover {
+    border-color: rgba(250, 152, 72, 0.4);
+    background: rgba(250, 152, 72, 0.04);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
+}
+
+.modal-card svg {
+    display: block;
+    margin: 0 auto 10px;
+}
+
+.modal-card h4 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.78em;
+    color: #011029;
+    margin-bottom: 4px;
+    font-weight: 700;
+}
+
+.modal-card p {
+    font-size: 0.76em;
+    color: #95a5a6;
+    line-height: 1.4;
+    margin: 0;
+}
+
+.modal-divisor {
+    height: 1px;
+    background: #dee2e6;
+    margin: 0 0 24px;
+}
+
+.modal-descricao {
+    font-size: 0.93em;
+    color: #555;
+    line-height: 1.65;
+    margin-bottom: 26px;
+    text-align: center;
+}
+
+.modal-acoes {
+    display: flex;
+    gap: 12px;
+    flex-direction: column;
+}
+
+.modal-btn-primario {
+    background: linear-gradient(135deg, #fa9848, #e67e22);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 14px 24px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 0.95em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(250, 152, 72, 0.35);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-decoration: none;
+}
+
+.modal-btn-primario:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(250, 152, 72, 0.5);
+}
+
+.modal-btn-secundario {
+    background: transparent;
+    color: #95a5a6;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 24px;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 0.85em;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    width: 100%;
+}
+
+.modal-btn-secundario:hover {
+    color: #011029; 
+}

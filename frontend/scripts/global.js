@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
         perfilLi.classList.add('perfil-container');
         
         const linkPerfil = tipoUsuario === 'GESTOR' 
-            ? `<a href="dashboard.html">Painel da Banda</a>` 
+            ? `<a href="banda.html">Painel da Banda</a>` 
             : `<a href="perfil-musico.html">Meu Perfil Músico</a>`;
 
         perfilLi.innerHTML = `
