@@ -39,4 +39,10 @@ public class BandaController {
         bandaService.deletarBanda(id);
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping("/membros/{membroId}")
+    public ResponseEntity<Void> removerMembro(@PathVariable Long membroId) {
+        bandaService.removerMembro(membroId);
+        return ResponseEntity.noContent().build();
+    }
 }

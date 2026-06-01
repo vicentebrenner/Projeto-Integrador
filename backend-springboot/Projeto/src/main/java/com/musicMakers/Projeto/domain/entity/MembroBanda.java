@@ -3,6 +3,8 @@ package com.musicMakers.Projeto.domain.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Data
 @Table(name = "membro_banda")
@@ -15,6 +17,7 @@ public class MembroBanda {
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "banda_id")
     private Banda banda;

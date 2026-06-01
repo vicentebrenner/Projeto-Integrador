@@ -13,6 +13,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     // permitir o uso de .isEmpty() ou .isPresent() nas verificações.
     Optional<Usuario> findByEmail(String email);
 
+    java.util.List<Usuario> findByNomeContainingIgnoreCaseAndTipoUsuario(String nome, String tipoUsuario);
+
     // Se precisar verificar login de outra forma futuramente:
     // Optional<Usuario> findByEmailAndSenha(String email, String senha);
 }

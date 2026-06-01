@@ -38,9 +38,10 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             
             .authorizeHttpRequests(auth -> auth
-                // IMPORTANTE: Verifique se o seu Controller usa @RequestMapping("/api/auth")
-                // Se o seu login for apenas em "/auth/login", remova o "/api" abaixo.
-                .requestMatchers("/api/auth/**").permitAll() 
+                .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/api/permissoes/**").authenticated()
+                .requestMatchers("/api/convites/**").authenticated()
+                .requestMatchers("/api/usuarios/**").authenticated()
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

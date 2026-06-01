@@ -14,36 +14,11 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // --- DADOS DE EXEMPLO ---
-    let dadosAgenda = [
-        { data: '2025-08-15', titulo: 'Ensaio Pré-Show', local: 'Estúdio X, Porto Alegre/RS', tipo: 'ensaio' },
-        { data: '2025-09-10', titulo: 'Gravação Demo', local: 'Estúdio Som Livre, Canoas/RS', tipo: 'gravacao' },
-        { data: '2025-10-20', titulo: 'Ensaio Geral', local: 'Estúdio AmpliFire, Montenegro/RS', tipo: 'ensaio' },
-        { data: '2025-10-25', titulo: 'Show de Lançamento', local: 'Bar Opinião, Porto Alegre/RS', tipo: 'show' },
-        { data: '2025-11-05', titulo: 'Show Acústico', local: 'Café Fon Fon, Porto Alegre/RS', tipo: 'show' },
-    ];
-    let dadosMembros = [
-        { idUsuario: 1, nome: 'Vicente Brenner', email: 'vicente@email.com', instrumento: 'Vocal e Guitarra' },
-        { idUsuario: 2, nome: 'Alex Turner', email: 'alex@email.com', instrumento: 'Bateria' }
-    ];
-    let dadosFinanceiros = [
-        { data: '2025-08-01', descricao: 'Venda Camiseta Modelo 1', valor: 45.00, tipo: 'RECEITA', categoria: 'Merchandising' },
-        { data: '2025-08-10', descricao: 'Aluguel Sala Ensaio Agosto', valor: 150.00, tipo: 'DESPESA', categoria: 'Estúdio' },
-        { data: '2025-09-05', descricao: 'Cachê Show Bar XYZ', valor: 800.00, tipo: 'RECEITA', categoria: 'Show' },
-        { data: '2025-09-06', descricao: 'Alimentação Pós-Show', valor: 120.50, tipo: 'DESPESA', categoria: 'Alimentação' },
-        { data: '2025-09-10', descricao: 'Pagamento Estúdio Gravação', valor: 400.00, tipo: 'DESPESA', categoria: 'Estúdio' },
-        { data: '2025-10-05', descricao: 'Cachê do Bar Opinião', valor: 1200.00, tipo: 'RECEITA', categoria: 'Show' },
-        { data: '2025-10-06', descricao: 'Venda de camisetas (Show Opinião)', valor: 350.50, tipo: 'RECEITA', categoria: 'Merchandising' },
-        { data: '2025-10-07', descricao: 'Aluguel da van (Show Opinião)', valor: 250.00, tipo: 'DESPESA', categoria: 'Transporte' },
-        { data: '2025-10-10', descricao: 'Cordas e palhetas', valor: 85.90, tipo: 'DESPESA', categoria: 'Equipamento' },
-        { data: '2025-10-15', descricao: 'Anúncio Show Lançamento Facebook', valor: 50.00, tipo: 'DESPESA', categoria: 'Marketing' },
-        { data: '2025-11-01', descricao: 'Adiantamento Cachê Café Fon Fon', valor: 200.00, tipo: 'RECEITA', categoria: 'Show' },
-        { data: '2025-11-02', descricao: 'Gasolina Viagem', valor: 75.00, tipo: 'DESPESA', categoria: 'Transporte' },
-    ];
-    let dadosRepertorio = [
-        { nome: 'Querência Amada', origem: 'Teixeirinha', partituraUrl: null },
-        { nome: 'Lili Marleen', origem: 'Hans Leip', partituraUrl: null },
-        { nome: 'Música Nova', origem: 'Autoral', partituraUrl: null }
-    ];
+    // Agenda começa vazia — eventos reais são adicionados pelo usuário
+    let dadosAgenda = JSON.parse(localStorage.getItem('dadosAgenda')) || [];
+    let dadosMembros = [];
+    let dadosFinanceiros = [];
+    let dadosRepertorio = [];
 
     // NOVO: Simulação de usuários cadastrados no sistema
     const dadosUsuariosSimulados = [
@@ -519,6 +494,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (novaHora !== undefined) {
             dadosAgenda[CAL.draggingIdx].hora = `${String(novaHora).padStart(2,'0')}:00`;
         }
+        localStorage.setItem('dadosAgenda', JSON.stringify(dadosAgenda));
         CAL.draggingIdx = null;
         renderCal();
         renderMini();
@@ -608,6 +584,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             input.addEventListener('blur', () => {
                 ev.titulo = input.value.trim() || ev.titulo;
+                localStorage.setItem('dadosAgenda', JSON.stringify(dadosAgenda));
                 renderCal(); renderMini(); renderProximosEventos();
                 pop.remove();
             });
@@ -616,6 +593,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Remover
         pop.querySelector('.cal-pop-delete').addEventListener('click', () => {
             dadosAgenda.splice(idx, 1);
+            localStorage.setItem('dadosAgenda', JSON.stringify(dadosAgenda));
             pop.remove();
             renderCal(); renderMini(); renderProximosEventos();
             showSnackbar('Evento removido.');
@@ -996,52 +974,63 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-    function carregarMembros() {
+    async function carregarMembros() {
         const tabela = document.getElementById('corpoTabelaMembros');
         if (!tabela) return;
+        
+        tabela.innerHTML = '<tr><td colspan="4" style="text-align:center;"><i class="fas fa-spinner fa-spin"></i> Carregando integrantes...</td></tr>';
+        
+        const membrosBanda = await buscarMembrosDaBanda();
         tabela.innerHTML = '';
-        // Modificado: colspan para 4
-        if (dadosMembros.length === 0) { tabela.innerHTML = '<tr><td colspan="4">Nenhum membro cadastrado nesta banda.</td></tr>'; return; }
+        
+        if (!membrosBanda || membrosBanda.length === 0) {
+            tabela.innerHTML = '<tr><td colspan="4">Nenhum integrante cadastrado nesta banda.</td></tr>';
+            return;
+        }
+        
         const fragment = document.createDocumentFragment();
-        dadosMembros.forEach((membro, index) => {
+        membrosBanda.forEach((membro) => {
             const tr = document.createElement('tr');
-            // Modificado: Adiciona coluna de email
             tr.innerHTML = `
-                <td>${membro.nome || '(Nome não disponível)'}</td>
+                <td>${membro.nome || '(Sem Nome)'}</td>
                 <td>${membro.email}</td>
-                <td>${membro.instrumento}</td>
-                <td><button class="btn-icon btn-remover" data-tipo="membro" data-index="${index}" title="Remover membro"><i class="fas fa-trash-alt"></i></button></td>`;
+                <td><span class="perm-funcao-badge" style="background: rgba(250, 152, 72, 0.1); color: var(--cor-secundaria); padding: 4px 8px; border-radius: 4px; font-size: 0.85em; font-weight: 600;">${membro.funcao || 'Músico'}</span></td>
+                <td>
+                    ${isGestor ? `<button class="btn-icon btn-remover-membro-real" data-id="${membro.membroId}" data-nome="${membro.nome}" title="Remover membro" style="background:none; border:none; color:#ef4444; cursor:pointer;"><i class="fas fa-user-minus"></i></button>` : `<i class="fas fa-user-check" style="color:#10b981;"></i>`}
+                </td>`;
             fragment.appendChild(tr);
         });
         tabela.appendChild(fragment);
+        
+        tabela.querySelectorAll('.btn-remover-membro-real').forEach(btn => {
+            btn.addEventListener('click', async function() {
+                const membroId = this.dataset.id;
+                const nome = this.dataset.nome;
+                if (confirm(`Tem certeza que deseja remover o músico "${nome}" da banda?`)) {
+                    try {
+                        const resp = await fetch(getApiUrl(`/api/bandas/membros/${membroId}`), {
+                            method: 'DELETE',
+                            headers: { 'Authorization': `Bearer ${authToken}` }
+                        });
+                        if (resp.ok) {
+                            showSnackbar(`Membro "${nome}" removido com sucesso.`);
+                            carregarMembros();
+                            if (isGestor) {
+                                carregarSubtabIntegrantes();
+                            }
+                        } else {
+                            showSnackbar('Erro ao remover membro da banda.');
+                        }
+                    } catch (e) {
+                        console.error('Erro ao remover membro:', e);
+                    }
+                }
+            });
+        });
     }
 
-    // NOVA Função para carregar convites pendentes
     function carregarConvitesPendentes() {
-        const listaUl = document.getElementById('listaConvitesPendentes');
-        if (!listaUl) return;
-        listaUl.innerHTML = ''; // Limpa a lista
-
-        if (dadosConvitesPendentes.length === 0) {
-            listaUl.innerHTML = '<li>Nenhum convite pendente.</li>';
-            return;
-        }
-
-        const fragment = document.createDocumentFragment();
-        dadosConvitesPendentes.forEach((convite, index) => {
-            const li = document.createElement('li');
-            li.innerHTML = `
-                <span>
-                    <i class="fas fa-user-clock"></i>
-                    <strong>${convite.nomeConvidado || convite.emailConvidado}</strong> (${convite.emailConvidado}) - ${convite.instrumento}
-                </span>
-                <button class="btn-icon btn-cancelar-convite" data-index="${index}" title="Cancelar Convite">
-                    <i class="fas fa-times-circle"></i>
-                </button>
-            `;
-            fragment.appendChild(li);
-        });
-        listaUl.appendChild(fragment);
+        carregarConvitesEnviadosDaBanda();
     }
 
 
@@ -1182,6 +1171,7 @@ document.addEventListener('DOMContentLoaded', function() {
             local: form.localEvento.value,
             tipo: form.tipoEvento.value || 'outro'
         });
+        localStorage.setItem('dadosAgenda', JSON.stringify(dadosAgenda));
         renderCal();
         renderMini();
         renderProximosEventos();
@@ -1235,6 +1225,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (tipo === 'agenda' && index < dadosAgenda.length) {
                 itemRemovido = dadosAgenda.splice(index, 1)[0];
+                localStorage.setItem('dadosAgenda', JSON.stringify(dadosAgenda));
                 carregarAgenda();
             } else if (tipo === 'membro' && index < dadosMembros.length) {
                 itemRemovido = dadosMembros.splice(index, 1)[0];
@@ -1317,36 +1308,828 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // --- INICIALIZAÇÃO ---
-    // Simulação: Verificar se o usuário "pertence" a uma banda (poderia vir do localStorage após login)
-    const usuarioPertenceBanda = true; // Mude para false para testar o cenário sem banda
-    const usuarioLogado = JSON.parse(localStorage.getItem('usuarioLogado')); // Pega info do usuário logado
+    const usuarioLogado = JSON.parse(localStorage.getItem('usuarioLogado'));
+    const authToken = localStorage.getItem('authToken');
 
+    // Redireciona usuários anônimos para o login
+    if (!usuarioLogado || !authToken) {
+        window.location.href = 'login.html';
+        return;
+    }
+
+    // Considera GESTOR se tipoUsuario=GESTOR OU se o campo gestor=true (vindo do login)
+    const tipoUsuario = usuarioLogado ? (usuarioLogado.tipoUsuario || 'MUSICO') : 'MUSICO';
+    const isGestor = tipoUsuario === 'GESTOR' || usuarioLogado?.gestor === true;
+
+    // Força o gestor que não tem banda cadastrada a ir para a página de configuração inicial
+    if (isGestor && !usuarioLogado.bandaId) {
+        window.location.href = 'configurar-banda.html';
+        return;
+    }
+
+    const usuarioPertenceBanda = usuarioLogado && usuarioLogado.bandaId !== null;
+
+    // --- LOGOUT ---
+    const btnLogoutHeader = document.getElementById('btnLogoutHeader');
+    if (btnLogoutHeader) {
+        btnLogoutHeader.addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('usuarioLogado');
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('primeiroAcesso');
+            window.location.href = 'login.html';
+        });
+    }
+
+    // ============================================================
+    // SISTEMA DE PERMISSÕES
+    // ============================================================
+    const MODULOS_LABELS = {
+        agenda: { label: 'Agenda', icon: 'fa-calendar-alt' },
+        financeiro: { label: 'Financeiro', icon: 'fa-dollar-sign' },
+        membros: { label: 'Membros', icon: 'fa-users' },
+        repertorio: { label: 'Repertório', icon: 'fa-music' }
+    };
+
+    // Busca permissões do membro logado no backend
+    async function buscarMinhasPermissoes(membroId) {
+        try {
+            const resp = await fetch(getApiUrl(`/api/permissoes/membro/${membroId}`), {
+                headers: { 'Authorization': `Bearer ${authToken}` }
+            });
+            if (!resp.ok) return null;
+            return await resp.json();
+        } catch (e) {
+            console.warn('Não foi possível buscar permissões:', e);
+            return null;
+        }
+    }
+
+    // Aplica bloqueio visual nas tabs para MUSICO
+    function aplicarBloqueioTabs(permissoes) {
+        const tabs = document.querySelectorAll('.tab-link[data-tab]');
+        tabs.forEach(tab => {
+            const modulo = tab.dataset.tab;
+            if (!MODULOS_LABELS[modulo]) return; // ignora tabs sem módulo (ex: configuracoes)
+            const temAcesso = permissoes && permissoes[modulo] === true;
+
+            if (!temAcesso) {
+                tab.classList.add('tab-bloqueada');
+                tab.title = `Ð¡ Acesso bloqueado — solicite ao gestor`;
+                tab.innerHTML = `<i class="fas fa-lock" style="margin-right:6px;opacity:.7"></i>${MODULOS_LABELS[modulo].label}`;
+            } else {
+                tab.classList.remove('tab-bloqueada');
+                tab.title = '';
+                tab.innerHTML = MODULOS_LABELS[modulo].label;
+            }
+        });
+
+        // Intercepta cliques em tabs bloqueadas
+        document.getElementById('bandaTabs')?.addEventListener('click', function(e) {
+            const btn = e.target.closest('.tab-link');
+            if (btn && btn.classList.contains('tab-bloqueada')) {
+                e.stopImmediatePropagation();
+                mostrarOverlayAcessoNegado(MODULOS_LABELS[btn.dataset.tab]?.label || btn.dataset.tab);
+            }
+        }, true);
+    }
+
+    function mostrarOverlayAcessoNegado(nomeModulo) {
+        let overlay = document.getElementById('overlayAcessoNegado');
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.id = 'overlayAcessoNegado';
+            overlay.className = 'acesso-negado-overlay';
+            overlay.innerHTML = `
+                <div class="acesso-negado-card">
+                    <div class="acesso-negado-icon"><i class="fas fa-lock"></i></div>
+                    <h3>Acesso Restrito</h3>
+                    <p id="acessoNegadoMsg">Você não tem permissão para acessar este módulo.<br>Solicite ao gestor da banda.</p>
+                    <button class="btnCta" id="btnFecharAcessoNegado">Entendido</button>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+            document.getElementById('btnFecharAcessoNegado').addEventListener('click', () => {
+                overlay.classList.remove('ativo');
+            });
+            overlay.addEventListener('click', e => {
+                if (e.target === overlay) overlay.classList.remove('ativo');
+            });
+        }
+        document.getElementById('acessoNegadoMsg').innerHTML =
+            `Você não tem permissão para acessar <strong>${nomeModulo}</strong>.<br>Solicite ao gestor da banda.`;
+        overlay.classList.add('ativo');
+    }
+
+    // ---- ABA CONFIGURAÇÕES (GESTOR) ----
+    // State to hold members and invites for search filtering
+    let localMembersList = [];
+    let localInvitesList = [];
+
+    async function carregarConfiguracoes() {
+        const grid = document.getElementById('integrantesCardsGrid');
+        if (!grid) return;
+
+        grid.innerHTML = '<p class="empty-state"><i class="fas fa-spinner fa-spin"></i> Carregando integrantes...</p>';
+
+        try {
+            if (!window._bandaId) {
+                window._bandaId = usuarioLogado?.bandaId;
+            }
+            
+            if (window._bandaId) {
+                try {
+                    const respBanda = await fetch(getApiUrl(`/api/bandas/${window._bandaId}`), {
+                        headers: { 'Authorization': `Bearer ${authToken}` }
+                    });
+                    if (respBanda.ok) {
+                        const bandaData = await respBanda.json();
+                        const headerName = document.getElementById('configBandaNome');
+                        if (headerName) headerName.textContent = bandaData.nome;
+                    }
+                } catch (e) {
+                    console.warn("Erro ao carregar detalhes da banda:", e);
+                }
+            }
+
+            // Fetch members
+            const membrosBanda = await buscarMembrosDaBanda();
+            localMembersList = membrosBanda || [];
+
+            // Add gestor if not present
+            const gestorId = usuarioLogado.id;
+            const hasGestor = localMembersList.some(m => m.usuarioId === gestorId || m.gestor === true);
+            if (!hasGestor) {
+                localMembersList.unshift({
+                    membroId: usuarioLogado.membroId || 9999,
+                    usuarioId: gestorId,
+                    nome: usuarioLogado.nome,
+                    email: usuarioLogado.email,
+                    funcao: 'Fundador / Gestor',
+                    gestor: true,
+                    permissoes: { agenda: true, financeiro: true, membros: true, repertorio: true }
+                });
+            }
+
+            // Fetch invites
+            localInvitesList = [];
+            if (window._bandaId) {
+                try {
+                    const respConv = await fetch(getApiUrl(`/api/convites/enviados/${window._bandaId}`), {
+                        headers: { 'Authorization': `Bearer ${authToken}` }
+                    });
+                    if (respConv.ok) {
+                        const convites = await respConv.json();
+                        localInvitesList = convites.filter(c => c.status === 'PENDENTE');
+                    }
+                } catch(e) {
+                    console.warn("Erro ao buscar convites para configurações:", e);
+                }
+            }
+
+            const countEl = document.getElementById('configMembrosCount');
+            if (countEl) {
+                const totalActive = localMembersList.length;
+                countEl.innerHTML = `<i class="fas fa-users"></i> ${totalActive} integrante${totalActive !== 1 ? 's' : ''}`;
+            }
+
+            renderPremiumCards();
+        } catch(e) {
+            console.error("Erro em carregarConfiguracoes:", e);
+            grid.innerHTML = '<p class="empty-state"><i class="fas fa-exclamation-triangle"></i> Erro ao carregar integrantes.</p>';
+        }
+    }
+
+    async function buscarMembrosDaBanda() {
+        try {
+            const bandaId = usuarioLogado?.bandaId;
+            if (!bandaId) return [];
+
+            window._bandaId = bandaId;
+
+            const respPerm = await fetch(getApiUrl(`/api/permissoes/banda/${window._bandaId}`), {
+                headers: { 'Authorization': `Bearer ${authToken}` }
+            });
+            if (!respPerm.ok) return [];
+            return await respPerm.json();
+        } catch(e) {
+            console.warn('Erro ao buscar membros da banda:', e);
+            return [];
+        }
+    }
+
+    function renderPremiumCards() {
+        const grid = document.getElementById('integrantesCardsGrid');
+        if (!grid) return;
+
+        const searchInput = document.getElementById('buscaIntegranteNome');
+        const query = searchInput ? searchInput.value.trim().toLowerCase() : '';
+
+        const filteredMembers = localMembersList.filter(m => 
+            m.nome.toLowerCase().includes(query) || 
+            (m.email && m.email.toLowerCase().includes(query))
+        );
+        const filteredInvites = localInvitesList.filter(c => 
+            c.usuarioConvidado.nome.toLowerCase().includes(query) || 
+            c.usuarioConvidado.email.toLowerCase().includes(query)
+        );
+
+        if (filteredMembers.length === 0 && filteredInvites.length === 0) {
+            grid.innerHTML = '<p class="empty-state"><i class="fas fa-search-minus"></i> Nenhum integrante encontrado.</p>';
+            return;
+        }
+
+        grid.innerHTML = '';
+
+        // Active members
+        filteredMembers.forEach(m => {
+            const card = document.createElement('div');
+            card.className = 'member-premium-card';
+            card.dataset.membroId = m.membroId;
+
+            const initials = m.nome.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+            const isMembroGestor = m.gestor === true || m.membroId === usuarioLogado.membroId && usuarioLogado.tipoUsuario === 'GESTOR';
+            const roleLabel = isMembroGestor ? 'Gestor da Banda' : (m.funcao || 'Músico');
+
+            let actionsHTML = '';
+            if (isMembroGestor) {
+                actionsHTML = `
+                    <div class="member-premium-detail-item" style="margin-top: 10px; width: 100%; text-align: center;">
+                        <span style="font-size: 0.85em; font-weight: 700; color: var(--cor-secundaria); background: rgba(250, 152, 72, 0.1); padding: 6px 12px; border-radius: 6px; width: 100%; display: block;"><i class="fas fa-crown"></i> Administrador</span>
+                    </div>
+                `;
+            } else {
+                actionsHTML = `
+                    <div class="member-premium-actions" style="display: flex; gap: 10px; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px; margin-top: auto; width: 100%;">
+                        <button class="btn-premium-edit" data-id="${m.membroId}"><i class="fas fa-user-cog"></i> Permissões</button>
+                        <button class="btn-premium-remove" data-id="${m.membroId}" data-nome="${m.nome}"><i class="fas fa-user-minus"></i> Remover</button>
+                    </div>
+                `;
+            }
+
+            card.innerHTML = `
+                <div>
+                    <div class="member-premium-card-header">
+                        <div class="member-premium-avatar">${initials}</div>
+                        <div class="member-premium-info">
+                            <h4>${m.nome}</h4>
+                            <p>${m.email}</p>
+                        </div>
+                    </div>
+                    <div class="member-premium-details">
+                        <div class="member-premium-detail-item">
+                            <span>Cargo:</span>
+                            <strong>${roleLabel}</strong>
+                        </div>
+                        <div class="member-premium-detail-item">
+                            <span>Status:</span>
+                            <span class="member-premium-status-badge status-ativo">Ativo</span>
+                        </div>
+                    </div>
+                </div>
+                ${actionsHTML}
+            `;
+            grid.appendChild(card);
+
+            if (!isMembroGestor) {
+                card.querySelector('.btn-premium-edit')?.addEventListener('click', () => {
+                    abrirModalPermissoes(m);
+                });
+                card.querySelector('.btn-premium-remove')?.addEventListener('click', () => {
+                    removerMembroBanda(m.membroId, m.nome);
+                });
+            }
+        });
+
+        // Invites
+        filteredInvites.forEach(c => {
+            const card = document.createElement('div');
+            card.className = 'member-premium-card';
+            card.dataset.inviteId = c.id;
+
+            const initials = c.usuarioConvidado.nome.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+
+            card.innerHTML = `
+                <div>
+                    <div class="member-premium-card-header">
+                        <div class="member-premium-avatar" style="background: linear-gradient(135deg, #a1a1a1, #707070); color: #fff;">${initials}</div>
+                        <div class="member-premium-info">
+                            <h4>${c.usuarioConvidado.nome}</h4>
+                            <p>${c.usuarioConvidado.email}</p>
+                        </div>
+                    </div>
+                    <div class="member-premium-details">
+                        <div class="member-premium-detail-item">
+                            <span>Cargo:</span>
+                            <strong>Convidado</strong>
+                        </div>
+                        <div class="member-premium-detail-item">
+                            <span>Status:</span>
+                            <span class="member-premium-status-badge status-pendente">Pendente</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="member-premium-actions" style="display: flex; gap: 10px; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px; margin-top: auto; width: 100%;">
+                    <button class="btn-premium-remove btn-cancelar-convite" data-id="${c.id}" data-nome="${c.usuarioConvidado.nome}"><i class="fas fa-times"></i> Cancelar</button>
+                </div>
+            `;
+            grid.appendChild(card);
+
+            card.querySelector('.btn-cancelar-convite')?.addEventListener('click', () => {
+                cancelarConviteBanda(c.id, c.usuarioConvidado.nome);
+            });
+        });
+    }
+
+    function abrirModalPermissoes(membro) {
+        const modal = document.getElementById('modalEdicaoPermissoes');
+        if (!modal) return;
+
+        const initials = membro.nome.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+        document.getElementById('modalPermMembroAvatar').textContent = initials;
+        document.getElementById('modalPermMembroNome').textContent = membro.nome;
+        document.getElementById('modalPermMembroEmail').textContent = membro.email;
+        document.getElementById('modalPermMembroId').value = membro.membroId;
+
+        const perms = membro.permissoes || {};
+        document.getElementById('permSwitchMembros').checked = perms.membros === true;
+        document.getElementById('permSwitchAgenda').checked = perms.agenda === true;
+        document.getElementById('permSwitchFinanceiro').checked = perms.financeiro === true;
+        document.getElementById('permSwitchRepertorio').checked = perms.repertorio === true;
+
+        modal.style.display = 'block';
+    }
+
+    async function removerMembroBanda(membroId, nome) {
+        if (!confirm(`Tem certeza que deseja remover o músico "${nome}" da banda?`)) {
+            return;
+        }
+
+        try {
+            const resp = await fetch(getApiUrl(`/api/bandas/membros/${membroId}`), {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${authToken}` }
+            });
+
+            if (resp.ok) {
+                showSnackbar(`Membro "${nome}" removido com sucesso.`);
+                carregarConfiguracoes();
+                carregarMembros();
+            } else {
+                showSnackbar('Erro ao remover membro da banda.');
+            }
+        } catch (e) {
+            console.error('Erro ao remover membro:', e);
+            showSnackbar('Erro de conexão com o servidor.');
+        }
+    }
+
+    async function cancelarConviteBanda(conviteId, nome) {
+        if (!confirm(`Tem certeza que deseja cancelar o convite enviado para "${nome}"?`)) {
+            return;
+        }
+
+        try {
+            const resp = await fetch(getApiUrl(`/api/convites/${conviteId}`), {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${authToken}` }
+            });
+
+            if (resp.ok) {
+                showSnackbar(`Convite para "${nome}" cancelado com sucesso.`);
+                carregarConfiguracoes();
+                carregarConvitesPendentes();
+            } else {
+                showSnackbar('Erro ao cancelar o convite.');
+            }
+        } catch (e) {
+            console.error('Erro ao cancelar convite:', e);
+            showSnackbar('Erro de conexão com o servidor.');
+        }
+    }
+
+    // --- SEARCH AND MODAL LISTENERS SETUP ---
+    const searchInput = document.getElementById('buscaIntegranteNome');
+    if (searchInput) {
+        searchInput.addEventListener('input', renderPremiumCards);
+    }
+
+    const btnAbrirModalConvidar = document.getElementById('btnAbrirModalConvidar');
+    const modalMembro = document.getElementById('membroModal');
+    if (btnAbrirModalConvidar && modalMembro) {
+        btnAbrirModalConvidar.addEventListener('click', () => {
+            modalMembro.style.display = 'block';
+            document.getElementById('emailMembro').value = '';
+            document.getElementById('resultadosBuscaMembrosModal').innerHTML = '<p style="color: var(--cor-texto-claro); text-align: center; padding: 10px 0; font-size: 0.9em;">Resultados aparecerão aqui.</p>';
+        });
+
+        modalMembro.querySelector('.close-button')?.addEventListener('click', () => {
+            modalMembro.style.display = 'none';
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === modalMembro) {
+                modalMembro.style.display = 'none';
+            }
+        });
+    }
+
+    const btnBuscarMembroModal = document.getElementById('btnBuscarMembroModal');
+    const emailMembroInput = document.getElementById('emailMembro');
+    const resultadosBuscaModal = document.getElementById('resultadosBuscaMembrosModal');
+
+    if (btnBuscarMembroModal && emailMembroInput && resultadosBuscaModal) {
+        btnBuscarMembroModal.addEventListener('click', buscarMembroParaConvite);
+        emailMembroInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') buscarMembroParaConvite();
+        });
+    }
+
+    async function buscarMembroParaConvite() {
+        const query = emailMembroInput.value.trim();
+        if (!query) {
+            showSnackbar("Por favor, digite o nome ou e-mail do músico.");
+            return;
+        }
+
+        resultadosBuscaModal.innerHTML = '<p style="text-align:center; color:var(--cor-texto-claro); padding:10px 0;"><i class="fas fa-spinner fa-spin"></i> Pesquisando...</p>';
+
+        try {
+            const resp = await fetch(getApiUrl(`/api/usuarios/buscar?nome=${encodeURIComponent(query)}`), {
+                headers: { 'Authorization': `Bearer ${authToken}` }
+            });
+            if (resp.ok) {
+                const musicos = await resp.json();
+                renderResultadosBuscaModal(musicos);
+            } else {
+                resultadosBuscaModal.innerHTML = '<p style="text-align:center; color:#ef4444; padding:10px 0;">Erro ao pesquisar músicos.</p>';
+            }
+        } catch (e) {
+            console.error('Erro ao pesquisar:', e);
+            resultadosBuscaModal.innerHTML = '<p style="text-align:center; color:#ef4444; padding:10px 0;">Erro de conexão.</p>';
+        }
+    }
+
+    function renderResultadosBuscaModal(musicos) {
+        if (!musicos || musicos.length === 0) {
+            resultadosBuscaModal.innerHTML = '<p style="text-align:center; color:var(--cor-texto-claro); padding:10px 0;">Nenhum músico encontrado.</p>';
+            return;
+        }
+
+        resultadosBuscaModal.innerHTML = '';
+        musicos.forEach(m => {
+            if (m.id === usuarioLogado.id) return;
+
+            const isAlreadyMember = localMembersList.some(member => member.usuarioId === m.id || member.email === m.email);
+            if (isAlreadyMember) return;
+
+            const isAlreadyInvited = localInvitesList.some(invite => invite.usuarioConvidado.id === m.id);
+
+            const div = document.createElement('div');
+            div.style = "display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:12px 15px; margin-bottom: 5px;";
+            
+            let btnHTML = '';
+            if (isAlreadyInvited) {
+                btnHTML = `<button class="btn-adicionar" disabled style="padding: 8px 14px; font-size:0.85em; font-weight:600; background:rgba(255,255,255,0.1); color:rgba(255,255,255,0.4); border:none;"><i class="fas fa-check"></i> Convidado</button>`;
+            } else {
+                btnHTML = `<button class="btn-adicionar btn-enviar-convite-modal" data-id="${m.id}" data-nome="${m.nome}" style="padding: 8px 14px; font-size:0.85em; font-weight:600;"><i class="fas fa-paper-plane"></i> Convidar</button>`;
+            }
+
+            div.innerHTML = `
+                <div>
+                    <h4 style="color:#fff; font-weight:700; margin: 0; font-size: 0.95em;">${m.nome}</h4>
+                    <p style="font-size:0.8em; color:var(--cor-texto-claro); margin: 3px 0 0 0;">${m.email}</p>
+                </div>
+                ${btnHTML}
+            `;
+            resultadosBuscaModal.appendChild(div);
+        });
+
+        if (resultadosBuscaModal.innerHTML === '') {
+            resultadosBuscaModal.innerHTML = '<p style="text-align:center; color:var(--cor-texto-claro); padding:10px 0;">Nenhum músico disponível para convite.</p>';
+            return;
+        }
+
+        resultadosBuscaModal.querySelectorAll('.btn-enviar-convite-modal').forEach(btn => {
+            btn.addEventListener('click', async function() {
+                const musicoId = this.dataset.id;
+                const nome = this.dataset.nome;
+                
+                try {
+                    const resp = await fetch(getApiUrl('/api/convites'), {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${authToken}`
+                        },
+                        body: JSON.stringify({
+                            bandaId: window._bandaId,
+                            gestorId: usuarioLogado.id,
+                            usuarioConvidadoId: musicoId
+                        })
+                    });
+                    
+                    if (resp.ok) {
+                        showSnackbar(`Convite enviado para ${nome}!`);
+                        this.disabled = true;
+                        this.innerHTML = '<i class="fas fa-check"></i> Enviado';
+                        this.style.background = 'rgba(255,255,255,0.15)';
+                        this.style.color = 'var(--cor-texto-claro)';
+                        carregarConfiguracoes();
+                        carregarConvitesPendentes();
+                    } else {
+                        const errData = await resp.json();
+                        showSnackbar(`Erro: ${errData.error || 'Não foi possível enviar o convite.'}`);
+                    }
+                } catch(e) {
+                    console.error('Erro ao enviar convite:', e);
+                    showSnackbar('Erro ao conectar com o servidor.');
+                }
+            });
+        });
+    }
+
+    const formEdicaoPerm = document.getElementById('formEdicaoPermissoes');
+    if (formEdicaoPerm) {
+        formEdicaoPerm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const membroId = document.getElementById('modalPermMembroId').value;
+            const submitBtn = formEdicaoPerm.querySelector('button[type="submit"]');
+
+            const newPerms = {
+                membros: document.getElementById('permSwitchMembros').checked,
+                agenda: document.getElementById('permSwitchAgenda').checked,
+                financeiro: document.getElementById('permSwitchFinanceiro').checked,
+                repertorio: document.getElementById('permSwitchRepertorio').checked
+            };
+
+            const originalBtnText = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...';
+
+            try {
+                const resp = await fetch(getApiUrl(`/api/permissoes/membro/${membroId}`), {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify(newPerms)
+                });
+
+                if (resp.ok) {
+                    showSnackbar('Permissões atualizadas com sucesso!');
+                    document.getElementById('modalEdicaoPermissoes').style.display = 'none';
+                    carregarConfiguracoes();
+                } else {
+                    showSnackbar('Erro ao salvar as permissões.');
+                }
+            } catch(e) {
+                console.error("Erro ao salvar permissões:", e);
+                showSnackbar('Erro de conexão ao salvar as permissões.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnText;
+            }
+        });
+    }
+
+    const modalPermissoes = document.getElementById('modalEdicaoPermissoes');
+    if (modalPermissoes) {
+        modalPermissoes.querySelector('.close-button')?.addEventListener('click', () => {
+            modalPermissoes.style.display = 'none';
+        });
+        document.getElementById('btnCancelarEdicaoPerm')?.addEventListener('click', () => {
+            modalPermissoes.style.display = 'none';
+        });
+    }
+
+    async function carregarConvitesEnviadosDaBanda() {
+        const listaUl = document.getElementById('listaConvitesPendentes');
+        if (!listaUl) return;
+        
+        listaUl.innerHTML = '<li>Carregando convites...</li>';
+        
+        try {
+            if (!window._bandaId) {
+                window._bandaId = usuarioLogado?.bandaId;
+            }
+            if (!window._bandaId) {
+                listaUl.innerHTML = '<li>Sem banda associada.</li>';
+                return;
+            }
+            
+            const resp = await fetch(getApiUrl(`/api/convites/enviados/${window._bandaId}`), {
+                headers: { 'Authorization': `Bearer ${authToken}` }
+            });
+            if (resp.ok) {
+                const convites = await resp.json();
+                listaUl.innerHTML = '';
+                
+                const pendentes = convites.filter(c => c.status === 'PENDENTE');
+                
+                if (pendentes.length === 0) {
+                    listaUl.innerHTML = '<li>Nenhum convite pendente.</li>';
+                    return;
+                }
+                
+                pendentes.forEach(c => {
+                    const li = document.createElement('li');
+                    const dataEnvio = new Date(c.dataEnvio).toLocaleDateString('pt-BR');
+                    li.innerHTML = `
+                        <span>
+                            <i class="fas fa-user-clock"></i>
+                            <strong>${c.usuarioConvidado.nome}</strong> (${c.usuarioConvidado.email}) - Convidado em ${dataEnvio}
+                        </span>
+                        <div style="display:inline-flex; align-items:center; gap:10px;">
+                            <span class="status-pendente" style="color:var(--cor-secundaria); font-weight:600; font-size:0.9em; margin-left:10px;">Pendente</span>
+                            <button class="btn-remover btn-cancelar-convite-membros-tab" data-id="${c.id}" data-nome="${c.usuarioConvidado.nome}" style="background:none; border:none; color:#ef4444; padding:0; cursor:pointer; font-weight:600; font-size:1em; margin-left:10px;" title="Cancelar Convite">
+                                <i class="fas fa-times-circle"></i>
+                            </button>
+                        </div>
+                    `;
+                    listaUl.appendChild(li);
+                });
+
+                listaUl.querySelectorAll('.btn-cancelar-convite-membros-tab').forEach(btn => {
+                    btn.addEventListener('click', async function() {
+                        const id = this.dataset.id;
+                        const nome = this.dataset.nome;
+                        await cancelarConviteBanda(id, nome);
+                    });
+                });
+            } else {
+                listaUl.innerHTML = '<li>Erro ao carregar convites.</li>';
+            }
+        } catch(e) {
+            console.error('Erro ao carregar convites enviados:', e);
+            listaUl.innerHTML = '<li>Erro ao carregar convites.</li>';
+        }
+    }
+
+    // --- SINO DE NOTIFICAÇÕES (FASE 5) ---
+    const notifBell = document.getElementById('notifBell');
+    const notifDropdown = document.getElementById('notifDropdown');
+    const notifBadge = document.getElementById('notifBadge');
+    const notifList = document.getElementById('notifDropdownList');
+
+    if (notifBell && notifDropdown) {
+        notifBell.addEventListener('click', function(e) {
+            e.stopPropagation();
+            notifDropdown.classList.toggle('show');
+        });
+
+        document.addEventListener('click', function() {
+            notifDropdown.classList.remove('show');
+        });
+    }
+
+    async function buscarNotificacoes() {
+        if (!window._bandaId) {
+            window._bandaId = usuarioLogado?.bandaId;
+        }
+        if (!window._bandaId) return;
+
+        try {
+            if (isGestor) {
+                const resp = await fetch(getApiUrl(`/api/convites/enviados/${window._bandaId}`), {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                if (resp.ok) {
+                    const convites = await resp.json();
+                    const respondidos = convites.filter(c => c.status !== 'PENDENTE');
+                    
+                    if (notifBadge) {
+                        if (respondidos.length > 0) {
+                            notifBadge.textContent = respondidos.length;
+                            notifBadge.style.display = 'block';
+                        } else {
+                            notifBadge.style.display = 'none';
+                        }
+                    }
+
+                    if (notifList) {
+                        if (respondidos.length === 0) {
+                            notifList.innerHTML = '<p class="notif-empty">Nenhuma atividade recente.</p>';
+                            return;
+                        }
+                        notifList.innerHTML = '';
+                        respondidos.slice(-5).reverse().forEach(c => {
+                            const item = document.createElement('div');
+                            item.className = 'notif-item';
+                            item.style = "padding: 10px 15px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size:0.85em;";
+                            const statusColor = c.status === 'ACEITO' ? '#10b981' : '#ef4444';
+                            const statusText = c.status === 'ACEITO' ? 'aceitou' : 'recusou';
+                            item.innerHTML = `
+                                <div><strong>${c.usuarioConvidado.nome}</strong> <span style="color:${statusColor}">${statusText}</span> o convite para a banda.</div>
+                                <small style="color:rgba(255,255,255,0.3); font-size:0.8em;">${new Date(c.dataResposta || c.dataEnvio).toLocaleDateString('pt-BR')}</small>
+                            `;
+                            notifList.appendChild(item);
+                        });
+                    }
+                }
+            } else {
+                if (notifBadge) notifBadge.style.display = 'none';
+                if (notifList) notifList.innerHTML = '<p class="notif-empty">Nenhum convite pendente.</p>';
+            }
+        } catch(e) {
+            console.warn('Erro ao buscar notificações para o sino:', e);
+        }
+    }
+
+    // Subtab navigation setup
+    document.querySelectorAll('.sub-tab-link').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.sub-tab-link').forEach(b => {
+                b.classList.remove('active');
+                b.style.color = 'var(--cor-texto-claro)';
+                b.style.fontWeight = '600';
+            });
+            document.querySelectorAll('.sub-tab-content').forEach(c => c.style.display = 'none');
+            
+            this.classList.add('active');
+            this.style.color = 'var(--cor-secundaria)';
+            this.style.fontWeight = '700';
+            
+            const target = document.getElementById(this.dataset.subtab);
+            if (target) target.style.display = 'block';
+            
+            if (this.dataset.subtab === 'subtab-integrantes') {
+                carregarSubtabIntegrantes();
+            } else if (this.dataset.subtab === 'subtab-permissoes') {
+                carregarConfiguracoes();
+            }
+        });
+    });
+
+    // ============================================================
+    // INICIALIZAÇÃO PRINCIPAL
+    // ============================================================
     if (usuarioPertenceBanda) {
-        iniciarCalendario();
-        carregarFinanceiro();
-        carregarMembros();
-        carregarConvitesPendentes(); // Carrega a lista de convites
-        carregarRepertorio();
+        if (isGestor) {
+            const tabConfig = document.getElementById('tabConfiguracoes');
+            if (tabConfig) tabConfig.style.display = '';
+
+            iniciarCalendario();
+            carregarFinanceiro();
+            carregarMembros();
+            carregarConvitesPendentes();
+            carregarRepertorio();
+            buscarNotificacoes();
+            setInterval(buscarNotificacoes, 30000);
+        } else {
+            const membroId = usuarioLogado?.membroId;
+
+            iniciarCalendario();
+            carregarFinanceiro();
+            carregarMembros();
+            carregarConvitesPendentes();
+            carregarRepertorio();
+            buscarNotificacoes();
+            setInterval(buscarNotificacoes, 30000);
+
+            if (membroId) {
+                buscarMinhasPermissoes(membroId).then(permissoes => {
+                    if (permissoes) aplicarBloqueioTabs(permissoes);
+                });
+            } else {
+                aplicarBloqueioTabs({ agenda: false, financeiro: false, membros: false, repertorio: false });
+            }
+        }
     } else {
-        // Esconde as tabs e mostra uma mensagem alternativa
         const tabsContainer = document.querySelector('.banda-tabs');
         const contentContainers = document.querySelectorAll('.tab-content');
-        const mainContainer = document.querySelector('.banda-container .container'); // Container principal do conteúdo
+        const mainContainer = document.querySelector('.banda-container .container');
 
         if (tabsContainer) tabsContainer.style.display = 'none';
         contentContainers.forEach(content => content.style.display = 'none');
 
         if (mainContainer) {
-             const userEmail = usuarioLogado ? usuarioLogado.email : 'seu email'; // Pega email do usuário logado
-             mainContainer.innerHTML = `
+            const userEmail = usuarioLogado ? usuarioLogado.email : 'seu email';
+            mainContainer.innerHTML = `
                 <h1>Bem-vindo ao Music Makers!</h1>
                 <div class="card-style" style="text-align: center;">
                     <p>Você ainda não faz parte de nenhuma banda.</p>
                     <p>Peça para um membro de uma banda existente convidá-lo usando seu e-mail (${userEmail}).</p>
-                    <button class="btnCta" style="margin-top: 20px;" onclick="alert('Funcionalidade \\'Criar Nova Banda\\' ainda não implementada.')">Criar Nova Banda</button>
-                    </div>
+                    <button class="btnCta" style="margin-top: 20px;" onclick="alert('Funcionalidade \'Criar Nova Banda\' ainda não implementada.')">Criar Nova Banda</button>
+                </div>
             `;
         }
     }
+
+    // Carrega configurações quando a aba for ativada
+    document.getElementById('bandaTabs')?.addEventListener('click', function(e) {
+        const btn = e.target.closest('[data-tab="configuracoes"]');
+        if (btn && tipoUsuario === 'GESTOR') {
+            setTimeout(() => {
+                const activeSubtab = document.querySelector('.sub-tab-link.active');
+                if (activeSubtab) {
+                    activeSubtab.click(); // Recarrega a subtab ativa
+                } else {
+                    carregarConfiguracoes();
+                }
+            }, 50);
+        }
+    });
 
 });

@@ -4258,3 +4258,606 @@ a:hover {
 
     .modal-card svg { margin: 0; flex-shrink: 0; }
 }
+
+/* ==========================================================================
+   SISTEMA DE PERMISSÕES — Tabs Bloqueadas
+   ========================================================================== */
+.tab-link.tab-bloqueada {
+    opacity: 0.55;
+    cursor: not-allowed;
+    background: rgba(0,0,0,0.04) !important;
+    color: #9ca3af !important;
+    border-bottom-color: transparent !important;
+    position: relative;
+}
+.tab-link.tab-bloqueada::after {
+    content: '🔒';
+    font-size: 0.72em;
+    margin-left: 4px;
+    opacity: 0.8;
+}
+.tab-link-config {
+    margin-left: auto;
+    background: linear-gradient(135deg, rgba(250,152,72,0.12), rgba(250,152,72,0.05)) !important;
+    color: var(--cor-secundaria) !important;
+    border-color: rgba(250,152,72,0.3) !important;
+    font-weight: 700;
+}
+.tab-link-config.ativo {
+    background: linear-gradient(135deg, var(--cor-secundaria), #e67e22) !important;
+    color: #fff !important;
+    border-color: transparent !important;
+}
+
+/* ==========================================================================
+   OVERLAY DE ACESSO NEGADO
+   ========================================================================== */
+.acesso-negado-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(1, 16, 41, 0.65);
+    backdrop-filter: blur(6px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+.acesso-negado-overlay.ativo {
+    opacity: 1;
+    visibility: visible;
+}
+.acesso-negado-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 48px 40px;
+    text-align: center;
+    max-width: 420px;
+    width: 90%;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+@keyframes popIn {
+    from { transform: scale(0.85); opacity: 0; }
+    to   { transform: scale(1);    opacity: 1; }
+}
+.acesso-negado-icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 1.8em;
+    color: #d97706;
+    box-shadow: 0 8px 20px rgba(217,119,6,0.2);
+}
+.acesso-negado-card h3 {
+    font-size: 1.5em;
+    color: var(--cor-primaria);
+    margin-bottom: 12px;
+}
+.acesso-negado-card p {
+    color: #6b7280;
+    margin-bottom: 28px;
+    line-height: 1.7;
+}
+
+/* ==========================================================================
+   ABA CONFIGURAÇÕES — Gerenciamento de Permissões
+   ========================================================================== */
+.perm-page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 28px;
+}
+.perm-page-header h2 {
+    font-size: 1.6em;
+    color: var(--cor-primaria);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.perm-page-header h2 i {
+    color: var(--cor-secundaria);
+    font-size: 0.85em;
+}
+.perm-subtitle {
+    color: #6b7280;
+    margin-top: 6px;
+    font-size: 0.95em;
+}
+
+/* Legenda de módulos */
+.perm-modulos-legenda {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+}
+.perm-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 50px;
+    font-size: 0.82em;
+    font-weight: 700;
+    border: 1.5px solid;
+}
+.perm-badge-agenda    { background: rgba(16,185,129,0.1); color:#10b981; border-color: rgba(16,185,129,0.25); }
+.perm-badge-financeiro{ background: rgba(245,158,11,0.1); color:#d97706; border-color: rgba(245,158,11,0.25); }
+.perm-badge-membros   { background: rgba(59,130,246,0.1); color:#3b82f6; border-color: rgba(59,130,246,0.25); }
+.perm-badge-repertorio{ background: rgba(139,92,246,0.1); color:#8b5cf6; border-color: rgba(139,92,246,0.25); }
+
+/* Grid de cards de permissão */
+.perm-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 24px;
+}
+
+/* Card individual */
+.perm-card {
+    background: #fff;
+    border-radius: 18px;
+    border: 1px solid var(--cor-borda);
+    box-shadow: var(--sombra-card);
+    overflow: hidden;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+.perm-card:hover {
+    box-shadow: 0 12px 32px rgba(0,0,0,0.1);
+    transform: translateY(-3px);
+}
+
+/* Header do card */
+.perm-card-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 22px 22px 18px;
+    border-bottom: 1px solid var(--cor-borda);
+    background: linear-gradient(135deg, rgba(1,16,41,0.03), rgba(250,152,72,0.04));
+}
+.perm-avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--cor-primaria), #032554);
+    color: #fff;
+    font-family: var(--fonte-principal);
+    font-size: 1.3em;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(1,16,41,0.2);
+}
+.perm-card-info h4 {
+    font-size: 1.05em;
+    color: var(--cor-primaria);
+    margin-bottom: 2px;
+}
+.perm-card-info p {
+    font-size: 0.82em;
+    color: #6b7280;
+    margin-bottom: 6px;
+}
+.perm-funcao-badge {
+    display: inline-block;
+    background: rgba(250,152,72,0.1);
+    color: var(--cor-secundaria);
+    padding: 2px 10px;
+    border-radius: 50px;
+    font-size: 0.75em;
+    font-weight: 700;
+    border: 1px solid rgba(250,152,72,0.25);
+}
+
+/* Lista de toggles */
+.perm-toggles {
+    padding: 18px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.perm-toggle-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-radius: 12px;
+    background: var(--cor-fundo);
+    border: 1px solid var(--cor-borda);
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+.perm-toggle-item:hover {
+    background: rgba(250,152,72,0.04);
+    border-color: rgba(250,152,72,0.2);
+}
+.perm-toggle-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    color: var(--cor-primaria);
+    font-size: 0.9em;
+}
+.perm-toggle-info i {
+    font-size: 0.95em;
+    color: var(--cor-secundaria);
+    width: 18px;
+    text-align: center;
+}
+
+/* Toggle switch */
+.perm-toggle-switch {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+.perm-checkbox {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+}
+.perm-slider {
+    display: block;
+    width: 46px;
+    height: 26px;
+    background: #d1d5db;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background 0.25s ease;
+    position: relative;
+}
+.perm-slider::before {
+    content: '';
+    position: absolute;
+    left: 3px;
+    top: 3px;
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    border-radius: 50%;
+    transition: transform 0.25s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+.perm-checkbox:checked + .perm-slider {
+    background: linear-gradient(135deg, #10b981, #059669);
+}
+.perm-checkbox:checked + .perm-slider::before {
+    transform: translateX(20px);
+}
+
+/* Footer do card */
+.perm-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 22px;
+    border-top: 1px solid var(--cor-borda);
+    background: linear-gradient(135deg, rgba(1,16,41,0.02), rgba(250,152,72,0.03));
+}
+.perm-save-status {
+    font-size: 0.85em;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+.btn-salvar-permissoes {
+    padding: 10px 20px;
+    font-size: 0.88em;
+    border-radius: 10px;
+}
+.btn-salvar-permissoes:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+@media (max-width: 600px) {
+    .perm-cards-grid { grid-template-columns: 1fr; }
+    .perm-modulos-legenda { gap: 6px; }
+    .perm-badge { font-size: 0.75em; padding: 4px 10px; }
+}
+
+/* ============================================================
+   ESTILOS DE NOTIFICAÇÕES (SINO, BADGES, DROPDOWN)
+   ============================================================ */
+.notif-bell {
+    position: relative;
+    cursor: pointer;
+    font-size: 1.25em;
+    color: var(--cor-texto-claro, rgba(255,255,255,0.7));
+    transition: color 0.3s ease, transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+}
+.notif-bell:hover {
+    color: var(--cor-secundaria, #fa9848);
+    background: rgba(255,255,255,0.1);
+    transform: scale(1.05);
+}
+.notif-badge {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    background: #ef4444;
+    color: #fff;
+    font-size: 0.6em;
+    font-weight: 800;
+    padding: 3px 6px;
+    border-radius: 50%;
+    line-height: 1;
+    min-width: 15px;
+    text-align: center;
+    box-shadow: 0 0 8px rgba(239, 68, 68, 0.6);
+    animation: pulse-badge 2s infinite;
+}
+@keyframes pulse-badge {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.15); box-shadow: 0 0 12px rgba(239, 68, 68, 0.8); }
+    100% { transform: scale(1); }
+}
+.notif-dropdown {
+    position: absolute;
+    top: 48px;
+    right: 0;
+    width: 290px;
+    background: #0d1e3d;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+    z-index: 1000;
+    display: none;
+    overflow: hidden;
+}
+.notif-dropdown.show {
+    display: block;
+    animation: fadeInDropdown 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes fadeInDropdown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.notif-dropdown-header {
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-weight: 700;
+    font-size: 0.9em;
+    color: var(--cor-secundaria);
+    background: rgba(0,0,0,0.2);
+    font-family: 'Montserrat', sans-serif;
+}
+.notif-dropdown-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+.notif-empty {
+    padding: 20px;
+    text-align: center;
+    color: var(--cor-texto-claro);
+    font-size: 0.85em;
+    margin: 0;
+}
+.notif-item {
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    transition: background-color 0.2s ease;
+    font-family: 'Open Sans', sans-serif;
+    line-height: 1.4;
+    color: #fff;
+}
+.notif-item:hover {
+    background: rgba(255,255,255,0.04);
+}
+.notif-item:last-child {
+    border-bottom: none;
+}
+.tab-badge {
+    background: var(--cor-secundaria, #fa9848);
+    color: #011029;
+    font-size: 0.72em;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 10px;
+    margin-left: 6px;
+    vertical-align: middle;
+}
+.sub-tab-link {
+    outline: none;
+    border-bottom: 2px solid transparent !important;
+    padding: 5px 2px;
+}
+.sub-tab-link:hover {
+    color: var(--cor-secundaria) !important;
+}
+.sub-tab-link.active {
+    border-bottom: 2px solid var(--cor-secundaria) !important;
+}
+
+/* ============================================================
+   ESTILOS DE CARDS DE INTEGRANTES PREMIUM & SWITCHES
+   ============================================================ */
+.integrantes-premium-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+    margin-top: 25px;
+}
+.member-premium-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    position: relative;
+    overflow: hidden;
+}
+.member-premium-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(250, 152, 72, 0.3);
+    box-shadow: 0 8px 25px rgba(250, 152, 72, 0.08);
+}
+.member-premium-card-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+.member-premium-avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--cor-secundaria, #fa9848), #f57c00);
+    color: #011029;
+    font-weight: 700;
+    font-size: 1.3em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(250, 152, 72, 0.25);
+    font-family: 'Montserrat', sans-serif;
+}
+.member-premium-info h4 {
+    margin: 0;
+    font-size: 1.1em;
+    font-weight: 700;
+    color: #fff;
+    font-family: 'Montserrat', sans-serif;
+}
+.member-premium-info p {
+    margin: 4px 0 0 0;
+    font-size: 0.82em;
+    color: var(--cor-texto-claro, rgba(255,255,255,0.6));
+    word-break: break-all;
+}
+.member-premium-details {
+    margin-bottom: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.member-premium-detail-item {
+    font-size: 0.88em;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.member-premium-detail-item span {
+    color: var(--cor-texto-claro);
+}
+.member-premium-status-badge {
+    font-size: 0.78em;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+.status-ativo {
+    background: rgba(16, 185, 129, 0.12);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+.status-pendente {
+    background: rgba(250, 152, 72, 0.12);
+    color: var(--cor-secundaria);
+    border: 1px solid rgba(250, 152, 72, 0.25);
+}
+.status-sem-acesso {
+    background: rgba(239, 68, 68, 0.12);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+.member-premium-actions {
+    display: flex;
+    gap: 10px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding-top: 16px;
+    margin-top: auto;
+}
+.member-premium-actions button {
+    flex: 1;
+    padding: 10px 14px;
+    font-size: 0.85em;
+    font-weight: 700;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    outline: none;
+    font-family: 'Montserrat', sans-serif;
+}
+.btn-premium-edit {
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.btn-premium-edit:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+.btn-premium-remove {
+    background: rgba(239, 68, 68, 0.05);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.1);
+}
+.btn-premium-remove:hover {
+    background: rgba(239, 68, 68, 0.12);
+    border-color: rgba(239, 68, 68, 0.25);
+}
+.btn-premium-resend {
+    background: rgba(250, 152, 72, 0.05);
+    color: var(--cor-secundaria);
+    border: 1px solid rgba(250, 152, 72, 0.15);
+}
+.btn-premium-resend:hover {
+    background: rgba(250, 152, 72, 0.12);
+    border-color: rgba(250, 152, 72, 0.3);
+}
+
+/* PREMIUM TOGGLE SWITCH STYLES */
+.perm-checkbox-premium:checked + .perm-slider-premium {
+    background-color: #10b981 !important;
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
+}
+.perm-slider-premium::before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .3s ease;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+}
+.perm-checkbox-premium:checked + .perm-slider-premium::before {
+    transform: translateX(20px);
+}
