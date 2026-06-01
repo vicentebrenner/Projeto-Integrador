@@ -20,6 +20,29 @@ public class PerfilMusico {
 
     private String biografia;
     
+    private String localizacao;
+    
     @Column(name = "link_videos")
     private String linkVideos;
+
+    @Column(name = "nivel_habilidade")
+    private String nivelHabilidade;
+
+    @Column(name = "tempo_experiencia")
+    private String tempoExperiencia;
+
+    @Column(name = "generos_musicais")
+    private String generosMusicais;
+
+    private String influencias;
+
+    @Column(name = "status_busca")
+    private String statusBusca;
+
+    private String disponibilidade;
+
+    private String equipamento;
+
+    @Column(name = "redes_sociais")
+    private String redesSociais;
 }

@@ -8,8 +8,16 @@ document.addEventListener('DOMContentLoaded', function() {
             btnLoginAntigo.parentElement.remove();
         }
 
-        const nome = usuarioLogado.nome;
-        const inicial = nome ? nome.charAt(0).toUpperCase() : '?';
+        const nome = usuarioLogado.nome || '';
+        let inicial = '?';
+        if (nome) {
+            const parts = nome.trim().split(" ");
+            if (parts.length === 1) {
+                inicial = parts[0].substring(0, 2).toUpperCase();
+            } else {
+                inicial = (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+            }
+        }
         const tipoUsuario = usuarioLogado.tipoUsuario || 'MUSICO';
 
         const perfilLi = document.createElement('li');
@@ -19,8 +27,10 @@ document.addEventListener('DOMContentLoaded', function() {
             ? `<a href="banda.html">Painel da Banda</a>` 
             : `<a href="perfil-musico.html">Meu Perfil Músico</a>`;
 
+        const corBackground = usuarioLogado.corAvatar || '#fa9848';
+
         perfilLi.innerHTML = `
-            <div class="perfil-icone" id="perfilIcone">${inicial}</div>
+            <div class="perfil-icone" id="perfilIcone" style="background-color: ${corBackground};">${inicial}</div>
             <div class="perfil-dropdown" id="perfilDropdown">
                 <p>Olá, ${nome.split(' ')[0]}!</p>
                 <hr>

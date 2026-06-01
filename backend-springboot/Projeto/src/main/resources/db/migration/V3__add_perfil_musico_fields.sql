@@ -1,0 +1,3 @@
+ALTER TABLE usuario ADD COLUMN username VARCHAR(100) UNIQUE;
+ALTER TABLE usuario ADD COLUMN cor_avatar VARCHAR(7);
+ALTER TABLE perfil_musico ADD COLUMN localizacao VARCHAR(255);

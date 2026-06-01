@@ -1,6 +1,7 @@
 package com.musicMakers.Projeto.controller;
 
 import com.musicMakers.Projeto.domain.entity.PerfilMusico;
+import com.musicMakers.Projeto.domain.dto.PerfilUpdateDTO;
 import com.musicMakers.Projeto.service.PerfilMusicoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,5 +26,10 @@ public class PerfilMusicoController {
     @PostMapping("/usuario/{usuarioId}")
     public ResponseEntity<PerfilMusico> salvarPerfil(@PathVariable Long usuarioId, @RequestBody PerfilMusico perfil) {
         return ResponseEntity.ok(perfilMusicoService.salvarPerfil(usuarioId, perfil));
+    }
+
+    @PostMapping("/usuario/{usuarioId}/completo")
+    public ResponseEntity<PerfilMusico> salvarPerfilCompleto(@PathVariable Long usuarioId, @RequestBody PerfilUpdateDTO dto) {
+        return ResponseEntity.ok(perfilMusicoService.salvarPerfilCompleto(usuarioId, dto));
     }
 }

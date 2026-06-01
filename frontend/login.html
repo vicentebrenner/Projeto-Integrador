@@ -6,6 +6,8 @@
     <title>Login - Music Makers</title>
     <link rel="icon" type="image/png" href="assets/logo.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <!-- Google Identity Services -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     
     <style>
         /* =========================================
@@ -294,6 +296,24 @@
             font-size: 0.9em;
             color: #555;
         }
+
+        /* Divisor do Google */
+        .divider-social {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 20px 0;
+            color: #888;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+        .divider-social::before, .divider-social::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #ddd;
+        }
+        .divider-social:not(:empty)::before { margin-right: .5em; }
+        .divider-social:not(:empty)::after { margin-left: .5em; }
     </style>
 </head>
 <body>
@@ -337,8 +357,27 @@
 
                 <button type="submit" class="btnLoginSubmit">Entrar</button>
 
+                <!-- DESATIVADO TEMPORARIAMENTE
+                <div class="divider-social">Ou entre com</div>
+
+                <div id="g_id_onload"
+                     data-client_id="327030723105-jcbvbrnbfifl4huo24cd1upqva3h54k7.apps.googleusercontent.com"
+                     data-callback="handleGoogleLogin"
+                     data-auto_prompt="false">
+                </div>
+                <div class="g_id_signin"
+                     data-type="standard"
+                     data-size="large"
+                     data-theme="outline"
+                     data-text="sign_in_with"
+                     data-shape="rectangular"
+                     data-logo_alignment="left"
+                     style="display: flex; justify-content: center;">
+                </div>
+                -->
+
                 <div class="loginLinks">
-                    <a href="esqueceuSenha.html" class="link-esqueci">Esqueceu sua senha?</a>
+                    <p><a href="#">Esqueceu a senha?</a></p>
     
                     <div class="cadastro-container">
                         <p>Não tem uma conta?</p>
@@ -351,5 +390,44 @@
 
     <script src="scripts/utils.js"></script>
     <script src="scripts/login.js"></script>
+    <script>
+        function handleGoogleLogin(response) {
+            const erroLogin = document.getElementById("erroLogin");
+            
+            fetch("http://localhost:8080/api/auth/google", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ credential: response.credential })
+            })
+            .then(async res => {
+                if (!res.ok) {
+                    const text = await res.text();
+                    throw new Error(`Erro ${res.status}: ${text}`);
+                }
+                return res.json();
+            })
+            .then(data => {
+                localStorage.setItem("authToken", data.token);
+                localStorage.setItem("usuarioLogado", JSON.stringify({
+                    id: data.id,
+                    nome: data.nome,
+                    tipoUsuario: data.role
+                }));
+                // Redireciona com base no tipo de usuário
+                if (data.role === "GESTOR") {
+                    window.location.href = "banda.html";
+                } else {
+                    window.location.href = "dashboard.html";
+                }
+            })
+            .catch(err => {
+                console.error("Detalhe do Erro:", err);
+                if (erroLogin) {
+                    erroLogin.textContent = `Falha: ${err.message}`;
+                    erroLogin.classList.add("visivel");
+                }
+            });
+        }
+    </script>
 </body>
 </html>

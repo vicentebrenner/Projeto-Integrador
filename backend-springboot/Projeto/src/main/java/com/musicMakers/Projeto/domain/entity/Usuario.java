@@ -3,6 +3,7 @@ package com.musicMakers.Projeto.domain.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Data
@@ -16,6 +17,12 @@ public class Usuario {
     private String email;
     private String senha;
     
+    @Column(unique = true)
+    private String username;
+    
+    @Column(name = "cor_avatar")
+    private String corAvatar;
+    
     @Column(name = "tipo_usuario")
     private String tipoUsuario; // Use String ou crie um Enum depois
 
@@ -23,6 +30,7 @@ public class Usuario {
     private LocalDateTime dataCadastro = LocalDateTime.now();
     
     // Relacionamento opcional com PerfilMusico
+    @JsonIgnore
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
     private PerfilMusico perfilMusico;
 }
