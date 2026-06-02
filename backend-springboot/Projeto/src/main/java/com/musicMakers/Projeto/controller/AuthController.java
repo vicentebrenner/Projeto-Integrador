@@ -1,5 +1,7 @@
 package com.musicMakers.Projeto.controller;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Collections;
@@ -16,8 +18,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.springframework.web.bind.annotation.GetMapping;
+import com.musicMakers.Projeto.domain.entity.MembroBanda;
 import com.musicMakers.Projeto.domain.entity.Usuario;
+import com.musicMakers.Projeto.repository.MembroBandaRepository;
 import com.musicMakers.Projeto.repository.UsuarioRepository;
+import com.musicMakers.Projeto.repository.ConviteBandaRepository;
 import com.musicMakers.Projeto.service.TokenService;
 
 @RestController
@@ -28,11 +34,18 @@ public class AuthController {
     private UsuarioRepository usuarioRepository;
 
     @Autowired
+    private MembroBandaRepository membroBandaRepository;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
     private TokenService tokenService;
 
+    @Autowired
+    private ConviteBandaRepository conviteBandaRepository;
+
+    // --- LOGIN ---
     // --- LOGIN ---
     @CrossOrigin(origins = "*")
     @PostMapping("/login")
@@ -46,13 +59,29 @@ public class AuthController {
             Usuario usuario = usuarioOpt.get();
             if (passwordEncoder.matches(senha, usuario.getSenha())) {
                 String token = tokenService.generateToken(usuario);
-                
-                return ResponseEntity.ok(Map.of(
-                    "token", token,
-                    "id", usuario.getId(),
-                    "nome", usuario.getNome(),
-                    "role", usuario.getTipoUsuario()
-                ));
+
+                // Busca o vínculo do usuário com sua banda (MembroBanda)
+                List<MembroBanda> membros = membroBandaRepository.findByUsuarioId(usuario.getId());
+
+                Map<String, Object> resposta = new HashMap<>();
+                resposta.put("token", token);
+                resposta.put("id", usuario.getId());
+                resposta.put("nome", usuario.getNome());
+                resposta.put("role", usuario.getTipoUsuario());
+
+                // Inclui membroId e bandaId para que o frontend possa buscar permissões
+                if (!membros.isEmpty()) {
+                    MembroBanda membro = membros.get(0); // considera o primeiro vínculo
+                    resposta.put("membroId", membro.getId());
+                    resposta.put("bandaId", membro.getBanda().getId());
+                    resposta.put("gestor", Boolean.TRUE.equals(membro.getGestor()));
+                } else {
+                    resposta.put("membroId", null);
+                    resposta.put("bandaId", null);
+                    resposta.put("gestor", false);
+                }
+
+                return ResponseEntity.ok(resposta);
             }
         }
         return ResponseEntity.status(401).body("Email ou senha inválidos");
@@ -133,5 +162,43 @@ public class AuthController {
             e.printStackTrace();
             return ResponseEntity.status(500).body("Erro interno na validação do Google.");
         }
+    }
+
+    // --- GET ME STATUS ---
+    @GetMapping("/me/status")
+    public ResponseEntity<?> getMeStatus(java.security.Principal principal) {
+        if (principal == null) {
+            return ResponseEntity.status(401).body("Não autenticado");
+        }
+        String email = principal.getName();
+        Optional<Usuario> usuarioOpt = usuarioRepository.findByEmail(email);
+        if (usuarioOpt.isEmpty()) {
+            return ResponseEntity.status(404).body("Usuário não encontrado");
+        }
+        Usuario usuario = usuarioOpt.get();
+        List<MembroBanda> membros = membroBandaRepository.findByUsuarioId(usuario.getId());
+
+        Map<String, Object> resposta = new HashMap<>();
+        resposta.put("id", usuario.getId());
+        resposta.put("nome", usuario.getNome());
+        resposta.put("email", usuario.getEmail());
+        resposta.put("tipoUsuario", usuario.getTipoUsuario());
+
+        if (!membros.isEmpty()) {
+            MembroBanda membro = membros.get(0);
+            resposta.put("membroId", membro.getId());
+            resposta.put("bandaId", membro.getBanda().getId());
+            resposta.put("gestor", Boolean.TRUE.equals(membro.getGestor()));
+        } else {
+            resposta.put("membroId", null);
+            resposta.put("bandaId", null);
+            resposta.put("gestor", false);
+        }
+
+        // Contagem de convites pendentes
+        long convitesPendentes = conviteBandaRepository.findByUsuarioConvidadoIdAndStatus(usuario.getId(), "PENDENTE").size();
+        resposta.put("convitesPendentes", convitesPendentes);
+
+        return ResponseEntity.ok(resposta);
     }
 }

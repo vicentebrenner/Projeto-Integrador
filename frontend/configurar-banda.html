@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurar Banda - Music Makers</title>
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Fundo Animado com Gradiente */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Open Sans', sans-serif;
+            overflow-y: auto;
+            background: linear-gradient(-45deg, #011029, #0f3460, #16213e, #011029);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            box-sizing: border-box;
+            padding: 40px 20px;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Animação dos Símbolos Musicais no Fundo */
+        .music-notes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+            margin: 0;
+            padding: 0;
+            pointer-events: none;
+        }
+
+        .music-notes li {
+            position: absolute;
+            display: block;
+            list-style: none;
+            color: rgba(255, 255, 255, 0.08);
+            font-size: 20px;
+            animation: floatUp 25s linear infinite;
+            bottom: -150px;
+        }
+
+        .music-notes li:nth-child(1){ left: 25%; font-size: 80px; animation-delay: 0s; }
+        .music-notes li:nth-child(2){ left: 10%; font-size: 40px; animation-delay: 2s; animation-duration: 12s; }
+        .music-notes li:nth-child(3){ left: 70%; font-size: 60px; animation-delay: 4s; }
+        .music-notes li:nth-child(4){ left: 40%; font-size: 50px; animation-delay: 0s; animation-duration: 18s; }
+        .music-notes li:nth-child(5){ left: 65%; font-size: 30px; animation-delay: 0s; }
+        .music-notes li:nth-child(6){ left: 75%; font-size: 90px; animation-delay: 3s; }
+        .music-notes li:nth-child(7){ left: 35%; font-size: 70px; animation-delay: 7s; }
+
+        @keyframes floatUp {
+            0%{ transform: translateY(0) rotate(0deg); opacity: 1; }
+            100%{ transform: translateY(-1200px) rotate(360deg); opacity: 0; }
+        }
+
+        /* Container Central */
+        .setupContainer {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Caixa de Configuração */
+        .setupBox {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 20px 45px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 550px;
+            text-align: center;
+        }
+
+        .icon-setup-container {
+            width: 80px;
+            height: 80px;
+            background: rgba(250, 152, 72, 0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px auto;
+            animation: pulseGlow 3s infinite;
+        }
+
+        .icon-setup {
+            font-size: 2.5rem;
+            color: #fa9848;
+        }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 0 0 rgba(250, 152, 72, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(250, 152, 72, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(250, 152, 72, 0); }
+        }
+
+        .logoSetup {
+            color: #011029;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-decoration: none;
+            font-size: 1.8rem;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        h2 {
+            margin-bottom: 10px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.45em;
+            color: #011029;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 0.9em;
+            color: #555;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        /* Inputs Estilizados */
+        .inputGroup {
+            margin-bottom: 22px;
+            text-align: left;
+        }
+
+        .inputGroup label {
+            font-size: 0.88em;
+            color: #011029;
+            font-weight: 700;
+            margin-left: 5px;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper i.field-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+            transition: color 0.3s;
+            z-index: 2;
+        }
+
+        .input-wrapper input,
+        .input-wrapper select,
+        .input-wrapper textarea {
+            width: 100%;
+            padding: 14px 16px 14px 45px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 0.95em;
+            outline: none;
+            transition: all 0.3s;
+            background: #f8fafc;
+            box-sizing: border-box;
+            font-family: inherit;
+            color: #1e293b;
+        }
+
+        .input-wrapper textarea {
+            padding-top: 14px;
+            resize: vertical;
+            min-height: 90px;
+        }
+
+        .input-wrapper input:focus,
+        .input-wrapper select:focus,
+        .input-wrapper textarea:focus {
+            border-color: #fa9848;
+            background: #fff;
+            box-shadow: 0 5px 15px rgba(250, 152, 72, 0.15);
+        }
+
+        .input-wrapper input:focus + i.field-icon,
+        .input-wrapper select:focus + i.field-icon,
+        .input-wrapper textarea:focus + i.field-icon {
+            color: #fa9848;
+        }
+
+        /* Mensagem de Erro */
+        .mensagemErro {
+            color: #ef4444;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-top: 8px;
+            display: none;
+            text-align: left;
+        }
+        .mensagemErro.visivel {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* Botão Interativo */
+        .btnSubmit {
+            width: 100%;
+            background: linear-gradient(135deg, #fa9848, #e67e22);
+            color: #fff;
+            border: none;
+            padding: 15px;
+            border-radius: 12px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 1.05em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(250, 152, 72, 0.4);
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btnSubmit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(250, 152, 72, 0.6);
+        }
+
+        .btnSubmit:active {
+            transform: translateY(0);
+        }
+
+        .btnSubmit:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Snackbar */
+        #snackbar {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #011029;
+            color: #fff;
+            text-align: center;
+            border-radius: 8px;
+            padding: 16px;
+            position: fixed;
+            z-index: 999;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        #snackbar.show {
+            visibility: visible;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+
+        @keyframes fadein {
+            from { bottom: 0; opacity: 0; }
+            to { bottom: 30px; opacity: 1; }
+        }
+
+        @keyframes fadeout {
+            from { bottom: 30px; opacity: 1; }
+            to { bottom: 0; opacity: 0; }
+        }
+    </style>
+    <script defer src="scripts/global.js"></script>
+    <script defer src="scripts/utils.js"></script>
+    <script defer src="scripts/configurar-banda.js"></script>
+</head>
+<body>
+
+    <!-- Notas Musicais flutuando no fundo -->
+    <ul class="music-notes">
+        <li><i class="fas fa-music"></i></li>
+        <li><i class="fas fa-eighth-note"></i></li>
+        <li><i class="fas fa-music"></i></li>
+        <li><i class="fas fa-guitar"></i></li>
+        <li><i class="fas fa-drum"></i></li>
+        <li><i class="fas fa-music"></i></li>
+        <li><i class="fas fa-microphone"></i></li>
+    </ul>
+
+    <div class="setupContainer">
+        <div class="setupBox">
+            
+            <div class="icon-setup-container">
+                <i class="fas fa-sliders icon-setup"></i>
+            </div>
+
+            <span class="logoSetup">Music Makers</span>
+            <h2>Configure sua Banda</h2>
+            <p class="subtitle">Antes de começarmos a gerenciar, precisamos de algumas informações básicas sobre a sua banda.</p>
+
+            <form id="formConfigurarBanda">
+                
+                <div class="inputGroup">
+                    <label for="nomeBanda">Nome da Banda *</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="nomeBanda" placeholder="Ex: Os Subterrâneos" required>
+                        <i class="fas fa-guitar field-icon"></i>
+                    </div>
+                </div>
+
+                <div class="inputGroup">
+                    <label for="generoBanda">Gênero Musical *</label>
+                    <div class="input-wrapper">
+                        <select id="generoBanda" required>
+                            <option value="" disabled selected>Selecione um gênero...</option>
+                            <option value="Rock">Rock</option>
+                            <option value="Pop">Pop</option>
+                            <option value="Heavy Metal">Heavy Metal</option>
+                            <option value="Sertanejo">Sertanejo</option>
+                            <option value="MPB">MPB</option>
+                            <option value="Jazz">Jazz</option>
+                            <option value="Blues">Blues</option>
+                            <option value="Reggae">Reggae</option>
+                            <option value="Outro">Outro</option>
+                        </select>
+                        <i class="fas fa-music field-icon"></i>
+                    </div>
+                </div>
+
+                <div class="inputGroup">
+                    <label for="localizacaoBanda">Cidade / Estado *</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="localizacaoBanda" placeholder="Ex: Montenegro/RS" required>
+                        <i class="fas fa-map-marker-alt field-icon"></i>
+                    </div>
+                </div>
+
+                <div class="inputGroup">
+                    <label for="contatoBanda">Contato da Banda *</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="contatoBanda" placeholder="Ex: (51) 99999-9999 ou contato@banda.com" required>
+                        <i class="fas fa-phone field-icon"></i>
+                    </div>
+                </div>
+
+                <div class="inputGroup">
+                    <label for="descricaoBanda">Descrição / Biografia</label>
+                    <div class="input-wrapper">
+                        <textarea id="descricaoBanda" placeholder="Fale um pouco sobre a banda, influências, proposta..."></textarea>
+                        <i class="fas fa-align-left field-icon" style="top: 22px;"></i>
+                    </div>
+                </div>
+
+                <div class="mensagemErro" id="erroSetup"></div>
+
+                <button type="submit" class="btnSubmit" id="btnSalvarBanda">
+                    <i class="fas fa-check-circle"></i> Criar e Salvar Banda
+                </button>
+            </form>
+
+        </div>
+    </div>
+
+    <div id="snackbar"></div>
+
+</body>
+</html>

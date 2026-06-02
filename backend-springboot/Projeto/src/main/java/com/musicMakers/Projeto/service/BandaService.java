@@ -6,6 +6,7 @@ import com.musicMakers.Projeto.domain.entity.Usuario;
 import com.musicMakers.Projeto.repository.BandaRepository;
 import com.musicMakers.Projeto.repository.MembroBandaRepository;
 import com.musicMakers.Projeto.repository.UsuarioRepository;
+import com.musicMakers.Projeto.repository.PermissaoMembroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +24,9 @@ public class BandaService {
     
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private PermissaoMembroRepository permissaoMembroRepository;
 
     public List<Banda> listarTodas() {
         return bandaRepository.findAll();
@@ -55,5 +59,11 @@ public class BandaService {
     
     public void deletarBanda(Long id) {
         bandaRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void removerMembro(Long membroId) {
+        permissaoMembroRepository.deleteAllByMembroBandaId(membroId);
+        membroBandaRepository.deleteById(membroId);
     }
 }

@@ -55,7 +55,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 const usuarioParaSalvar = {
                     id: data.id,
                     nome: data.nome,
-                    tipoUsuario: data.role
+                    tipoUsuario: data.role,
+                    membroId: data.membroId || null,
+                    bandaId: data.bandaId || null,
+                    gestor: data.gestor || false
                 };
 
                 localStorage.setItem('usuarioLogado', JSON.stringify(usuarioParaSalvar));

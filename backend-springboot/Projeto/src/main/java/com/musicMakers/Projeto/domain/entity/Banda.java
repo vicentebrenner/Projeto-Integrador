@@ -2,6 +2,7 @@ package com.musicMakers.Projeto.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -23,6 +24,7 @@ public class Banda {
     
     private String descricao;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "banda")
     private List<MembroBanda> membros;
 }

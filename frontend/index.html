@@ -35,7 +35,7 @@
                         <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
                     </svg>
                     <h4>Próximos Eventos</h4>
-                    <p>Ensaio na sexta, 20h</p>
+                    <p id="modalProxEventos">Carregando...</p>
                 </div>
                 <div class="modal-card">
                     <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="#fa9848" viewBox="0 0 16 16">
@@ -43,7 +43,7 @@
                         <path d="M1 5h14v7H1V5zm7 4a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/>
                     </svg>
                     <h4>Financeiro</h4>
-                    <p>Cachê recebido: R$500</p>
+                    <p id="modalFinanceiro">Carregando...</p>
                 </div>
                 <div class="modal-card">
                     <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="#fa9848" viewBox="0 0 16 16">
@@ -52,7 +52,7 @@
                         <path d="M9 13V2a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 0-.5.5v11.146c-.527-.174-.854-.7-.854-1.354 0-1.105 1.12-2 2.5-2s2.5.895 2.5 2c0 .654-.327 1.18-.854 1.354z"/>
                     </svg>
                     <h4>Repertório</h4>
-                    <p>15 músicas cadastradas</p>
+                    <p id="modalRepertorio">Carregando...</p>
                 </div>
             </div>
 
@@ -64,11 +64,8 @@
 
             <div class="modal-acoes">
                 <a href="banda.html" class="modal-btn-primario" id="btnEntrar">
-                    Acessar meu painel completo
+                    Entrar Agora
                 </a>
-                <button class="modal-btn-secundario" id="btnFecharModal">
-                    Explorar depois
-                </button>
             </div>
         </div>
 
@@ -455,7 +452,6 @@
 (function () {
     const CHAVE = 'primeiroAcesso';
     const overlay   = document.getElementById('modalOverlay');
-    const btnFechar = document.getElementById('btnFecharModal');
     const btnEntrar = document.getElementById('btnEntrar');
 
     function preencherNome() {
@@ -467,37 +463,93 @@
         } catch (e) {}
     }
 
-    function fecharModal() {
-        overlay.classList.add('sair');
-        overlay.addEventListener('animationend', function handler() {
-            overlay.style.display = 'none';
-            overlay.removeEventListener('animationend', handler);
-        });
-        localStorage.setItem(CHAVE, 'false');
+    function preencherModalCards() {
+        try {
+            // Agenda
+            const dadosAgenda = JSON.parse(localStorage.getItem('dadosAgenda')) || [];
+            const hoje = new Date(); hoje.setHours(0,0,0,0);
+            const showsFuturos = dadosAgenda.filter(e => {
+                const d = new Date(e.data + 'T12:00:00');
+                return !isNaN(d) && d >= hoje && (e.tipo === 'show' || !e.tipo);
+            });
+            const elShow = document.getElementById('modalProxEventos');
+            if (elShow) {
+                if (showsFuturos.length > 0) {
+                    showsFuturos.sort((a,b) => new Date(a.data) - new Date(b.data));
+                    const prox = showsFuturos[0];
+                    const dataPartes = prox.data.split('-');
+                    const dataFormatada = dataPartes.length === 3 ? `${dataPartes[2]}/${dataPartes[1]}/${dataPartes[0]}` : prox.data;
+                    elShow.textContent = `${prox.titulo} em ${dataFormatada}${prox.hora ? ' às ' + prox.hora : ''}`;
+                } else {
+                    elShow.textContent = 'Nenhum show agendado';
+                }
+            }
+
+            // Financeiro
+            const defaultFinanceiros = [];
+            const dadosFinanceiros = localStorage.getItem('dadosFinanceiros') ? JSON.parse(localStorage.getItem('dadosFinanceiros')) : defaultFinanceiros;
+            const elFin = document.getElementById('modalFinanceiro');
+            if (elFin) {
+                const saldo = dadosFinanceiros.reduce((acc, curr) => acc + (curr.tipo === 'RECEITA' ? curr.valor : -curr.valor), 0);
+                elFin.textContent = `Saldo: R$ ${saldo.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            }
+
+            // Repertório
+            const defaultRepertorio = [];
+            const dadosRepertorio = localStorage.getItem('dadosRepertorio') ? JSON.parse(localStorage.getItem('dadosRepertorio')) : defaultRepertorio;
+            const elRep = document.getElementById('modalRepertorio');
+            if (elRep) {
+                elRep.textContent = `${dadosRepertorio.length} música(s) cadastrada(s)`;
+            }
+        } catch (e) {
+            console.error("Erro ao preencher cards do modal:", e);
+        }
     }
 
     // Só exibe se for primeiro acesso após login
     if (localStorage.getItem(CHAVE) === 'true') {
         preencherNome();
+        preencherModalCards();
         overlay.style.display = 'flex';
     } else {
         overlay.remove();
     }
 
-    if (btnFechar) btnFechar.addEventListener('click', fecharModal);
-
     if (btnEntrar) {
+        // Dynamically set href based on user role and band status
+        try {
+            const usuario = JSON.parse(localStorage.getItem('usuarioLogado'));
+            if (usuario) {
+                if (usuario.tipoUsuario === 'GESTOR' || usuario.gestor === true) {
+                    if (!usuario.bandaId) {
+                        btnEntrar.href = 'configurar-banda.html';
+                    } else {
+                        btnEntrar.href = 'banda.html';
+                    }
+                } else if (usuario.tipoUsuario === 'MUSICO') {
+                    if (usuario.bandaId) {
+                        btnEntrar.href = 'banda.html';
+                    } else {
+                        btnEntrar.href = 'musico.html';
+                    }
+                } else {
+                    btnEntrar.href = 'banda.html';
+                }
+            }
+        } catch(e) {
+            console.error("Erro ao definir href do botão de entrar:", e);
+        }
+
         btnEntrar.addEventListener('click', function () {
             localStorage.setItem(CHAVE, 'false');
         });
     }
 
-    overlay.addEventListener('click', function (e) {
-        if (e.target === overlay) fecharModal();
-    });
-
     document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' && overlay && overlay.style.display !== 'none') fecharModal();
+        if (e.key === 'Escape' && overlay && overlay.style.display !== 'none') {
+            overlay.style.display = 'none';
+            localStorage.setItem(CHAVE, 'false');
+        }
     });
 })();
 </script>

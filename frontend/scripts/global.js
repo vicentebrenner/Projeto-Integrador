@@ -53,7 +53,9 @@ document.addEventListener('DOMContentLoaded', function() {
             event.preventDefault();
             
             localStorage.removeItem('usuarioLogado');
-            window.location.href = 'index.html';
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('primeiroAcesso');
+            window.location.href = 'login.html';
         });
 
         window.addEventListener('click', function(event) {
