@@ -10,30 +10,19 @@
 </head>
 <body>
 
-    <header class="cabecalho cabecalho-interno">
+    <header class="cabecalho">
         <div class="container">
-            <a href="musico.html" class="logo">
+            <a href="index.html" class="logo">
                 <img src="assets/logo.png" alt="Music Makers" class="logo-img">
             </a>
-            <div class="header-right-controls" style="display: flex; align-items: center; gap: 20px;">
-                <span id="headerNomeUsuario" style="color: var(--cor-texto); font-weight: 600;">Músico</span>
-                
-                <!-- Sino de Notificações -->
-                <div class="notif-bell" id="notifBell">
-                    <i class="fas fa-bell"></i>
-                    <span class="notif-badge" id="notifBadge" style="display: none;">0</span>
-                    <div class="notif-dropdown" id="notifDropdown">
-                        <div class="notif-dropdown-header">
-                            <span>Convites Recebidos</span>
-                        </div>
-                        <div class="notif-dropdown-list" id="notifDropdownList">
-                            <p class="notif-empty">Nenhum convite pendente</p>
-                        </div>
-                    </div>
-                </div>
-
-                <a href="#" id="btnLogoutHeader" class="btnLogin">Sair</a>
-            </div>
+            <nav class="menuPrincipal">
+                <ul>
+                    <li><a href="index.html#funcionalidades">Funcionalidades</a></li>
+                    <li><a href="index.html#como-funciona">Como Funciona</a></li>
+                    <li><a href="sobre.html">Sobre nós</a></li>
+                    <li><a href="login.html" class="btnLogin">Entrar</a></li>
+                </ul>
+            </nav>
         </div>
     </header>
 
@@ -64,9 +53,19 @@
                             <input type="text" id="perfilNome" name="perfilNome" disabled>
                             <small>Seu nome está vinculado à sua conta.</small>
                         </div>
-                        <div class="inputGroup">
-                            <label for="perfilLocal">Localização</label>
-                            <input type="text" id="perfilLocal" name="perfilLocal" placeholder="Ex: Porto Alegre/RS" required>
+                        <div class="form-grid-2">
+                            <div class="inputGroup">
+                                <label for="perfilEstado">Estado</label>
+                                <select id="perfilEstado" name="perfilEstado" required>
+                                    <option value="">Selecione o estado...</option>
+                                </select>
+                            </div>
+                            <div class="inputGroup">
+                                <label for="perfilCidade">Cidade</label>
+                                <select id="perfilCidade" name="perfilCidade" required disabled>
+                                    <option value="">Selecione o estado primeiro...</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="inputGroup">
                             <label for="perfilInstrumentos">Instrumentos Principais</label>
@@ -138,11 +137,39 @@
         </div>
     </div>
 
-    <footer class="rodape"><div class="container"><p>&copy; 2026 Music Makers.</p></div></footer>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <a href="index.html">
+                        <img src="assets/logo.png" alt="Logo Music Makers" class="footer-logo-img">
+                    </a>
+                </div>
+
+                <div class="footer-address">
+                    <h4>Endereço:</h4>
+                    <p>Montenegro/RS</p>
+                </div>
+
+                <div class="footer-social">
+                    <h4>Nossas Redes Sociais:</h4>
+                    <ul class="social-list">
+                        <li>Vicente Brenner: <a href="https://www.instagram.com/vicentebrenner/" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-instagram"></i></a></li>
+                        <li>Jean Carlo: <a href="https://www.instagram.com/jean.csouza/" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-instagram"></i></a></li>
+                        <li>Murilo Silva: <a href="https://www.instagram.com/silvazn.04/" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-instagram"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-divider"></div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Music Makers. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
     <div id="snackbar"></div>
 
-    <script src="scripts/global.js"></script>
-    <script src="scripts/utils.js"></script>
-    <script src="scripts/musico.js"></script>
+    <script src="scripts/global.js?v=13"></script>
+    <script src="scripts/utils.js?v=13"></script>
+    <script src="scripts/musico.js?v=13"></script>
 </body>
 </html>

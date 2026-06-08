@@ -84,7 +84,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 dadosPerfil.biografia = data.biografia || "";
                 dadosPerfil.linkVideos = data.linkVideos || "";
 
-                document.getElementById('perfilLocal').value = ""; // Local opcional
+                // document.getElementById('perfilLocal').value = ""; // Local opcional
+                const selectEstado = document.getElementById('perfilEstado');
+                const selectCidade = document.getElementById('perfilCidade');
+                if (selectEstado) selectEstado.value = "";
+                if (selectCidade) selectCidade.innerHTML = '<option value="">Selecione o estado primeiro...</option>';
                 document.getElementById('perfilInstrumentos').value = dadosPerfil.instrumentosPrincipais;
                 document.getElementById('perfilBio').value = dadosPerfil.biografia;
 
@@ -435,5 +439,59 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- INICIALIZAÇÃO ---
     carregarPerfil();
     carregarConvites();
+
+    // --- LÓGICA DE ESTADOS E CIDADES (IBGE) ---
+    const selectEstado = document.getElementById('perfilEstado');
+    const selectCidade = document.getElementById('perfilCidade');
+
+    async function carregarEstados() {
+        if (!selectEstado) return;
+        try {
+            const res = await fetch('https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome');
+            const estados = await res.json();
+            estados.forEach(uf => {
+                const option = document.createElement('option');
+                option.value = uf.sigla;
+                option.textContent = uf.nome;
+                selectEstado.appendChild(option);
+            });
+        } catch (error) {
+            console.error('Erro ao carregar estados:', error);
+        }
+    }
+
+    async function carregarCidades(uf) {
+        if (!selectCidade || !uf) return;
+        selectCidade.innerHTML = '<option value="">Carregando...</option>';
+        selectCidade.disabled = true;
+        try {
+            const res = await fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios?orderBy=nome`);
+            const cidades = await res.json();
+            selectCidade.innerHTML = '<option value="">Selecione a cidade...</option>';
+            cidades.forEach(cidade => {
+                const option = document.createElement('option');
+                option.value = cidade.nome;
+                option.textContent = cidade.nome;
+                selectCidade.appendChild(option);
+            });
+            selectCidade.disabled = false;
+        } catch (error) {
+            console.error('Erro ao carregar cidades:', error);
+            selectCidade.innerHTML = '<option value="">Erro ao carregar</option>';
+        }
+    }
+
+    if (selectEstado) {
+        selectEstado.addEventListener('change', (e) => {
+            const uf = e.target.value;
+            if (uf) {
+                carregarCidades(uf);
+            } else {
+                selectCidade.innerHTML = '<option value="">Selecione o estado primeiro...</option>';
+                selectCidade.disabled = true;
+            }
+        });
+        carregarEstados();
+    }
 
 });

@@ -5090,15 +5090,16 @@ a:hover {
 
 .input-with-prefix {
     display: flex;
-    align-items: center;
-    border: 1.5px solid var(--cor-borda);
-    border-radius: 10px;
-    background: var(--cor-fundo);
+    align-items: stretch;
+    border: 1px solid var(--cor-borda);
+    border-radius: 5px;
+    background: #fff;
     overflow: hidden;
-    transition: border-color 0.3s ease;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 .input-with-prefix:focus-within {
     border-color: var(--cor-secundaria);
+    box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.2);
 }
 .input-with-prefix .prefix {
     padding: 0 15px;
@@ -5106,16 +5107,23 @@ a:hover {
     font-weight: 600;
     background: rgba(0,0,0,0.03);
     border-right: 1px solid var(--cor-borda);
-    height: 100%;
     display: flex;
     align-items: center;
+    justify-content: center;
 }
-.input-with-prefix input {
-    border: none;
-    background: transparent;
-    border-radius: 0;
-    margin: 0;
+.inputGroup .input-with-prefix input {
+    border: none !important;
+    background: transparent !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
     flex: 1;
+    width: 100%;
+}
+.inputGroup .input-with-prefix input:focus {
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
 }
 
 .form-actions {
@@ -5216,3 +5224,56 @@ a:hover {
         gap: 20px;
     }
 }
+
+/* --- Star Rating --- */
+.star-rating {
+    display: flex;
+    gap: 8px;
+    font-size: 1.8em;
+    color: #cbd5e1;
+    cursor: pointer;
+    margin-top: 5px;
+}
+.star-rating i {
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+.star-rating i:hover {
+    transform: scale(1.15);
+}
+.star-rating i.active {
+    color: var(--cor-secundaria);
+}
+
+/* --- Genre Pills --- */
+.genre-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 5px;
+}
+.genre-pill {
+    flex-grow: 1;
+    text-align: center;
+    padding: 5px 12px;
+    background: rgba(0,0,0,0.03);
+    border: 1px solid var(--cor-borda);
+    border-radius: 20px;
+    font-size: 0.82em;
+    font-weight: 600;
+    color: var(--cor-texto);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    user-select: none;
+}
+.genre-pill:hover {
+    background: rgba(250, 152, 72, 0.08);
+    border-color: rgba(250, 152, 72, 0.4);
+    color: var(--cor-secundaria);
+}
+.genre-pill.selected {
+    background: var(--cor-secundaria);
+    color: #fff;
+    border-color: var(--cor-secundaria);
+    box-shadow: 0 4px 10px rgba(250, 152, 72, 0.3);
+}
+

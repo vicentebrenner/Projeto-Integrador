@@ -186,11 +186,59 @@ document.addEventListener('DOMContentLoaded', function() {
     function carregarPerfil() {
         document.getElementById('perfilNome').value = dadosPerfil.nome;
         document.getElementById('perfilUsername').value = dadosPerfil.username || '';
-        document.getElementById('perfilLocal').value = dadosPerfil.local || '';
+        // document.getElementById('perfilLocal').value = dadosPerfil.local || '';
+        if (dadosPerfil.local) {
+            let partes = dadosPerfil.local.split('/');
+            if (partes.length !== 2) partes = dadosPerfil.local.split('-');
+            
+            if (partes.length === 2) {
+                const cidade = partes[0].trim();
+                const uf = partes[1].trim();
+                
+                const selectEstado = document.getElementById('perfilEstado');
+                const checkInterval = setInterval(() => {
+                    if (selectEstado && selectEstado.options.length > 1) {
+                        selectEstado.value = uf;
+                        carregarCidades(uf, cidade);
+                        clearInterval(checkInterval);
+                    }
+                }, 100);
+            }
+        }
         document.getElementById('perfilInstrumentos').value = dadosPerfil.instrumentos || '';
-        document.getElementById('perfilNivel').value = dadosPerfil.nivelHabilidade || '';
+        
+        const savedNivel = dadosPerfil.nivelHabilidade || '';
+        let starValue = 0;
+        for (let key in nivelMap) {
+            if (nivelMap[key] === savedNivel) {
+                starValue = parseInt(key);
+                break;
+            }
+        }
+        if (typeof window.updateStars === 'function') {
+            window.updateStars(starValue);
+        } else {
+            document.getElementById('perfilNivel').value = savedNivel;
+        }
+
         document.getElementById('perfilExperiencia').value = dadosPerfil.tempoExperiencia || '';
-        document.getElementById('perfilGeneros').value = dadosPerfil.generosMusicais || '';
+        
+        const generosSalvos = dadosPerfil.generosMusicais || '';
+        const genrePillsContainer = document.getElementById('genrePillsContainer');
+        const inputGeneros = document.getElementById('perfilGeneros');
+        if (genrePillsContainer) {
+            const arr = generosSalvos.split(',').map(s => s.trim());
+            const pills = genrePillsContainer.querySelectorAll('.genre-pill');
+            pills.forEach(pill => {
+                if (arr.includes(pill.getAttribute('data-value'))) {
+                    pill.classList.add('selected');
+                } else {
+                    pill.classList.remove('selected');
+                }
+            });
+            if (inputGeneros) inputGeneros.value = generosSalvos;
+        }
+        
         document.getElementById('perfilInfluencias').value = dadosPerfil.influencias || '';
         document.getElementById('perfilStatusBusca').value = dadosPerfil.statusBusca || '';
         document.getElementById('perfilDisponibilidade').value = dadosPerfil.disponibilidade || '';
@@ -333,6 +381,99 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Gerar Username Aleatório
+    const btnGerarUsername = document.getElementById('btnGerarUsername');
+    if (btnGerarUsername && inputNome) {
+        btnGerarUsername.addEventListener('click', () => {
+            const nomeCompleto = inputNome.value.trim();
+            if (!nomeCompleto) {
+                showSnackbar("Preencha seu Nome Completo primeiro!");
+                return;
+            }
+            
+            // Pega primeiro nome e último nome
+            const partes = nomeCompleto.split(' ').filter(p => p.length > 0);
+            let base = partes[0].toLowerCase();
+            if (partes.length > 1) {
+                base += '.' + partes[partes.length - 1].toLowerCase();
+            }
+            
+            // Remove acentos
+            base = base.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+            
+            const numAleatorio = Math.floor(Math.random() * 999);
+            const usernameGerado = `${base}${numAleatorio}`;
+            
+            const inputUsername = document.getElementById('perfilUsername');
+            if (inputUsername) {
+                inputUsername.value = usernameGerado;
+                dadosPerfil.username = usernameGerado;
+                showSnackbar("Username gerado!");
+            }
+        });
+    }
+
+    // Lógica de Estrelas (Nível de Habilidade)
+    const starContainer = document.getElementById('starRatingContainer');
+    const inputNivel = document.getElementById('perfilNivel');
+    const nivelTexto = document.getElementById('nivelTexto');
+
+    const nivelMap = {
+        1: 'Iniciante',
+        2: 'Básico',
+        3: 'Intermediário',
+        4: 'Avançado',
+        5: 'Profissional'
+    };
+
+    window.updateStars = function(value) {
+        if (!starContainer) return;
+        const stars = starContainer.querySelectorAll('i');
+        stars.forEach(star => {
+            const starValue = parseInt(star.getAttribute('data-value'));
+            if (starValue <= value) {
+                star.classList.remove('far');
+                star.classList.add('fas', 'active');
+            } else {
+                star.classList.remove('fas', 'active');
+                star.classList.add('far');
+            }
+        });
+        
+        if (value > 0) {
+            if (nivelTexto) nivelTexto.textContent = `${value} - ${nivelMap[value]}`;
+            if (inputNivel) inputNivel.value = nivelMap[value];
+        } else {
+            if (nivelTexto) nivelTexto.textContent = 'Selecione seu nível';
+            if (inputNivel) inputNivel.value = '';
+        }
+    }
+
+    if (starContainer) {
+        starContainer.addEventListener('click', (e) => {
+            if (e.target.tagName === 'I') {
+                const value = parseInt(e.target.getAttribute('data-value'));
+                window.updateStars(value);
+            }
+        });
+    }
+
+    // Lógica de Pílulas (Gêneros Favoritos)
+    const genrePillsContainer = document.getElementById('genrePillsContainer');
+    const inputGeneros = document.getElementById('perfilGeneros');
+
+    if (genrePillsContainer) {
+        genrePillsContainer.addEventListener('click', (e) => {
+            if (e.target.classList.contains('genre-pill')) {
+                e.target.classList.toggle('selected');
+                
+                const selectedPills = genrePillsContainer.querySelectorAll('.genre-pill.selected');
+                const selectedValues = Array.from(selectedPills).map(pill => pill.getAttribute('data-value'));
+                if (inputGeneros) inputGeneros.value = selectedValues.join(', ');
+            }
+        });
+    }
+
     // Salvar o formulário de Perfil Geral
     const formPerfil = document.getElementById('formPerfilMusico');
     if (formPerfil) {
@@ -340,11 +481,15 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             dadosPerfil.nome = document.getElementById('perfilNome').value;
             dadosPerfil.username = document.getElementById('perfilUsername').value;
-            dadosPerfil.local = document.getElementById('perfilLocal').value;
+            const uf = document.getElementById('perfilEstado').value;
+            const cidade = document.getElementById('perfilCidade').value;
+            dadosPerfil.local = (cidade && uf) ? `${cidade}/${uf}` : '';
             dadosPerfil.instrumentos = document.getElementById('perfilInstrumentos').value;
             dadosPerfil.nivelHabilidade = document.getElementById('perfilNivel').value;
             dadosPerfil.tempoExperiencia = document.getElementById('perfilExperiencia').value;
+            
             dadosPerfil.generosMusicais = document.getElementById('perfilGeneros').value;
+            
             dadosPerfil.influencias = document.getElementById('perfilInfluencias').value;
             dadosPerfil.statusBusca = document.getElementById('perfilStatusBusca').value;
             dadosPerfil.disponibilidade = document.getElementById('perfilDisponibilidade').value;
@@ -461,5 +606,63 @@ document.addEventListener('DOMContentLoaded', function() {
                 showSnackbar("Erro de rede ao tentar excluir conta.");
             }
         });
+    }
+
+    // --- LÓGICA DE ESTADOS E CIDADES (IBGE) ---
+    const selectEstado = document.getElementById('perfilEstado');
+    const selectCidade = document.getElementById('perfilCidade');
+
+    async function carregarEstados() {
+        if (!selectEstado) return;
+        try {
+            const res = await fetch('https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome');
+            const estados = await res.json();
+            estados.forEach(uf => {
+                const option = document.createElement('option');
+                option.value = uf.sigla;
+                option.textContent = uf.nome;
+                selectEstado.appendChild(option);
+            });
+        } catch (error) {
+            console.error('Erro ao carregar estados:', error);
+        }
+    }
+
+    async function carregarCidades(uf, cidadeSelecionada = null) {
+        if (!selectCidade || !uf) return;
+        selectCidade.innerHTML = '<option value="">Carregando...</option>';
+        selectCidade.disabled = true;
+        try {
+            const res = await fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios?orderBy=nome`);
+            const cidades = await res.json();
+            selectCidade.innerHTML = '<option value="">Selecione a cidade...</option>';
+            cidades.forEach(cidade => {
+                const option = document.createElement('option');
+                option.value = cidade.nome;
+                option.textContent = cidade.nome;
+                selectCidade.appendChild(option);
+            });
+            selectCidade.disabled = false;
+            
+            if (cidadeSelecionada) {
+                selectCidade.value = cidadeSelecionada;
+            }
+        } catch (error) {
+            console.error('Erro ao carregar cidades:', error);
+            selectCidade.innerHTML = '<option value="">Erro ao carregar</option>';
+        }
+    }
+
+    if (selectEstado) {
+        selectEstado.addEventListener('change', (e) => {
+            const uf = e.target.value;
+            if (uf) {
+                carregarCidades(uf);
+            } else {
+                selectCidade.innerHTML = '<option value="">Selecione o estado primeiro...</option>';
+                selectCidade.disabled = true;
+            }
+        });
+        carregarEstados();
     }
 });
