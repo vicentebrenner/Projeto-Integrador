@@ -154,13 +154,21 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // --- FUNÇÃO DE NOTIFICAÇÃO (Snackbar) ---
-    function showSnackbar(message) {
+    function showSnackbar(message, type = 'success') {
         const snackbar = document.getElementById("snackbar");
         if (snackbar) {
+            const isError = type === 'error';
+            const iconColor = isError ? '#e74c3c' : '#28a745';
+            const svgPath = isError 
+                ? '<path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>' // Red X
+                : '<path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>'; // Green check
+            
+            snackbar.style.borderLeftColor = iconColor;
+            
             snackbar.innerHTML = `
                 <div class="snackbar-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#28a745" viewBox="0 0 16 16">
-                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="${iconColor}" viewBox="0 0 16 16">
+                        ${svgPath}
                     </svg>
                 </div>
                 <div class="snackbar-text">${message}</div>
@@ -804,4 +812,62 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // --- ALTERAR SENHA ---
+    const formContaSenha = document.getElementById('formContaSenha');
+    if (formContaSenha) {
+        formContaSenha.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const senhaAtual = document.getElementById('senhaAtual').value;
+            const novaSenha = document.getElementById('novaSenha').value;
+            const confirmaSenha = document.getElementById('confirmaSenha').value;
+
+            alert(`DEBUG: Lemos do formulário:\nSenha Atual: '${senhaAtual}'\nNova Senha: '${novaSenha}'\nSe estiver vazio, o navegador não está capturando o que você digitou!`);
+
+            if (novaSenha !== confirmaSenha) {
+                showSnackbar('As novas senhas não coincidem.', 'error');
+                return;
+            }
+
+            try {
+                const token = localStorage.getItem('authToken');
+                const response = await fetch(`http://localhost:8080/api/usuarios/${usuarioLogado.id}/senha`, {
+                    method: 'PUT',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ senhaAtual, novaSenha })
+                });
+
+                if (response.ok) {
+                    showSnackbar('Senha alterada com sucesso!', 'success');
+                    formContaSenha.reset();
+                } else {
+                    const errorText = await response.text();
+                    showSnackbar(errorText || 'Erro ao alterar a senha.', 'error');
+                }
+            } catch (error) {
+                console.error('Erro na alteração de senha:', error);
+                showSnackbar('Erro de conexão ao alterar a senha.', 'error');
+            }
+        });
+    }
+
 });
+
+// --- TOGGLE SENHA ---
+window.toggleSenha = function(inputId, btn) {
+    const input = document.getElementById(inputId);
+    const icon = btn.querySelector('i');
+    if (input && icon) {
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        } else {
+            input.type = 'password';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        }
+    }
+};

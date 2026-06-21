@@ -91,4 +91,29 @@ public class UsuarioController {
             return ResponseEntity.status(500).body("Erro ao excluir a conta. Pode haver dependências (como bandas cadastradas) que impedem a exclusão.");
         }
     }
+    @CrossOrigin(origins = "*")
+    @PutMapping("/{id}/senha")
+    public ResponseEntity<?> alterarSenha(@PathVariable Long id, @RequestBody Map<String, String> body) {
+        String senhaAtual = body.get("senhaAtual");
+        String novaSenha = body.get("novaSenha");
+
+        if (senhaAtual == null || senhaAtual.trim().isEmpty() || novaSenha == null || novaSenha.trim().isEmpty()) {
+            return ResponseEntity.badRequest().body("Senha atual e nova senha são obrigatórias.");
+        }
+
+        Optional<Usuario> usuarioOpt = usuarioRepository.findById(id);
+        if (usuarioOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Usuario usuario = usuarioOpt.get();
+
+        if (!passwordEncoder.matches(senhaAtual, usuario.getSenha())) {
+            return ResponseEntity.status(401).body("Senha atual incorreta.");
+        }
+
+        usuario.setSenha(passwordEncoder.encode(novaSenha));
+        usuarioRepository.save(usuario);
+        return ResponseEntity.ok("Senha atualizada com sucesso.");
+    }
 }
