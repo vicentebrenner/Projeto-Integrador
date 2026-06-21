@@ -2313,29 +2313,273 @@ a:hover {
     align-items: start;
 }
 
-.repertorio-cards-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
-}
-
-.repertorio-card-modern {
-    background: var(--cor-fundo-card);
+.profile-header-title {
+    margin-bottom: 40px;
+    padding: 36px 40px;
+    background: linear-gradient(135deg, #fff9f5 0%, #fff 60%, #f5f8ff 100%);
     border-radius: 16px;
-    padding: 20px;
+    border: 1px solid rgba(250, 152, 72, 0.15);
+    box-shadow: 0 2px 16px rgba(250, 152, 72, 0.06);
     display: flex;
-    flex-direction: column;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
-    transition: all 0.3s ease;
-    border: 1px solid rgba(0,0,0,0.03);
+    align-items: center;
+    gap: 24px;
     position: relative;
     overflow: hidden;
 }
 
-.repertorio-card-modern:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 30px rgba(0,0,0,0.1);
-    border-color: rgba(250, 152, 72, 0.2);
+.profile-header-title::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, var(--cor-secundaria), var(--cor-primaria));
+    border-radius: 4px 0 0 4px;
+}
+
+.profile-header-title-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--cor-secundaria), #e67e22);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 1.4em;
+    flex-shrink: 0;
+    box-shadow: 0 4px 16px rgba(250, 152, 72, 0.35);
+}
+
+.profile-header-title h1 {
+    font-size: 1.9em;
+    color: var(--cor-primaria);
+    margin: 0 0 6px;
+    line-height: 1.2;
+}
+
+.profile-header-title p {
+    color: var(--cor-texto-claro);
+    font-size: 0.95em;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* Grid do Portfólio */
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+    margin-top: 20px;
+}
+
+/* Card individual do vídeo */
+.video-card {
+    background-color: var(--cor-fundo-card);
+    border-radius: 12px;
+    box-shadow: var(--sombra-card);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(0,0,0,0.06);
+}
+
+.video-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.14);
+}
+
+/* Wrapper da thumbnail (proporção 16:9) */
+.video-thumbnail-wrapper {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+    cursor: pointer;
+    border-radius: 10px 10px 0 0;
+    background: #0a0a0a;
+}
+
+.video-thumbnail {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease, filter 0.4s ease;
+    border-radius: 10px 10px 0 0;
+}
+
+.video-thumbnail-wrapper:hover .video-thumbnail {
+    transform: scale(1.04);
+    filter: brightness(0.55);
+}
+
+/* Overlay com botão de play */
+.video-play-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    background: rgba(0,0,0,0.18);
+}
+
+.video-thumbnail-wrapper:hover .video-play-overlay {
+    opacity: 1;
+}
+
+.play-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(255,0,0,0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+    transform: scale(0.9);
+    transition: transform 0.25s ease;
+    backdrop-filter: blur(4px);
+}
+
+.video-thumbnail-wrapper:hover .play-btn {
+    transform: scale(1);
+}
+
+/* Badge YouTube no canto */
+.video-yt-badge {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: rgba(0,0,0,0.72);
+    color: #fff;
+    font-size: 0.72em;
+    font-weight: 600;
+    padding: 4px 8px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    backdrop-filter: blur(4px);
+    letter-spacing: 0.02em;
+}
+
+/* Rodapé do card */
+.video-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 16px;
+    background: var(--cor-fundo-card);
+}
+
+.video-card-title {
+    font-size: 0.92em;
+    font-weight: 600;
+    color: var(--cor-primaria);
+    margin: 0;
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.video-card-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.btn-video-yt {
+    width: 34px; height: 34px;
+    border-radius: 8px;
+    background: #f1f1f1;
+    color: #555;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8em;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    border: 1px solid #e0e0e0;
+}
+
+.btn-video-yt:hover {
+    background: #ff0000;
+    color: #fff;
+    border-color: #ff0000;
+}
+
+.btn-video-remove {
+    width: 34px; height: 34px;
+    border-radius: 8px;
+    background: #f1f1f1;
+    color: #999;
+    border: 1px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-video-remove:hover {
+    background: #ffeaea;
+    color: #e74c3c;
+    border-color: #e74c3c;
+}
+
+/* Estado vazio do portfólio */
+.portfolio-empty {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    text-align: center;
+    color: var(--cor-texto-claro);
+}
+
+.portfolio-empty-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #f8f8f8, #efefef);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    color: #bbb;
+    border: 2px dashed #ddd;
+}
+
+.portfolio-empty h3 {
+    font-size: 1.1em;
+    font-weight: 600;
+    color: #777;
+    margin: 0 0 8px;
+}
+
+.portfolio-empty p {
+    font-size: 0.88em;
+    color: #aaa;
+    max-width: 280px;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* Iframe embed (após clicar play) */
+.video-thumbnail-wrapper iframe {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    border-radius: 10px 10px 0 0;
 }
 
 .rep-card-icon {
@@ -2572,7 +2816,7 @@ a:hover {
 .cat-dot.gravacao { background: #8b5cf6; }
 .cat-dot.outro { background: #3b82f6; }
 
-/* ---- Ãrea Principal ---- */
+/* ---- Ã rea Principal ---- */
 .cal-main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
 .cal-toolbar {
     display: flex;
@@ -3778,7 +4022,7 @@ a:hover {
 
 .lista-convites li i.fa-user-clock {
     color: var(--cor-texto-claro);
-    /* Ãcone cinza */
+    /* Ã cone cinza */
 }
 
 .lista-convites li strong {
@@ -3793,7 +4037,7 @@ a:hover {
     /* Cinza claro por padrÃ£o */
     cursor: pointer;
     font-size: 1.2em;
-    /* Ãcone um pouco maior */
+    /* Ã cone um pouco maior */
     padding: 5px;
     transition: color 0.2s ease;
 }
@@ -3828,78 +4072,6 @@ a:hover {
     box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.2);
 }
 
-/* Grid do PortfÃ³lio */
-.portfolio-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    /* Grid responsivo */
-    gap: 30px;
-    margin-top: 20px;
-}
-
-/* Card individual do vÃ­deo */
-.video-card {
-    background-color: var(--cor-fundo-card);
-    border-radius: var(--border-radius-padrao);
-    box-shadow: var(--sombra-card);
-    overflow: hidden;
-    /* Garante que o iframe nÃ£o vaze */
-    transition: all 0.3s ease;
-    display: flex;
-    flex-direction: column;
-}
-
-.video-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--sombra-card-hover);
-}
-
-/* Container do Embed (para manter a proporÃ§Ã£o) */
-.video-embed {
-    position: relative;
-    padding-bottom: 56.25%;
-    /* ProporÃ§Ã£o 16:9 (9 / 16 * 100) */
-    height: 0;
-    overflow: hidden;
-}
-
-.video-embed iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: 0;
-}
-
-.video-card h4 {
-    font-size: 1.1em;
-    font-weight: 600;
-    color: var(--cor-primaria);
-    padding: 15px 20px 10px 20px;
-    margin: 0;
-    flex-grow: 1;
-    /* Tenta ocupar espaÃ§o */
-}
-
-.video-actions {
-    display: flex;
-    justify-content: flex-end;
-    /* Alinha o botÃ£o Ã  direita */
-    padding: 0px 15px 15px 20px;
-}
-
-/* BotÃ£o de remover (usa .btn-icon, jÃ¡ existente) */
-.video-actions .btn-remover:hover {
-    color: var(--cor-erro);
-}
-
-/* Mensagem de "Nenhum vÃ­deo" */
-.portfolio-grid .loading-ai {
-    /* Reutilizando estilo */
-    grid-column: 1 / -1;
-    /* Ocupa a grid inteira */
-    text-align: center;
     color: var(--cor-texto-claro);
     padding: 40px;
     font-style: italic;
