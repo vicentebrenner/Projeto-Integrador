@@ -1,4 +1,4 @@
-﻿/* ==========================================================================
+/* ==========================================================================
    1. VARIÃVEIS GLOBAIS E RESET
    ========================================================================== */
 :root {
@@ -5337,5 +5337,210 @@ a:hover {
         grid-template-columns: 1fr;
     }
 }
+
+/* ================================================
+   ZONA DE PERIGO - DELETE ACCOUNT
+   ================================================ */
+.danger-zone {
+    margin-top: 32px;
+    border: 1.5px solid #ff4d4d55;
+    border-radius: 12px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #fff8f8 0%, #fff 100%);
+}
+
+.danger-zone-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: linear-gradient(90deg, #ff4d4d18, transparent);
+    border-bottom: 1.5px solid #ff4d4d33;
+    color: #c0392b;
+    font-weight: 700;
+    font-size: 0.82em;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.danger-zone-body {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px 24px;
+    flex-wrap: wrap;
+}
+
+.danger-zone-info {
+    flex: 1;
+    min-width: 200px;
+}
+
+.danger-zone-title {
+    font-weight: 600;
+    font-size: 0.95em;
+    color: #2d2d2d;
+    margin: 0 0 4px 0;
+}
+
+.danger-zone-desc {
+    font-size: 0.82em;
+    color: #888;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.btn-danger-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border: 1.5px solid #e74c3c;
+    border-radius: 8px;
+    background: transparent;
+    color: #e74c3c;
+    font-weight: 600;
+    font-size: 0.88em;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.btn-danger-outline:hover {
+    background: #e74c3c;
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(231, 76, 60, 0.35);
+    transform: translateY(-1px);
+}
+
+.btn-danger-outline:active {
+    transform: translateY(0);
+}
+
+/* ================================================
+   MODAL DE EXCLUSÃO DE CONTA
+   ================================================ */
+.modal-danger {
+    max-width: 440px;
+    text-align: center;
+    padding: 40px 36px 32px;
+    border-top: 4px solid #e74c3c;
+    position: relative;
+}
+
+.modal-close-btn {
+    position: absolute;
+    top: 14px;
+    right: 18px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #aaa;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s ease;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.modal-close-btn:hover {
+    color: #555;
+    background: #f0f0f0;
+}
+
+.modal-danger-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #fff0f0, #ffe4e4);
+    border: 2px solid #ffd4d4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    color: #e74c3c;
+}
+
+.modal-danger-title {
+    font-size: 1.25em;
+    font-weight: 700;
+    color: #2d2d2d;
+    margin: 0 0 10px;
+}
+
+.modal-danger-desc {
+    font-size: 0.9em;
+    color: #666;
+    line-height: 1.6;
+    margin: 0 0 20px;
+}
+
+.modal-danger-warning {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #fff8e6;
+    border: 1px solid #f6c343;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 0.84em;
+    color: #7a5d00;
+    font-weight: 500;
+    margin-bottom: 22px;
+    text-align: left;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.modal-danger-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 4px;
+}
+
+.btn-modal-cancel {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1.5px solid #ddd;
+    border-radius: 8px;
+    background: #fff;
+    color: #555;
+    font-weight: 600;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-modal-cancel:hover {
+    background: #f5f5f5;
+    border-color: #bbb;
+}
+
+.btn-modal-danger {
+    flex: 2;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+}
+
+.btn-modal-danger:hover {
+    background: linear-gradient(135deg, #c0392b, #a93226);
+    box-shadow: 0 6px 20px rgba(231, 76, 60, 0.45);
+    transform: translateY(-1px);
+}
+
+.btn-modal-danger:active {
+    transform: translateY(0);
+}
+
 
 

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="styles.css?v=25">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
+
 <body>
 
     <header class="cabecalho">
@@ -37,23 +39,26 @@
                 <!-- Sidebar -->
                 <aside class="profile-sidebar">
                     <nav class="profile-nav">
-                        <button class="tab-link ativo" data-tab="perfil"><i class="fas fa-user-edit"></i> Meu Perfil</button>
-                        <button class="tab-link" data-tab="conta"><i class="fas fa-shield-alt"></i> Conta e Segurança</button>
-                        <button class="tab-link" data-tab="portfolio"><i class="fas fa-video"></i> Meu Portfólio</button>
+                        <button class="tab-link ativo" data-tab="perfil"><i class="fas fa-user-edit"></i> Meu
+                            Perfil</button>
+                        <button class="tab-link" data-tab="conta"><i class="fas fa-shield-alt"></i> Conta e
+                            Segurança</button>
+                        <button class="tab-link" data-tab="portfolio"><i class="fas fa-video"></i> Meu
+                            Portfólio</button>
                         <button class="tab-link" data-tab="vagas"><i class="fas fa-briefcase"></i> Vagas</button>
                     </nav>
                 </aside>
 
                 <!-- Conteúdo das Abas -->
                 <div class="profile-content">
-                    
+
                     <!-- ABA: PERFIL GERAL -->
                     <div id="perfil" class="tab-content ativo">
                         <div class="content-header">
                             <h2>Perfil Público</h2>
                         </div>
                         <div class="card-style profile-card">
-                            
+
                             <form id="formPerfilMusico">
                                 <!-- Avatar e Cores -->
                                 <div class="avatar-section">
@@ -64,12 +69,18 @@
                                         <h4>Cor do Avatar</h4>
                                         <p class="small-text">Escolha uma cor para te representar no sistema.</p>
                                         <div class="color-picker" id="colorPicker">
-                                            <button type="button" class="color-swatch selected" style="background-color: #fa9848;" data-color="#fa9848"></button>
-                                            <button type="button" class="color-swatch" style="background-color: #3498db;" data-color="#3498db"></button>
-                                            <button type="button" class="color-swatch" style="background-color: #2ecc71;" data-color="#2ecc71"></button>
-                                            <button type="button" class="color-swatch" style="background-color: #9b59b6;" data-color="#9b59b6"></button>
-                                            <button type="button" class="color-swatch" style="background-color: #e74c3c;" data-color="#e74c3c"></button>
-                                            <button type="button" class="color-swatch" style="background-color: #f1c40f;" data-color="#f1c40f"></button>
+                                            <button type="button" class="color-swatch selected"
+                                                style="background-color: #fa9848;" data-color="#fa9848"></button>
+                                            <button type="button" class="color-swatch"
+                                                style="background-color: #3498db;" data-color="#3498db"></button>
+                                            <button type="button" class="color-swatch"
+                                                style="background-color: #2ecc71;" data-color="#2ecc71"></button>
+                                            <button type="button" class="color-swatch"
+                                                style="background-color: #9b59b6;" data-color="#9b59b6"></button>
+                                            <button type="button" class="color-swatch"
+                                                style="background-color: #e74c3c;" data-color="#e74c3c"></button>
+                                            <button type="button" class="color-swatch"
+                                                style="background-color: #f1c40f;" data-color="#f1c40f"></button>
                                         </div>
                                     </div>
                                 </div>
@@ -77,14 +88,21 @@
                                 <div class="form-grid-2">
                                     <div class="inputGroup">
                                         <label for="perfilNome">Nome Completo</label>
-                                        <input type="text" id="perfilNome" name="perfilNome" placeholder="Seu nome" required>
+                                        <input type="text" id="perfilNome" name="perfilNome" placeholder="Seu nome"
+                                            required>
                                     </div>
                                     <div class="inputGroup">
                                         <label for="perfilUsername">Nome de Usuário (Username)</label>
                                         <div class="input-with-prefix" style="position: relative;">
-                                            <span class="prefix" title="Este nome de usuário será usado para que bandas e outros músicos te encontrem na plataforma Music Makers.">@</span>
-                                            <input type="text" id="perfilUsername" name="perfilUsername" placeholder="joao.guitar" required style="padding-right: 35px;">
-                                            <i class="fas fa-sync-alt" id="btnGerarUsername" title="Clique para gerar um nome aleatório" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #fa9848; font-size: 1.1em; transition: transform 0.3s ease, color 0.3s ease;" onmouseover="this.style.color='#d35400'; this.style.transform='translateY(-50%) rotate(90deg)'" onmouseout="this.style.color='#fa9848'; this.style.transform='translateY(-50%) rotate(0deg)'"></i>
+                                            <span class="prefix"
+                                                title="Este nome de usuário será usado para que bandas e outros músicos te encontrem na plataforma Music Makers.">@</span>
+                                            <input type="text" id="perfilUsername" name="perfilUsername"
+                                                placeholder="joao.guitar" required style="padding-right: 35px;">
+                                            <i class="fas fa-sync-alt" id="btnGerarUsername"
+                                                title="Clique para gerar um nome aleatório"
+                                                style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #fa9848; font-size: 1.1em; transition: transform 0.3s ease, color 0.3s ease;"
+                                                onmouseover="this.style.color='#d35400'; this.style.transform='translateY(-50%) rotate(90deg)'"
+                                                onmouseout="this.style.color='#fa9848'; this.style.transform='translateY(-50%) rotate(0deg)'"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -105,112 +123,125 @@
                                 </div>
                                 <div class="form-section-title mt-4">
                                     <h3 style="width: 100%; justify-content: space-between; margin-bottom: 8px;">
-                                        <span><i class="fas fa-guitar" style="margin-right: 8px;"></i>Musicalidade</span>
-                                        <button type="button" id="btnAddInstrumento" class="btn-circular" style="margin-right: -10px;" title="Adicionar novo instrumento">
+                                        <span><i class="fas fa-guitar"
+                                                style="margin-right: 8px;"></i>Musicalidade</span>
+                                        <button type="button" id="btnAddInstrumento" class="btn-circular"
+                                            style="margin-right: -10px;" title="Adicionar novo instrumento">
                                             <i class="fas fa-plus" style="font-size: 12px;"></i>
                                         </button>
                                     </h3>
                                     <hr>
                                     <div id="instrumentosContainer">
-                                    <div id="instrumentoTemplate" style="display: none;">
-                                        <div class="instrument-block">
-                                            <div class="inputGroup" style="margin-bottom: 0;">
-                                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                                                    <label style="margin: 0;">Instrumento</label>
-                                                    <button type="button" class="btn-circular btn-circular-remove btnRemoverInstrumento" title="Remover instrumento">
-                                                        <i class="fas fa-minus"></i>
-                                                    </button>
-                                                </div>
-                                                <select class="perfilInstrumentos">
-                                                    <option value="">Selecione um instrumento...</option>
-                                                <option value="Vocal">Vocal</option>
-                                                <option value="Backing Vocal">Backing Vocal</option>
-                                                <option value="Violão">Violão</option>
-                                                <option value="Guitarra">Guitarra</option>
-                                                <option value="Baixo">Baixo</option>
-                                                <option value="Bateria">Bateria</option>
-                                                <option value="Teclado">Teclado</option>
-                                                <option value="Piano">Piano</option>
-                                                <option value="Sintetizador">Sintetizador</option>
-                                                <option value="Saxofone">Saxofone</option>
-                                                <option value="Trompete">Trompete</option>
-                                                <option value="Trombone">Trombone</option>
-                                                <option value="Clarinete">Clarinete</option>
-                                                <option value="Flauta">Flauta</option>
-                                                <option value="Violino">Violino</option>
-                                                <option value="Viola">Viola</option>
-                                                <option value="Violoncelo">Violoncelo</option>
-                                                <option value="Contrabaixo Acústico">Contrabaixo Acústico</option>
-                                                <option value="Gaita">Gaita</option>
-                                                <option value="Sanfona (Acordeon)">Sanfona (Acordeon)</option>
-                                                <option value="Ukulele">Ukulele</option>
-                                                <option value="Cavaquinho">Cavaquinho</option>
-                                                <option value="Banjo">Banjo</option>
-                                                <option value="Bandolim">Bandolim</option>
-                                                <option value="Cajón">Cajón</option>
-                                                <option value="Pandeiro">Pandeiro</option>
-                                                <option value="Congas">Congas</option>
-                                                <option value="Bongô">Bongô</option>
-                                                <option value="Tamborim">Tamborim</option>
-                                                <option value="Surdo">Surdo</option>
-                                                <option value="Repique">Repique</option>
-                                                <option value="Timbal">Timbal</option>
-                                                <option value="Zabumba">Zabumba</option>
-                                                <option value="Triângulo">Triângulo</option>
-                                                <option value="Agogô">Agogô</option>
-                                                <option value="Ganzá">Ganzá</option>
-                                                <option value="Atabaque">Atabaque</option>
-                                                <option value="Cuíca">Cuíca</option>
-                                                <option value="Berimbau">Berimbau</option>
-                                                <option value="Xilofone">Xilofone</option>
-                                                <option value="Marimba">Marimba</option>
-                                                <option value="Tuba">Tuba</option>
-                                                <option value="Trompa">Trompa</option>
-                                                <option value="Oboé">Oboé</option>
-                                                <option value="Fagote">Fagote</option>
-                                                <option value="Harpa">Harpa</option>
-                                                <option value="DJ / Controladora">DJ / Controladora</option>
-                                                <option value="Escaleta">Escaleta</option>
-                                                <option value="Castanholas">Castanholas</option>
-                                                    <option value="Outro">Outro</option>
-                                                </select>
-                                            </div>
-                                            <div class="instrument-body mt-4" style="margin-top: 20px;">
+                                        <div id="instrumentoTemplate" style="display: none;">
+                                            <div class="instrument-block">
                                                 <div class="inputGroup" style="margin-bottom: 0;">
-                                                    <label>Nível de Habilidade</label>
-                                                    <div class="star-rating">
-                                                        <i class="far fa-star" data-value="1" title="1 - Iniciante"></i>
-                                                        <i class="far fa-star" data-value="2" title="2 - Básico"></i>
-                                                        <i class="far fa-star" data-value="3" title="3 - Intermediário"></i>
-                                                        <i class="far fa-star" data-value="4" title="4 - Avançado"></i>
-                                                        <i class="far fa-star" data-value="5" title="5 - Profissional"></i>
+                                                    <div
+                                                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                                        <label style="margin: 0;">Instrumento</label>
+                                                        <button type="button"
+                                                            class="btn-circular btn-circular-remove btnRemoverInstrumento"
+                                                            title="Remover instrumento">
+                                                            <i class="fas fa-minus"></i>
+                                                        </button>
                                                     </div>
-                                                    <input type="hidden" class="perfilNivel" value="">
-                                                    <small class="nivelTexto" style="color: var(--cor-texto-claro); font-size: 0.85em; margin-top: 5px; display: block;">Selecione seu nível</small>
-                                                </div>
-                                                <div class="inputGroup" style="margin-bottom: 0;">
-                                                    <label>Tempo de Experiência</label>
-                                                    <select class="perfilExperiencia">
-                                                        <option value="">Selecione...</option>
-                                                        <option value="Menos de 1 ano">Menos de 1 ano</option>
-                                                        <option value="1 a 3 anos">1 a 3 anos</option>
-                                                        <option value="3 a 5 anos">3 a 5 anos</option>
-                                                        <option value="5 a 10 anos">5 a 10 anos</option>
-                                                        <option value="Mais de 10 anos">Mais de 10 anos</option>
+                                                    <select class="perfilInstrumentos">
+                                                        <option value="">Selecione um instrumento...</option>
+                                                        <option value="Vocal">Vocal</option>
+                                                        <option value="Backing Vocal">Backing Vocal</option>
+                                                        <option value="Violão">Violão</option>
+                                                        <option value="Guitarra">Guitarra</option>
+                                                        <option value="Baixo">Baixo</option>
+                                                        <option value="Bateria">Bateria</option>
+                                                        <option value="Teclado">Teclado</option>
+                                                        <option value="Piano">Piano</option>
+                                                        <option value="Sintetizador">Sintetizador</option>
+                                                        <option value="Saxofone">Saxofone</option>
+                                                        <option value="Trompete">Trompete</option>
+                                                        <option value="Trombone">Trombone</option>
+                                                        <option value="Clarinete">Clarinete</option>
+                                                        <option value="Flauta">Flauta</option>
+                                                        <option value="Violino">Violino</option>
+                                                        <option value="Viola">Viola</option>
+                                                        <option value="Violoncelo">Violoncelo</option>
+                                                        <option value="Contrabaixo Acústico">Contrabaixo Acústico
+                                                        </option>
+                                                        <option value="Gaita">Gaita</option>
+                                                        <option value="Sanfona (Acordeon)">Sanfona (Acordeon)</option>
+                                                        <option value="Ukulele">Ukulele</option>
+                                                        <option value="Cavaquinho">Cavaquinho</option>
+                                                        <option value="Banjo">Banjo</option>
+                                                        <option value="Bandolim">Bandolim</option>
+                                                        <option value="Cajón">Cajón</option>
+                                                        <option value="Pandeiro">Pandeiro</option>
+                                                        <option value="Congas">Congas</option>
+                                                        <option value="Bongô">Bongô</option>
+                                                        <option value="Tamborim">Tamborim</option>
+                                                        <option value="Surdo">Surdo</option>
+                                                        <option value="Repique">Repique</option>
+                                                        <option value="Timbal">Timbal</option>
+                                                        <option value="Zabumba">Zabumba</option>
+                                                        <option value="Triângulo">Triângulo</option>
+                                                        <option value="Agogô">Agogô</option>
+                                                        <option value="Ganzá">Ganzá</option>
+                                                        <option value="Atabaque">Atabaque</option>
+                                                        <option value="Cuíca">Cuíca</option>
+                                                        <option value="Berimbau">Berimbau</option>
+                                                        <option value="Xilofone">Xilofone</option>
+                                                        <option value="Marimba">Marimba</option>
+                                                        <option value="Tuba">Tuba</option>
+                                                        <option value="Trompa">Trompa</option>
+                                                        <option value="Oboé">Oboé</option>
+                                                        <option value="Fagote">Fagote</option>
+                                                        <option value="Harpa">Harpa</option>
+                                                        <option value="DJ / Controladora">DJ / Controladora</option>
+                                                        <option value="Escaleta">Escaleta</option>
+                                                        <option value="Castanholas">Castanholas</option>
+                                                        <option value="Outro">Outro</option>
                                                     </select>
+                                                </div>
+                                                <div class="instrument-body mt-4" style="margin-top: 20px;">
+                                                    <div class="inputGroup" style="margin-bottom: 0;">
+                                                        <label>Nível de Habilidade</label>
+                                                        <div class="star-rating">
+                                                            <i class="far fa-star" data-value="1"
+                                                                title="1 - Iniciante"></i>
+                                                            <i class="far fa-star" data-value="2"
+                                                                title="2 - Básico"></i>
+                                                            <i class="far fa-star" data-value="3"
+                                                                title="3 - Intermediário"></i>
+                                                            <i class="far fa-star" data-value="4"
+                                                                title="4 - Avançado"></i>
+                                                            <i class="far fa-star" data-value="5"
+                                                                title="5 - Profissional"></i>
+                                                        </div>
+                                                        <input type="hidden" class="perfilNivel" value="">
+                                                        <small class="nivelTexto"
+                                                            style="color: var(--cor-texto-claro); font-size: 0.85em; margin-top: 5px; display: block;">Selecione
+                                                            seu nível</small>
+                                                    </div>
+                                                    <div class="inputGroup" style="margin-bottom: 0;">
+                                                        <label>Tempo de Experiência</label>
+                                                        <select class="perfilExperiencia">
+                                                            <option value="">Selecione...</option>
+                                                            <option value="Menos de 1 ano">Menos de 1 ano</option>
+                                                            <option value="1 a 3 anos">1 a 3 anos</option>
+                                                            <option value="3 a 5 anos">3 a 5 anos</option>
+                                                            <option value="5 a 10 anos">5 a 10 anos</option>
+                                                            <option value="Mais de 10 anos">Mais de 10 anos</option>
+                                                        </select>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <div id="listaInstrumentos">
+                                            <!-- JS vai preencher os blocos aqui -->
+                                        </div>
                                     </div>
 
-                                    <div id="listaInstrumentos">
-                                        <!-- JS vai preencher os blocos aqui -->
-                                    </div>
-                                </div>
-
-                                <div class="inputGroup">
-                                    <label>Gêneros Favoritos</label>
-                                    <div class="genre-pills" id="genrePillsContainer">
+                                    <div class="inputGroup">
+                                        <label>Gêneros Favoritos</label>
+                                        <div class="genre-pills" id="genrePillsContainer">
                                             <span class="genre-pill" data-value="Rock">Rock</span>
                                             <span class="genre-pill" data-value="Pop">Pop</span>
                                             <span class="genre-pill" data-value="Sertanejo">Sertanejo</span>
@@ -235,7 +266,8 @@
                                 </div>
                                 <div class="inputGroup">
                                     <label for="perfilInfluencias">Influências (Bandas/Artistas)</label>
-                                    <input type="text" id="perfilInfluencias" name="perfilInfluencias" placeholder="Ex: Pink Floyd, John Mayer, Metallica">
+                                    <input type="text" id="perfilInfluencias" name="perfilInfluencias"
+                                        placeholder="Ex: Pink Floyd, John Mayer, Metallica">
                                 </div>
 
                                 <div class="form-section-title mt-4">
@@ -255,25 +287,29 @@
                                     </div>
                                     <div class="inputGroup">
                                         <label for="perfilDisponibilidade">Disponibilidade de Tempo</label>
-                                        <input type="text" id="perfilDisponibilidade" name="perfilDisponibilidade" placeholder="Ex: Finais de semana e noites de terça">
+                                        <input type="text" id="perfilDisponibilidade" name="perfilDisponibilidade"
+                                            placeholder="Ex: Finais de semana e noites de terça">
                                     </div>
                                 </div>
                                 <div class="inputGroup">
                                     <label for="perfilEquipamento">Seu Equipamento</label>
-                                    <textarea id="perfilEquipamento" name="perfilEquipamento" rows="3" placeholder="Liste guitarras, pedais, amps, bateria, microfones..."></textarea>
+                                    <textarea id="perfilEquipamento" name="perfilEquipamento" rows="3"
+                                        placeholder="Liste guitarras, pedais, amps, bateria, microfones..."></textarea>
                                 </div>
-                                
+
                                 <div class="form-section-title mt-4">
                                     <h3><i class="fas fa-user-circle"></i> Sobre Mim & Redes Sociais</h3>
                                     <hr>
                                 </div>
                                 <div class="inputGroup">
                                     <label for="perfilBio">Sua Bio (Resumo)</label>
-                                    <textarea id="perfilBio" name="perfilBio" rows="4" placeholder="Fale sobre sua história na música e o que você gosta de tocar..."></textarea>
+                                    <textarea id="perfilBio" name="perfilBio" rows="4"
+                                        placeholder="Fale sobre sua história na música e o que você gosta de tocar..."></textarea>
                                 </div>
                                 <div class="inputGroup">
                                     <label for="perfilRedesSociais">Links de Redes (Instagram, Spotify, etc.)</label>
-                                    <textarea id="perfilRedesSociais" name="perfilRedesSociais" rows="2" placeholder="Cole aqui os links das suas redes musicais separados por vírgula ou linha."></textarea>
+                                    <textarea id="perfilRedesSociais" name="perfilRedesSociais" rows="2"
+                                        placeholder="Cole aqui os links das suas redes musicais separados por vírgula ou linha."></textarea>
                                 </div>
                                 <div class="form-actions">
                                     <button type="submit" class="btnCta">Salvar Perfil</button>
@@ -287,7 +323,7 @@
                         <div class="content-header">
                             <h2>Conta e Segurança</h2>
                         </div>
-                        
+
                         <div class="card-style profile-card mb-4">
                             <h3>Alterar Senha</h3>
                             <p class="small-text mb-3">Escolha uma senha forte contendo letras e números.</p>
@@ -295,8 +331,10 @@
                                 <div class="inputGroup">
                                     <label for="senhaAtual">Senha Atual</label>
                                     <div class="password-wrapper">
-                                        <input type="password" id="senhaAtual" name="senhaAtual" placeholder="••••••••" required>
-                                        <button type="button" class="toggle-password" onclick="toggleSenha('senhaAtual', this)">
+                                        <input type="password" id="senhaAtual" name="senhaAtual" placeholder="••••••••"
+                                            required>
+                                        <button type="button" class="toggle-password"
+                                            onclick="toggleSenha('senhaAtual', this)">
                                             <i class="fas fa-eye-slash"></i>
                                         </button>
                                     </div>
@@ -305,8 +343,10 @@
                                     <div class="inputGroup">
                                         <label for="novaSenha">Nova Senha</label>
                                         <div class="password-wrapper">
-                                            <input type="password" id="novaSenha" name="novaSenha" placeholder="••••••••" required>
-                                            <button type="button" class="toggle-password" onclick="toggleSenha('novaSenha', this)">
+                                            <input type="password" id="novaSenha" name="novaSenha"
+                                                placeholder="••••••••" required>
+                                            <button type="button" class="toggle-password"
+                                                onclick="toggleSenha('novaSenha', this)">
                                                 <i class="fas fa-eye-slash"></i>
                                             </button>
                                         </div>
@@ -314,8 +354,10 @@
                                     <div class="inputGroup">
                                         <label for="confirmaSenha">Confirmar Nova Senha</label>
                                         <div class="password-wrapper">
-                                            <input type="password" id="confirmaSenha" name="confirmaSenha" placeholder="••••••••" required>
-                                            <button type="button" class="toggle-password" onclick="toggleSenha('confirmaSenha', this)">
+                                            <input type="password" id="confirmaSenha" name="confirmaSenha"
+                                                placeholder="••••••••" required>
+                                            <button type="button" class="toggle-password"
+                                                onclick="toggleSenha('confirmaSenha', this)">
                                                 <i class="fas fa-eye-slash"></i>
                                             </button>
                                         </div>
@@ -325,9 +367,27 @@
                             </form>
                         </div>
 
-                        <div style="display: inline-flex; align-items: center; gap: 15px; margin-top: 30px; padding: 15px 25px; background-color: #fffaf9; border: 1px solid #ff4d4d; border-radius: 8px; width: fit-content;">
-                            <i class="fas fa-exclamation-triangle" style="color: #e74c3c; font-size: 1.5em;"></i>
-                            <button type="button" id="btnExcluirConta" class="btn-danger">Excluir Minha Conta</button>
+                        <!-- Zona de Perigo -->
+                        <div class="danger-zone">
+                            <div class="danger-zone-header">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                    viewBox="0 0 16 16">
+                                    <path
+                                        d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+                                </svg>
+                                <span>Cuidado!</span>
+                            </div>
+                            <div class="danger-zone-body">
+                                <div class="danger-zone-info">
+                                    <p class="danger-zone-title">Excluir minha conta</p>
+                                    <p class="danger-zone-desc">Esta ação é permanente e não pode ser desfeita. Todos os
+                                        seus dados serão removidos.</p>
+                                </div>
+                                <button type="button" id="btnExcluirConta" class="btn-danger-outline">
+                                    <i class="fas fa-trash-alt"></i>
+                                    Excluir Conta
+                                </button>
+                            </div>
                         </div>
                     </div>
 
@@ -335,7 +395,8 @@
                     <div id="portfolio" class="tab-content">
                         <div class="content-header flex-header">
                             <h2>Meu Portfólio de Vídeos</h2>
-                            <button id="abrirModalVideoBtn" class="btn-adicionar-principal"><i class="fas fa-video"></i> Adicionar Vídeo</button>
+                            <button id="abrirModalVideoBtn" class="btn-adicionar-principal"><i class="fas fa-video"></i>
+                                Adicionar Vídeo</button>
                         </div>
                         <div id="portfolioGrid" class="portfolio-grid">
                             <!-- JS vai preencher aqui -->
@@ -366,11 +427,13 @@
             <form id="formAdicionarVideo">
                 <div class="inputGroup">
                     <label for="videoTitulo">Título do Vídeo</label>
-                    <input type="text" id="videoTitulo" name="videoTitulo" placeholder="Ex: Meu Solo de Guitarra (Cover)" required>
+                    <input type="text" id="videoTitulo" name="videoTitulo"
+                        placeholder="Ex: Meu Solo de Guitarra (Cover)" required>
                 </div>
                 <div class="inputGroup">
                     <label for="videoUrl">Link do Vídeo (YouTube)</label>
-                    <input type="url" id="videoUrl" name="videoUrl" placeholder="https://www.youtube.com/watch?v=..." required>
+                    <input type="url" id="videoUrl" name="videoUrl" placeholder="https://www.youtube.com/watch?v=..."
+                        required>
                     <small>Copie e cole o link completo da barra de endereços.</small>
                 </div>
                 <button type="submit" class="btn-adicionar">Salvar Vídeo</button>
@@ -380,16 +443,39 @@
 
     <!-- Modal Excluir Conta -->
     <div id="modalExcluirConta" class="modal">
-        <div class="modal-content" style="max-width: 400px; text-align: center;">
-            <span class="close-button" id="closeModalExcluir">&times;</span>
-            <h3 style="color: #e74c3c; margin-bottom: 10px;">Excluir Conta</h3>
-            <p style="margin-bottom: 20px; font-size: 0.9em; color: #666;">Para confirmar a exclusão permanente da sua conta, digite sua senha abaixo:</p>
+        <div class="modal-content modal-danger">
+            <button class="modal-close-btn" id="closeModalExcluir" aria-label="Fechar">&times;</button>
+
+            <div class="modal-danger-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 16 16">
+                    <path
+                        d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+                </svg>
+            </div>
+
+            <h3 class="modal-danger-title">Excluir Conta Permanentemente</h3>
+            <p class="modal-danger-desc">Esta ação é <strong>irreversível</strong>. Todos os seus dados, perfil e vídeos
+                serão apagados para sempre.</p>
+
+            <div class="modal-danger-warning">
+                <i class="fas fa-lock"></i>
+                <span>Para confirmar, digite sua senha atual abaixo:</span>
+            </div>
+
             <form id="formExcluirConta">
-                <div class="inputGroup" style="text-align: left;">
+                <div class="inputGroup" style="text-align: left; margin-bottom: 20px;">
                     <label for="senhaExclusao">Sua Senha</label>
-                    <input type="password" id="senhaExclusao" name="senhaExclusao" placeholder="••••••••" required>
+                    <div class="password-wrapper">
+                        <input type="password" id="senhaExclusao" name="senhaExclusao" placeholder="••••••••" required>
+                        <button type="button" class="toggle-password" onclick="toggleSenha('senhaExclusao', this)">
+                            <i class="fas fa-eye-slash"></i>
+                        </button>
+                    </div>
                 </div>
-                <button type="submit" class="btn-adicionar-principal" style="background-color: #e74c3c; width: 100%; border: none;">Excluir Permanentemente</button>
+                <div class="modal-danger-actions">
+                    <button type="button" class="btn-modal-cancel" id="cancelarExclusaoBtn">Cancelar</button>
+                    <button type="submit" class="btn-modal-danger">Excluir Permanentemente</button>
+                </div>
             </form>
         </div>
     </div>
@@ -412,9 +498,12 @@
                 <div class="footer-social">
                     <h4>Nossas Redes Sociais:</h4>
                     <ul class="social-list">
-                        <li>Vicente Brenner: <a href="https://www.instagram.com/vicentebrenner/" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-instagram"></i></a></li>
-                        <li>Jean Carlo: <a href="https://www.instagram.com/jean.csouza/" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-instagram"></i></a></li>
-                        <li>Murilo Silva: <a href="https://www.instagram.com/silvazn.04/" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-instagram"></i></a></li>
+                        <li>Vicente Brenner: <a href="https://www.instagram.com/vicentebrenner/" target="_blank"
+                                rel="noopener noreferrer"><i class="fa-brands fa-instagram"></i></a></li>
+                        <li>Jean Carlo: <a href="https://www.instagram.com/jean.csouza/" target="_blank"
+                                rel="noopener noreferrer"><i class="fa-brands fa-instagram"></i></a></li>
+                        <li>Murilo Silva: <a href="https://www.instagram.com/silvazn.04/" target="_blank"
+                                rel="noopener noreferrer"><i class="fa-brands fa-instagram"></i></a></li>
                     </ul>
                 </div>
             </div>
@@ -429,4 +518,5 @@
     <script src="scripts/global.js?v=20"></script>
     <script src="scripts/perfil-musico.js?v=26"></script>
 </body>
+
 </html>

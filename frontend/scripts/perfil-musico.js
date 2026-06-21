@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
 
     // --- VERIFICA LOGIN E PERMISSÃO ---
     const usuarioLogadoString = localStorage.getItem('usuarioLogado');
@@ -60,9 +60,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 dadosPerfil.redesSociais = data.redesSociais || "";
                 dadosPerfil.bio = data.biografia || "";
                 if (data.linkVideos) {
-                    try { dadosPerfil.videos = JSON.parse(data.linkVideos); } catch(e) {}
+                    try { dadosPerfil.videos = JSON.parse(data.linkVideos); } catch (e) { }
                 }
-                
+
                 carregarPerfil();
                 carregarPortfolio();
             })
@@ -95,56 +95,56 @@ document.addEventListener('DOMContentLoaded', function() {
         const token = localStorage.getItem('authToken');
         fetch(`http://localhost:8080/api/musicos/usuario/${usuarioLogado.id}/completo`, {
             method: 'POST',
-            headers: { 
+            headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify(dto)
         })
-        .then(async res => {
-            if (!res.ok) {
-                const errData = await res.json().catch(() => ({}));
-                throw new Error(errData.message || "Falha ao salvar no servidor");
-            }
-            return res.json();
-        })
-        .then(data => {
-            // ATUALIZAR INTERFACE (COR DO AVATAR NA NAVBAR)
-            const navIcone = document.getElementById('perfilIcone');
-            if (navIcone) {
-                navIcone.style.backgroundColor = dadosPerfil.corAvatar;
-            }
-
-            // ATUALIZAR LOCAL STORAGE PARA PERSISTIR A COR NAS OUTRAS PÁGINAS
-            usuarioLogado.corAvatar = dadosPerfil.corAvatar;
-            usuarioLogado.nome = dadosPerfil.nome;
-            usuarioLogado.username = dadosPerfil.username;
-            localStorage.setItem('usuarioLogado', JSON.stringify(usuarioLogado));
-            
-            showSnackbar("Perfil salvo com sucesso!");
-            
-            const inputUsername = document.getElementById('perfilUsername');
-            if (inputUsername) inputUsername.style.borderColor = ''; // Limpa borda de erro se houver
-        })
-        .catch(err => {
-            console.error(err);
-            showSnackbar(err.message || "Erro ao salvar perfil.");
-            
-            if (err.message && err.message.includes("Username já está em uso")) {
-                const inputUsername = document.getElementById('perfilUsername');
-                if (inputUsername) {
-                    inputUsername.style.borderColor = 'var(--cor-destaque)';
-                    inputUsername.focus();
+            .then(async res => {
+                if (!res.ok) {
+                    const errData = await res.json().catch(() => ({}));
+                    throw new Error(errData.message || "Falha ao salvar no servidor");
                 }
-            }
-        });
+                return res.json();
+            })
+            .then(data => {
+                // ATUALIZAR INTERFACE (COR DO AVATAR NA NAVBAR)
+                const navIcone = document.getElementById('perfilIcone');
+                if (navIcone) {
+                    navIcone.style.backgroundColor = dadosPerfil.corAvatar;
+                }
+
+                // ATUALIZAR LOCAL STORAGE PARA PERSISTIR A COR NAS OUTRAS PÁGINAS
+                usuarioLogado.corAvatar = dadosPerfil.corAvatar;
+                usuarioLogado.nome = dadosPerfil.nome;
+                usuarioLogado.username = dadosPerfil.username;
+                localStorage.setItem('usuarioLogado', JSON.stringify(usuarioLogado));
+
+                showSnackbar("Perfil salvo com sucesso!");
+
+                const inputUsername = document.getElementById('perfilUsername');
+                if (inputUsername) inputUsername.style.borderColor = ''; // Limpa borda de erro se houver
+            })
+            .catch(err => {
+                console.error(err);
+                showSnackbar(err.message || "Erro ao salvar perfil.");
+
+                if (err.message && err.message.includes("Username já está em uso")) {
+                    const inputUsername = document.getElementById('perfilUsername');
+                    if (inputUsername) {
+                        inputUsername.style.borderColor = 'var(--cor-destaque)';
+                        inputUsername.focus();
+                    }
+                }
+            });
     }
 
     // --- LÓGICA DAS ABAS ---
     const tabs = document.querySelectorAll('.tab-link');
     const contents = document.querySelectorAll('.tab-content');
     tabs.forEach(tab => {
-        tab.addEventListener('click', function() {
+        tab.addEventListener('click', function () {
             tabs.forEach(item => item.classList.remove('ativo'));
             contents.forEach(item => item.classList.remove('ativo'));
             const target = document.getElementById(this.dataset.tab);
@@ -159,12 +159,12 @@ document.addEventListener('DOMContentLoaded', function() {
         if (snackbar) {
             const isError = type === 'error';
             const iconColor = isError ? '#e74c3c' : '#28a745';
-            const svgPath = isError 
+            const svgPath = isError
                 ? '<path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>' // Red X
                 : '<path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>'; // Green check
-            
+
             snackbar.style.borderLeftColor = iconColor;
-            
+
             snackbar.innerHTML = `
                 <div class="snackbar-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="${iconColor}" viewBox="0 0 16 16">
@@ -196,7 +196,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const initials = getInitials(dadosPerfil.nome);
         document.getElementById('avatarInitials').textContent = initials;
         document.getElementById('avatarPreview').style.backgroundColor = dadosPerfil.corAvatar;
-        
+
         // Atualiza a cor selecionada nos swatches
         document.querySelectorAll('.color-swatch').forEach(swatch => {
             if (swatch.dataset.color === dadosPerfil.corAvatar) {
@@ -215,11 +215,11 @@ document.addEventListener('DOMContentLoaded', function() {
         if (dadosPerfil.local) {
             let partes = dadosPerfil.local.split('/');
             if (partes.length !== 2) partes = dadosPerfil.local.split('-');
-            
+
             if (partes.length === 2) {
                 const cidade = partes[0].trim();
                 const uf = partes[1].trim();
-                
+
                 const selectEstado = document.getElementById('perfilEstado');
                 const checkInterval = setInterval(() => {
                     if (selectEstado && selectEstado.options.length > 1) {
@@ -232,9 +232,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         const listaInst = document.getElementById('listaInstrumentos');
         if (listaInst) listaInst.innerHTML = '';
-        
+
         const strInst = dadosPerfil.instrumentos || '';
-        
+
         if (strInst.includes('::')) {
             const blocos = strInst.split('|').filter(b => b.trim());
             blocos.forEach(b => {
@@ -258,7 +258,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             adicionarBlocoInstrumento();
         }
-        
+
         const generosSalvos = dadosPerfil.generosMusicais || '';
         const genrePillsContainer = document.getElementById('genrePillsContainer');
         const inputGeneros = document.getElementById('perfilGeneros');
@@ -274,14 +274,14 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             if (inputGeneros) inputGeneros.value = generosSalvos;
         }
-        
+
         document.getElementById('perfilInfluencias').value = dadosPerfil.influencias || '';
         document.getElementById('perfilStatusBusca').value = dadosPerfil.statusBusca || '';
         document.getElementById('perfilDisponibilidade').value = dadosPerfil.disponibilidade || '';
         document.getElementById('perfilEquipamento').value = dadosPerfil.equipamento || '';
         document.getElementById('perfilRedesSociais').value = dadosPerfil.redesSociais || '';
         document.getElementById('perfilBio').value = dadosPerfil.bio || '';
-        
+
         // Conta e Segurança
         const emailInput = document.getElementById('contaEmail');
         if (emailInput) emailInput.value = dadosPerfil.email || '';
@@ -363,13 +363,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
 
-            form.addEventListener('submit', function(e) {
+            form.addEventListener('submit', function (e) {
                 e.preventDefault();
                 onSave(this);
                 closeModal(); // Fecha o modal após salvar
             });
         } else {
-             console.error(`Erro ao configurar o modal: ${modalId}, ${abrirBtnId}, ${formId}`);
+            console.error(`Erro ao configurar o modal: ${modalId}, ${abrirBtnId}, ${formId}`);
         }
     }
 
@@ -402,7 +402,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Avatar Color Picker
     const colorSwatches = document.querySelectorAll('.color-swatch');
     colorSwatches.forEach(swatch => {
-        swatch.addEventListener('click', function() {
+        swatch.addEventListener('click', function () {
             dadosPerfil.corAvatar = this.dataset.color;
             atualizarAvatarView();
         });
@@ -411,7 +411,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Atualizar Iniciais ao digitar o nome
     const inputNome = document.getElementById('perfilNome');
     if (inputNome) {
-        inputNome.addEventListener('input', function() {
+        inputNome.addEventListener('input', function () {
             dadosPerfil.nome = this.value;
             atualizarAvatarView();
         });
@@ -426,20 +426,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 showSnackbar("Preencha seu Nome Completo primeiro!");
                 return;
             }
-            
+
             // Pega primeiro nome e último nome
             const partes = nomeCompleto.split(' ').filter(p => p.length > 0);
             let base = partes[0].toLowerCase();
             if (partes.length > 1) {
                 base += '.' + partes[partes.length - 1].toLowerCase();
             }
-            
+
             // Remove acentos
             base = base.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
-            
+
             const numAleatorio = Math.floor(Math.random() * 999);
             const usernameGerado = `${base}${numAleatorio}`;
-            
+
             const inputUsername = document.getElementById('perfilUsername');
             if (inputUsername) {
                 inputUsername.value = usernameGerado;
@@ -462,7 +462,7 @@ document.addEventListener('DOMContentLoaded', function() {
         5: 'Profissional'
     };
 
-    window.updateStars = function(value) {
+    window.updateStars = function (value) {
         if (!starContainer) return;
         const stars = starContainer.querySelectorAll('i');
         stars.forEach(star => {
@@ -475,7 +475,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 star.classList.add('far');
             }
         });
-        
+
         if (value > 0) {
             if (nivelTexto) nivelTexto.textContent = `${value} - ${nivelMap[value]}`;
             if (inputNivel) inputNivel.value = nivelMap[value];
@@ -502,7 +502,7 @@ document.addEventListener('DOMContentLoaded', function() {
         genrePillsContainer.addEventListener('click', (e) => {
             if (e.target.classList.contains('genre-pill')) {
                 e.target.classList.toggle('selected');
-                
+
                 const selectedPills = genrePillsContainer.querySelectorAll('.genre-pill.selected');
                 const selectedValues = Array.from(selectedPills).map(pill => pill.getAttribute('data-value'));
                 if (inputGeneros) inputGeneros.value = selectedValues.join(', ');
@@ -525,13 +525,13 @@ document.addEventListener('DOMContentLoaded', function() {
             blocos.forEach(bloco => {
                 const selectInst = bloco.querySelector('.perfilInstrumentos');
                 const iNome = selectInst ? selectInst.value : '';
-                
+
                 const inputNivel = bloco.querySelector('.perfilNivel');
                 const iNivel = inputNivel ? inputNivel.value : '';
-                
+
                 const selectExp = bloco.querySelector('.perfilExperiencia');
                 const iExp = selectExp ? selectExp.value : '';
-                
+
                 if (iNome && iNome.trim() !== '') {
                     arrayBlocos.push(`${iNome}::${iNivel}::${iExp}`);
                 }
@@ -540,9 +540,9 @@ document.addEventListener('DOMContentLoaded', function() {
             dadosPerfil.instrumentos = arrayBlocos.join('|');
             dadosPerfil.nivelHabilidade = '';
             dadosPerfil.tempoExperiencia = '';
-            
+
             dadosPerfil.generosMusicais = document.getElementById('perfilGeneros').value;
-            
+
             dadosPerfil.influencias = document.getElementById('perfilInfluencias').value;
             dadosPerfil.statusBusca = document.getElementById('perfilStatusBusca').value;
             dadosPerfil.disponibilidade = document.getElementById('perfilDisponibilidade').value;
@@ -572,7 +572,7 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             const novaSenha = document.getElementById('novaSenha').value;
             const confirmaSenha = document.getElementById('confirmaSenha').value;
-            
+
             if (novaSenha !== confirmaSenha) {
                 showSnackbar("As senhas não coincidem!");
                 return;
@@ -581,14 +581,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 showSnackbar("A nova senha deve ter pelo menos 6 caracteres.");
                 return;
             }
-            
+
             showSnackbar("Senha alterada com sucesso!");
             formSenha.reset();
         });
     }
 
     // Delegação de eventos para botões de remover vídeo
-    document.body.addEventListener('click', function(e) {
+    document.body.addEventListener('click', function (e) {
         const btnRemover = e.target.closest('.btn-remover');
         if (btnRemover && btnRemover.dataset.tipo === 'video') {
             const index = parseInt(btnRemover.dataset.index);
@@ -611,26 +611,45 @@ document.addEventListener('DOMContentLoaded', function() {
     const btnExcluirConta = document.getElementById("btnExcluirConta");
     const modalExcluirConta = document.getElementById("modalExcluirConta");
     const closeModalExcluir = document.getElementById("closeModalExcluir");
+    const cancelarExclusaoBtn = document.getElementById("cancelarExclusaoBtn");
     const formExcluirConta = document.getElementById("formExcluirConta");
+
+    let cacheSenhaExclusao = '';
+
+    const fecharModalExcluir = () => {
+        modalExcluirConta.style.display = "none";
+        if (formExcluirConta) formExcluirConta.reset();
+        cacheSenhaExclusao = '';
+    };
 
     if (btnExcluirConta && modalExcluirConta) {
         btnExcluirConta.addEventListener("click", () => {
             modalExcluirConta.style.display = "block";
         });
 
-        closeModalExcluir.addEventListener("click", () => {
-            modalExcluirConta.style.display = "none";
-        });
+        closeModalExcluir.addEventListener("click", fecharModalExcluir);
+        if (cancelarExclusaoBtn) cancelarExclusaoBtn.addEventListener("click", fecharModalExcluir);
+
+        // Cache do campo de senha (mesmo fix do Chrome)
+        const senhaExclusaoInput = document.getElementById("senhaExclusao");
+        if (senhaExclusaoInput) {
+            senhaExclusaoInput.addEventListener('input', e => cacheSenhaExclusao = e.target.value);
+        }
 
         window.addEventListener("click", (e) => {
             if (e.target === modalExcluirConta) {
-                modalExcluirConta.style.display = "none";
+                fecharModalExcluir();
             }
         });
 
         formExcluirConta.addEventListener("submit", async (e) => {
             e.preventDefault();
-            const senha = document.getElementById("senhaExclusao").value;
+            const senha = document.getElementById("senhaExclusao").value || cacheSenhaExclusao;
+
+            if (!senha) {
+                showSnackbar('Por favor, informe sua senha para confirmar a exclusão.', 'error');
+                return;
+            }
 
             try {
                 const token = localStorage.getItem('authToken');
@@ -644,7 +663,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
 
                 if (response.ok) {
-                    showSnackbar("Conta excluída com sucesso. Adeus!");
+                    fecharModalExcluir();
+                    showSnackbar('Conta excluída com sucesso.', 'success');
                     setTimeout(() => {
                         localStorage.removeItem('usuarioLogado');
                         localStorage.removeItem('authToken');
@@ -652,14 +672,23 @@ document.addEventListener('DOMContentLoaded', function() {
                     }, 2000);
                 } else {
                     const errorText = await response.text();
-                    showSnackbar(`Erro: ${errorText}`);
+                    if (response.status === 401 || (errorText && errorText.includes('incorreta'))) {
+                        showSnackbar('Senha incorreta. Tente novamente.', 'error');
+                    } else if (response.status === 404) {
+                        showSnackbar('Conta não encontrada. Tente fazer login novamente.', 'error');
+                    } else if (response.status >= 500) {
+                        showSnackbar('Erro no servidor. Pode haver dados vinculados (bandas). Tente novamente.', 'error');
+                    } else {
+                        showSnackbar('Não foi possível excluir a conta. Tente novamente.', 'error');
+                    }
                 }
             } catch (error) {
                 console.error("Erro ao excluir conta:", error);
-                showSnackbar("Erro de rede ao tentar excluir conta.");
+                showSnackbar('Erro de conexão. Verifique sua internet e tente novamente.', 'error');
             }
         });
     }
+
 
     // --- LÓGICA DE ESTADOS E CIDADES (IBGE) ---
     const selectEstado = document.getElementById('perfilEstado');
@@ -696,7 +725,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 selectCidade.appendChild(option);
             });
             selectCidade.disabled = false;
-            
+
             if (cidadeSelecionada) {
                 selectCidade.value = cidadeSelecionada;
             }
@@ -743,7 +772,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             star.classList.add('far');
                         }
                     });
-                    
+
                     if (value > 0) {
                         if (nivelTexto) nivelTexto.textContent = value + ' - ' + nivelMap[value];
                         if (inputNivel) inputNivel.value = nivelMap[value];
@@ -771,7 +800,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (selectInst) selectInst.value = instrumento;
         if (selectExp) selectExp.value = experiencia;
-        
+
         let starValue = 0;
         for (let key in nivelMap) {
             if (nivelMap[key] === nivel) {
@@ -779,7 +808,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 break;
             }
         }
-        
+
         const stars = novoBloco.querySelectorAll('.star-rating i');
         stars.forEach(star => {
             const sv = parseInt(star.getAttribute('data-value'));
@@ -815,16 +844,41 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- ALTERAR SENHA ---
     const formContaSenha = document.getElementById('formContaSenha');
     if (formContaSenha) {
-        formContaSenha.addEventListener('submit', async function(e) {
+        let cacheSenhaAtual = '';
+        let cacheNovaSenha = '';
+        let cacheConfirmaSenha = '';
+
+        document.getElementById('senhaAtual').addEventListener('input', e => cacheSenhaAtual = e.target.value);
+        document.getElementById('novaSenha').addEventListener('input', e => cacheNovaSenha = e.target.value);
+        document.getElementById('confirmaSenha').addEventListener('input', e => cacheConfirmaSenha = e.target.value);
+
+        formContaSenha.addEventListener('submit', async function (e) {
             e.preventDefault();
-            const senhaAtual = document.getElementById('senhaAtual').value;
-            const novaSenha = document.getElementById('novaSenha').value;
-            const confirmaSenha = document.getElementById('confirmaSenha').value;
 
-            alert(`DEBUG: Lemos do formulário:\nSenha Atual: '${senhaAtual}'\nNova Senha: '${novaSenha}'\nSe estiver vazio, o navegador não está capturando o que você digitou!`);
+            // Usar os valores capturados em tempo real, caso algo limpe os inputs no submit
+            const senhaAtual = document.getElementById('senhaAtual').value || cacheSenhaAtual;
+            const novaSenha = document.getElementById('novaSenha').value || cacheNovaSenha;
+            const confirmaSenha = document.getElementById('confirmaSenha').value || cacheConfirmaSenha;
 
+            // Validações client-side antes de enviar ao servidor
+            if (!senhaAtual) {
+                showSnackbar('Por favor, informe sua senha atual.', 'error');
+                return;
+            }
+            if (!novaSenha) {
+                showSnackbar('Por favor, informe a nova senha.', 'error');
+                return;
+            }
+            if (!confirmaSenha) {
+                showSnackbar('Por favor, confirme a nova senha.', 'error');
+                return;
+            }
             if (novaSenha !== confirmaSenha) {
-                showSnackbar('As novas senhas não coincidem.', 'error');
+                showSnackbar('As senhas não coincidem. Verifique e tente novamente.', 'error');
+                return;
+            }
+            if (novaSenha === senhaAtual) {
+                showSnackbar('A nova senha não pode ser igual à senha atual.', 'error');
                 return;
             }
 
@@ -832,7 +886,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const token = localStorage.getItem('authToken');
                 const response = await fetch(`http://localhost:8080/api/usuarios/${usuarioLogado.id}/senha`, {
                     method: 'PUT',
-                    headers: { 
+                    headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`
                     },
@@ -842,21 +896,58 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (response.ok) {
                     showSnackbar('Senha alterada com sucesso!', 'success');
                     formContaSenha.reset();
+                    cacheSenhaAtual = '';
+                    cacheNovaSenha = '';
+                    cacheConfirmaSenha = '';
                 } else {
                     const errorText = await response.text();
-                    showSnackbar(errorText || 'Erro ao alterar a senha.', 'error');
+
+                    // Mapeamento de mensagens do servidor para mensagens amigáveis
+                    const mensagensErro = {
+                        'Senha atual incorreta.': 'Senha atual incorreta. Verifique e tente novamente.',
+                        'Senha atual e nova senha são obrigatórias.': 'Por favor, preencha todos os campos de senha.',
+                        'Usuário não encontrado.': 'Conta não encontrada. Tente fazer login novamente.',
+                        'Unauthorized': 'Sua sessão expirou. Faça login novamente.',
+                    };
+
+                    // Busca por correspondência parcial nas mensagens do servidor
+                    let mensagemFinal = null;
+                    for (const [chave, valor] of Object.entries(mensagensErro)) {
+                        if (errorText && errorText.includes(chave)) {
+                            mensagemFinal = valor;
+                            break;
+                        }
+                    }
+
+                    // Mapear por status HTTP se não encontrou mensagem específica
+                    if (!mensagemFinal) {
+                        if (response.status === 401) {
+                            mensagemFinal = 'Senha atual incorreta. Verifique e tente novamente.';
+                        } else if (response.status === 404) {
+                            mensagemFinal = 'Conta não encontrada. Tente fazer login novamente.';
+                        } else if (response.status === 400) {
+                            mensagemFinal = 'Requisição inválida. Verifique os campos e tente novamente.';
+                        } else if (response.status >= 500) {
+                            mensagemFinal = 'Erro interno no servidor. Tente novamente mais tarde.';
+                        } else {
+                            mensagemFinal = 'Não foi possível alterar a senha. Tente novamente.';
+                        }
+                    }
+
+                    showSnackbar(mensagemFinal, 'error');
                 }
             } catch (error) {
                 console.error('Erro na alteração de senha:', error);
-                showSnackbar('Erro de conexão ao alterar a senha.', 'error');
+                showSnackbar('Erro de conexão. Verifique sua internet e tente novamente.', 'error');
             }
         });
+
     }
 
 });
 
 // --- TOGGLE SENHA ---
-window.toggleSenha = function(inputId, btn) {
+window.toggleSenha = function (inputId, btn) {
     const input = document.getElementById(inputId);
     const icon = btn.querySelector('i');
     if (input && icon) {
