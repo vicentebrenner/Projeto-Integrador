@@ -16,7 +16,8 @@ document.addEventListener('DOMContentLoaded', function () {
     // --- DADOS DO PERFIL (Integrado com API) ---
     let dadosPerfil = {
         nome: usuarioLogado.nome || "Músico",
-        username: "",
+        whatsapp: "",
+        dataNascimento: "",
         email: usuarioLogado.email || "",
         corAvatar: "#fa9848",
         local: "",
@@ -45,8 +46,9 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(data => {
                 const usuario = data.usuario || usuarioLogado;
                 dadosPerfil.nome = usuario.nome || dadosPerfil.nome;
-                dadosPerfil.username = usuario.username || "";
                 dadosPerfil.email = usuario.email || dadosPerfil.email;
+                dadosPerfil.whatsapp = data.whatsapp || "";
+                dadosPerfil.dataNascimento = data.dataNascimento || "";
                 dadosPerfil.corAvatar = usuario.corAvatar || "#fa9848";
                 dadosPerfil.local = data.localizacao || "";
                 dadosPerfil.instrumentos = data.instrumentosPrincipais || "";
@@ -76,7 +78,8 @@ document.addEventListener('DOMContentLoaded', function () {
     function salvarDados() {
         const dto = {
             nome: dadosPerfil.nome,
-            username: dadosPerfil.username,
+            whatsapp: dadosPerfil.whatsapp,
+            dataNascimento: dadosPerfil.dataNascimento,
             corAvatar: dadosPerfil.corAvatar,
             localizacao: dadosPerfil.local,
             instrumentosPrincipais: dadosPerfil.instrumentos,
@@ -118,16 +121,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 // ATUALIZAR LOCAL STORAGE PARA PERSISTIR A COR NAS OUTRAS PÁGINAS
                 usuarioLogado.corAvatar = dadosPerfil.corAvatar;
                 usuarioLogado.nome = dadosPerfil.nome;
-                usuarioLogado.username = dadosPerfil.username;
                 localStorage.setItem('usuarioLogado', JSON.stringify(usuarioLogado));
 
                 // MARCAR QUE O PERFIL FOI CONFIGURADO (usado no index.html para redirecionar corretamente)
                 localStorage.setItem('perfilConfigurado', 'true');
 
                 showSnackbar("Perfil salvo com sucesso!");
-
-                const inputUsername = document.getElementById('perfilUsername');
-                if (inputUsername) inputUsername.style.borderColor = ''; // Limpa borda de erro se houver
 
                 // REDIRECIONAR PARA O PAINEL (banda.html)
                 setTimeout(() => {
@@ -137,14 +136,6 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(err => {
                 console.error(err);
                 showSnackbar(err.message || "Erro ao salvar perfil.");
-
-                if (err.message && err.message.includes("Username já está em uso")) {
-                    const inputUsername = document.getElementById('perfilUsername');
-                    if (inputUsername) {
-                        inputUsername.style.borderColor = 'var(--cor-destaque)';
-                        inputUsername.focus();
-                    }
-                }
             });
     }
 
@@ -218,8 +209,8 @@ document.addEventListener('DOMContentLoaded', function () {
     // Carrega dados do perfil no formulário
     function carregarPerfil() {
         document.getElementById('perfilNome').value = dadosPerfil.nome;
-        document.getElementById('perfilUsername').value = dadosPerfil.username || '';
-        // document.getElementById('perfilLocal').value = dadosPerfil.local || '';
+        if(document.getElementById("perfilWhatsapp")) document.getElementById("perfilWhatsapp").value = dadosPerfil.whatsapp || "";
+        if(document.getElementById("perfilDataNascimento")) document.getElementById("perfilDataNascimento").value = dadosPerfil.dataNascimento || "";
         if (dadosPerfil.local) {
             let partes = dadosPerfil.local.split('/');
             if (partes.length !== 2) partes = dadosPerfil.local.split('-');
@@ -266,6 +257,13 @@ document.addEventListener('DOMContentLoaded', function () {
         } else {
             adicionarBlocoInstrumento();
         }
+
+        // Garante que tenha pelo menos 1 bloco de instrumento visível
+        setTimeout(() => {
+            if (listaInst && listaInst.children.length === 0) {
+                adicionarBlocoInstrumento();
+            }
+        }, 50);
 
         const generosSalvos = dadosPerfil.generosMusicais || '';
         const genrePillsContainer = document.getElementById('genrePillsContainer');
@@ -467,38 +465,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Gerar Username Aleatório
-    const btnGerarUsername = document.getElementById('btnGerarUsername');
-    if (btnGerarUsername && inputNome) {
-        btnGerarUsername.addEventListener('click', () => {
-            const nomeCompleto = inputNome.value.trim();
-            if (!nomeCompleto) {
-                showSnackbar("Preencha seu Nome Completo primeiro!");
-                return;
-            }
-
-            // Pega primeiro nome e último nome
-            const partes = nomeCompleto.split(' ').filter(p => p.length > 0);
-            let base = partes[0].toLowerCase();
-            if (partes.length > 1) {
-                base += '.' + partes[partes.length - 1].toLowerCase();
-            }
-
-            // Remove acentos
-            base = base.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
-
-            const numAleatorio = Math.floor(Math.random() * 999);
-            const usernameGerado = `${base}${numAleatorio}`;
-
-            const inputUsername = document.getElementById('perfilUsername');
-            if (inputUsername) {
-                inputUsername.value = usernameGerado;
-                dadosPerfil.username = usernameGerado;
-                showSnackbar("Username gerado!");
-            }
-        });
-    }
-
     // Lógica de Estrelas (Nível de Habilidade)
     const starContainer = document.getElementById('starRatingContainer');
     const inputNivel = document.getElementById('perfilNivel');
@@ -566,7 +532,8 @@ document.addEventListener('DOMContentLoaded', function () {
         formPerfil.addEventListener('submit', (e) => {
             e.preventDefault();
             dadosPerfil.nome = document.getElementById('perfilNome').value;
-            dadosPerfil.username = document.getElementById('perfilUsername').value;
+            if(document.getElementById("perfilWhatsapp")) dadosPerfil.whatsapp = document.getElementById("perfilWhatsapp").value;
+            if(document.getElementById("perfilDataNascimento")) dadosPerfil.dataNascimento = document.getElementById("perfilDataNascimento").value;
             const uf = document.getElementById('perfilEstado').value;
             const cidade = document.getElementById('perfilCidade').value;
             dadosPerfil.local = (cidade && uf) ? `${cidade}/${uf}` : '';

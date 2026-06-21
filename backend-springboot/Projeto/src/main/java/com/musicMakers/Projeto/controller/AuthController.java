@@ -67,7 +67,7 @@ public class AuthController {
                 resposta.put("token", token);
                 resposta.put("id", usuario.getId());
                 resposta.put("nome", usuario.getNome());
-                resposta.put("username", usuario.getUsername());
+                
                 resposta.put("corAvatar", usuario.getCorAvatar());
                 resposta.put("role", usuario.getTipoUsuario());
 
@@ -154,7 +154,6 @@ public class AuthController {
                     "token", token,
                     "id", usuario.getId(),
                     "nome", usuario.getNome(),
-                    "username", usuario.getUsername(),
                     "corAvatar", usuario.getCorAvatar(),
                     "role", usuario.getTipoUsuario()
                 ));
@@ -186,7 +185,7 @@ public class AuthController {
         resposta.put("id", usuario.getId());
         resposta.put("nome", usuario.getNome());
         resposta.put("email", usuario.getEmail());
-        resposta.put("username", usuario.getUsername());
+        
         resposta.put("corAvatar", usuario.getCorAvatar());
         resposta.put("tipoUsuario", usuario.getTipoUsuario());
 

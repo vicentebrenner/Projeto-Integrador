@@ -51,4 +51,9 @@ public class PerfilMusico {
 
     @Column(name = "redes_sociais")
     private String redesSociais;
+
+    private String whatsapp;
+
+    @Column(name = "data_nascimento")
+    private String dataNascimento;
 }

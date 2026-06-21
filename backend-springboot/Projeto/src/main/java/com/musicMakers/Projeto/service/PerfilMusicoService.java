@@ -39,6 +39,7 @@ public class PerfilMusicoService {
         return perfilMusicoRepository.save(perfil);
     }
 
+    @org.springframework.transaction.annotation.Transactional
     public PerfilMusico salvarPerfilCompleto(Long usuarioId, PerfilUpdateDTO dto) {
         Usuario usuario = usuarioRepository.findById(usuarioId)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
@@ -46,15 +47,7 @@ public class PerfilMusicoService {
         // Atualiza campos de Usuario
         if (dto.getNome() != null) usuario.setNome(dto.getNome());
         
-        if (dto.getUsername() != null && !dto.getUsername().trim().isEmpty()) {
-            String newUsername = dto.getUsername().trim();
-            // Verifica se o username já existe para outro usuário
-            java.util.Optional<Usuario> userWithUsername = usuarioRepository.findByUsername(newUsername);
-            if (userWithUsername.isPresent() && !userWithUsername.get().getId().equals(usuarioId)) {
-                throw new IllegalArgumentException("Este Username já está em uso por outra conta.");
-            }
-            usuario.setUsername(newUsername);
-        }
+
         
         if (dto.getCorAvatar() != null) usuario.setCorAvatar(dto.getCorAvatar());
         usuarioRepository.save(usuario);

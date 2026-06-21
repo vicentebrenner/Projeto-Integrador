@@ -19,8 +19,7 @@ public class Usuario {
     private String email;
     private String senha;
     
-    @Column(unique = true)
-    private String username;
+    
     
     @Column(name = "cor_avatar")
     private String corAvatar;

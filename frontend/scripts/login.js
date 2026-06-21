@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     nome: data.nome,
                     email: email,
                     corAvatar: data.corAvatar || null,
-                    username: data.username || null,
+                    
                     tipoUsuario: data.role,
                     membroId: data.membroId || null,
                     bandaId: data.bandaId || null,
