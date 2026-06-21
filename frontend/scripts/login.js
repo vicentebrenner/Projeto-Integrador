@@ -74,16 +74,24 @@ document.addEventListener('DOMContentLoaded', function () {
                         headers: { 'Authorization': `Bearer ${data.token}` }
                     });
                     if (perfilRes.ok) {
-                        // Se retornou 200 OK, o perfil já existe no banco
-                        localStorage.setItem('perfilConfigurado', 'true');
+                        const perfilData = await perfilRes.json();
+                        // Verifica se o perfil tem dados reais (localizacao preenchida)
+                        if (perfilData.localizacao && perfilData.localizacao.trim() !== '') {
+                            localStorage.setItem('perfilConfigurado', 'true');
+                        } else {
+                            // Usuário GESTOR sem perfilMusico
+                            localStorage.setItem('perfilConfigurado', data.bandaId ? 'true' : 'false');
+                        }
+                        // Atualizar corAvatar no localStorage com o valor real do banco
+                        if (perfilData.corAvatar) {
+                            usuarioParaSalvar.corAvatar = perfilData.corAvatar;
+                            localStorage.setItem('usuarioLogado', JSON.stringify(usuarioParaSalvar));
+                        }
                     } else {
-                        // Se for 404 (não encontrado)
-                        // Usuário GESTOR não tem perfilMusico — considerar configurado se tiver bandaId
                         localStorage.setItem('perfilConfigurado', data.bandaId ? 'true' : 'false');
                     }
                 } catch (perfilErr) {
                     console.warn('Não foi possível verificar perfil:', perfilErr);
-                    // Em caso de erro, usa bandaId como fallback
                     localStorage.setItem('perfilConfigurado', data.bandaId ? 'true' : 'false');
                 }
 

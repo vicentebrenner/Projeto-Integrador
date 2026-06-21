@@ -1,8 +1,11 @@
 package com.musicMakers.Projeto.controller;
 
 import com.musicMakers.Projeto.domain.entity.PerfilMusico;
+import com.musicMakers.Projeto.domain.entity.Usuario;
 import com.musicMakers.Projeto.domain.dto.PerfilUpdateDTO;
+import com.musicMakers.Projeto.domain.dto.PerfilCompletoResponseDTO;
 import com.musicMakers.Projeto.service.PerfilMusicoService;
+import com.musicMakers.Projeto.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,13 +17,19 @@ public class PerfilMusicoController {
     @Autowired
     private PerfilMusicoService perfilMusicoService;
 
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
     @GetMapping("/usuario/{usuarioId}")
-    public ResponseEntity<PerfilMusico> buscarPorUsuario(@PathVariable Long usuarioId) {
-        PerfilMusico perfil = perfilMusicoService.buscarPorUsuarioId(usuarioId);
-        if (perfil != null) {
-            return ResponseEntity.ok(perfil);
+    public ResponseEntity<PerfilCompletoResponseDTO> buscarPorUsuario(@PathVariable Long usuarioId) {
+        Usuario usuario = usuarioRepository.findById(usuarioId).orElse(null);
+        if (usuario == null) {
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.notFound().build();
+        
+        PerfilMusico perfil = perfilMusicoService.buscarPorUsuarioId(usuarioId);
+        PerfilCompletoResponseDTO response = PerfilCompletoResponseDTO.fromEntities(usuario, perfil);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/usuario/{usuarioId}")

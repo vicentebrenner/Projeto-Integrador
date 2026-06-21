@@ -44,12 +44,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 return res.json();
             })
             .then(data => {
-                const usuario = data.usuario || usuarioLogado;
-                dadosPerfil.nome = usuario.nome || dadosPerfil.nome;
-                dadosPerfil.email = usuario.email || dadosPerfil.email;
+                // O DTO agora retorna tudo na raiz (sem data.usuario)
+                dadosPerfil.nome = data.nome || dadosPerfil.nome;
+                dadosPerfil.email = data.email || dadosPerfil.email;
                 dadosPerfil.whatsapp = data.whatsapp || "";
                 dadosPerfil.dataNascimento = data.dataNascimento || "";
-                dadosPerfil.corAvatar = usuario.corAvatar || "#fa9848";
+                dadosPerfil.corAvatar = data.corAvatar || "#fa9848";
                 dadosPerfil.local = data.localizacao || "";
                 dadosPerfil.instrumentos = data.instrumentosPrincipais || "";
                 dadosPerfil.nivelHabilidade = data.nivelHabilidade || "";
@@ -465,6 +465,14 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    // Máscara para WhatsApp / Telefone
+    const inputWhatsapp = document.getElementById('perfilWhatsapp');
+    if (inputWhatsapp) {
+        inputWhatsapp.addEventListener('input', function (e) {
+            let x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
+            e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
+        });
+    }
     // Lógica de Estrelas (Nível de Habilidade)
     const starContainer = document.getElementById('starRatingContainer');
     const inputNivel = document.getElementById('perfilNivel');
