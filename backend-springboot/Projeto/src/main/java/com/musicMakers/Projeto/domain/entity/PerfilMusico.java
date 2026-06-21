@@ -2,6 +2,8 @@ package com.musicMakers.Projeto.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
+import lombok.EqualsAndHashCode;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -15,6 +17,8 @@ public class PerfilMusico {
     @JsonIgnore
     @OneToOne
     @JoinColumn(name = "usuario_id", referencedColumnName = "id")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Usuario usuario;
 
     @Column(name = "instrumentos_principais")

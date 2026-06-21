@@ -2113,13 +2113,48 @@ document.addEventListener('DOMContentLoaded', function() {
         contentContainers.forEach(content => content.style.display = 'none');
 
         if (mainContainer) {
-            const userEmail = usuarioLogado ? usuarioLogado.email : 'seu email';
+            const userEmail = (usuarioLogado && usuarioLogado.email) ? usuarioLogado.email : 'o email cadastrado';
             mainContainer.innerHTML = `
-                <h1>Bem-vindo ao Music Makers!</h1>
-                <div class="card-style" style="text-align: center;">
-                    <p>Você ainda não faz parte de nenhuma banda.</p>
-                    <p>Peça para um membro de uma banda existente convidá-lo usando seu e-mail (${userEmail}).</p>
-                    <button class="btnCta" style="margin-top: 20px;" onclick="alert('Funcionalidade \'Criar Nova Banda\' ainda não implementada.')">Criar Nova Banda</button>
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 70vh; text-align: center; padding: 20px;">
+                    
+                    <div style="width: 120px; height: 120px; background: linear-gradient(135deg, rgba(250, 152, 72, 0.15), rgba(255, 94, 98, 0.1)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(250, 152, 72, 0.15);">
+                        <i class="fas fa-guitar" style="font-size: 3.5rem; color: var(--cor-secundaria); filter: drop-shadow(0 4px 8px rgba(250, 152, 72, 0.3));"></i>
+                    </div>
+                    
+                    <h1 style="font-family: 'Montserrat', sans-serif; font-size: 2.5rem; font-weight: 800; margin-bottom: 15px; color: var(--cor-primaria);">Bem-vindo ao Music Makers</h1>
+                    
+                    <p style="font-size: 1.15rem; color: var(--cor-texto); max-width: 600px; line-height: 1.6; margin-bottom: 40px;">
+                        Você ainda não faz parte de nenhuma banda no momento. Para começar a gerenciar ensaios, finanças e repertórios, você precisa de uma banda.
+                    </p>
+
+                    <div style="display: flex; gap: 25px; flex-wrap: wrap; justify-content: center;">
+                        
+                        <!-- Opção 1: Ser Convidado -->
+                        <div class="card-style" style="flex: 1; min-width: 280px; max-width: 350px; padding: 35px 25px; display: flex; flex-direction: column; align-items: center; border: 1px solid var(--cor-borda);">
+                            <i class="fas fa-envelope-open-text" style="font-size: 2.5rem; color: var(--cor-info); margin-bottom: 20px;"></i>
+                            <h3 style="font-size: 1.3rem; margin-bottom: 10px; color: var(--cor-primaria); border: none; padding: 0;">Fui Convidado</h3>
+                            <p style="font-size: 0.95rem; color: var(--cor-texto); line-height: 1.5; margin-bottom: 20px;">
+                                Peça ao líder da banda para enviar um convite para o seu e-mail:
+                                <br><strong style="color: var(--cor-primaria); background: var(--cor-fundo); padding: 6px 12px; border-radius: 6px; display: inline-block; margin-top: 10px; font-size: 0.9rem; border: 1px solid var(--cor-borda);">${userEmail}</strong>
+                            </p>
+                            <span style="font-size: 0.85rem; color: var(--cor-info); font-weight: 600; margin-top: auto;">
+                                <i class="fas fa-circle-notch fa-spin" style="margin-right: 5px;"></i> Aguardando convite...
+                            </span>
+                        </div>
+
+                        <!-- Opção 2: Criar Banda -->
+                        <div class="card-style" style="flex: 1; min-width: 280px; max-width: 350px; padding: 35px 25px; display: flex; flex-direction: column; align-items: center; border: 2px solid rgba(250, 152, 72, 0.3); position: relative;">
+                            <div style="position: absolute; top: -12px; background: var(--cor-secundaria); color: #fff; font-size: 0.75rem; font-weight: bold; padding: 4px 12px; border-radius: 20px; text-transform: uppercase; letter-spacing: 1px;">Recomendado</div>
+                            <i class="fas fa-users-cog" style="font-size: 2.5rem; color: var(--cor-secundaria); margin-bottom: 20px;"></i>
+                            <h3 style="font-size: 1.3rem; margin-bottom: 10px; color: var(--cor-primaria); border: none; padding: 0;">Sou o Líder</h3>
+                            <p style="font-size: 0.95rem; color: var(--cor-texto); line-height: 1.5; margin-bottom: 25px;">
+                                Quer iniciar o seu próprio projeto musical e gerenciar todos os integrantes e eventos?
+                            </p>
+                            <button class="btn-adicionar-principal" style="width: 100%; padding: 14px; font-size: 1rem; margin-top: auto; border-radius: 8px; font-weight: 700; box-shadow: 0 4px 15px rgba(250, 152, 72, 0.2);" onclick="window.location.href='configurar-banda.html'">
+                                <i class="fas fa-plus-circle"></i> Criar Nova Banda
+                            </button>
+                        </div>
+                    </div>
                 </div>
             `;
         }

@@ -55,6 +55,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 const usuarioParaSalvar = {
                     id: data.id,
                     nome: data.nome,
+                    email: email,
+                    corAvatar: data.corAvatar || null,
+                    username: data.username || null,
                     tipoUsuario: data.role,
                     membroId: data.membroId || null,
                     bandaId: data.bandaId || null,
@@ -64,6 +67,25 @@ document.addEventListener('DOMContentLoaded', function () {
                 localStorage.setItem('usuarioLogado', JSON.stringify(usuarioParaSalvar));
                 localStorage.setItem('authToken', data.token);
                 localStorage.setItem('primeiroAcesso', 'true');
+
+                // Verifica se o usuário já configurou o perfil anteriormente
+                try {
+                    const perfilRes = await fetch(getApiUrl(`/api/musicos/usuario/${data.id}`), {
+                        headers: { 'Authorization': `Bearer ${data.token}` }
+                    });
+                    if (perfilRes.ok) {
+                        // Se retornou 200 OK, o perfil já existe no banco
+                        localStorage.setItem('perfilConfigurado', 'true');
+                    } else {
+                        // Se for 404 (não encontrado)
+                        // Usuário GESTOR não tem perfilMusico — considerar configurado se tiver bandaId
+                        localStorage.setItem('perfilConfigurado', data.bandaId ? 'true' : 'false');
+                    }
+                } catch (perfilErr) {
+                    console.warn('Não foi possível verificar perfil:', perfilErr);
+                    // Em caso de erro, usa bandaId como fallback
+                    localStorage.setItem('perfilConfigurado', data.bandaId ? 'true' : 'false');
+                }
 
                 showSuccessPopup('Login realizado com sucesso!', () => {
                     window.location.href = 'index.html';

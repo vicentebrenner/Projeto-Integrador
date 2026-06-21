@@ -2,6 +2,8 @@ package com.musicMakers.Projeto.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
+import lombok.EqualsAndHashCode;
 import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -32,5 +34,7 @@ public class Usuario {
     // Relacionamento opcional com PerfilMusico
     @JsonIgnore
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private PerfilMusico perfilMusico;
 }

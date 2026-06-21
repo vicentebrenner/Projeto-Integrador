@@ -55,6 +55,7 @@ document.addEventListener('DOMContentLoaded', function() {
             localStorage.removeItem('usuarioLogado');
             localStorage.removeItem('authToken');
             localStorage.removeItem('primeiroAcesso');
+            localStorage.removeItem('perfilConfigurado');
             window.location.href = 'login.html';
         });
 

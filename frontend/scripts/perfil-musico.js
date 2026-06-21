@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const usuarioLogado = JSON.parse(usuarioLogadoString);
     if (usuarioLogado && usuarioLogado.tipoUsuario !== 'MUSICO') {
-        window.location.href = 'dashboard.html'; // Redireciona gestor para o painel da banda
+        window.location.href = 'banda.html'; // Redireciona gestor para o painel da banda
         return;
     }
 
@@ -121,10 +121,18 @@ document.addEventListener('DOMContentLoaded', function () {
                 usuarioLogado.username = dadosPerfil.username;
                 localStorage.setItem('usuarioLogado', JSON.stringify(usuarioLogado));
 
+                // MARCAR QUE O PERFIL FOI CONFIGURADO (usado no index.html para redirecionar corretamente)
+                localStorage.setItem('perfilConfigurado', 'true');
+
                 showSnackbar("Perfil salvo com sucesso!");
 
                 const inputUsername = document.getElementById('perfilUsername');
                 if (inputUsername) inputUsername.style.borderColor = ''; // Limpa borda de erro se houver
+
+                // REDIRECIONAR PARA O PAINEL (banda.html)
+                setTimeout(() => {
+                    window.location.href = 'banda.html';
+                }, 1000);
             })
             .catch(err => {
                 console.error(err);

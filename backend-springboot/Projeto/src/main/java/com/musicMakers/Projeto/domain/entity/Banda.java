@@ -2,6 +2,8 @@ package com.musicMakers.Projeto.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
+import lombok.EqualsAndHashCode;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDate;
 import java.util.List;
@@ -26,5 +28,7 @@ public class Banda {
 
     @JsonIgnore
     @OneToMany(mappedBy = "banda")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private List<MembroBanda> membros;
 }

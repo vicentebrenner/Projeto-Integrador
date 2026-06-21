@@ -487,8 +487,7 @@
             }
 
             // Financeiro
-            const defaultFinanceiros = [];
-            const dadosFinanceiros = localStorage.getItem('dadosFinanceiros') ? JSON.parse(localStorage.getItem('dadosFinanceiros')) : defaultFinanceiros;
+            const dadosFinanceiros = localStorage.getItem('dadosFinanceiros') ? JSON.parse(localStorage.getItem('dadosFinanceiros')) : [];
             const elFin = document.getElementById('modalFinanceiro');
             if (elFin) {
                 const saldo = dadosFinanceiros.reduce((acc, curr) => acc + (curr.tipo === 'RECEITA' ? curr.valor : -curr.valor), 0);
@@ -496,8 +495,7 @@
             }
 
             // Repertório
-            const defaultRepertorio = [];
-            const dadosRepertorio = localStorage.getItem('dadosRepertorio') ? JSON.parse(localStorage.getItem('dadosRepertorio')) : defaultRepertorio;
+            const dadosRepertorio = localStorage.getItem('dadosRepertorio') ? JSON.parse(localStorage.getItem('dadosRepertorio')) : [];
             const elRep = document.getElementById('modalRepertorio');
             if (elRep) {
                 elRep.textContent = `${dadosRepertorio.length} música(s) cadastrada(s)`;
@@ -507,46 +505,95 @@
         }
     }
 
-    // Só exibe se for primeiro acesso após login
-    if (localStorage.getItem(CHAVE) === 'true') {
-        preencherNome();
-        preencherModalCards();
-        overlay.style.display = 'flex';
-    } else {
-        overlay.remove();
+    // --- DETERMINA DESTINO DO USUÁRIO ---
+    // Regra: se 'perfilConfigurado' for 'false' (setado no login quando não há dados) → editor de perfil
+    //        se for 'true' ou null (flag ausente = usuário antigo) → banda.html
+    function getDestinoUsuario(usuario) {
+        if (!usuario) return 'cadastro.html';
+        const flagPerfil = localStorage.getItem('perfilConfigurado');
+        // Só redireciona para setup de perfil se a flag for EXPLICITAMENTE 'false'
+        if (flagPerfil === 'false') {
+            if (usuario.tipoUsuario === 'GESTOR' || usuario.gestor === true) {
+                return 'configurar-banda.html';
+            } else {
+                return 'perfil-musico.html';
+            }
+        }
+        return 'banda.html';
     }
 
-    if (btnEntrar) {
-        // Dynamically set href based on user role and band status
-        try {
-            const usuario = JSON.parse(localStorage.getItem('usuarioLogado'));
-            if (usuario) {
-                let linkDestino = 'banda.html';
-                if (usuario.tipoUsuario === 'GESTOR' || usuario.gestor === true) {
-                    if (!usuario.bandaId) {
-                        linkDestino = 'configurar-banda.html';
-                    }
-                } else if (usuario.tipoUsuario === 'MUSICO') {
-                    if (!usuario.bandaId) {
-                        linkDestino = 'perfil-musico.html';
-                    }
-                }
-                
-                if (btnEntrar) btnEntrar.href = linkDestino;
-                if (btnComecarAgora) {
-                    btnComecarAgora.href = linkDestino;
-                    btnComecarAgora.textContent = 'Acessar Painel';
-                }
-            }
-        } catch(e) {
-            console.error("Erro ao definir href do botão de entrar:", e);
+    // --- LEITURA DO ESTADO DE LOGIN ---
+    let usuarioLogado = null;
+    try {
+        usuarioLogado = JSON.parse(localStorage.getItem('usuarioLogado'));
+    } catch(e) {}
+
+    if (usuarioLogado) {
+        // ===== USUÁRIO LOGADO =====
+        const destino = getDestinoUsuario(usuarioLogado);
+
+        // 1) Botão "Começar Agora" vira "Acessar Painel" → destino correto
+        if (btnComecarAgora) {
+            btnComecarAgora.textContent = 'Acessar Painel';
+            btnComecarAgora.href = destino;
         }
 
-        btnEntrar.addEventListener('click', function () {
-            localStorage.setItem(CHAVE, 'false');
-        });
+        // 2) Substitui o formulário de login na seção CTA por card de boas-vindas
+        const ctaLoginBox = document.querySelector('.cta-login-box');
+        if (ctaLoginBox) {
+            const nomeCompleto = usuarioLogado.nome || 'Músico';
+            const primeiroNome = nomeCompleto.split(' ')[0];
+            const cor = usuarioLogado.corAvatar || '#fa9848';
+            const parts = nomeCompleto.trim().split(' ');
+            const iniciais = parts.length === 1
+                ? parts[0].substring(0, 2).toUpperCase()
+                : (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+
+            ctaLoginBox.innerHTML = `
+                <div class="login-card-inner" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:40px 24px;text-align:center;">
+                    <div style="width:72px;height:72px;border-radius:50%;background:${cor};display:flex;align-items:center;justify-content:center;font-size:1.6rem;font-weight:700;color:#fff;letter-spacing:1px;flex-shrink:0;">${iniciais}</div>
+                    <div>
+                        <h3 style="margin:0 0 6px;">Bem-vindo de volta, ${primeiroNome}!</h3>
+                        <p style="margin:0;opacity:0.7;font-size:0.95rem;">Você já está logado na plataforma.</p>
+                    </div>
+                    <a href="${destino}" class="btnCta btn-block" style="width:100%;text-align:center;text-decoration:none;display:block;">
+                        Acessar Painel
+                    </a>
+                </div>
+                <div class="card-glow"></div>
+            `;
+        }
+
+        // 3) Modal de boas-vindas: exibe apenas se for primeiro acesso pós-login
+        if (localStorage.getItem(CHAVE) === 'true') {
+            preencherNome();
+            preencherModalCards();
+            if (overlay) overlay.style.display = 'flex';
+        } else {
+            if (overlay) overlay.remove();
+        }
+
+        // 4) Configura o botão "Entrar Agora" do modal
+        if (btnEntrar) {
+            btnEntrar.href = destino;
+            btnEntrar.addEventListener('click', function () {
+                localStorage.setItem(CHAVE, 'false');
+            });
+        }
+
+    } else {
+        // ===== USUÁRIO NÃO LOGADO =====
+        // Remove o modal (não faz sentido sem login)
+        if (overlay) overlay.remove();
+
+        // Garante que o botão "Começar Agora" vai para cadastro
+        if (btnComecarAgora) {
+            btnComecarAgora.href = 'cadastro.html';
+            btnComecarAgora.textContent = 'Começar Agora';
+        }
     }
 
+    // Fecha modal com Escape
     document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape' && overlay && overlay.style.display !== 'none') {
             overlay.style.display = 'none';
