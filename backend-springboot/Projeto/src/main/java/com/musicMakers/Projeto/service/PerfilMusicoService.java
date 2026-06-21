@@ -75,6 +75,10 @@ public class PerfilMusicoService {
         existente.setEquipamento(dto.getEquipamento());
         existente.setRedesSociais(dto.getRedesSociais());
         
+        // Novos campos
+        existente.setWhatsapp(dto.getWhatsapp());
+        existente.setDataNascimento(dto.getDataNascimento());
+        
         return perfilMusicoRepository.save(existente);
     }
 }
