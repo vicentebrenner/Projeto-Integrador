@@ -21,14 +21,15 @@ public class PerfilMusico {
     @EqualsAndHashCode.Exclude
     private Usuario usuario;
 
-    @Column(name = "instrumentos_principais")
+    @Column(name = "instrumentos_principais", columnDefinition = "TEXT")
     private String instrumentosPrincipais;
 
+    @Column(columnDefinition = "TEXT")
     private String biografia;
     
     private String localizacao;
     
-    @Column(name = "link_videos")
+    @Column(name = "link_videos", columnDefinition = "TEXT")
     private String linkVideos;
 
     @Column(name = "nivel_habilidade")
@@ -40,6 +41,7 @@ public class PerfilMusico {
     @Column(name = "generos_musicais")
     private String generosMusicais;
 
+    @Column(columnDefinition = "TEXT")
     private String influencias;
 
     @Column(name = "status_busca")
