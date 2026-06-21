@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meu Perfil de Músico - Music Makers</title>
     <link rel="icon" type="image/png" href="assets/logo.png">
-    <link rel="stylesheet" href="styles.css?v=17">
+    <link rel="stylesheet" href="styles.css?v=25">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
@@ -29,8 +29,8 @@
     <main class="profile-settings-page">
         <div class="container">
             <div class="profile-header-title">
-                <h1>Configurações da Conta</h1>
-                <p>Gerencie as informações do seu perfil, preferências e segurança.</p>
+                <h1>Painel do Músico</h1>
+                <p>Gerencie seu perfil, seu portfólio e encontre novas oportunidades no Music Makers.</p>
             </div>
 
             <div class="profile-settings-wrapper">
@@ -82,7 +82,7 @@
                                     <div class="inputGroup">
                                         <label for="perfilUsername">Nome de Usuário (Username)</label>
                                         <div class="input-with-prefix" style="position: relative;">
-                                            <span class="prefix">@</span>
+                                            <span class="prefix" title="Este nome de usuário será usado para que bandas e outros músicos te encontrem na plataforma Music Makers.">@</span>
                                             <input type="text" id="perfilUsername" name="perfilUsername" placeholder="joao.guitar" required style="padding-right: 35px;">
                                             <i class="fas fa-sync-alt" id="btnGerarUsername" title="Clique para gerar um nome aleatório" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #fa9848; font-size: 1.1em; transition: transform 0.3s ease, color 0.3s ease;" onmouseover="this.style.color='#d35400'; this.style.transform='translateY(-50%) rotate(90deg)'" onmouseout="this.style.color='#fa9848'; this.style.transform='translateY(-50%) rotate(0deg)'"></i>
                                         </div>
@@ -104,89 +104,107 @@
                                     </div>
                                 </div>
                                 <div class="form-section-title mt-4">
-                                    <h3><i class="fas fa-guitar"></i> Musicalidade</h3>
+                                    <h3 style="width: 100%; justify-content: space-between; margin-bottom: 8px;">
+                                        <span><i class="fas fa-guitar" style="margin-right: 8px;"></i>Musicalidade</span>
+                                        <button type="button" id="btnAddInstrumento" class="btn-circular" style="margin-right: -10px;" title="Adicionar novo instrumento">
+                                            <i class="fas fa-plus" style="font-size: 12px;"></i>
+                                        </button>
+                                    </h3>
                                     <hr>
-                                </div>
-                                <div class="inputGroup">
-                                    <label for="perfilInstrumentos">Instrumento Principal</label>
-                                    <select id="perfilInstrumentos" name="perfilInstrumentos">
-                                        <option value="">Selecione um instrumento...</option>
-                                        <option value="Vocal">Vocal</option>
-                                        <option value="Backing Vocal">Backing Vocal</option>
-                                        <option value="Violão">Violão</option>
-                                        <option value="Guitarra">Guitarra</option>
-                                        <option value="Baixo">Baixo</option>
-                                        <option value="Bateria">Bateria</option>
-                                        <option value="Teclado">Teclado</option>
-                                        <option value="Piano">Piano</option>
-                                        <option value="Sintetizador">Sintetizador</option>
-                                        <option value="Saxofone">Saxofone</option>
-                                        <option value="Trompete">Trompete</option>
-                                        <option value="Trombone">Trombone</option>
-                                        <option value="Clarinete">Clarinete</option>
-                                        <option value="Flauta">Flauta</option>
-                                        <option value="Violino">Violino</option>
-                                        <option value="Viola">Viola</option>
-                                        <option value="Violoncelo">Violoncelo</option>
-                                        <option value="Contrabaixo Acústico">Contrabaixo Acústico</option>
-                                        <option value="Gaita">Gaita</option>
-                                        <option value="Sanfona (Acordeon)">Sanfona (Acordeon)</option>
-                                        <option value="Ukulele">Ukulele</option>
-                                        <option value="Cavaquinho">Cavaquinho</option>
-                                        <option value="Banjo">Banjo</option>
-                                        <option value="Bandolim">Bandolim</option>
-                                        <option value="Cajón">Cajón</option>
-                                        <option value="Pandeiro">Pandeiro</option>
-                                        <option value="Congas">Congas</option>
-                                        <option value="Bongô">Bongô</option>
-                                        <option value="Tamborim">Tamborim</option>
-                                        <option value="Surdo">Surdo</option>
-                                        <option value="Repique">Repique</option>
-                                        <option value="Timbal">Timbal</option>
-                                        <option value="Zabumba">Zabumba</option>
-                                        <option value="Triângulo">Triângulo</option>
-                                        <option value="Agogô">Agogô</option>
-                                        <option value="Ganzá">Ganzá</option>
-                                        <option value="Atabaque">Atabaque</option>
-                                        <option value="Cuíca">Cuíca</option>
-                                        <option value="Berimbau">Berimbau</option>
-                                        <option value="Xilofone">Xilofone</option>
-                                        <option value="Marimba">Marimba</option>
-                                        <option value="Tuba">Tuba</option>
-                                        <option value="Trompa">Trompa</option>
-                                        <option value="Oboé">Oboé</option>
-                                        <option value="Fagote">Fagote</option>
-                                        <option value="Harpa">Harpa</option>
-                                        <option value="DJ / Controladora">DJ / Controladora</option>
-                                        <option value="Escaleta">Escaleta</option>
-                                        <option value="Castanholas">Castanholas</option>
-                                        <option value="Outro">Outro</option>
-                                    </select>
-                                </div>
-
-                                <div class="form-grid-2">
-                                    <div class="inputGroup">
-                                        <label>Nível de Habilidade</label>
-                                        <div class="star-rating" id="starRatingContainer">
-                                            <i class="far fa-star" data-value="1" title="1 - Iniciante"></i>
-                                            <i class="far fa-star" data-value="2" title="2 - Básico"></i>
-                                            <i class="far fa-star" data-value="3" title="3 - Intermediário"></i>
-                                            <i class="far fa-star" data-value="4" title="4 - Avançado"></i>
-                                            <i class="far fa-star" data-value="5" title="5 - Profissional (Muito bom)"></i>
+                                    <div id="instrumentosContainer">
+                                    <div id="instrumentoTemplate" style="display: none;">
+                                        <div class="instrument-block">
+                                            <div class="inputGroup" style="margin-bottom: 0;">
+                                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                                    <label style="margin: 0;">Instrumento</label>
+                                                    <button type="button" class="btn-circular btn-circular-remove btnRemoverInstrumento" title="Remover instrumento">
+                                                        <i class="fas fa-minus"></i>
+                                                    </button>
+                                                </div>
+                                                <select class="perfilInstrumentos">
+                                                    <option value="">Selecione um instrumento...</option>
+                                                <option value="Vocal">Vocal</option>
+                                                <option value="Backing Vocal">Backing Vocal</option>
+                                                <option value="Violão">Violão</option>
+                                                <option value="Guitarra">Guitarra</option>
+                                                <option value="Baixo">Baixo</option>
+                                                <option value="Bateria">Bateria</option>
+                                                <option value="Teclado">Teclado</option>
+                                                <option value="Piano">Piano</option>
+                                                <option value="Sintetizador">Sintetizador</option>
+                                                <option value="Saxofone">Saxofone</option>
+                                                <option value="Trompete">Trompete</option>
+                                                <option value="Trombone">Trombone</option>
+                                                <option value="Clarinete">Clarinete</option>
+                                                <option value="Flauta">Flauta</option>
+                                                <option value="Violino">Violino</option>
+                                                <option value="Viola">Viola</option>
+                                                <option value="Violoncelo">Violoncelo</option>
+                                                <option value="Contrabaixo Acústico">Contrabaixo Acústico</option>
+                                                <option value="Gaita">Gaita</option>
+                                                <option value="Sanfona (Acordeon)">Sanfona (Acordeon)</option>
+                                                <option value="Ukulele">Ukulele</option>
+                                                <option value="Cavaquinho">Cavaquinho</option>
+                                                <option value="Banjo">Banjo</option>
+                                                <option value="Bandolim">Bandolim</option>
+                                                <option value="Cajón">Cajón</option>
+                                                <option value="Pandeiro">Pandeiro</option>
+                                                <option value="Congas">Congas</option>
+                                                <option value="Bongô">Bongô</option>
+                                                <option value="Tamborim">Tamborim</option>
+                                                <option value="Surdo">Surdo</option>
+                                                <option value="Repique">Repique</option>
+                                                <option value="Timbal">Timbal</option>
+                                                <option value="Zabumba">Zabumba</option>
+                                                <option value="Triângulo">Triângulo</option>
+                                                <option value="Agogô">Agogô</option>
+                                                <option value="Ganzá">Ganzá</option>
+                                                <option value="Atabaque">Atabaque</option>
+                                                <option value="Cuíca">Cuíca</option>
+                                                <option value="Berimbau">Berimbau</option>
+                                                <option value="Xilofone">Xilofone</option>
+                                                <option value="Marimba">Marimba</option>
+                                                <option value="Tuba">Tuba</option>
+                                                <option value="Trompa">Trompa</option>
+                                                <option value="Oboé">Oboé</option>
+                                                <option value="Fagote">Fagote</option>
+                                                <option value="Harpa">Harpa</option>
+                                                <option value="DJ / Controladora">DJ / Controladora</option>
+                                                <option value="Escaleta">Escaleta</option>
+                                                <option value="Castanholas">Castanholas</option>
+                                                    <option value="Outro">Outro</option>
+                                                </select>
+                                            </div>
+                                            <div class="instrument-body mt-4" style="margin-top: 20px;">
+                                                <div class="inputGroup" style="margin-bottom: 0;">
+                                                    <label>Nível de Habilidade</label>
+                                                    <div class="star-rating">
+                                                        <i class="far fa-star" data-value="1" title="1 - Iniciante"></i>
+                                                        <i class="far fa-star" data-value="2" title="2 - Básico"></i>
+                                                        <i class="far fa-star" data-value="3" title="3 - Intermediário"></i>
+                                                        <i class="far fa-star" data-value="4" title="4 - Avançado"></i>
+                                                        <i class="far fa-star" data-value="5" title="5 - Profissional"></i>
+                                                    </div>
+                                                    <input type="hidden" class="perfilNivel" value="">
+                                                    <small class="nivelTexto" style="color: var(--cor-texto-claro); font-size: 0.85em; margin-top: 5px; display: block;">Selecione seu nível</small>
+                                                </div>
+                                                <div class="inputGroup" style="margin-bottom: 0;">
+                                                    <label>Tempo de Experiência</label>
+                                                    <select class="perfilExperiencia">
+                                                        <option value="">Selecione...</option>
+                                                        <option value="Menos de 1 ano">Menos de 1 ano</option>
+                                                        <option value="1 a 3 anos">1 a 3 anos</option>
+                                                        <option value="3 a 5 anos">3 a 5 anos</option>
+                                                        <option value="5 a 10 anos">5 a 10 anos</option>
+                                                        <option value="Mais de 10 anos">Mais de 10 anos</option>
+                                                    </select>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <input type="hidden" id="perfilNivel" name="perfilNivel" value="">
-                                        <small id="nivelTexto" style="color: var(--cor-texto-claro); font-size: 0.85em; margin-top: 5px; display: block;">Selecione seu nível</small>
                                     </div>
-                                    <div class="inputGroup">
-                                        <label for="perfilExperiencia">Tempo de Experiência</label>
-                                        <select id="perfilExperiencia" name="perfilExperiencia">
-                                            <option value="">Selecione...</option>
-                                            <option value="Menos de 1 ano">Menos de 1 ano</option>
-                                            <option value="1 a 3 anos">1 a 3 anos</option>
-                                            <option value="3 a 5 anos">3 a 5 anos</option>
-                                            <option value="5 a 10 anos">5 a 10 anos</option>
-                                            <option value="Mais de 10 anos">Mais de 10 anos</option>
-                                        </select>
+
+                                    <div id="listaInstrumentos">
+                                        <!-- JS vai preencher os blocos aqui -->
                                     </div>
                                 </div>
 
@@ -406,6 +424,6 @@
     <div id="snackbar"></div>
 
     <script src="scripts/global.js?v=20"></script>
-    <script src="scripts/perfil-musico.js?v=20"></script> 
+    <script src="scripts/perfil-musico.js?v=26"></script>
 </body>
 </html>

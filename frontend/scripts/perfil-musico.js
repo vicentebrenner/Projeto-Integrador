@@ -101,9 +101,14 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             body: JSON.stringify(dto)
         })
-        .then(res => {
-            if(!res.ok) throw new Error("Falha ao salvar no servidor");
-            
+        .then(async res => {
+            if (!res.ok) {
+                const errData = await res.json().catch(() => ({}));
+                throw new Error(errData.message || "Falha ao salvar no servidor");
+            }
+            return res.json();
+        })
+        .then(data => {
             // ATUALIZAR INTERFACE (COR DO AVATAR NA NAVBAR)
             const navIcone = document.getElementById('perfilIcone');
             if (navIcone) {
@@ -113,13 +118,25 @@ document.addEventListener('DOMContentLoaded', function() {
             // ATUALIZAR LOCAL STORAGE PARA PERSISTIR A COR NAS OUTRAS PÁGINAS
             usuarioLogado.corAvatar = dadosPerfil.corAvatar;
             usuarioLogado.nome = dadosPerfil.nome;
+            usuarioLogado.username = dadosPerfil.username;
             localStorage.setItem('usuarioLogado', JSON.stringify(usuarioLogado));
             
             showSnackbar("Perfil salvo com sucesso!");
+            
+            const inputUsername = document.getElementById('perfilUsername');
+            if (inputUsername) inputUsername.style.borderColor = ''; // Limpa borda de erro se houver
         })
         .catch(err => {
             console.error(err);
-            showSnackbar("Erro ao salvar perfil.");
+            showSnackbar(err.message || "Erro ao salvar perfil.");
+            
+            if (err.message && err.message.includes("Username já está em uso")) {
+                const inputUsername = document.getElementById('perfilUsername');
+                if (inputUsername) {
+                    inputUsername.style.borderColor = 'var(--cor-destaque)';
+                    inputUsername.focus();
+                }
+            }
         });
     }
 
@@ -205,23 +222,34 @@ document.addEventListener('DOMContentLoaded', function() {
                 }, 100);
             }
         }
-        document.getElementById('perfilInstrumentos').value = dadosPerfil.instrumentos || '';
+        const listaInst = document.getElementById('listaInstrumentos');
+        if (listaInst) listaInst.innerHTML = '';
         
-        const savedNivel = dadosPerfil.nivelHabilidade || '';
-        let starValue = 0;
-        for (let key in nivelMap) {
-            if (nivelMap[key] === savedNivel) {
-                starValue = parseInt(key);
-                break;
-            }
-        }
-        if (typeof window.updateStars === 'function') {
-            window.updateStars(starValue);
+        const strInst = dadosPerfil.instrumentos || '';
+        
+        if (strInst.includes('::')) {
+            const blocos = strInst.split('|').filter(b => b.trim());
+            blocos.forEach(b => {
+                const parts = b.split('::');
+                const iNome = parts[0] || '';
+                const iNivel = parts[1] || '';
+                const iExp = parts[2] || '';
+                adicionarBlocoInstrumento(iNome, iNivel, iExp);
+            });
+        } else if (strInst) {
+            const nomes = strInst.split(',').map(s => s.trim()).filter(s => s);
+            const globalNivel = dadosPerfil.nivelHabilidade || '';
+            const globalExp = dadosPerfil.tempoExperiencia || '';
+            nomes.forEach((nome, idx) => {
+                if (idx === 0) {
+                    adicionarBlocoInstrumento(nome, globalNivel, globalExp);
+                } else {
+                    adicionarBlocoInstrumento(nome, '', '');
+                }
+            });
         } else {
-            document.getElementById('perfilNivel').value = savedNivel;
+            adicionarBlocoInstrumento();
         }
-
-        document.getElementById('perfilExperiencia').value = dadosPerfil.tempoExperiencia || '';
         
         const generosSalvos = dadosPerfil.generosMusicais || '';
         const genrePillsContainer = document.getElementById('genrePillsContainer');
@@ -484,9 +512,26 @@ document.addEventListener('DOMContentLoaded', function() {
             const uf = document.getElementById('perfilEstado').value;
             const cidade = document.getElementById('perfilCidade').value;
             dadosPerfil.local = (cidade && uf) ? `${cidade}/${uf}` : '';
-            dadosPerfil.instrumentos = document.getElementById('perfilInstrumentos').value;
-            dadosPerfil.nivelHabilidade = document.getElementById('perfilNivel').value;
-            dadosPerfil.tempoExperiencia = document.getElementById('perfilExperiencia').value;
+            const blocos = document.querySelectorAll('#listaInstrumentos .instrument-block');
+            let arrayBlocos = [];
+            blocos.forEach(bloco => {
+                const selectInst = bloco.querySelector('.perfilInstrumentos');
+                const iNome = selectInst ? selectInst.value : '';
+                
+                const inputNivel = bloco.querySelector('.perfilNivel');
+                const iNivel = inputNivel ? inputNivel.value : '';
+                
+                const selectExp = bloco.querySelector('.perfilExperiencia');
+                const iExp = selectExp ? selectExp.value : '';
+                
+                if (iNome && iNome.trim() !== '') {
+                    arrayBlocos.push(`${iNome}::${iNivel}::${iExp}`);
+                }
+            });
+            console.log("Salvando instrumentos:", arrayBlocos.join('|'));
+            dadosPerfil.instrumentos = arrayBlocos.join('|');
+            dadosPerfil.nivelHabilidade = '';
+            dadosPerfil.tempoExperiencia = '';
             
             dadosPerfil.generosMusicais = document.getElementById('perfilGeneros').value;
             
@@ -665,4 +710,98 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         carregarEstados();
     }
+    // --- NOVA LÓGICA DE INSTRUMENTOS MODULARES ---
+    const instrumentosContainer = document.getElementById('listaInstrumentos');
+    const instrumentoTemplate = document.getElementById('instrumentoTemplate');
+    const btnAddInstrumentoNovo = document.getElementById('btnAddInstrumento');
+
+    function inicializarEstrelasBloco(block) {
+        const starContainer = block.querySelector('.star-rating');
+        const inputNivel = block.querySelector('.perfilNivel');
+        const nivelTexto = block.querySelector('.nivelTexto');
+
+        if (starContainer) {
+            starContainer.addEventListener('click', (e) => {
+                if (e.target.tagName === 'I') {
+                    const value = parseInt(e.target.getAttribute('data-value'));
+                    const stars = starContainer.querySelectorAll('i');
+                    stars.forEach(star => {
+                        const starValue = parseInt(star.getAttribute('data-value'));
+                        if (starValue <= value) {
+                            star.classList.remove('far');
+                            star.classList.add('fas', 'active');
+                        } else {
+                            star.classList.remove('fas', 'active');
+                            star.classList.add('far');
+                        }
+                    });
+                    
+                    if (value > 0) {
+                        if (nivelTexto) nivelTexto.textContent = value + ' - ' + nivelMap[value];
+                        if (inputNivel) inputNivel.value = nivelMap[value];
+                    } else {
+                        if (nivelTexto) nivelTexto.textContent = 'Selecione seu nível';
+                        if (inputNivel) inputNivel.value = '';
+                    }
+                }
+            });
+        }
+    }
+
+    function adicionarBlocoInstrumento(instrumento = '', nivel = '', experiencia = '') {
+        if (!instrumentoTemplate || !instrumentosContainer) return;
+
+        const novoBloco = instrumentoTemplate.cloneNode(true);
+        novoBloco.id = '';
+        novoBloco.style.display = 'block';
+
+        const selectInst = novoBloco.querySelector('.perfilInstrumentos');
+        const inputNivel = novoBloco.querySelector('.perfilNivel');
+        const selectExp = novoBloco.querySelector('.perfilExperiencia');
+        const btnRemover = novoBloco.querySelector('.btnRemoverInstrumento');
+        const nivelTexto = novoBloco.querySelector('.nivelTexto');
+
+        if (selectInst) selectInst.value = instrumento;
+        if (selectExp) selectExp.value = experiencia;
+        
+        let starValue = 0;
+        for (let key in nivelMap) {
+            if (nivelMap[key] === nivel) {
+                starValue = parseInt(key);
+                break;
+            }
+        }
+        
+        const stars = novoBloco.querySelectorAll('.star-rating i');
+        stars.forEach(star => {
+            const sv = parseInt(star.getAttribute('data-value'));
+            if (sv <= starValue && starValue > 0) {
+                star.classList.remove('far');
+                star.classList.add('fas', 'active');
+            }
+        });
+        if (inputNivel) inputNivel.value = nivel;
+        if (starValue > 0 && nivelTexto) {
+            nivelTexto.textContent = starValue + ' - ' + nivel;
+        }
+
+        inicializarEstrelasBloco(novoBloco);
+
+        btnRemover.addEventListener('click', () => {
+            if (instrumentosContainer.children.length > 1) {
+                novoBloco.remove();
+            } else {
+                showSnackbar("Você precisa ter pelo menos um instrumento.");
+            }
+        });
+
+        instrumentosContainer.appendChild(novoBloco);
+    }
+
+    if (btnAddInstrumentoNovo) {
+        btnAddInstrumentoNovo.addEventListener('click', () => {
+            adicionarBlocoInstrumento();
+        });
+    }
+
 });

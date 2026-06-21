@@ -97,7 +97,7 @@
                     <h2>A gestão <span class="destaque-laranja">inteligente</span> para sua banda.</h2>
                     <p>Plataforma onde músicos encontram oportunidades e gestores organizam suas bandas.</p>
                     <div class="hero-buttons">
-                        <a href="cadastro.html" class="btnCta btnCta-grande">Começar Agora</a>
+                        <a href="cadastro.html" class="btnCta btnCta-grande" id="btnComecarAgora">Começar Agora</a>
                     </div>
                 </div>
                 <div class="hero-imagem">
@@ -313,7 +313,7 @@
         <section class="cta-final">
             <div class="cta-waves">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" class="wave-svg">
-                    <path fill="rgba(255,255,255,0.03)" fill-opacity="1" d="M0,192L48,197.3C96,203,192,213,288,192C384,171,480,117,576,112C672,107,768,149,864,165.3C960,181,1056,171,1152,149.3C1248,128,1344,96,1392,80L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+                    <path fill="var(--cor-primaria)" fill-opacity="1" d="M0,192L48,197.3C96,203,192,213,288,192C384,171,480,117,576,112C672,107,768,149,864,165.3C960,181,1056,171,1152,149.3C1248,128,1344,96,1392,80L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
                 </svg>
             </div>
             
@@ -453,6 +453,7 @@
     const CHAVE = 'primeiroAcesso';
     const overlay   = document.getElementById('modalOverlay');
     const btnEntrar = document.getElementById('btnEntrar');
+    const btnComecarAgora = document.getElementById('btnComecarAgora');
 
     function preencherNome() {
         try {
@@ -520,20 +521,21 @@
         try {
             const usuario = JSON.parse(localStorage.getItem('usuarioLogado'));
             if (usuario) {
+                let linkDestino = 'banda.html';
                 if (usuario.tipoUsuario === 'GESTOR' || usuario.gestor === true) {
                     if (!usuario.bandaId) {
-                        btnEntrar.href = 'configurar-banda.html';
-                    } else {
-                        btnEntrar.href = 'banda.html';
+                        linkDestino = 'configurar-banda.html';
                     }
                 } else if (usuario.tipoUsuario === 'MUSICO') {
-                    if (usuario.bandaId) {
-                        btnEntrar.href = 'banda.html';
-                    } else {
-                        btnEntrar.href = 'musico.html';
+                    if (!usuario.bandaId) {
+                        linkDestino = 'perfil-musico.html';
                     }
-                } else {
-                    btnEntrar.href = 'banda.html';
+                }
+                
+                if (btnEntrar) btnEntrar.href = linkDestino;
+                if (btnComecarAgora) {
+                    btnComecarAgora.href = linkDestino;
+                    btnComecarAgora.textContent = 'Acessar Painel';
                 }
             }
         } catch(e) {

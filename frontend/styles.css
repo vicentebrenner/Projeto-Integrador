@@ -1,5 +1,5 @@
-/* ==========================================================================
-   1. VARIÁVEIS GLOBAIS E RESET
+﻿/* ==========================================================================
+   1. VARIÃVEIS GLOBAIS E RESET
    ========================================================================== */
 :root {
     --cor-primaria: #011029;
@@ -61,7 +61,7 @@ h4 {
     font-family: var(--fonte-principal);
     font-weight: 700;
     color: var(--cor-primaria);
-    /* Cor padrão para títulos */
+    /* Cor padrÃ£o para tÃ­tulos */
 }
 
 .container {
@@ -83,7 +83,7 @@ a:hover {
 }
 
 /* ==========================================================================
-   2. CABEÇALHO E NAVEGAÇÃO
+   2. CABEÃ‡ALHO E NAVEGAÃ‡ÃƒO
    ========================================================================== */
 .cabecalho {
     background-color: var(--cor-primaria);
@@ -187,7 +187,7 @@ a:hover {
 }
 
 /* ==========================================================================
-   3. SEÇÃO HERO (PÁGINA INICIAL)
+   3. SEÃ‡ÃƒO HERO (PÃGINA INICIAL)
    ========================================================================== */
 .hero {
     background: url('assets/hero-bg.png') no-repeat center center/cover;
@@ -300,7 +300,7 @@ a:hover {
 }
 
 
-/* --- BOTÕES GLOBAIS --- */
+/* --- BOTÃ•ES GLOBAIS --- */
 .btnCta {
     background: linear-gradient(135deg, var(--cor-secundaria), #e67e22);
     color: #fff !important;
@@ -353,7 +353,7 @@ a:hover {
 }
 
 /* ==========================================================================
-   4. NOVA SEÇÃO DE CAMINHOS (index.html)
+   4. NOVA SEÃ‡ÃƒO DE CAMINHOS (index.html)
    ========================================================================== */
 .caminhos {
     padding: 100px 0;
@@ -433,7 +433,7 @@ a:hover {
     flex-grow: 1;
 }
 
-/* Botão com Borda Laranja */
+/* BotÃ£o com Borda Laranja */
 .btnCta-outline {
     background-color: transparent;
     color: var(--cor-secundaria);
@@ -460,7 +460,7 @@ a:hover {
 
 
 /* ==========================================================================
-   5. SEÇÃO DE FUNCIONALIDADES
+   5. SEÃ‡ÃƒO DE FUNCIONALIDADES
    ========================================================================== */
 .funcionalidades {
     padding: 100px 0;
@@ -757,7 +757,7 @@ a:hover {
 }
 
 /* ==========================================================================
-   5c. NÚMEROS / SOCIAL PROOF
+   5c. NÃšMEROS / SOCIAL PROOF
    ========================================================================== */
 .numeros {
     padding: 80px 0;
@@ -877,7 +877,7 @@ a:hover {
 }
 
 /* ==========================================================================
-   6. SEÇÃO CTA FINAL
+   6. SEÃ‡ÃƒO CTA FINAL
    ========================================================================== */
 .cta-final {
     padding: 120px 0 0 0;
@@ -1079,7 +1079,7 @@ a:hover {
 
 
 /* ==========================================================================
-   7. RODAPÉ
+   7. RODAPÃ‰
    ========================================================================== */
 .footer {
     background-color: var(--cor-primaria);
@@ -1136,7 +1136,7 @@ a:hover {
     margin: 0;
 }
 
-/* Área das Redes Sociais */
+/* Ãrea das Redes Sociais */
 .footer-social {
     display: flex;
     flex-direction: column;
@@ -1213,7 +1213,7 @@ a:hover {
 }
 
 /* ==========================================================================
-   8. PÁGINAS DE AUTENTICAÇÃO (LOGIN, CADASTRO, ETC.)
+   8. PÃGINAS DE AUTENTICAÃ‡ÃƒO (LOGIN, CADASTRO, ETC.)
    ========================================================================== */
 .auth-page-body {
     background-color: var(--cor-primaria);
@@ -1277,7 +1277,7 @@ a:hover {
 
 .inputGroup input,
 .inputGroup select {
-    /* Aplicar estilo também a selects */
+    /* Aplicar estilo tambÃ©m a selects */
     width: 100%;
     padding: 12px 15px;
     /* Padding ajustado */
@@ -1289,10 +1289,10 @@ a:hover {
     box-sizing: border-box;
     /* Garante padding correto */
     appearance: none;
-    /* Remove aparência padrão do select */
+    /* Remove aparÃªncia padrÃ£o do select */
 }
 
-/* Estilo específico para select (seta) */
+/* Estilo especÃ­fico para select (seta) */
 .inputGroup select {
     background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2334495e' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E") no-repeat right 15px center/12px 12px;
 }
@@ -1330,7 +1330,7 @@ a:hover {
 
 .btnLoginSubmit,
 .btn-adicionar {
-    /* Estilo unificado para botões de submit/adicionar */
+    /* Estilo unificado para botÃµes de submit/adicionar */
     display: block;
     text-decoration: none;
     width: 100%;
@@ -1395,9 +1395,9 @@ a:hover {
     font-weight: 600;
     text-align: left;
     margin-top: 6px;
-    /* Mais próximo do campo */
+    /* Mais prÃ³ximo do campo */
     margin-bottom: 10px;
-    /* Menos espaço abaixo */
+    /* Menos espaÃ§o abaixo */
     min-height: 1.1em;
     opacity: 0;
     max-height: 0;
@@ -1433,7 +1433,7 @@ a:hover {
 }
 
 /* ==========================================================================
-   9. MENU DE PERFIL DO USUÁRIO
+   9. MENU DE PERFIL DO USUÃRIO
    ========================================================================== */
 .perfil-container {
     position: relative;
@@ -1467,7 +1467,7 @@ a:hover {
 .perfil-dropdown {
     position: absolute;
     top: 55px;
-    /* Ajuste para não colar no ícone */
+    /* Ajuste para nÃ£o colar no Ã­cone */
     right: 0;
     background-color: var(--cor-fundo-card);
     color: var(--cor-texto);
@@ -1483,7 +1483,7 @@ a:hover {
     visibility: hidden;
     transform: translateY(10px);
     transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s 0.3s;
-    /* Transição de visibilidade */
+    /* TransiÃ§Ã£o de visibilidade */
 }
 
 .perfil-dropdown.ativo {
@@ -1562,7 +1562,7 @@ a:hover {
 
 .dashboard-content {
     padding: 60px 0 80px;
-    /* Espaçamento ajustado */
+    /* EspaÃ§amento ajustado */
     background-color: var(--cor-fundo-card);
 }
 
@@ -1574,7 +1574,7 @@ a:hover {
 }
 
 /* ==========================================================================
-   11. PÁGINA DE GESTÃO DA BANDA (banda.html)
+   11. PÃGINA DE GESTÃƒO DA BANDA (banda.html)
    ========================================================================== */
 .banda-container {
     padding-top: 70px;
@@ -1654,7 +1654,7 @@ a:hover {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 30px;
-    /* Mais espaço */
+    /* Mais espaÃ§o */
     flex-wrap: wrap;
     /* Quebra linha em telas pequenas */
     gap: 15px;
@@ -1666,7 +1666,7 @@ a:hover {
     /* Ajuste no tamanho */
 }
 
-/* Botão principal de adicionar */
+/* BotÃ£o principal de adicionar */
 .btn-adicionar-principal {
     background-color: var(--cor-secundaria);
     color: #fff;
@@ -1699,7 +1699,7 @@ a:hover {
     padding: 25px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     margin-bottom: 30px;
-    /* Espaço entre cards empilhados */
+    /* EspaÃ§o entre cards empilhados */
 }
 
 .card-style:hover {
@@ -1708,21 +1708,21 @@ a:hover {
 }
 
 .card-style h3 {
-    /* Título dentro do card */
+    /* TÃ­tulo dentro do card */
     padding: 0 0 15px 0;
     /* Padding inferior */
     margin: -25px -25px 25px -25px;
     /* Puxa para as bordas e adiciona margem */
     padding-left: 25px;
-    /* Alinha com o conteúdo */
+    /* Alinha com o conteÃºdo */
     padding-top: 20px;
     border-bottom: 1px solid #eee;
-    /* Linha divisória */
+    /* Linha divisÃ³ria */
     font-size: 1.3em;
 }
 
 /* ==========================================================================
-   12. COMPONENTES DA PÁGINA DA BANDA (Tabelas, Grids, etc.)
+   12. COMPONENTES DA PÃGINA DA BANDA (Tabelas, Grids, etc.)
    ========================================================================== */
 
 .table-wrapper {
@@ -1788,7 +1788,7 @@ a:hover {
     display: inline-block;
 }
 
-/* Cores específicas para tags (Exemplos) */
+/* Cores especÃ­ficas para tags (Exemplos) */
 .cat-merchandising { background-color: rgba(250, 152, 72, 0.15); color: #d35400; }
 .cat-show { background-color: rgba(52, 152, 219, 0.15); color: #2980b9; }
 .cat-est-dio { background-color: rgba(155, 89, 182, 0.15); color: #8e44ad; }
@@ -1887,7 +1887,7 @@ a:hover {
 .metrica-card.despesa p { color: var(--cor-erro); }
 .metrica-card.despesa h4 i { color: var(--cor-erro); }
 
-/* Gráfico de Linha (Evolução) e Filtros */
+/* GrÃ¡fico de Linha (EvoluÃ§Ã£o) e Filtros */
 .chart-header {
     display: flex;
     justify-content: space-between;
@@ -2057,7 +2057,7 @@ a:hover {
    PAINEL FINANCEIRO PREMIUM (Fintech/SaaS)
    ==================================================== */
 
-/* Header da página */
+/* Header da pÃ¡gina */
 .fin-page-header {
     display: flex;
     justify-content: space-between;
@@ -2154,7 +2154,7 @@ a:hover {
     margin-top: 2px;
 }
 
-/* Layout principal: gráfico + extrato */
+/* Layout principal: grÃ¡fico + extrato */
 .fin-main-layout {
     display: grid;
     grid-template-columns: 1fr 380px;
@@ -2162,7 +2162,7 @@ a:hover {
     align-items: start;
 }
 
-/* Card do gráfico */
+/* Card do grÃ¡fico */
 .fin-chart-card {
     background: #fff;
     border-radius: 24px;
@@ -2305,7 +2305,7 @@ a:hover {
     grid-column: 1 / -1;
 }
 
-/* Repertório Moderno */
+/* RepertÃ³rio Moderno */
 .repertorio-main {
     display: grid;
     grid-template-columns: 1fr 450px;
@@ -2421,7 +2421,7 @@ a:hover {
 }
 
 #visualizadorPdf embed {
-    /* Garantir que o embed ocupe o espaço */
+    /* Garantir que o embed ocupe o espaÃ§o */
     display: block;
     border: 1px solid var(--cor-borda);
     /* Adiciona uma borda sutil */
@@ -2430,7 +2430,7 @@ a:hover {
 }
 
 /* ==========================================================================
-   FIX: Responsividade do Histórico Financeiro
+   FIX: Responsividade do HistÃ³rico Financeiro
    ========================================================================== */
 .transacao-item-moderno {
     display: flex;
@@ -2514,7 +2514,7 @@ a:hover {
 }
 .cal-new-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(1,16,41,0.3); }
 
-/* ---- Mini Calendário ---- */
+/* ---- Mini CalendÃ¡rio ---- */
 .cal-mini { background: #fff; border-radius: 14px; padding: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
 .cal-mini-header {
     display: flex;
@@ -2572,7 +2572,7 @@ a:hover {
 .cat-dot.gravacao { background: #8b5cf6; }
 .cat-dot.outro { background: #3b82f6; }
 
-/* ---- Área Principal ---- */
+/* ---- Ãrea Principal ---- */
 .cal-main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
 .cal-toolbar {
     display: flex;
@@ -2635,14 +2635,14 @@ a:hover {
     margin: 0;
 }
 
-/* Modal e Formulários (Continuação) */
+/* Modal e FormulÃ¡rios (ContinuaÃ§Ã£o) */
 
-/* ---- Conteúdo (animação) ---- */
+/* ---- ConteÃºdo (animaÃ§Ã£o) ---- */
 .cal-content { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
 @keyframes calFadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
 .cal-anim { animation: calFadeIn 0.25s ease; }
 
-/* ---- Visão Mês ---- */
+/* ---- VisÃ£o MÃªs ---- */
 .cal-month-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
@@ -2692,7 +2692,7 @@ a:hover {
 }
 .cal-mais-eventos { font-size: 0.72em; color: var(--cor-texto-claro); font-weight: 600; padding: 2px 4px; }
 
-/* ---- Visão Semana / Dia (grade horária) ---- */
+/* ---- VisÃ£o Semana / Dia (grade horÃ¡ria) ---- */
 .cal-week-wrap, .cal-day-wrap {
     display: flex; flex-direction: column; flex: 1; overflow: hidden;
 }
@@ -2743,11 +2743,11 @@ a:hover {
     color: var(--cor-texto-claro);
     opacity: 0.7;
     position: relative;
-    top: -10px; /* Alinhar o texto com a linha divisória superior */
+    top: -10px; /* Alinhar o texto com a linha divisÃ³ria superior */
 }
 .cal-grid-line {
     border-top: 1px solid rgba(0,0,0,0.02); /* Linha fina e elegante atravessando a grade */
-    pointer-events: none; /* Para não bloquear cliques */
+    pointer-events: none; /* Para nÃ£o bloquear cliques */
 }
 .cal-day-col {
     border-left: 1px solid rgba(0,0,0,0.02);
@@ -2777,7 +2777,7 @@ a:hover {
     box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     border: 1px solid rgba(0,0,0,0.05);
     border-left: 4px solid var(--cor-secundaria); /* Faixa colorida da categoria, ajustada via JS */
-    min-height: 50px; /* Garante tamanho mínimo */
+    min-height: 50px; /* Garante tamanho mÃ­nimo */
     z-index: 2;
 }
 .cal-week-event:hover {
@@ -2788,7 +2788,7 @@ a:hover {
 .cal-week-event strong { font-size: 0.95em; font-weight: 800; line-height: 1.2; letter-spacing: 0.3px; color: var(--cor-primaria); }
 .cal-week-event small { font-size: 0.85em; opacity: 0.8; font-weight: 600; color: var(--cor-texto-claro); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-/* Visão Dia Antiga removida, reaproveitando Grid Engine */
+/* VisÃ£o Dia Antiga removida, reaproveitando Grid Engine */
 .cal-day-wrap { overflow-y: auto; display: flex; flex-direction: column; flex: 1; }
 .cal-day-event {
     position: absolute;
@@ -2841,7 +2841,7 @@ a:hover {
     height: 6px;
     width: 100%;
 }
-/* Botões topo direito */
+/* BotÃµes topo direito */
 .cal-pop-actions-top {
     display: flex;
     justify-content: flex-end;
@@ -2945,7 +2945,7 @@ a:hover {
 }
 .cal-pop-delete:hover { background: #fef2f2; border-color: #fca5a5; }
 
-/* ---- Próximos Encontros (Sidebar) ---- */
+/* ---- PrÃ³ximos Encontros (Sidebar) ---- */
 .cal-proximos {
     flex: 1;
 }
@@ -3013,7 +3013,7 @@ a:hover {
 .cal-proximos-empty i { font-size: 1.4em; opacity: 0.4; }
 
 
-/* ---- Responsividade Calendário ---- */
+/* ---- Responsividade CalendÃ¡rio ---- */
 @media (max-width: 900px) {
     .cal-sidebar-toggle { display: flex; }
     .cal-sidebar {
@@ -3047,7 +3047,7 @@ a:hover {
 
 /* ---- Estilos antigos (mantidos para compatibilidade) ---- */
 /* ==========================================================================
-   13b. ESTILOS DA AGENDA (antigo - substituído)
+   13b. ESTILOS DA AGENDA (antigo - substituÃ­do)
    ========================================================================== */
 
 .agenda-cards-grid {
@@ -3211,7 +3211,7 @@ a:hover {
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(1, 16, 41, 0.5); /* Fundo azul escuro translúcido */
+    background-color: rgba(1, 16, 41, 0.5); /* Fundo azul escuro translÃºcido */
     backdrop-filter: blur(8px); /* Efeito Glassmorphism de fundo */
     animation: fadeInModalBg 0.4s ease-out forwards;
 }
@@ -3338,7 +3338,7 @@ a:hover {
     box-shadow: 0 0 0 4px rgba(250, 152, 72, 0.15);
 }
 
-/* Botões tipo transação no modal */
+/* BotÃµes tipo transaÃ§Ã£o no modal */
 .tipo-transacao-group {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -3386,7 +3386,7 @@ a:hover {
 #tipoDespesa:checked+label { background: linear-gradient(135deg, #e74c3c, #c0392b); }
 
 /* ==========================================================================
-   15. SNACKBAR (Notificações)
+   15. SNACKBAR (NotificaÃ§Ãµes)
    ========================================================================== */
 #snackbar {
     visibility: hidden;
@@ -3487,7 +3487,7 @@ a:hover {
         max-width: 85%;
     }
 
-    /* Coluna única para os cards de caminho */
+    /* Coluna Ãºnica para os cards de caminho */
     .caminhos .container {
         grid-template-columns: 1fr;
     }
@@ -3518,7 +3518,7 @@ a:hover {
     .financeiro-bottom-grid,
     .repertorio-grid {
         grid-template-columns: 1fr;
-        /* Coluna única */
+        /* Coluna Ãºnica */
     }
 
     .metricas-grid {
@@ -3537,7 +3537,7 @@ a:hover {
         justify-content: center;
     }
 
-    /* Centraliza ações */
+    /* Centraliza aÃ§Ãµes */
 }
 
 @media (max-width: 768px) {
@@ -3560,7 +3560,7 @@ a:hover {
         margin-left: 15px;
     }
 
-    /* Menos espaço */
+    /* Menos espaÃ§o */
 
     .hero h2 {
         font-size: 2.2em;
@@ -3670,7 +3670,7 @@ a:hover {
 }
 
 /* ==========================================================================
-   (Adicionar ao final ou em seção apropriada)
+   (Adicionar ao final ou em seÃ§Ã£o apropriada)
    17. ESTILOS ADICIONAIS PARA UPLOAD DE PARTITURA
    ========================================================================== */
 
@@ -3699,16 +3699,16 @@ a:hover {
     color: var(--cor-texto-claro);
 }
 
-/* Ajuste no botão de ver partitura para ficar mais claro o clique */
+/* Ajuste no botÃ£o de ver partitura para ficar mais claro o clique */
 .btn-ver-partitura {
     /* (Estilos existentes) */
     display: inline-flex;
-    /* Para alinhar ícone e texto */
+    /* Para alinhar Ã­cone e texto */
     align-items: center;
     gap: 5px;
 }
 
-/* Garantir que o embed ocupe espaço no visualizador */
+/* Garantir que o embed ocupe espaÃ§o no visualizador */
 #visualizadorPdf embed {
     display: block;
     border: 1px solid var(--cor-borda);
@@ -3718,7 +3718,7 @@ a:hover {
 }
 
 /* ==========================================================================
-   (Adicionar ao final ou em seção apropriada)
+   (Adicionar ao final ou em seÃ§Ã£o apropriada)
    18. ESTILOS ADICIONAIS PARA MODAL MEMBRO
    ========================================================================== */
 
@@ -3726,27 +3726,27 @@ a:hover {
     font-size: 0.9em;
     color: #555;
     margin-bottom: 25px;
-    /* Espaço antes do formulário */
+    /* EspaÃ§o antes do formulÃ¡rio */
     text-align: center;
     line-height: 1.5;
 }
 
-/* Ajuste na tabela de membros para espaçamento */
+/* Ajuste na tabela de membros para espaÃ§amento */
 .tabela-moderna td:nth-child(2),
 /* Coluna Email */
 .tabela-moderna th:nth-child(2) {
     min-width: 180px;
-    /* Garante um espaço mínimo para o email */
+    /* Garante um espaÃ§o mÃ­nimo para o email */
 }
 
 /* ==========================================================================
-   (Adicionar ao final ou em seção apropriada)
+   (Adicionar ao final ou em seÃ§Ã£o apropriada)
    19. ESTILOS PARA CONVITES PENDENTES
    ========================================================================== */
 
 .lista-convites {
     list-style: none;
-    /* Remove marcadores padrão */
+    /* Remove marcadores padrÃ£o */
     padding: 0;
     margin: 0;
 }
@@ -3757,28 +3757,28 @@ a:hover {
     /* Alinha itens nas extremidades */
     align-items: center;
     padding: 12px 0;
-    /* Espaçamento vertical */
+    /* EspaÃ§amento vertical */
     border-bottom: 1px solid #f1f3f5;
-    /* Linha divisória sutil */
+    /* Linha divisÃ³ria sutil */
     font-size: 0.95em;
 }
 
 .lista-convites li:last-child {
     border-bottom: none;
-    /* Remove borda do último item */
+    /* Remove borda do Ãºltimo item */
 }
 
 .lista-convites li span {
     display: flex;
     align-items: center;
     gap: 10px;
-    /* Espaço entre ícone e texto */
+    /* EspaÃ§o entre Ã­cone e texto */
     color: var(--cor-texto);
 }
 
 .lista-convites li i.fa-user-clock {
     color: var(--cor-texto-claro);
-    /* Ícone cinza */
+    /* Ãcone cinza */
 }
 
 .lista-convites li strong {
@@ -3790,10 +3790,10 @@ a:hover {
     background: none;
     border: none;
     color: var(--cor-texto-claro);
-    /* Cinza claro por padrão */
+    /* Cinza claro por padrÃ£o */
     cursor: pointer;
     font-size: 1.2em;
-    /* Ícone um pouco maior */
+    /* Ãcone um pouco maior */
     padding: 5px;
     transition: color 0.2s ease;
 }
@@ -3805,10 +3805,10 @@ a:hover {
 
 /* ==========================================================================
    (Adicionar ao final do CSS)
-   20. ESTILOS PARA PERFIL DE MÚSICO (perfil-musico.html)
+   20. ESTILOS PARA PERFIL DE MÃšSICO (perfil-musico.html)
    ========================================================================== */
 
-/* Estilo para Textarea (Formulário de Bio) */
+/* Estilo para Textarea (FormulÃ¡rio de Bio) */
 .inputGroup textarea {
     width: 100%;
     padding: 12px 15px;
@@ -3828,7 +3828,7 @@ a:hover {
     box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.2);
 }
 
-/* Grid do Portfólio */
+/* Grid do PortfÃ³lio */
 .portfolio-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -3837,13 +3837,13 @@ a:hover {
     margin-top: 20px;
 }
 
-/* Card individual do vídeo */
+/* Card individual do vÃ­deo */
 .video-card {
     background-color: var(--cor-fundo-card);
     border-radius: var(--border-radius-padrao);
     box-shadow: var(--sombra-card);
     overflow: hidden;
-    /* Garante que o iframe não vaze */
+    /* Garante que o iframe nÃ£o vaze */
     transition: all 0.3s ease;
     display: flex;
     flex-direction: column;
@@ -3854,11 +3854,11 @@ a:hover {
     box-shadow: var(--sombra-card-hover);
 }
 
-/* Container do Embed (para manter a proporção) */
+/* Container do Embed (para manter a proporÃ§Ã£o) */
 .video-embed {
     position: relative;
     padding-bottom: 56.25%;
-    /* Proporção 16:9 (9 / 16 * 100) */
+    /* ProporÃ§Ã£o 16:9 (9 / 16 * 100) */
     height: 0;
     overflow: hidden;
 }
@@ -3879,22 +3879,22 @@ a:hover {
     padding: 15px 20px 10px 20px;
     margin: 0;
     flex-grow: 1;
-    /* Tenta ocupar espaço */
+    /* Tenta ocupar espaÃ§o */
 }
 
 .video-actions {
     display: flex;
     justify-content: flex-end;
-    /* Alinha o botão à direita */
+    /* Alinha o botÃ£o Ã  direita */
     padding: 0px 15px 15px 20px;
 }
 
-/* Botão de remover (usa .btn-icon, já existente) */
+/* BotÃ£o de remover (usa .btn-icon, jÃ¡ existente) */
 .video-actions .btn-remover:hover {
     color: var(--cor-erro);
 }
 
-/* Mensagem de "Nenhum vídeo" */
+/* Mensagem de "Nenhum vÃ­deo" */
 .portfolio-grid .loading-ai {
     /* Reutilizando estilo */
     grid-column: 1 / -1;
@@ -3906,10 +3906,10 @@ a:hover {
 }
 
 /* ==========================================================================
-   COMPACTAÇÃO GLOBAL — banda.html (fix tamanhos grandes)
+   COMPACTAÃ‡ÃƒO GLOBAL â€” banda.html (fix tamanhos grandes)
    ========================================================================== */
 
-/* --- Calendário: container e altura --- */
+/* --- CalendÃ¡rio: container e altura --- */
 .cal-root {
     height: calc(100vh - 210px);
     min-height: 500px;
@@ -3922,7 +3922,7 @@ a:hover {
     min-height: calc(100vh - 110px - 60px);
 }
 
-/* --- Tabs: tamanho adequado e bem distribuídas --- */
+/* --- Tabs: tamanho adequado e bem distribuÃ­das --- */
 .banda-tabs {
     margin-bottom: 20px;
     gap: 8px;
@@ -3946,7 +3946,7 @@ a:hover {
     border-radius: 22px;
 }
 
-/* --- Mini-calendário compacto --- */
+/* --- Mini-calendÃ¡rio compacto --- */
 .cal-mini { padding: 8px; border-radius: 10px; }
 .cal-mini-header { font-size: 0.78em; margin-bottom: 4px; }
 .cal-mini-nav { width: 20px; height: 20px; }
@@ -3958,7 +3958,7 @@ a:hover {
 .cal-cat-item { font-size: 0.82em; padding: 4px 2px; gap: 7px; }
 .cat-dot { width: 10px; height: 10px; }
 
-/* --- Próximos Encontros compacto --- */
+/* --- PrÃ³ximos Encontros compacto --- */
 .cal-proximo-item { padding: 7px 6px; gap: 8px; }
 .cal-prox-date { min-width: 30px; padding: 4px 3px; }
 .cal-prox-dia { font-size: 0.95em; }
@@ -3973,7 +3973,7 @@ a:hover {
 .cal-btn-nav { width: 28px; height: 28px; font-size: 0.8em; }
 .cal-view-btn { padding: 5px 12px; font-size: 0.78em; }
 
-/* --- Semana: cabeçalho compacto --- */
+/* --- Semana: cabeÃ§alho compacto --- */
 .cal-week-head-col { padding: 7px 2px; }
 .cal-dow-label { font-size: 0.68em; }
 .cal-day-badge { width: 26px; height: 26px; font-size: 0.88em; }
@@ -3983,7 +3983,7 @@ a:hover {
 .cal-day-row  { min-height: 48px; }
 .cal-time-label { font-size: 0.68em; padding: 3px 6px; }
 
-/* --- Mês: células menores --- */
+/* --- MÃªs: cÃ©lulas menores --- */
 .cal-month-cell { min-height: 80px; padding: 5px 4px; }
 .cal-day-num { width: 22px; height: 22px; font-size: 0.78em; margin-bottom: 2px; }
 .cal-event-chip { font-size: 0.68em; padding: 1px 4px; margin-bottom: 1px; }
@@ -4303,7 +4303,7 @@ a:hover {
 }
 
 /* ==========================================================================
-   SISTEMA DE PERMISSÕES — Tabs Bloqueadas
+   SISTEMA DE PERMISSÃ•ES â€” Tabs Bloqueadas
    ========================================================================== */
 .tab-link.tab-bloqueada {
     opacity: 0.55;
@@ -4314,7 +4314,7 @@ a:hover {
     position: relative;
 }
 .tab-link.tab-bloqueada::after {
-    content: '🔒';
+    content: 'ðŸ”’';
     font-size: 0.72em;
     margin-left: 4px;
     opacity: 0.8;
@@ -4391,7 +4391,7 @@ a:hover {
 }
 
 /* ==========================================================================
-   ABA CONFIGURAÇÕES — Gerenciamento de Permissões
+   ABA CONFIGURAÃ‡Ã•ES â€” Gerenciamento de PermissÃµes
    ========================================================================== */
 .perm-page-header {
     display: flex;
@@ -4416,7 +4416,7 @@ a:hover {
     font-size: 0.95em;
 }
 
-/* Legenda de módulos */
+/* Legenda de mÃ³dulos */
 .perm-modulos-legenda {
     display: flex;
     gap: 10px;
@@ -4438,7 +4438,7 @@ a:hover {
 .perm-badge-membros   { background: rgba(59,130,246,0.1); color:#3b82f6; border-color: rgba(59,130,246,0.25); }
 .perm-badge-repertorio{ background: rgba(139,92,246,0.1); color:#8b5cf6; border-color: rgba(139,92,246,0.25); }
 
-/* Grid de cards de permissão */
+/* Grid de cards de permissÃ£o */
 .perm-cards-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
@@ -4614,7 +4614,7 @@ a:hover {
 }
 
 /* ============================================================
-   ESTILOS DE NOTIFICAÇÕES (SINO, BADGES, DROPDOWN)
+   ESTILOS DE NOTIFICAÃ‡Ã•ES (SINO, BADGES, DROPDOWN)
    ============================================================ */
 .notif-bell {
     position: relative;
@@ -5276,4 +5276,66 @@ a:hover {
     border-color: var(--cor-secundaria);
     box-shadow: 0 4px 10px rgba(250, 152, 72, 0.3);
 }
-
+/* Botão Circular (Adicionar Instrumento) */
+.btn-circular {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background-color: var(--cor-secundaria);
+    color: #fff;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 1.2em;
+    transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+    flex-shrink: 0;
+}
+.btn-circular:hover {
+    background-color: #e67e22;
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+.btn-circular-remove {
+    background-color: #e74c3c;
+}
+.btn-circular-remove:hover {
+    background-color: #c0392b;
+}
+
+/* Override BotÃ£o Circular */
+.btn-circular {
+    width: 35px !important;
+    height: 35px !important;
+    font-size: 1em !important;
+}
+
+/* Bloco de Instrumentos */
+.instrument-block {
+    background-color: var(--cor-fundo);
+    border: 1px solid var(--cor-secundaria); /* Borda laranja */
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    position: relative;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+}
+.instrument-block .instrument-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.instrument-block .instrument-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+@media (max-width: 600px) {
+    .instrument-block .instrument-body {
+        grid-template-columns: 1fr;
+    }
+}
+
+

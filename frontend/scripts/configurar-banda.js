@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     if (usuarioLogado.tipoUsuario !== 'GESTOR' && usuarioLogado.gestor !== true) {
-        window.location.href = 'musico.html';
+        window.location.href = 'perfil-musico.html';
         return;
     }
 
