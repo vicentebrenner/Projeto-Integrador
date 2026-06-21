@@ -446,6 +446,45 @@
         </div>
     </div>
 
+    <div id="editarVideoModal" class="modal">
+        <div class="modal-content" style="position: relative;">
+            <span class="close-button" id="closeEditarVideo"
+                style="position: absolute; top: 15px; right: 20px; cursor: pointer; line-height: 1;">&times;</span>
+            <h3>Editar Vídeo do YouTube</h3>
+            <form id="formEditarVideo">
+                <input type="hidden" id="editVideoIndex">
+                <div class="inputGroup">
+                    <label for="editVideoTitulo">Título do Vídeo</label>
+                    <input type="text" id="editVideoTitulo" name="editVideoTitulo" required>
+                </div>
+                <div class="inputGroup">
+                    <label for="editVideoUrl">Link do Vídeo (YouTube)</label>
+                    <input type="url" id="editVideoUrl" name="editVideoUrl" required>
+                </div>
+                <button type="submit" class="btn-adicionar">Salvar Alterações</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="modalExcluirVideo" class="modal">
+        <div class="modal-content modal-danger">
+            <button class="modal-close-btn" id="closeModalExcluirVideo" aria-label="Fechar">&times;</button>
+            <div class="modal-danger-icon"
+                style="margin-bottom: 15px; color: #e74c3c; display: flex; justify-content: center;">
+                <i class="fas fa-trash-alt" style="font-size: 32px;"></i>
+            </div>
+            <h3 class="modal-danger-title" style="text-align: center;">Excluir Vídeo</h3>
+            <p class="modal-danger-desc" style="text-align: center; margin-bottom: 20px;">
+                Tem certeza que deseja remover o vídeo "<strong id="nomeVideoExcluir"></strong>"?
+            </p>
+
+            <div class="modal-danger-actions" style="display: flex; gap: 10px; justify-content: center;">
+                <button type="button" class="btn-modal-cancel" id="cancelarExclusaoVideoBtn">Cancelar</button>
+                <button type="button" class="btn-modal-danger" id="confirmarExclusaoVideoBtn">Remover Vídeo</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal Excluir Conta -->
     <div id="modalExcluirConta" class="modal">
         <div class="modal-content modal-danger">

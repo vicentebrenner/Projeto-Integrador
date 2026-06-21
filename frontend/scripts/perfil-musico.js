@@ -339,10 +339,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 </div>
                 <div class="video-card-footer">
                     <h4 class="video-card-title">${video.titulo}</h4>
-                    <div class="video-card-actions">
+                   <div class="video-card-actions">
                         <a href="${youtubeUrl}" target="_blank" rel="noopener noreferrer" class="btn-video-yt" title="Abrir no YouTube">
                             <i class="fas fa-external-link-alt"></i>
                         </a>
+                        <button class="btn-video-remove btn-editar" data-tipo="video" data-index="${index}" title="Editar vídeo" style="transition: color 0.3s;" onmouseover="this.style.color='#3498db'" onmouseout="this.style.color=''">
+                            <i class="fas fa-pencil-alt"></i>
+                        </button>
                         <button class="btn-video-remove btn-remover" data-tipo="video" data-index="${index}" title="Remover vídeo">
                             <i class="fas fa-trash-alt"></i>
                         </button>
@@ -626,20 +629,95 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Delegação de eventos para botões de remover vídeo
+    // --- LÓGICA DOS MODAIS DE VÍDEO (EXCLUIR E EDITAR) ---
+
+    let videoIndexParaExcluir = null;
+    const modalExcluirVideo = document.getElementById('modalExcluirVideo');
+    const nomeVideoExcluir = document.getElementById('nomeVideoExcluir');
+
+    // Fechar modal de exclusão
+    function fecharModalExcluirVideo() {
+        if (modalExcluirVideo) modalExcluirVideo.style.display = "none";
+        videoIndexParaExcluir = null;
+    }
+
+    document.getElementById('closeModalExcluirVideo')?.addEventListener('click', fecharModalExcluirVideo);
+    document.getElementById('cancelarExclusaoVideoBtn')?.addEventListener('click', fecharModalExcluirVideo);
+
+    // Confirmar exclusão
+    document.getElementById('confirmarExclusaoVideoBtn')?.addEventListener('click', function () {
+        if (videoIndexParaExcluir !== null && videoIndexParaExcluir < dadosPerfil.videos.length) {
+            dadosPerfil.videos.splice(videoIndexParaExcluir, 1);
+            carregarPortfolio();
+            salvarDados();
+            showSnackbar("Vídeo removido com sucesso.");
+            fecharModalExcluirVideo();
+        }
+    });
+
+    // Modal de Edição de Vídeo
+    const editarVideoModal = document.getElementById('editarVideoModal');
+    const formEditarVideo = document.getElementById('formEditarVideo');
+
+    function fecharModalEditarVideo() {
+        if (editarVideoModal) editarVideoModal.style.display = "none";
+        if (formEditarVideo) formEditarVideo.reset();
+    }
+
+    document.getElementById('closeEditarVideo')?.addEventListener('click', fecharModalEditarVideo);
+
+    // Salvar edição
+    formEditarVideo?.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const index = parseInt(document.getElementById('editVideoIndex').value);
+        const titulo = document.getElementById('editVideoTitulo').value;
+        const url = document.getElementById('editVideoUrl').value;
+        const videoId = extrairVideoID(url);
+
+        if (!videoId) {
+            showSnackbar("Erro: URL do YouTube inválida ou não suportada.", "error");
+            return;
+        }
+
+        if (!isNaN(index) && index < dadosPerfil.videos.length) {
+            dadosPerfil.videos[index].titulo = titulo;
+            dadosPerfil.videos[index].url = url;
+            carregarPortfolio();
+            salvarDados();
+            showSnackbar("Vídeo atualizado com sucesso!");
+            fecharModalEditarVideo();
+        }
+    });
+
+    // Fechar clicando fora dos modais
+    window.addEventListener('click', (event) => {
+        if (event.target == modalExcluirVideo) fecharModalExcluirVideo();
+        if (event.target == editarVideoModal) fecharModalEditarVideo();
+    });
+
+    // Delegação de eventos para botões de remover e editar vídeo
     document.body.addEventListener('click', function (e) {
         const btnRemover = e.target.closest('.btn-remover');
+        const btnEditar = e.target.closest('.btn-editar');
+
+        // Ação de Remover (Abre o pop-up de confirmar exclusão)
         if (btnRemover && btnRemover.dataset.tipo === 'video') {
             const index = parseInt(btnRemover.dataset.index);
             if (!isNaN(index) && index < dadosPerfil.videos.length) {
+                videoIndexParaExcluir = index;
+                if (nomeVideoExcluir) nomeVideoExcluir.textContent = dadosPerfil.videos[index].titulo;
+                if (modalExcluirVideo) modalExcluirVideo.style.display = "block";
+            }
+        }
 
-                // Confirmação antes de remover
-                if (confirm(`Tem certeza que deseja remover o vídeo "${dadosPerfil.videos[index].titulo}"?`)) {
-                    dadosPerfil.videos.splice(index, 1); // Remove o vídeo
-                    carregarPortfolio(); // Atualiza a tela
-                    salvarDados(); // Salva no localStorage
-                    showSnackbar("Vídeo removido.");
-                }
+        // Ação de Editar (Abre o pop-up com os dados preenchidos)
+        if (btnEditar && btnEditar.dataset.tipo === 'video') {
+            const index = parseInt(btnEditar.dataset.index);
+            if (!isNaN(index) && index < dadosPerfil.videos.length) {
+                document.getElementById('editVideoIndex').value = index;
+                document.getElementById('editVideoTitulo').value = dadosPerfil.videos[index].titulo;
+                document.getElementById('editVideoUrl').value = dadosPerfil.videos[index].url;
+                if (editarVideoModal) editarVideoModal.style.display = "block";
             }
         }
     });
