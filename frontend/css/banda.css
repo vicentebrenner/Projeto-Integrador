@@ -1,0 +1,1040 @@
+   11. PÃGINA DE GESTÃƒO DA BANDA (banda.html)
+   ========================================================================== */
+.banda-container {
+    padding-top: 70px;
+    padding-bottom: 40px;
+    min-height: calc(100vh - 70px - 60px);
+    display: flex;
+    flex-direction: column;
+}
+
+.banda-container h1 {
+    font-size: 2.8em;
+    color: var(--cor-primaria);
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.banda-tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    gap: 8px;
+    flex-wrap: wrap;
+    background: rgba(255, 255, 255, 0.5);
+    padding: 6px;
+    border-radius: 50px;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+    backdrop-filter: blur(10px);
+}
+
+.tab-link {
+    padding: 9px 22px;
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+    font-size: 0.9em;
+    font-weight: 600;
+    color: #6c757d;
+    border-radius: 40px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+}
+
+.tab-link:hover {
+    color: var(--cor-primaria);
+    background-color: rgba(0,0,0,0.03);
+}
+
+.tab-link.ativo {
+    color: #fff;
+    background: linear-gradient(135deg, var(--cor-primaria), #032554);
+    box-shadow: 0 8px 20px rgba(1, 16, 41, 0.2);
+    transform: translateY(-2px);
+}
+
+.tab-content {
+    display: none;
+    animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.tab-content.ativo {
+    display: block;
+}
+
+@keyframes slideUpFade {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Header dentro das abas */
+.content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    /* Mais espaÃ§o */
+    flex-wrap: wrap;
+    /* Quebra linha em telas pequenas */
+    gap: 15px;
+}
+
+.content-header h2 {
+    margin: 0;
+    font-size: 1.8em;
+    /* Ajuste no tamanho */
+}
+
+/* BotÃ£o principal de adicionar */
+.btn-adicionar-principal {
+    background-color: var(--cor-secundaria);
+    color: #fff;
+    /* Texto branco */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.95em;
+    /* Ajuste */
+}
+
+.btn-adicionar-principal:hover {
+    background-color: #e67e22;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.btn-adicionar-principal i {
+    margin-right: 8px;
+}
+
+/* Estilo unificado para cards */
+.card-style {
+    background-color: var(--cor-fundo-card);
+    border-radius: var(--border-radius-padrao);
+    box-shadow: var(--sombra-card);
+    padding: 25px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 30px;
+    /* EspaÃ§o entre cards empilhados */
+}
+
+.card-style:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--sombra-card-hover);
+}
+
+.card-style h3 {
+    /* TÃ­tulo dentro do card */
+    padding: 0 0 15px 0;
+    /* Padding inferior */
+    margin: -25px -25px 25px -25px;
+    /* Puxa para as bordas e adiciona margem */
+    padding-left: 25px;
+    /* Alinha com o conteÃºdo */
+    padding-top: 20px;
+    border-bottom: 1px solid #eee;
+    /* Linha divisÃ³ria */
+    font-size: 1.3em;
+}
+
+/* ==========================================================================
+   12. COMPONENTES DA PÃGINA DA BANDA (Tabelas, Grids, etc.)
+   ========================================================================== */
+
+.table-wrapper {
+    overflow-x: auto;
+    border-radius: 12px;
+}
+
+.tabela-moderna {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 8px;
+}
+
+.tabela-moderna th {
+    padding: 15px;
+    text-align: left;
+    font-size: 0.85em;
+    text-transform: uppercase;
+    color: var(--cor-texto-claro);
+    font-weight: 700;
+    border: none;
+}
+
+.tabela-moderna td {
+    padding: 18px 15px;
+    background-color: #fff;
+    vertical-align: middle;
+    font-size: 0.95em;
+    border-top: 1px solid transparent;
+    border-bottom: 1px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.tabela-moderna tr td:first-child {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-left: 3px solid transparent;
+}
+
+.tabela-moderna tr td:last-child {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.tabela-moderna tr:hover td {
+    background-color: #f8f9fa;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+}
+
+.tabela-moderna tr:hover td:first-child {
+    border-left-color: var(--cor-secundaria);
+}
+
+/* Categoria Tags Modernas */
+.categoria-tag {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.8em;
+    font-weight: 700;
+    text-transform: uppercase;
+    background-color: #f1f3f5;
+    color: #555;
+    display: inline-block;
+}
+
+/* Cores especÃ­ficas para tags (Exemplos) */
+.cat-merchandising { background-color: rgba(250, 152, 72, 0.15); color: #d35400; }
+.cat-show { background-color: rgba(52, 152, 219, 0.15); color: #2980b9; }
+.cat-est-dio { background-color: rgba(155, 89, 182, 0.15); color: #8e44ad; }
+.cat-alimenta--o { background-color: rgba(230, 126, 34, 0.15); color: #d35400; }
+.cat-transporte { background-color: rgba(149, 165, 166, 0.15); color: #7f8c8d; }
+
+.valor-transacao {
+    font-weight: 700;
+    font-family: var(--fonte-principal);
+}
+
+.valor-transacao.receita { color: var(--cor-sucesso); }
+.valor-transacao.despesa { color: var(--cor-erro); }
+
+/* Grid Financeiro Moderno */
+.metricas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+.metrica-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 1px solid rgba(0,0,0,0.02);
+    transition: transform 0.4s ease;
+}
+
+/* Card principal premium (Saldo) */
+.metrica-card:first-child {
+    background: linear-gradient(135deg, var(--cor-primaria) 0%, #032554 100%);
+    color: #fff;
+    box-shadow: 0 15px 35px rgba(1, 16, 41, 0.25);
+    border: none;
+}
+.metrica-card:first-child h4 { color: rgba(255,255,255,0.8); }
+.metrica-card:first-child p { color: #fff; }
+.metrica-card:first-child::after { background-color: rgba(255,255,255,0.1); }
+
+
+.metrica-card:hover {
+    transform: translateY(-5px);
+}
+
+.metrica-card::after {
+    content: '';
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    opacity: 0.1;
+    z-index: 0;
+}
+
+.metrica-card h4 {
+    margin: 0 0 10px 0;
+    font-size: 0.95em;
+    color: var(--cor-texto-claro);
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+    z-index: 1;
+}
+
+.metrica-card h4 i {
+    font-size: 1.4em;
+}
+
+.metrica-card p {
+    margin: 0;
+    font-size: 2.2em;
+    font-weight: 800;
+    color: var(--cor-primaria);
+    position: relative;
+    z-index: 1;
+    font-family: var(--fonte-principal);
+}
+
+.metrica-card.receita::after { background-color: var(--cor-sucesso); opacity: 0.2;}
+.metrica-card.receita p { color: var(--cor-sucesso); }
+.metrica-card.despesa::after { background-color: var(--cor-erro); opacity: 0.2; }
+.metrica-card.despesa p { color: var(--cor-erro); }
+.metrica-card.despesa h4 i { color: var(--cor-erro); }
+
+/* GrÃ¡fico de Linha (EvoluÃ§Ã£o) e Filtros */
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.dashboard-filters {
+    display: flex;
+    gap: 10px;
+    background: #f1f3f5;
+    padding: 5px;
+    border-radius: 12px;
+}
+
+.filter-btn {
+    border: none;
+    background: transparent;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.85em;
+    font-weight: 700;
+    color: var(--cor-texto-claro);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filter-btn:hover {
+    color: var(--cor-texto);
+}
+
+.filter-btn.ativo {
+    background: #ffffff;
+    color: var(--cor-primaria);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.chart-container {
+    position: relative;
+    height: 350px;
+    width: 100%;
+}
+
+.financeiro-main-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+    grid-column: 1 / -1;
+}
+
+/* Extrato Financeiro Moderno (Fintech Style) */
+.financeiro-extrato-card {
+    background: #ffffff;
+    border-radius: 24px;
+    padding: 35px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.04);
+    border: 1px solid rgba(0,0,0,0.02);
+}
+
+.extrato-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.extrato-header h3 {
+    margin: 0;
+    font-size: 1.5em;
+    color: var(--cor-primaria);
+}
+
+.badge-extrato {
+    background: rgba(52, 152, 219, 0.1);
+    color: var(--cor-info);
+    padding: 6px 15px;
+    border-radius: 20px;
+    font-size: 0.8em;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.transacoes-lista-moderna {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.transacao-item-moderno {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    border-radius: 16px;
+    background: #f8f9fa;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.transacao-item-moderno:hover {
+    background: #ffffff;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.04);
+    border-color: rgba(0,0,0,0.03);
+    transform: translateX(5px);
+}
+
+.transacao-icone {
+    width: 50px;
+    height: 50px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2em;
+    margin-right: 20px;
+    flex-shrink: 0;
+}
+
+.transacao-icone.receita-icon {
+    background: rgba(46, 204, 113, 0.15);
+    color: #27ae60;
+}
+
+.transacao-icone.despesa-icon {
+    background: rgba(231, 76, 60, 0.15);
+    color: #c0392b;
+}
+
+.transacao-info {
+    flex-grow: 1;
+}
+
+.transacao-info h4 {
+    margin: 0 0 5px 0;
+    font-size: 1.1em;
+    color: var(--cor-primaria);
+}
+
+.transacao-meta {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.transacao-data {
+    font-size: 0.85em;
+    color: var(--cor-texto-claro);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.transacao-valor {
+    font-family: var(--fonte-principal);
+    font-size: 1.2em;
+    font-weight: 800;
+    text-align: right;
+}
+
+.transacao-valor.receita { color: var(--cor-sucesso); }
+.transacao-valor.despesa { color: var(--cor-erro); }
+
+/* ====================================================
+   17. ESTILOS ADICIONAIS PARA UPLOAD DE PARTITURA
+   ========================================================================== */
+
+/* Estilo para o input[type=file] (pode ser personalizado mais) */
+.inputGroup input[type="file"] {
+    padding: 10px;
+    /* Ajuste padding */
+    border: 1px dashed var(--cor-borda);
+    /* Borda tracejada */
+    background-color: #f8f9fa;
+    /* Fundo levemente diferente */
+    cursor: pointer;
+}
+
+.inputGroup input[type="file"]:hover {
+    border-color: var(--cor-secundaria);
+    background-color: #f1f3f5;
+}
+
+/* Estilo para a mensagem <small> abaixo do input */
+.inputGroup small {
+    display: block;
+    /* Garante que fique abaixo */
+    margin-top: 5px;
+    font-size: 0.8em;
+    color: var(--cor-texto-claro);
+}
+
+/* Ajuste no botÃ£o de ver partitura para ficar mais claro o clique */
+.btn-ver-partitura {
+    /* (Estilos existentes) */
+    display: inline-flex;
+    /* Para alinhar Ã­cone e texto */
+    align-items: center;
+    gap: 5px;
+}
+
+/* Garantir que o embed ocupe espaÃ§o no visualizador */
+#visualizadorPdf embed {
+    display: block;
+    border: 1px solid var(--cor-borda);
+    /* Adiciona uma borda sutil */
+    height: 900px;
+    /* <--- ALTERADO PARA 900PX */
+}
+
+/* ==========================================================================
+   (Adicionar ao final ou em seÃ§Ã£o apropriada)
+   18. ESTILOS ADICIONAIS PARA MODAL MEMBRO
+   ========================================================================== */
+
+.modal-content p.modal-description {
+    font-size: 0.9em;
+    color: #555;
+    margin-bottom: 25px;
+    /* EspaÃ§o antes do formulÃ¡rio */
+    text-align: center;
+    line-height: 1.5;
+}
+
+/* Ajuste na tabela de membros para espaÃ§amento */
+.tabela-moderna td:nth-child(2),
+/* Coluna Email */
+.tabela-moderna th:nth-child(2) {
+    min-width: 180px;
+    /* Garante um espaÃ§o mÃ­nimo para o email */
+}
+
+/* ==========================================================================
+   (Adicionar ao final ou em seÃ§Ã£o apropriada)
+   19. ESTILOS PARA CONVITES PENDENTES
+   ========================================================================== */
+
+.lista-convites {
+    list-style: none;
+    /* Remove marcadores padrÃ£o */
+    padding: 0;
+    margin: 0;
+}
+
+.lista-convites li {
+    display: flex;
+    justify-content: space-between;
+    /* Alinha itens nas extremidades */
+    align-items: center;
+    padding: 12px 0;
+    /* EspaÃ§amento vertical */
+    border-bottom: 1px solid #f1f3f5;
+    /* Linha divisÃ³ria sutil */
+    font-size: 0.95em;
+}
+
+.lista-convites li:last-child {
+    border-bottom: none;
+    /* Remove borda do Ãºltimo item */
+}
+
+.lista-convites li span {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    /* EspaÃ§o entre Ã­cone e texto */
+    color: var(--cor-texto);
+}
+
+.lista-convites li i.fa-user-clock {
+    color: var(--cor-texto-claro);
+    /* Ãcone cinza */
+}
+
+.lista-convites li strong {
+    color: var(--cor-primaria);
+    /* Nome destacado */
+}
+
+.btn-cancelar-convite {
+    background: none;
+    border: none;
+    color: var(--cor-texto-claro);
+    /* Cinza claro por padrÃ£o */
+    cursor: pointer;
+    font-size: 1.2em;
+    /* Ãcone um pouco maior */
+    padding: 5px;
+    transition: color 0.2s ease;
+}
+
+.btn-cancelar-convite:hover {
+    color: var(--cor-erro);
+    /* Vermelho ao passar o mouse */
+}
+
+/* ==========================================================================
+   (Adicionar ao final do CSS)
+   SISTEMA DE PERMISSÃ•ES â€” Tabs Bloqueadas
+   ========================================================================== */
+.tab-link.tab-bloqueada {
+    opacity: 0.55;
+    cursor: not-allowed;
+    background: rgba(0,0,0,0.04) !important;
+    color: #9ca3af !important;
+    border-bottom-color: transparent !important;
+    position: relative;
+}
+.tab-link.tab-bloqueada::after {
+    content: 'ðŸ”’';
+    font-size: 0.72em;
+    margin-left: 4px;
+    opacity: 0.8;
+}
+.tab-link-config {
+    margin-left: auto;
+    background: linear-gradient(135deg, rgba(250,152,72,0.12), rgba(250,152,72,0.05)) !important;
+    color: var(--cor-secundaria) !important;
+    border-color: rgba(250,152,72,0.3) !important;
+    font-weight: 700;
+}
+.tab-link-config.ativo {
+    background: linear-gradient(135deg, var(--cor-secundaria), #e67e22) !important;
+    color: #fff !important;
+    border-color: transparent !important;
+}
+
+/* ==========================================================================
+   ABA CONFIGURAÃ‡Ã•ES â€” Gerenciamento de PermissÃµes
+   ========================================================================== */
+.perm-page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 28px;
+}
+.perm-page-header h2 {
+    font-size: 1.6em;
+    color: var(--cor-primaria);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.perm-page-header h2 i {
+    color: var(--cor-secundaria);
+    font-size: 0.85em;
+}
+.perm-subtitle {
+    color: #6b7280;
+    margin-top: 6px;
+    font-size: 0.95em;
+}
+
+/* Legenda de mÃ³dulos */
+.perm-modulos-legenda {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+}
+.perm-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 50px;
+    font-size: 0.82em;
+    font-weight: 700;
+    border: 1.5px solid;
+}
+.perm-badge-agenda    { background: rgba(16,185,129,0.1); color:#10b981; border-color: rgba(16,185,129,0.25); }
+.perm-badge-financeiro{ background: rgba(245,158,11,0.1); color:#d97706; border-color: rgba(245,158,11,0.25); }
+.perm-badge-membros   { background: rgba(59,130,246,0.1); color:#3b82f6; border-color: rgba(59,130,246,0.25); }
+.perm-badge-repertorio{ background: rgba(139,92,246,0.1); color:#8b5cf6; border-color: rgba(139,92,246,0.25); }
+
+/* Grid de cards de permissÃ£o */
+.perm-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 24px;
+}
+
+/* Card individual */
+.perm-card {
+    background: #fff;
+    border-radius: 18px;
+    border: 1px solid var(--cor-borda);
+    box-shadow: var(--sombra-card);
+    overflow: hidden;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+.perm-card:hover {
+    box-shadow: 0 12px 32px rgba(0,0,0,0.1);
+    transform: translateY(-3px);
+}
+
+/* Header do card */
+.perm-card-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 22px 22px 18px;
+    border-bottom: 1px solid var(--cor-borda);
+    background: linear-gradient(135deg, rgba(1,16,41,0.03), rgba(250,152,72,0.04));
+}
+.perm-avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--cor-primaria), #032554);
+    color: #fff;
+    font-family: var(--fonte-principal);
+    font-size: 1.3em;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(1,16,41,0.2);
+}
+.perm-card-info h4 {
+    font-size: 1.05em;
+    color: var(--cor-primaria);
+    margin-bottom: 2px;
+}
+.perm-card-info p {
+    font-size: 0.82em;
+    color: #6b7280;
+    margin-bottom: 6px;
+}
+.perm-funcao-badge {
+    display: inline-block;
+    background: rgba(250,152,72,0.1);
+    color: var(--cor-secundaria);
+    padding: 2px 10px;
+    border-radius: 50px;
+    font-size: 0.75em;
+    font-weight: 700;
+    border: 1px solid rgba(250,152,72,0.25);
+}
+
+/* Lista de toggles */
+.perm-toggles {
+    padding: 18px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.perm-toggle-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-radius: 12px;
+    background: var(--cor-fundo);
+    border: 1px solid var(--cor-borda);
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+.perm-toggle-item:hover {
+    background: rgba(250,152,72,0.04);
+    border-color: rgba(250,152,72,0.2);
+}
+.perm-toggle-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    color: var(--cor-primaria);
+    font-size: 0.9em;
+}
+.perm-toggle-info i {
+    font-size: 0.95em;
+    color: var(--cor-secundaria);
+    width: 18px;
+    text-align: center;
+}
+
+/* Toggle switch */
+.perm-toggle-switch {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+.perm-checkbox {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+}
+.perm-slider {
+    display: block;
+    width: 46px;
+    height: 26px;
+    background: #d1d5db;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background 0.25s ease;
+    position: relative;
+}
+.perm-slider::before {
+    content: '';
+    position: absolute;
+    left: 3px;
+    top: 3px;
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    border-radius: 50%;
+    transition: transform 0.25s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+.perm-checkbox:checked + .perm-slider {
+    background: linear-gradient(135deg, #10b981, #059669);
+}
+.perm-checkbox:checked + .perm-slider::before {
+    transform: translateX(20px);
+}
+
+/* Footer do card */
+.perm-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 22px;
+    border-top: 1px solid var(--cor-borda);
+    background: linear-gradient(135deg, rgba(1,16,41,0.02), rgba(250,152,72,0.03));
+}
+.perm-save-status {
+    font-size: 0.85em;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+.btn-salvar-permissoes {
+    padding: 10px 20px;
+    font-size: 0.88em;
+    border-radius: 10px;
+}
+.btn-salvar-permissoes:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+@media (max-width: 600px) {
+    .perm-cards-grid { grid-template-columns: 1fr; }
+    .perm-modulos-legenda { gap: 6px; }
+    .perm-badge { font-size: 0.75em; padding: 4px 10px; }
+}
+
+/* ============================================================
+   ESTILOS DE CARDS DE INTEGRANTES PREMIUM & SWITCHES
+   ============================================================ */
+.integrantes-premium-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+    margin-top: 25px;
+}
+.member-premium-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    position: relative;
+    overflow: hidden;
+}
+.member-premium-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(250, 152, 72, 0.3);
+    box-shadow: 0 8px 25px rgba(250, 152, 72, 0.08);
+}
+.member-premium-card-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+.member-premium-avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--cor-secundaria, #fa9848), #f57c00);
+    color: #011029;
+    font-weight: 700;
+    font-size: 1.3em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(250, 152, 72, 0.25);
+    font-family: 'Montserrat', sans-serif;
+}
+.member-premium-info h4 {
+    margin: 0;
+    font-size: 1.1em;
+    font-weight: 700;
+    color: #fff;
+    font-family: 'Montserrat', sans-serif;
+}
+.member-premium-info p {
+    margin: 4px 0 0 0;
+    font-size: 0.82em;
+    color: var(--cor-texto-claro, rgba(255,255,255,0.6));
+    word-break: break-all;
+}
+.member-premium-details {
+    margin-bottom: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.member-premium-detail-item {
+    font-size: 0.88em;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.member-premium-detail-item span {
+    color: var(--cor-texto-claro);
+}
+.member-premium-status-badge {
+    font-size: 0.78em;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+.status-ativo {
+    background: rgba(16, 185, 129, 0.12);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+.status-pendente {
+    background: rgba(250, 152, 72, 0.12);
+    color: var(--cor-secundaria);
+    border: 1px solid rgba(250, 152, 72, 0.25);
+}
+.status-sem-acesso {
+    background: rgba(239, 68, 68, 0.12);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+.member-premium-actions {
+    display: flex;
+    gap: 10px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding-top: 16px;
+    margin-top: auto;
+}
+.member-premium-actions button {
+    flex: 1;
+    padding: 10px 14px;
+    font-size: 0.85em;
+    font-weight: 700;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    outline: none;
+    font-family: 'Montserrat', sans-serif;
+}
+.btn-premium-edit {
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.btn-premium-edit:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+.btn-premium-remove {
+    background: rgba(239, 68, 68, 0.05);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.1);
+}
+.btn-premium-remove:hover {
+    background: rgba(239, 68, 68, 0.12);
+    border-color: rgba(239, 68, 68, 0.25);
+}
+.btn-premium-resend {
+    background: rgba(250, 152, 72, 0.05);
+    color: var(--cor-secundaria);
+    border: 1px solid rgba(250, 152, 72, 0.15);
+}
+.btn-premium-resend:hover {
+    background: rgba(250, 152, 72, 0.12);
+    border-color: rgba(250, 152, 72, 0.3);
+}
+
+/* PREMIUM TOGGLE SWITCH STYLES */
+.perm-checkbox-premium:checked + .perm-slider-premium {
+    background-color: #10b981 !important;
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
+}
+.perm-slider-premium::before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .3s ease;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+}
+.perm-checkbox-premium:checked + .perm-slider-premium::before {
+    transform: translateX(20px);
+}
+
+
+/* ==========================================================================

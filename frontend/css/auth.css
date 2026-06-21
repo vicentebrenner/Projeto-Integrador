@@ -1,0 +1,220 @@
+   8. PÃGINAS DE AUTENTICAÃ‡ÃƒO (LOGIN, CADASTRO, ETC.)
+   ========================================================================== */
+.auth-page-body {
+    background-color: var(--cor-primaria);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 40px 20px;
+    /* Padding responsivo */
+}
+
+.loginContainer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.loginBox {
+    background-color: var(--cor-fundo-card);
+    padding: 40px 35px;
+    /* Padding ajustado */
+    border-radius: var(--border-radius-padrao);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    width: 100%;
+    max-width: 420px;
+    /* Um pouco mais largo */
+    text-align: center;
+}
+
+.logoLogin {
+    font-family: var(--fonte-principal);
+    font-size: 2.2em;
+    /* Tamanho ajustado */
+    font-weight: 700;
+    color: var(--cor-secundaria);
+    text-decoration: none;
+    display: block;
+    margin-bottom: 25px;
+}
+
+.loginBox h2 {
+    color: var(--cor-primaria);
+    margin-bottom: 30px;
+    font-size: 1.6em;
+    /* Tamanho ajustado */
+}
+
+.inputGroup {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.inputGroup label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555;
+    font-size: 0.9em;
+    /* Tamanho ajustado */
+}
+
+.inputGroup input,
+.inputGroup select {
+    /* Aplicar estilo tambÃ©m a selects */
+    width: 100%;
+    padding: 12px 15px;
+    /* Padding ajustado */
+    border: 1px solid var(--cor-borda);
+    border-radius: 5px;
+    font-size: 1em;
+    font-family: var(--fonte-secundaria);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box;
+    /* Garante padding correto */
+    appearance: none;
+    /* Remove aparÃªncia padrÃ£o do select */
+}
+
+/* Estilo especÃ­fico para select (seta) */
+.inputGroup select {
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2334495e' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E") no-repeat right 15px center/12px 12px;
+}
+
+
+.inputGroup input:focus,
+.inputGroup select:focus {
+    outline: none;
+    border-color: var(--cor-secundaria);
+    box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.2);
+}
+
+.passwordWrapper {
+    position: relative;
+    width: 100%;
+}
+
+.passwordWrapper input {
+    padding-right: 45px;
+}
+
+.togglePasswordIcon {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #aaa;
+    transition: color 0.3s ease;
+}
+
+.togglePasswordIcon:hover {
+    color: var(--cor-texto);
+}
+
+.btnLoginSubmit,
+.btn-adicionar {
+    /* Estilo unificado para botÃµes de submit/adicionar */
+    display: block;
+    text-decoration: none;
+    width: 100%;
+    padding: 14px;
+    margin-top: 25px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--cor-secundaria);
+    color: #fff;
+    /* Texto branco */
+    font-size: 1.1em;
+    font-weight: 700;
+    font-family: var(--fonte-principal);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btnLoginSubmit:hover,
+.btn-adicionar:hover {
+    background-color: #e67e22;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.btnLoginSubmit:active,
+.btn-adicionar:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+.loginLinks {
+    margin-top: 25px;
+}
+
+.loginLinks a {
+    color: var(--cor-primaria);
+    font-size: 0.9em;
+}
+
+.loginLinks a:hover {
+    color: var(--cor-secundaria);
+    text-decoration: underline;
+}
+
+.loginLinks p {
+    margin-top: 15px;
+    font-size: 0.9em;
+    color: #555;
+}
+
+.recoveryInstruction {
+    font-size: 0.95em;
+    color: #555;
+    margin-bottom: 30px;
+    line-height: 1.5;
+}
+
+.mensagemErro {
+    color: var(--cor-erro);
+    font-size: 0.85em;
+    /* Menor */
+    font-weight: 600;
+    text-align: left;
+    margin-top: 6px;
+    /* Mais prÃ³ximo do campo */
+    margin-bottom: 10px;
+    /* Menos espaÃ§o abaixo */
+    min-height: 1.1em;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: opacity 0.3s ease, max-height 0.3s ease;
+}
+
+.mensagemErro.visivel {
+    opacity: 1;
+    max-height: 40px;
+    /* Altura ajustada */
+}
+
+.inputErro {
+    border-color: var(--cor-erro) !important;
+    animation: shake 0.4s;
+}
+
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-5px);
+    }
+
+    75% {
+        transform: translateX(5px);
+    }
+}
+
+/* ==========================================================================

@@ -1,0 +1,47 @@
+   10. DASHBOARD
+   ========================================================================== */
+.dashboard-hero {
+    background-color: var(--cor-fundo);
+    padding-top: 120px;
+    padding-bottom: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--cor-texto);
+    min-height: 40vh;
+}
+
+.dashboard-hero h2 {
+    font-size: 2.5em;
+    /* Ajuste no tamanho */
+    color: var(--cor-primaria);
+    margin-bottom: 15px;
+}
+
+.dashboard-hero h2 #nomeUsuario {
+    /* Span com o nome */
+    color: var(--cor-secundaria);
+}
+
+.dashboard-hero p {
+    font-size: 1.2em;
+    /* Ajuste no tamanho */
+    color: #555;
+    margin-bottom: 30px;
+}
+
+.dashboard-content {
+    padding: 60px 0 80px;
+    /* EspaÃ§amento ajustado */
+    background-color: var(--cor-fundo-card);
+}
+
+.dashboard-content .container {
+    display: flex;
+    justify-content: space-around;
+    gap: 30px;
+    text-align: center;
+}
+
+/* ==========================================================================
