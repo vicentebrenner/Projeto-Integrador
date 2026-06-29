@@ -29,6 +29,19 @@ public class PerfilMusico {
     
     private String localizacao;
     
+    private String pais;
+    private String estado;
+    private String regiao;
+    private String cidade;
+    private String bairro;
+    private String funcao;
+    
+    @Column(name = "ministerios_interesse", columnDefinition = "TEXT")
+    private String ministeriosInteresse;
+    
+    @Column(name = "formacao_musical", columnDefinition = "TEXT")
+    private String formacaoMusical;
+    
     @Column(name = "link_videos", columnDefinition = "TEXT")
     private String linkVideos;
 

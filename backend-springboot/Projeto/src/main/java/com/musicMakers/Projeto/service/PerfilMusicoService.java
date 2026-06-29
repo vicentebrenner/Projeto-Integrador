@@ -60,6 +60,14 @@ public class PerfilMusicoService {
         }
         
         existente.setLocalizacao(dto.getLocalizacao());
+        existente.setPais(dto.getPais());
+        existente.setEstado(dto.getEstado());
+        existente.setRegiao(dto.getRegiao());
+        existente.setCidade(dto.getCidade());
+        existente.setBairro(dto.getBairro());
+        existente.setFuncao(dto.getFuncao());
+        existente.setMinisteriosInteresse(dto.getMinisteriosInteresse());
+        existente.setFormacaoMusical(dto.getFormacaoMusical());
         existente.setInstrumentosPrincipais(dto.getInstrumentosPrincipais());
         existente.setBiografia(dto.getBiografia());
         if (dto.getLinkVideos() != null) {

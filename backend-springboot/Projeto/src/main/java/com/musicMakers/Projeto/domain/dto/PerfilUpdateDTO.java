@@ -10,6 +10,14 @@ public class PerfilUpdateDTO {
     
     private String corAvatar;
     private String localizacao;
+    private String pais;
+    private String estado;
+    private String regiao;
+    private String cidade;
+    private String bairro;
+    private String funcao;
+    private String ministeriosInteresse;
+    private String formacaoMusical;
     private String instrumentosPrincipais;
     private String biografia;
     private String linkVideos;

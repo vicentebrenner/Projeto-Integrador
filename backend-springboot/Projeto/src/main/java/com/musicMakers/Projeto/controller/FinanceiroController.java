@@ -23,4 +23,10 @@ public class FinanceiroController {
     public ResponseEntity<Financeiro> adicionarTransacao(@PathVariable Long bandaId, @RequestBody Financeiro financeiro) {
         return ResponseEntity.ok(financeiroService.adicionarTransacao(bandaId, financeiro));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletarTransacao(@PathVariable Long id) {
+        financeiroService.deletarTransacao(id);
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -13,6 +13,7 @@ public class Vaga {
 
     @ManyToOne
     @JoinColumn(name = "banda_id")
+    @com.fasterxml.jackson.annotation.JsonIgnore
     private Banda banda;
 
     private String titulo;
@@ -21,5 +22,30 @@ public class Vaga {
     private String instrumentoNecessario;
     
     private String descricao;
-    private String status; // ABERTA, FECHADA
+    private String status; // ABERTA, EM_ANDAMENTO, ENCERRADA
+    
+    @Column(name = "quantidade_vagas")
+    private Integer quantidadeVagas = 1;
+    
+    @Column(columnDefinition = "TEXT")
+    private String responsabilidades;
+    
+    @Column(name = "requisitos_obrigatorios", columnDefinition = "TEXT")
+    private String requisitosObrigatorios;
+    
+    @Column(name = "requisitos_desejaveis", columnDefinition = "TEXT")
+    private String requisitosDesejaveis;
+    
+    @Column(name = "nivel_experiencia")
+    private String nivelExperiencia;
+    
+    @Column(name = "data_limite")
+    private String dataLimite;
+    
+    private String pais;
+    private String estado;
+    private String regiao;
+    private String cidade;
+    private String bairro;
+    private String funcao;
 }

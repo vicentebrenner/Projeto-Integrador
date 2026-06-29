@@ -32,4 +32,12 @@ public class FinanceiroService {
         }
         return financeiroRepository.save(financeiro);
     }
+
+    public void deletarTransacao(Long id) {
+        if (financeiroRepository.existsById(id)) {
+            financeiroRepository.deleteById(id);
+        } else {
+            throw new RuntimeException("Transação não encontrada");
+        }
+    }
 }
