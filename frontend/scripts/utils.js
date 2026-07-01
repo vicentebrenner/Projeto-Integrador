@@ -19,7 +19,7 @@ function getApiUrl(path) {
     // Se estiver rodando via protocolo file:/// ou em alguma porta que não seja a padrão 80/443 do container,
     // direciona diretamente para o backend local (porta 8080).
     if (window.location.protocol === 'file:' || (window.location.port !== '' && window.location.port !== '80' && window.location.port !== '443')) {
-        return `http://localhost:8080${path}`;
+        return `http://localhost:8081${path}`;
     }
     // Caso contrário (rodando no container Nginx na porta 80, ou em produção),
     // usa a rota relativa que passará pelo proxy reverso do Nginx.

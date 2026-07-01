@@ -57,6 +57,7 @@
                 <button class="tab-link" data-tab="financeiro">Financeiro</button>
                 <button class="tab-link" data-tab="membros">Membros</button>
                 <button class="tab-link" data-tab="repertorio">Repertório</button>
+                <button class="tab-link" data-tab="vagas">Vagas</button>
                 <button class="tab-link tab-link-config" data-tab="configuracoes" id="tabConfiguracoes" style="display:none">
                     <i class="fas fa-shield-alt"></i> Permissões
                 </button>
@@ -308,25 +309,41 @@
             <div id="configuracoes" class="tab-content">
                 
                 <!-- Cabeçalho Superior Premium -->
-                <div class="perm-premium-header" style="display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; margin-bottom: 30px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255,255,255,0.08); padding: 20px 25px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.2);">
-                    <div style="display: flex; flex-direction: column; gap: 5px;">
-                        <h2 style="font-size: 1.8em; font-weight: 800; color: #fff; margin:0; font-family: 'Montserrat', sans-serif;" id="configBandaNome">Carregando Banda...</h2>
-                        <span style="font-size: 0.9em; color: var(--cor-secundaria); font-weight: 600;" id="configMembrosCount"><i class="fas fa-users"></i> 0 integrantes</span>
+                <div class="perm-premium-header">
+                    <div class="perm-header-title">
+                        <h2 id="configBandaNome">Carregando Banda...</h2>
+                        <span id="configMembrosCount"><i class="fas fa-users"></i> 0 integrantes</span>
                     </div>
                     
-                    <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap; flex: 1; justify-content: flex-end; max-width: 600px;">
-                        <div class="search-wrapper" style="position: relative; flex: 1; max-width: 350px; min-width: 200px;">
-                            <input type="text" id="buscaIntegranteNome" placeholder="🔍 Pesquisar integrante..." style="width: 100%; padding: 12px 16px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12); background: rgba(0, 0, 0, 0.3); color: #fff; font-family: inherit; font-size: 0.95em; outline: none; transition: all 0.3s ease;">
+                    <div class="perm-header-actions">
+                        <div class="search-wrapper">
+                            <input type="text" id="buscaIntegranteNome" placeholder="🔍 Pesquisar integrante...">
                         </div>
-                        <button id="btnAbrirModalConvidar" class="btn-adicionar-principal" style="height: 46px; padding: 0 22px; border-radius: 8px; font-weight: 700; display: flex; align-items: center; gap: 8px; font-size: 0.95em; box-shadow: 0 4px 15px rgba(250, 152, 72, 0.3);"><i class="fas fa-plus"></i> Convidar Integrante</button>
+                        <button id="btnAbrirModalConvidar" class="btn-adicionar-principal"><i class="fas fa-plus"></i> Convidar Integrante</button>
                     </div>
                 </div>
 
                 <!-- Grid de Cards de Integrantes -->
-                <div id="integrantesCardsGrid" class="integrantes-premium-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; margin-top: 20px;">
+                <div id="integrantesCardsGrid" class="integrantes-premium-grid">
                     <p class="empty-state"><i class="fas fa-spinner fa-spin"></i> Carregando integrantes...</p>
                 </div>
 
+            </div>
+
+            <!-- ABA VAGAS -->
+            <div id="vagas" class="tab-content">
+                <div class="vagas-page-header">
+                    <div>
+                        <h2>Gestão de Vagas</h2>
+                        <p class="vagas-subtitle">Anuncie e gerencie vagas para novos integrantes</p>
+                    </div>
+                    <button id="abrirModalVagaBtn" class="btn-adicionar-principal">
+                        <i class="fas fa-plus"></i> Nova Vaga
+                    </button>
+                </div>
+                <div id="listaVagasContainer" class="vagas-grid">
+                    <!-- Vagas renderizadas via JS -->
+                </div>
             </div>
 
         </div>
@@ -430,6 +447,85 @@
                     <button type="submit" class="btn-adicionar" style="border-radius: 8px; padding: 12px 25px; font-weight: 700; background: var(--cor-secundaria); color: #011029; border: none; cursor: pointer; height: 46px;">Salvar Alterações</button>
                 </div>
             </form>
+        </div>
+    </div>
+
+
+    <!-- MODAL DE CRIAR/EDITAR VAGA (RESTAURADO) -->
+    <div id="vagaModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="document.getElementById('vagaModal').style.display='none'">&times;</span>
+            <h3>Anunciar Vaga</h3>
+            <form id="formAdicionarVaga">
+                <input type="hidden" id="vagaId" name="vagaId">
+                <div class="form-grid-2">
+                    <div class="inputGroup">
+                        <label for="vagaTitulo">Título da Vaga</label>
+                        <input type="text" id="vagaTitulo" name="vagaTitulo" required placeholder="Ex: Guitarrista para Banda de Rock">
+                    </div>
+                    <div class="inputGroup">
+                        <label for="vagaFuncao">Função/Instrumento</label>
+                        <select id="vagaFuncao" name="vagaFuncao" required>
+                            <option value="Vocalista">Vocalista</option>
+                            <option value="Guitarrista">Guitarrista</option>
+                            <option value="Baixista">Baixista</option>
+                            <option value="Baterista">Baterista</option>
+                            <option value="Tecladista">Tecladista</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-grid-2">
+                    <div class="inputGroup">
+                        <label for="vagaQuantidade">Quantidade de Vagas</label>
+                        <input type="number" id="vagaQuantidade" name="vagaQuantidade" min="1" value="1" required>
+                    </div>
+                    <div class="inputGroup">
+                        <label for="vagaNivel">Nível de Experiência</label>
+                        <select id="vagaNivel" name="vagaNivel" required>
+                            <option value="Iniciante">Iniciante</option>
+                            <option value="Intermediário">Intermediário</option>
+                            <option value="Avançado">Avançado</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-grid-2">
+                    <div class="inputGroup">
+                        <label for="vagaEstado">Estado (UF)</label>
+                        <select id="vagaEstado" name="vagaEstado">
+                            <option value="">Todos</option>
+                        </select>
+                    </div>
+                    <div class="inputGroup">
+                        <label for="vagaCidade">Cidade</label>
+                        <select id="vagaCidade" name="vagaCidade" disabled>
+                            <option value="">Selecione o estado primeiro...</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="inputGroup">
+                    <label for="vagaDescricao">Descrição da Vaga</label>
+                    <textarea id="vagaDescricao" name="vagaDescricao" rows="2" required></textarea>
+                </div>
+                <div class="inputGroup">
+                    <label for="vagaRequisitos">Requisitos Obrigatórios</label>
+                    <textarea id="vagaRequisitos" name="vagaRequisitos" rows="1"></textarea>
+                </div>
+                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 15px;">
+                    <button type="submit" class="btn-adicionar">Publicar Vaga</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL DE CANDIDATOS COMPATÍVEIS (RESTAURADO) -->
+    <div id="candidatosModal" class="modal">
+        <div class="modal-content" style="max-width: 800px; max-height: 90vh; display: flex; flex-direction: column;">
+            <span class="close-button">&times;</span>
+            <h3>Candidatos Recomendados</h3>
+            <p>Músicos que deram match com a sua vaga.</p>
+            <div id="candidatosList" style="overflow-y: auto; flex: 1; padding-right: 10px; margin-top: 15px;">
+                <p>Carregando...</p>
+            </div>
         </div>
     </div>
 

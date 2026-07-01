@@ -16,9 +16,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- DADOS DE EXEMPLO ---
     // Agenda começa vazia — eventos reais são adicionados pelo usuário
     let dadosAgenda = JSON.parse(localStorage.getItem('dadosAgenda')) || [];
-    let dadosMembros = [];
-    let dadosFinanceiros = [];
-    let dadosRepertorio = [];
+    let dadosMembros = JSON.parse(localStorage.getItem('dadosMembros')) || [];
+    let dadosFinanceiros = JSON.parse(localStorage.getItem('dadosFinanceiros')) || [];
+    let dadosRepertorio = JSON.parse(localStorage.getItem('dadosRepertorio')) || [];
 
     // NOVO: Simulação de usuários cadastrados no sistema
     const dadosUsuariosSimulados = [
@@ -695,7 +695,25 @@ document.addEventListener('DOMContentLoaded', function() {
     let filtroFinanceiroAtual = 'all';
     let filtroSerieAtual = 'both';
 
-    function carregarFinanceiro() {
+    async function carregarFinanceiro() {
+    try {
+        const token = localStorage.getItem('authToken');
+        if(window._bandaId) {
+            const res = await fetch(getApiUrl(`/api/financeiro/banda/${window._bandaId}`), { headers: { 'Authorization': `Bearer ${token}` } });
+            if(res.ok) {
+                let json = await res.json();
+                dadosFinanceiros = json.map(t => ({
+                    id: t.id,
+                    tipo: t.tipo,
+                    descricao: t.descricao,
+                    valor: t.valor,
+                    data: t.dataTransacao || t.data,
+                    categoria: t.categoria
+                }));
+                localStorage.setItem('dadosFinanceiros', JSON.stringify(dadosFinanceiros));
+            }
+        }
+    } catch(e) { console.warn('Erro API Financeiro', e); }
         const tabela = document.getElementById('corpoTabelaFinanceira');
         const saldoEl = document.getElementById('saldoAtual');
         const receitaEl = document.getElementById('receitaMes');
@@ -1042,7 +1060,17 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
 
-    function carregarRepertorio() {
+    async function carregarRepertorio() {
+    try {
+        const token = localStorage.getItem('authToken');
+        if(window._bandaId) {
+            const res = await fetch(getApiUrl(`/api/musicas/banda/${window._bandaId}`), { headers: { 'Authorization': `Bearer ${token}` } });
+            if(res.ok) {
+                dadosRepertorio = await res.json();
+                localStorage.setItem('dadosRepertorio', JSON.stringify(dadosRepertorio));
+            }
+        }
+    } catch(e) { console.warn('Erro API Músicas', e); }
         const containerCards = document.getElementById('corpoRepertorioCards');
         if (!containerCards) return;
         containerCards.innerHTML = '';
@@ -1127,50 +1155,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (closeModal) closeModal();
     });
 
-    setupModal('membroModal', 'abrirModalMembroBtn', 'formAdicionarMembro', (form, closeModal) => {
-        const emailConvidado = form.emailMembro.value.trim().toLowerCase();
-        const instrumentoConvidado = form.instrumentoMembro.value.trim();
-
-        if (!emailConvidado || !instrumentoConvidado) {
-            showSnackbar("Preencha o e-mail e o instrumento.");
-            return;
-        }
-
-        // Verifica se o usuário já é membro
-        const jaEhMembro = dadosMembros.some(membro => membro.email === emailConvidado);
-        if (jaEhMembro) {
-            showSnackbar(`Este usuário já faz parte da banda.`);
-            return;
-        }
-
-        // Verifica se já existe um convite pendente para este email
-        const convitePendente = dadosConvitesPendentes.some(convite => convite.emailConvidado === emailConvidado);
-        if (convitePendente) {
-            showSnackbar(`Já existe um convite pendente para ${emailConvidado}.`);
-            return;
-        }
-
-        // *** SIMULAÇÃO: Busca o usuário na lista de usuários cadastrados ***
-        const usuarioEncontrado = dadosUsuariosSimulados.find(user => user.email === emailConvidado);
-
-        if (!usuarioEncontrado) {
-            showSnackbar(`Erro: Usuário com e-mail ${emailConvidado} não encontrado no Music Makers.`);
-            return;
-        }
-
-        // Adiciona à lista de convites pendentes
-        dadosConvitesPendentes.push({
-            emailConvidado: emailConvidado,
-            nomeConvidado: usuarioEncontrado.nome, // Pega o nome real (simulado)
-            instrumento: instrumentoConvidado,
-            dataConvite: new Date() // Guarda a data do convite (opcional)
-        });
-
-        carregarConvitesPendentes(); // Atualiza a lista de convites na tela
-        showSnackbar("Salvo com sucesso!");
-        if (closeModal) closeModal();
-    });
-
     setupModal('eventoModal', 'abrirModalEventoBtn', 'formAdicionarEvento', (form, closeModal) => {
         dadosAgenda.push({
             titulo: form.tituloEvento.value,
@@ -1231,6 +1215,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             let itemRemovido = null;
 
+            
             if (tipo === 'agenda' && index < dadosAgenda.length) {
                 itemRemovido = dadosAgenda.splice(index, 1)[0];
                 localStorage.setItem('dadosAgenda', JSON.stringify(dadosAgenda));
@@ -1239,23 +1224,32 @@ document.addEventListener('DOMContentLoaded', function() {
                 itemRemovido = dadosMembros.splice(index, 1)[0];
                 carregarMembros();
             } else if (tipo === 'repertorio' && index < dadosRepertorio.length) {
-                const musicaRemovida = dadosRepertorio[index];
-                // Antes de remover, revogar a URL temporária se existir (boa prática)
-                if (musicaRemovida.partituraUrl && musicaRemovida.partituraUrl.startsWith('blob:')) {
-                    URL.revokeObjectURL(musicaRemovida.partituraUrl);
-                    console.log("URL temporária revogada:", musicaRemovida.partituraUrl);
+                const musica = dadosRepertorio[index];
+                if (musica.id) {
+                    try {
+                        const token = localStorage.getItem('authToken');
+                        fetch(getApiUrl(`/api/musicas/${musica.id}`), { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
+                    } catch(e) {}
                 }
                 itemRemovido = dadosRepertorio.splice(index, 1)[0];
+                localStorage.setItem('dadosRepertorio', JSON.stringify(dadosRepertorio));
                 carregarRepertorio();
-                // Limpar visualizador se a música removida era a exibida
                 const visualizadorPdf = document.getElementById('visualizadorPdf');
-                if (visualizadorPdf && visualizadorPdf.querySelector(`embed[src="${musicaRemovida.partituraUrl}"]`)) {
-                     visualizadorPdf.innerHTML = '<p>Selecione uma música para ver a partitura.</p>';
+                if (visualizadorPdf && musica.partituraUrl) {
+                    visualizadorPdf.innerHTML = '<p>Selecione uma música para ver a partitura.</p>';
                 }
+            } else if (tipo === 'financeiro' && index < dadosFinanceiros.length) {
+                const fin = dadosFinanceiros[index];
+                if (fin.id) {
+                    try {
+                        const token = localStorage.getItem('authToken');
+                        fetch(getApiUrl(`/api/financeiro/${fin.id}`), { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
+                    } catch(e) {}
+                }
+                itemRemovido = dadosFinanceiros.splice(index, 1)[0];
+                localStorage.setItem('dadosFinanceiros', JSON.stringify(dadosFinanceiros));
+                carregarFinanceiro();
             }
-             // Adicionar remoção de transação financeira se necessário
-             // else if (tipo === 'financeiro' && index < dadosFinanceiros.length) { ... }
-
 
             if (itemRemovido) {
                  showSnackbar(`"${itemRemovido.titulo || itemRemovido.nome || itemRemovido.email || 'Item'}" removido.`);
@@ -1562,13 +1556,13 @@ document.addEventListener('DOMContentLoaded', function() {
             let actionsHTML = '';
             if (isMembroGestor) {
                 actionsHTML = `
-                    <div class="member-premium-detail-item" style="margin-top: 10px; width: 100%; text-align: center;">
-                        <span style="font-size: 0.85em; font-weight: 700; color: var(--cor-secundaria); background: rgba(250, 152, 72, 0.1); padding: 6px 12px; border-radius: 6px; width: 100%; display: block;"><i class="fas fa-crown"></i> Administrador</span>
+                    <div class="member-premium-detail-item admin-badge">
+                        <span><i class="fas fa-crown"></i> Administrador</span>
                     </div>
                 `;
             } else {
                 actionsHTML = `
-                    <div class="member-premium-actions" style="display: flex; gap: 10px; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px; margin-top: auto; width: 100%;">
+                    <div class="member-premium-actions">
                         <button class="btn-premium-edit" data-id="${m.membroId}"><i class="fas fa-user-cog"></i> Permissões</button>
                         <button class="btn-premium-remove" data-id="${m.membroId}" data-nome="${m.nome}"><i class="fas fa-user-minus"></i> Remover</button>
                     </div>
@@ -1723,13 +1717,20 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     const btnAbrirModalConvidar = document.getElementById('btnAbrirModalConvidar');
+    const btnAbrirModalMembro = document.getElementById('abrirModalMembroBtn'); // Aba Membros
     const modalMembro = document.getElementById('membroModal');
-    if (btnAbrirModalConvidar && modalMembro) {
-        btnAbrirModalConvidar.addEventListener('click', () => {
-            modalMembro.style.display = 'block';
-            document.getElementById('emailMembro').value = '';
-            document.getElementById('resultadosBuscaMembrosModal').innerHTML = '<p style="color: var(--cor-texto-claro); text-align: center; padding: 10px 0; font-size: 0.9em;">Resultados aparecerão aqui.</p>';
-        });
+    
+    function abrirModalMembroFunc() {
+        if (!modalMembro) return;
+        modalMembro.style.display = 'block';
+        if(document.getElementById('emailMembro')) document.getElementById('emailMembro').value = '';
+        if(document.getElementById('resultadosBuscaMembrosModal')) document.getElementById('resultadosBuscaMembrosModal').innerHTML = '<p style="color: var(--cor-texto-claro); text-align: center; padding: 10px 0; font-size: 0.9em;">Resultados aparecerão aqui.</p>';
+    }
+
+    if (btnAbrirModalConvidar) btnAbrirModalConvidar.addEventListener('click', abrirModalMembroFunc);
+    if (btnAbrirModalMembro) btnAbrirModalMembro.addEventListener('click', abrirModalMembroFunc);
+    
+    if (modalMembro) {
 
         modalMembro.querySelector('.close-button')?.addEventListener('click', () => {
             modalMembro.style.display = 'none';
@@ -2071,6 +2072,286 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // ============================================================
+    // LÓGICA DE RECRUTAMENTO / VAGAS
+    // ============================================================
+    
+    const btnModalVaga = document.getElementById('abrirModalVagaBtn');
+    const modalVaga = document.getElementById('vagaModal');
+    const formVaga = document.getElementById('formAdicionarVaga');
+    
+    if (btnModalVaga && modalVaga) {
+        btnModalVaga.addEventListener('click', () => {
+            formVaga.reset();
+            document.getElementById('vagaId').value = '';
+            modalVaga.style.display = 'block';
+        });
+        
+        const fecharVaga = () => { modalVaga.style.display = 'none'; };
+        modalVaga.querySelector('.close-button')?.addEventListener('click', fecharVaga);
+        
+        const btnCancelarVaga = document.getElementById('btnCancelarVaga');
+        if (btnCancelarVaga) btnCancelarVaga.addEventListener('click', fecharVaga);
+    }
+    
+    const selectVagaEstado = document.getElementById('vagaEstado');
+    const selectVagaCidade = document.getElementById('vagaCidade');
+    
+    if (selectVagaEstado) {
+        fetch('https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome')
+            .then(res => res.json())
+            .then(estados => {
+                estados.forEach(uf => {
+                    const option = document.createElement('option');
+                    option.value = uf.sigla;
+                    option.textContent = uf.nome;
+                    selectVagaEstado.appendChild(option);
+                });
+            })
+            .catch(err => console.error("Erro ao buscar estados IBGE", err));
+            
+        selectVagaEstado.addEventListener('change', (e) => {
+            const uf = e.target.value;
+            selectVagaCidade.innerHTML = '<option value="">Todos</option>';
+            if (!uf) {
+                selectVagaCidade.disabled = true;
+                return;
+            }
+            selectVagaCidade.disabled = false;
+            fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios?orderBy=nome`)
+                .then(res => res.json())
+                .then(municipios => {
+                    municipios.forEach(mun => {
+                        const option = document.createElement('option');
+                        option.value = mun.nome;
+                        option.textContent = mun.nome;
+                        selectVagaCidade.appendChild(option);
+                    });
+                })
+                .catch(err => console.error("Erro ao buscar cidades IBGE", err));
+        });
+    }
+
+    if (formVaga) {
+        formVaga.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const payload = {
+                bandaId: usuarioLogado?.bandaId,
+                titulo: document.getElementById('vagaTitulo').value,
+                funcao: document.getElementById('vagaFuncao').value,
+                quantidadeVagas: document.getElementById('vagaQuantidade').value,
+                nivelExperiencia: document.getElementById('vagaNivel').value,
+                estado: document.getElementById('vagaEstado').value,
+                cidade: document.getElementById('vagaCidade').value,
+                descricao: document.getElementById('vagaDescricao').value,
+                requisitosObrigatorios: document.getElementById('vagaRequisitos').value
+            };
+            
+            const vId = document.getElementById('vagaId').value;
+            const method = vId ? 'PUT' : 'POST';
+            const url = vId ? getApiUrl(`/api/vagas/${vId}`) : getApiUrl(`/api/vagas/banda/${payload.bandaId}`);
+            
+            try {
+                const resp = await fetch(url, {
+                    method,
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (resp.ok) {
+                    showSnackbar("Vaga salva com sucesso!");
+                    modalVaga.style.display = 'none';
+                    carregarVagas();
+                } else {
+                    showSnackbar("Erro ao salvar vaga.");
+                }
+            } catch (err) {
+                console.error(err);
+                showSnackbar("Erro de conexão.");
+            }
+        });
+    }
+    
+    async function carregarVagas() {
+        const container = document.getElementById('listaVagasContainer');
+        if (!container) return;
+        const bandaId = usuarioLogado?.bandaId;
+        if (!bandaId) return;
+        
+        try {
+            const resp = await fetch(getApiUrl(`/api/vagas/banda/${bandaId}`), {
+                headers: { 'Authorization': `Bearer ${authToken}` }
+            });
+            if (resp.ok) {
+                const vagas = await resp.json();
+                renderVagas(vagas);
+            } else {
+                container.innerHTML = '<p>Erro ao carregar vagas.</p>';
+            }
+        } catch (e) {
+            console.error(e);
+            container.innerHTML = '<p>Erro de conexão.</p>';
+        }
+    }
+    
+    function renderVagas(vagas) {
+        const container = document.getElementById('listaVagasContainer');
+        container.innerHTML = '';
+        if (vagas.length === 0) {
+            container.innerHTML = '<p class="empty-state">Nenhuma vaga anunciada.</p>';
+            return;
+        }
+        
+        vagas.forEach(v => {
+            const div = document.createElement('div');
+            div.className = 'vaga-card-compact';
+            const statusLabel = v.status === 'ABERTA' ? '<span class="status-badge status-aberta">ABERTA</span>' : `<span class="status-badge status-fechada">${v.status}</span>`;
+            
+            div.innerHTML = `
+                <div class="vaga-card-header">
+                    <div class="vaga-title-row">
+                        <h4>${v.titulo}</h4>
+                        ${statusLabel}
+                    </div>
+                    <div class="vaga-meta">
+                        <span><i class="fas fa-guitar"></i> ${v.funcao}</span>
+                        <span><i class="fas fa-users"></i> ${v.quantidadeVagas || 1} vaga(s)</span>
+                        <span><i class="fas fa-map-marker-alt"></i> ${v.cidade||'Qualquer'}/${v.estado||'Qualquer'}</span>
+                    </div>
+                </div>
+                <div class="vaga-card-body">
+                    <p>${v.descricao || 'Sem descrição.'}</p>
+                </div>
+                <div class="vaga-card-footer">
+                    <button class="btn-candidatos" data-id="${v.id}"><i class="fas fa-user-check"></i> Ver Candidatos</button>
+                    <div class="vaga-actions-row">
+                        <button class="btn-encerrar-vaga" data-id="${v.id}"><i class="fas fa-edit"></i> Editar</button>
+                        <button class="btn-excluir-vaga" data-id="${v.id}"><i class="fas fa-trash"></i> Excluir</button>
+                    </div>
+                </div>
+            `;
+            
+            div.querySelector('.btn-candidatos').addEventListener('click', () => {
+                abrirModalCandidatos(v.id);
+            });
+            
+            div.querySelector('.btn-excluir-vaga').addEventListener('click', async () => {
+                if(confirm("Tem certeza que deseja excluir esta vaga definitivamente?")) {
+                    try {
+                        const resp = await fetch(getApiUrl(`/api/vagas/${v.id}`), {
+                            method: 'DELETE',
+                            headers: { 'Authorization': `Bearer ${authToken}` }
+                        });
+                        if(resp.ok) {
+                            showSnackbar("Vaga excluída com sucesso.");
+                            carregarVagas();
+                        } else {
+                            showSnackbar("Erro ao excluir vaga.");
+                        }
+                    } catch(e) {
+                        showSnackbar("Erro de conexão.");
+                    }
+                }
+            });
+            
+            div.querySelector('.btn-encerrar-vaga').addEventListener('click', () => {
+                // Preencher o formulário para edição
+                document.getElementById('vagaId').value = v.id;
+                document.getElementById('vagaTitulo').value = v.titulo || '';
+                document.getElementById('vagaFuncao').value = v.funcao || '';
+                document.getElementById('vagaQuantidade').value = v.quantidadeVagas || 1;
+                document.getElementById('vagaNivel').value = v.nivelExperiencia || '';
+                document.getElementById('vagaDescricao').value = v.descricao || '';
+                document.getElementById('vagaRequisitos').value = v.requisitosObrigatorios || '';
+                
+                // Preencher Estado
+                const selectEstado = document.getElementById('vagaEstado');
+                selectEstado.value = v.estado || '';
+                
+                // Disparar evento para buscar cidades do estado
+                if (v.estado) {
+                    const evt = new Event('change');
+                    selectEstado.dispatchEvent(evt);
+                    
+                    // Aguardar o carregamento das cidades (IBGE) para setar a cidade salva
+                    setTimeout(() => {
+                        const selectCidade = document.getElementById('vagaCidade');
+                        selectCidade.value = v.cidade || '';
+                    }, 800);
+                } else {
+                    document.getElementById('vagaCidade').innerHTML = '<option value="">Selecione o estado primeiro...</option>';
+                    document.getElementById('vagaCidade').disabled = true;
+                }
+                
+                // Abrir modal de edição
+                modalVaga.style.display = 'block';
+            });
+            
+            container.appendChild(div);
+        });
+    }
+
+    const modalCandidatos = document.getElementById('candidatosModal');
+    if (modalCandidatos) {
+        modalCandidatos.querySelector('.close-button').addEventListener('click', () => {
+            modalCandidatos.style.display = 'none';
+        });
+    }
+
+    async function abrirModalCandidatos(vagaId) {
+        modalCandidatos.style.display = 'block';
+        const list = document.getElementById('candidatosList');
+        list.innerHTML = '<p><i class="fas fa-spinner fa-spin"></i> Buscando os melhores músicos...</p>';
+        
+        try {
+            const resp = await fetch(getApiUrl(`/api/vagas/${vagaId}/candidatos-compativeis`), {
+                headers: { 'Authorization': `Bearer ${authToken}` }
+            });
+            if (resp.ok) {
+                const candidatos = await resp.json();
+                list.innerHTML = '';
+                if (candidatos.length === 0) {
+                    list.innerHTML = '<p class="empty-state">Nenhum músico compatível encontrado no momento.</p>';
+                    return;
+                }
+                
+                candidatos.forEach(c => {
+                    const row = document.createElement('div');
+                    row.style = "display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:15px; border-radius:10px; margin-bottom:10px;";
+                    
+                    const pMatch = c.pontuacaoMatch;
+                    let colorMatch = '#ef4444';
+                    if (pMatch >= 80) colorMatch = '#10b981';
+                    else if (pMatch >= 50) colorMatch = '#f59e0b';
+                    
+                    row.innerHTML = `
+                        <div style="flex:1;">
+                            <h4 style="margin:0;">${c.nomeMusico}</h4>
+                            <p style="font-size:0.85em; color:var(--cor-texto-claro); margin:5px 0;">
+                                <i class="fas fa-map-marker-alt"></i> ${c.cidade||''}/${c.estado||''} | 
+                                <i class="fas fa-guitar"></i> ${c.instrumentosPrincipais}
+                            </p>
+                        </div>
+                        <div style="text-align:center; padding: 10px 20px; background:rgba(255,255,255,0.05); border-radius:8px;">
+                            <span style="font-size:1.5em; font-weight:bold; color:${colorMatch};">${pMatch}%</span>
+                            <br><small>Match</small>
+                        </div>
+                        <div style="margin-left:20px;">
+                            <a href="perfil-musico.html?id=${c.musicoId}" class="btn-adicionar" style="text-decoration:none; display:inline-block;">Ver Perfil</a>
+                        </div>
+                    `;
+                    list.appendChild(row);
+                });
+            } else {
+                list.innerHTML = '<p>Erro ao buscar candidatos.</p>';
+            }
+        } catch (e) {
+            console.error(e);
+            list.innerHTML = '<p>Erro de conexão.</p>';
+        }
+    }
+
+
+    // ============================================================
     // INICIALIZAÇÃO PRINCIPAL
     // ============================================================
     if (usuarioPertenceBanda) {
@@ -2083,6 +2364,7 @@ document.addEventListener('DOMContentLoaded', function() {
             carregarMembros();
             carregarConvitesPendentes();
             carregarRepertorio();
+            carregarVagas();
             buscarNotificacoes();
             setInterval(buscarNotificacoes, 30000);
         } else {
@@ -2093,6 +2375,7 @@ document.addEventListener('DOMContentLoaded', function() {
             carregarMembros();
             carregarConvitesPendentes();
             carregarRepertorio();
+            carregarVagas();
             buscarNotificacoes();
             setInterval(buscarNotificacoes, 30000);
 

@@ -67,3 +67,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     }
 });
+
+
+// ============================================================
+// FECHAMENTO UNIVERSAL DE MODAIS
+// ============================================================
+document.addEventListener('click', function(e) {
+    if (e.target.closest('.close-button')) {
+        const modal = e.target.closest('.modal');
+        if (modal) {
+            modal.style.display = 'none';
+        }
+    }
+});

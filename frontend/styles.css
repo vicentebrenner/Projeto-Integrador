@@ -1,5 +1,5 @@
 /* ==========================================================================
-   1. VARIÃVEIS GLOBAIS E RESET
+   1. VARIÃÂVEIS GLOBAIS E RESET
    ========================================================================== */
 :root {
     --cor-primaria: #011029;
@@ -52,6 +52,7 @@ body {
     background-color: var(--cor-fundo);
     width: 100%;
     overflow-x: hidden;
+    overflow-y: scroll;
 }
 
 h1,
@@ -61,7 +62,7 @@ h4 {
     font-family: var(--fonte-principal);
     font-weight: 700;
     color: var(--cor-primaria);
-    /* Cor padrÃ£o para tÃ­tulos */
+    /* Cor padrÃÂ£o para tÃÂ­tulos */
 }
 
 .container {
@@ -83,7 +84,7 @@ a:hover {
 }
 
 /* ==========================================================================
-   2. CABEÃ‡ALHO E NAVEGAÃ‡ÃƒO
+   2. CABEÃâ¡ALHO E NAVEGAÃâ¡ÃÆO
    ========================================================================== */
 .cabecalho {
     background-color: var(--cor-primaria);
@@ -187,7 +188,7 @@ a:hover {
 }
 
 /* ==========================================================================
-   3. SEÃ‡ÃƒO HERO (PÃGINA INICIAL)
+   3. SEÃâ¡ÃÆO HERO (PÃÂGINA INICIAL)
    ========================================================================== */
 .hero {
     background: url('assets/hero-bg.png') no-repeat center center/cover;
@@ -239,7 +240,7 @@ a:hover {
     border-radius: 50px;
     font-size: 0.85em;
     font-weight: 600;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     backdrop-filter: blur(5px);
 }
 
@@ -300,7 +301,7 @@ a:hover {
 }
 
 
-/* --- BOTÃ•ES GLOBAIS --- */
+/* --- BOTÃâ¢ES GLOBAIS --- */
 .btnCta {
     background: linear-gradient(135deg, var(--cor-secundaria), #e67e22);
     color: #fff !important;
@@ -353,7 +354,7 @@ a:hover {
 }
 
 /* ==========================================================================
-   4. NOVA SEÃ‡ÃƒO DE CAMINHOS (index.html)
+   4. NOVA SEÃâ¡ÃÆO DE CAMINHOS (index.html)
    ========================================================================== */
 .caminhos {
     padding: 100px 0;
@@ -388,7 +389,7 @@ a:hover {
     top: 0;
     left: 0;
     width: 100%;
-    height: 4px;
+    height: 3px;
     background: linear-gradient(90deg, var(--cor-secundaria), #e67e22);
     opacity: 0;
     transition: opacity 0.3s ease;
@@ -411,7 +412,7 @@ a:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
 }
 
 .caminho-icon-wrap i {
@@ -433,7 +434,7 @@ a:hover {
     flex-grow: 1;
 }
 
-/* BotÃ£o com Borda Laranja */
+/* BotÃÂ£o com Borda Laranja */
 .btnCta-outline {
     background-color: transparent;
     color: var(--cor-secundaria);
@@ -460,7 +461,7 @@ a:hover {
 
 
 /* ==========================================================================
-   5. SEÃ‡ÃƒO DE FUNCIONALIDADES
+   5. SEÃâ¡ÃÆO DE FUNCIONALIDADES
    ========================================================================== */
 .funcionalidades {
     padding: 100px 0;
@@ -595,7 +596,7 @@ a:hover {
     flex: 1;
     min-width: 320px;
     max-width: 500px;
-    border-radius: 24px;
+    border-radius: 16px;
     padding: 40px;
     position: relative;
     overflow: hidden;
@@ -635,7 +636,7 @@ a:hover {
     align-items: center;
     justify-content: center;
     margin: 0 auto 15px auto;
-    font-size: 1.8em;
+    font-size: 1.5em;
     color: #fff;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
@@ -656,7 +657,7 @@ a:hover {
 .board-steps {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 12px;
     position: relative;
     z-index: 2;
 }
@@ -670,7 +671,7 @@ a:hover {
     padding: 20px;
     display: grid;
     grid-template-columns: auto 1fr;
-    gap: 15px;
+    gap: 12px;
     align-items: center;
     transition: all 0.3s ease;
     cursor: default;
@@ -686,7 +687,7 @@ a:hover {
     width: 44px;
     height: 44px;
     background: #fff;
-    border-radius: 12px;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -757,7 +758,7 @@ a:hover {
 }
 
 /* ==========================================================================
-   5c. NÃšMEROS / SOCIAL PROOF
+   5c. NÃÅ¡MEROS / SOCIAL PROOF
    ========================================================================== */
 .numeros {
     padding: 80px 0;
@@ -840,7 +841,7 @@ a:hover {
     color: #555;
     line-height: 1.7;
     flex-grow: 1;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     font-style: italic;
 }
 
@@ -877,7 +878,7 @@ a:hover {
 }
 
 /* ==========================================================================
-   6. SEÃ‡ÃƒO CTA FINAL
+   6. SEÃâ¡ÃÆO CTA FINAL
    ========================================================================== */
 .cta-final {
     padding: 120px 0 0 0;
@@ -918,7 +919,7 @@ a:hover {
     font-size: 4em;
     color: #fff;
     line-height: 1.1;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     font-weight: 800;
 }
 
@@ -932,7 +933,7 @@ a:hover {
 .cta-features {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 12px;
 }
 
 .feature-item {
@@ -952,7 +953,7 @@ a:hover {
     backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     padding: 40px;
-    border-radius: 24px;
+    border-radius: 16px;
     position: relative;
     z-index: 2;
     box-shadow: 0 40px 100px rgba(0, 0, 0, 0.4);
@@ -960,7 +961,7 @@ a:hover {
 
 .login-card-inner h3 {
     color: #fff;
-    font-size: 1.8em;
+    font-size: 1.5em;
     margin-bottom: 30px;
     text-align: center;
 }
@@ -981,7 +982,7 @@ a:hover {
     background: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.1);
     padding: 14px 18px;
-    border-radius: 12px;
+    border-radius: 8px;
     color: #fff;
     font-size: 1em;
     transition: all 0.3s ease;
@@ -1079,7 +1080,7 @@ a:hover {
 
 
 /* ==========================================================================
-   7. RODAPÃ‰
+   7. RODAPÃâ°
    ========================================================================== */
 .footer {
     background-color: var(--cor-primaria);
@@ -1136,7 +1137,7 @@ a:hover {
     margin: 0;
 }
 
-/* Ãrea das Redes Sociais */
+/* ÃÂrea das Redes Sociais */
 .footer-social {
     display: flex;
     flex-direction: column;
@@ -1213,7 +1214,7 @@ a:hover {
 }
 
 /* ==========================================================================
-   8. PÃGINAS DE AUTENTICAÃ‡ÃƒO (LOGIN, CADASTRO, ETC.)
+   8. PÃÂGINAS DE AUTENTICAÃâ¡ÃÆO (LOGIN, CADASTRO, ETC.)
    ========================================================================== */
 .auth-page-body {
     background-color: var(--cor-primaria);
@@ -1251,7 +1252,7 @@ a:hover {
     color: var(--cor-secundaria);
     text-decoration: none;
     display: block;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
 }
 
 .loginBox h2 {
@@ -1277,9 +1278,9 @@ a:hover {
 
 .inputGroup input,
 .inputGroup select {
-    /* Aplicar estilo tambÃ©m a selects */
+    /* Aplicar estilo tambÃÂ©m a selects */
     width: 100%;
-    padding: 12px 15px;
+    padding: 10px 14px;
     /* Padding ajustado */
     border: 1px solid var(--cor-borda);
     border-radius: 5px;
@@ -1289,10 +1290,10 @@ a:hover {
     box-sizing: border-box;
     /* Garante padding correto */
     appearance: none;
-    /* Remove aparÃªncia padrÃ£o do select */
+    /* Remove aparÃÂªncia padrÃÂ£o do select */
 }
 
-/* Estilo especÃ­fico para select (seta) */
+/* Estilo especÃÂ­fico para select (seta) */
 .inputGroup select {
     background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2334495e' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E") no-repeat right 15px center/12px 12px;
 }
@@ -1330,7 +1331,7 @@ a:hover {
 
 .btnLoginSubmit,
 .btn-adicionar {
-    /* Estilo unificado para botÃµes de submit/adicionar */
+    /* Estilo unificado para botÃÂµes de submit/adicionar */
     display: block;
     text-decoration: none;
     width: 100%;
@@ -1395,9 +1396,9 @@ a:hover {
     font-weight: 600;
     text-align: left;
     margin-top: 6px;
-    /* Mais prÃ³ximo do campo */
+    /* Mais prÃÂ³ximo do campo */
     margin-bottom: 10px;
-    /* Menos espaÃ§o abaixo */
+    /* Menos espaÃÂ§o abaixo */
     min-height: 1.1em;
     opacity: 0;
     max-height: 0;
@@ -1433,7 +1434,7 @@ a:hover {
 }
 
 /* ==========================================================================
-   9. MENU DE PERFIL DO USUÃRIO
+   9. MENU DE PERFIL DO USUÃÂRIO
    ========================================================================== */
 .perfil-container {
     position: relative;
@@ -1441,7 +1442,7 @@ a:hover {
 }
 
 .perfil-icone {
-    width: 40px;
+    width: 30px;
     height: 40px;
     border-radius: 50%;
     background-color: var(--cor-secundaria);
@@ -1467,7 +1468,7 @@ a:hover {
 .perfil-dropdown {
     position: absolute;
     top: 55px;
-    /* Ajuste para nÃ£o colar no Ã­cone */
+    /* Ajuste para nÃÂ£o colar no ÃÂ­cone */
     right: 0;
     background-color: var(--cor-fundo-card);
     color: var(--cor-texto);
@@ -1483,7 +1484,7 @@ a:hover {
     visibility: hidden;
     transform: translateY(10px);
     transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s 0.3s;
-    /* TransiÃ§Ã£o de visibilidade */
+    /* TransiÃÂ§ÃÂ£o de visibilidade */
 }
 
 .perfil-dropdown.ativo {
@@ -1562,7 +1563,7 @@ a:hover {
 
 .dashboard-content {
     padding: 60px 0 80px;
-    /* EspaÃ§amento ajustado */
+    /* EspaÃÂ§amento ajustado */
     background-color: var(--cor-fundo-card);
 }
 
@@ -1574,7 +1575,7 @@ a:hover {
 }
 
 /* ==========================================================================
-   11. PÃGINA DE GESTÃƒO DA BANDA (banda.html)
+   11. PÃÂGINA DE GESTÃÆO DA BANDA (banda.html)
    ========================================================================== */
 .banda-container {
     padding-top: 70px;
@@ -1654,19 +1655,19 @@ a:hover {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 30px;
-    /* Mais espaÃ§o */
+    /* Mais espaÃÂ§o */
     flex-wrap: wrap;
     /* Quebra linha em telas pequenas */
-    gap: 15px;
+    gap: 12px;
 }
 
 .content-header h2 {
     margin: 0;
-    font-size: 1.8em;
+    font-size: 1.5em;
     /* Ajuste no tamanho */
 }
 
-/* BotÃ£o principal de adicionar */
+/* BotÃÂ£o principal de adicionar */
 .btn-adicionar-principal {
     background-color: var(--cor-secundaria);
     color: #fff;
@@ -1699,7 +1700,7 @@ a:hover {
     padding: 25px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     margin-bottom: 30px;
-    /* EspaÃ§o entre cards empilhados */
+    /* EspaÃÂ§o entre cards empilhados */
 }
 
 .card-style:hover {
@@ -1708,26 +1709,26 @@ a:hover {
 }
 
 .card-style h3 {
-    /* TÃ­tulo dentro do card */
+    /* TÃÂ­tulo dentro do card */
     padding: 0 0 15px 0;
     /* Padding inferior */
     margin: -25px -25px 25px -25px;
     /* Puxa para as bordas e adiciona margem */
     padding-left: 25px;
-    /* Alinha com o conteÃºdo */
+    /* Alinha com o conteÃÂºdo */
     padding-top: 20px;
     border-bottom: 1px solid #eee;
-    /* Linha divisÃ³ria */
+    /* Linha divisÃÂ³ria */
     font-size: 1.3em;
 }
 
 /* ==========================================================================
-   12. COMPONENTES DA PÃGINA DA BANDA (Tabelas, Grids, etc.)
+   12. COMPONENTES DA PÃÂGINA DA BANDA (Tabelas, Grids, etc.)
    ========================================================================== */
 
 .table-wrapper {
     overflow-x: auto;
-    border-radius: 12px;
+    border-radius: 8px;
 }
 
 .tabela-moderna {
@@ -1788,7 +1789,7 @@ a:hover {
     display: inline-block;
 }
 
-/* Cores especÃ­ficas para tags (Exemplos) */
+/* Cores especÃÂ­ficas para tags (Exemplos) */
 .cat-merchandising { background-color: rgba(250, 152, 72, 0.15); color: #d35400; }
 .cat-show { background-color: rgba(52, 152, 219, 0.15); color: #2980b9; }
 .cat-est-dio { background-color: rgba(155, 89, 182, 0.15); color: #8e44ad; }
@@ -1887,14 +1888,14 @@ a:hover {
 .metrica-card.despesa p { color: var(--cor-erro); }
 .metrica-card.despesa h4 i { color: var(--cor-erro); }
 
-/* GrÃ¡fico de Linha (EvoluÃ§Ã£o) e Filtros */
+/* GrÃÂ¡fico de Linha (EvoluÃÂ§ÃÂ£o) e Filtros */
 .chart-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     flex-wrap: wrap;
-    gap: 15px;
+    gap: 12px;
 }
 
 .dashboard-filters {
@@ -1902,7 +1903,7 @@ a:hover {
     gap: 10px;
     background: #f1f3f5;
     padding: 5px;
-    border-radius: 12px;
+    border-radius: 8px;
 }
 
 .filter-btn {
@@ -1922,7 +1923,7 @@ a:hover {
 }
 
 .filter-btn.ativo {
-    background: #ffffff;
+    background: var(--cor-fundo-cartao, #fff);
     color: var(--cor-primaria);
     box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
@@ -1942,8 +1943,8 @@ a:hover {
 
 /* Extrato Financeiro Moderno (Fintech Style) */
 .financeiro-extrato-card {
-    background: #ffffff;
-    border-radius: 24px;
+    background: var(--cor-fundo-cartao, #fff);
+    border-radius: 16px;
     padding: 35px;
     box-shadow: 0 12px 40px rgba(0,0,0,0.04);
     border: 1px solid rgba(0,0,0,0.02);
@@ -1953,7 +1954,7 @@ a:hover {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     padding-bottom: 20px;
     border-bottom: 1px solid rgba(0,0,0,0.05);
 }
@@ -1977,7 +1978,7 @@ a:hover {
 .transacoes-lista-moderna {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 12px;
 }
 
 .transacao-item-moderno {
@@ -1985,13 +1986,13 @@ a:hover {
     align-items: center;
     padding: 20px;
     border-radius: 16px;
-    background: #f8f9fa;
+    background: var(--cor-fundo, #f4f7f6);
     transition: all 0.3s ease;
     border: 1px solid transparent;
 }
 
 .transacao-item-moderno:hover {
-    background: #ffffff;
+    background: var(--cor-fundo-cartao, #fff);
     box-shadow: 0 8px 25px rgba(0,0,0,0.04);
     border-color: rgba(0,0,0,0.03);
     transform: translateX(5px);
@@ -2032,7 +2033,7 @@ a:hover {
 .transacao-meta {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 12px;
 }
 
 .transacao-data {
@@ -2057,7 +2058,7 @@ a:hover {
    PAINEL FINANCEIRO PREMIUM (Fintech/SaaS)
    ==================================================== */
 
-/* Header da pÃ¡gina */
+/* Header da pÃÂ¡gina */
 .fin-page-header {
     display: flex;
     justify-content: space-between;
@@ -2154,7 +2155,7 @@ a:hover {
     margin-top: 2px;
 }
 
-/* Layout principal: grÃ¡fico + extrato */
+/* Layout principal: grÃÂ¡fico + extrato */
 .fin-main-layout {
     display: grid;
     grid-template-columns: 1fr 380px;
@@ -2162,10 +2163,10 @@ a:hover {
     align-items: start;
 }
 
-/* Card do grÃ¡fico */
+/* Card do grÃÂ¡fico */
 .fin-chart-card {
     background: #fff;
-    border-radius: 24px;
+    border-radius: 16px;
     padding: 28px 28px 22px;
     box-shadow: 0 4px 24px rgba(0,0,0,0.05);
     border: 1px solid rgba(0,0,0,0.03);
@@ -2231,7 +2232,7 @@ a:hover {
 /* Card do extrato */
 .fin-extrato-card {
     background: #fff;
-    border-radius: 24px;
+    border-radius: 16px;
     padding: 24px;
     box-shadow: 0 4px 24px rgba(0,0,0,0.05);
     border: 1px solid rgba(0,0,0,0.03);
@@ -2305,7 +2306,7 @@ a:hover {
     grid-column: 1 / -1;
 }
 
-/* RepertÃ³rio Moderno */
+/* RepertÃÂ³rio Moderno */
 .repertorio-main {
     display: grid;
     grid-template-columns: 1fr 450px;
@@ -2364,7 +2365,7 @@ a:hover {
     line-height: 1.5;
 }
 
-/* Grid do Portfólio */
+/* Grid do PortfÃ³lio */
 .portfolio-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -2372,16 +2373,16 @@ a:hover {
     margin-top: 20px;
 }
 
-/* Card individual do vídeo */
+/* Card individual do vÃ­deo */
 .video-card {
     background-color: var(--cor-fundo-card);
-    border-radius: 12px;
+    border-radius: 8px;
     box-shadow: var(--sombra-card);
     overflow: hidden;
     transition: all 0.3s ease;
     display: flex;
     flex-direction: column;
-    border: 1px solid rgba(0,0,0,0.06);
+    border: 1px solid var(--cor-borda, rgba(0,0,0,0.1));
 }
 
 .video-card:hover {
@@ -2389,7 +2390,7 @@ a:hover {
     box-shadow: 0 12px 32px rgba(0,0,0,0.14);
 }
 
-/* Wrapper da thumbnail (proporção 16:9) */
+/* Wrapper da thumbnail (proporÃ§Ã£o 16:9) */
 .video-thumbnail-wrapper {
     position: relative;
     padding-bottom: 56.25%;
@@ -2414,7 +2415,7 @@ a:hover {
     filter: brightness(0.55);
 }
 
-/* Overlay com botão de play */
+/* Overlay com botÃ£o de play */
 .video-play-overlay {
     position: absolute;
     inset: 0;
@@ -2466,7 +2467,7 @@ a:hover {
     letter-spacing: 0.02em;
 }
 
-/* Rodapé do card */
+/* RodapÃ© do card */
 .video-card-footer {
     display: flex;
     align-items: center;
@@ -2534,7 +2535,7 @@ a:hover {
     border-color: #e74c3c;
 }
 
-/* Estado vazio do portfólio */
+/* Estado vazio do portfÃ³lio */
 .portfolio-empty {
     grid-column: 1 / -1;
     display: flex;
@@ -2574,7 +2575,7 @@ a:hover {
     margin: 0;
 }
 
-/* Iframe embed (após clicar play) */
+/* Iframe embed (apÃ³s clicar play) */
 .video-thumbnail-wrapper iframe {
     position: absolute;
     top: 0; left: 0;
@@ -2586,7 +2587,7 @@ a:hover {
     width: 45px;
     height: 45px;
     background: linear-gradient(135deg, rgba(250, 152, 72, 0.15), rgba(250, 152, 72, 0.05));
-    border-radius: 12px;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2665,7 +2666,7 @@ a:hover {
 }
 
 #visualizadorPdf embed {
-    /* Garantir que o embed ocupe o espaÃ§o */
+    /* Garantir que o embed ocupe o espaÃÂ§o */
     display: block;
     border: 1px solid var(--cor-borda);
     /* Adiciona uma borda sutil */
@@ -2674,21 +2675,21 @@ a:hover {
 }
 
 /* ==========================================================================
-   FIX: Responsividade do HistÃ³rico Financeiro
+   FIX: Responsividade do HistÃÂ³rico Financeiro
    ========================================================================== */
 .transacao-item-moderno {
     display: flex;
     align-items: center;
     padding: 16px;
     border-radius: 16px;
-    background: #f8f9fa;
+    background: var(--cor-fundo, #f4f7f6);
     transition: all 0.3s ease;
     border: 1px solid transparent;
     min-width: 0; /* evita overflow */
     gap: 14px;
 }
 .transacao-item-moderno:hover {
-    background: #ffffff;
+    background: var(--cor-fundo-cartao, #fff);
     box-shadow: 0 8px 25px rgba(0,0,0,0.04);
     border-color: rgba(0,0,0,0.03);
     transform: translateX(4px);
@@ -2707,7 +2708,7 @@ a:hover {
 
 @media (max-width: 420px) {
     .transacao-item-moderno { flex-wrap: wrap; gap: 10px; }
-    .transacao-icone { width: 40px; height: 40px; border-radius: 12px; font-size: 1em; }
+    .transacao-icone { width: 30px; height: 40px; border-radius: 8px; font-size: 1em; }
     .transacao-valor { width: 100%; text-align: right; font-size: 1em; margin-top: 4px; }
 }
 
@@ -2731,7 +2732,7 @@ a:hover {
 .cal-sidebar {
     width: 260px;
     min-width: 260px;
-    background: #f8f9fa;
+    background: var(--cor-fundo, #f4f7f6);
     border-right: 1px solid rgba(0,0,0,0.06);
     padding: 20px 18px;
     display: flex;
@@ -2758,7 +2759,7 @@ a:hover {
 }
 .cal-new-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(1,16,41,0.3); }
 
-/* ---- Mini CalendÃ¡rio ---- */
+/* ---- Mini CalendÃÂ¡rio ---- */
 .cal-mini { background: #fff; border-radius: 14px; padding: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
 .cal-mini-header {
     display: flex;
@@ -2799,7 +2800,7 @@ a:hover {
 .mini-day.tem-evento::after {
     content: ''; position: absolute; bottom: 2px; left: 50%;
     transform: translateX(-50%);
-    width: 4px; height: 4px; border-radius: 50%; background: var(--cor-secundaria);
+    width: 4px; height: 3px; border-radius: 50%; background: var(--cor-secundaria);
 }
 
 /* ---- Categorias ---- */
@@ -2816,7 +2817,7 @@ a:hover {
 .cat-dot.gravacao { background: #8b5cf6; }
 .cat-dot.outro { background: #3b82f6; }
 
-/* ---- Ã rea Principal ---- */
+/* ---- Ã rea Principal ---- */
 .cal-main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
 .cal-toolbar {
     display: flex;
@@ -2879,14 +2880,14 @@ a:hover {
     margin: 0;
 }
 
-/* Modal e FormulÃ¡rios (ContinuaÃ§Ã£o) */
+/* Modal e FormulÃÂ¡rios (ContinuaÃÂ§ÃÂ£o) */
 
-/* ---- ConteÃºdo (animaÃ§Ã£o) ---- */
+/* ---- ConteÃÂºdo (animaÃÂ§ÃÂ£o) ---- */
 .cal-content { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
 @keyframes calFadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
 .cal-anim { animation: calFadeIn 0.25s ease; }
 
-/* ---- VisÃ£o MÃªs ---- */
+/* ---- VisÃÂ£o MÃÂªs ---- */
 .cal-month-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
@@ -2902,14 +2903,14 @@ a:hover {
     position: sticky; top: 0; background: #fff; z-index: 1;
 }
 .cal-month-cell {
-    border: 1px solid rgba(0,0,0,0.05);
+    border: 1px solid var(--cor-borda, rgba(0,0,0,0.1));
     padding: 8px 6px 6px;
     min-height: 100px;
     cursor: pointer;
     transition: background 0.15s;
     overflow: hidden;
 }
-.cal-month-cell:hover { background: #f8f9fa; }
+.cal-month-cell:hover { background: var(--cor-fundo, #f4f7f6); }
 .cal-month-cell.fora-mes { background: #fafafa; }
 .cal-month-cell.hoje .cal-day-num { background: var(--cor-primaria); color: #fff; }
 .cal-month-cell.cal-drop-over { background: rgba(1,16,41,0.06); }
@@ -2936,7 +2937,7 @@ a:hover {
 }
 .cal-mais-eventos { font-size: 0.72em; color: var(--cor-texto-claro); font-weight: 600; padding: 2px 4px; }
 
-/* ---- VisÃ£o Semana / Dia (grade horÃ¡ria) ---- */
+/* ---- VisÃÂ£o Semana / Dia (grade horÃÂ¡ria) ---- */
 .cal-week-wrap, .cal-day-wrap {
     display: flex; flex-direction: column; flex: 1; overflow: hidden;
 }
@@ -2987,11 +2988,11 @@ a:hover {
     color: var(--cor-texto-claro);
     opacity: 0.7;
     position: relative;
-    top: -10px; /* Alinhar o texto com a linha divisÃ³ria superior */
+    top: -10px; /* Alinhar o texto com a linha divisÃÂ³ria superior */
 }
 .cal-grid-line {
     border-top: 1px solid rgba(0,0,0,0.02); /* Linha fina e elegante atravessando a grade */
-    pointer-events: none; /* Para nÃ£o bloquear cliques */
+    pointer-events: none; /* Para nÃÂ£o bloquear cliques */
 }
 .cal-day-col {
     border-left: 1px solid rgba(0,0,0,0.02);
@@ -3019,9 +3020,9 @@ a:hover {
     display: flex; flex-direction: column; gap: 4px;
     overflow: hidden; transition: all 0.25s ease;
     box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    border: 1px solid rgba(0,0,0,0.05);
+    border: 1px solid var(--cor-borda, rgba(0,0,0,0.1));
     border-left: 4px solid var(--cor-secundaria); /* Faixa colorida da categoria, ajustada via JS */
-    min-height: 50px; /* Garante tamanho mÃ­nimo */
+    min-height: 50px; /* Garante tamanho mÃÂ­nimo */
     z-index: 2;
 }
 .cal-week-event:hover {
@@ -3032,7 +3033,7 @@ a:hover {
 .cal-week-event strong { font-size: 0.95em; font-weight: 800; line-height: 1.2; letter-spacing: 0.3px; color: var(--cor-primaria); }
 .cal-week-event small { font-size: 0.85em; opacity: 0.8; font-weight: 600; color: var(--cor-texto-claro); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-/* VisÃ£o Dia Antiga removida, reaproveitando Grid Engine */
+/* VisÃÂ£o Dia Antiga removida, reaproveitando Grid Engine */
 .cal-day-wrap { overflow-y: auto; display: flex; flex-direction: column; flex: 1; }
 .cal-day-event {
     position: absolute;
@@ -3046,7 +3047,7 @@ a:hover {
     cursor: pointer;
     display: flex; flex-direction: column; gap: 6px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-    border: 1px solid rgba(0,0,0,0.05);
+    border: 1px solid var(--cor-borda, rgba(0,0,0,0.1));
     border-left: 5px solid var(--cor-secundaria);
     transition: all 0.25s ease;
     min-height: 50px;
@@ -3085,7 +3086,7 @@ a:hover {
     height: 6px;
     width: 100%;
 }
-/* BotÃµes topo direito */
+/* BotÃÂµes topo direito */
 .cal-pop-actions-top {
     display: flex;
     justify-content: flex-end;
@@ -3189,7 +3190,7 @@ a:hover {
 }
 .cal-pop-delete:hover { background: #fef2f2; border-color: #fca5a5; }
 
-/* ---- PrÃ³ximos Encontros (Sidebar) ---- */
+/* ---- PrÃÂ³ximos Encontros (Sidebar) ---- */
 .cal-proximos {
     flex: 1;
 }
@@ -3198,14 +3199,15 @@ a:hover {
     align-items: center;
     gap: 12px;
     padding: 12px 10px;
-    border-radius: 12px;
+    border-radius: 8px;
     cursor: pointer;
     transition: all 0.25s ease;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
+    font-size: 0.9em;
     border: 1px solid transparent;
 }
 .cal-proximo-item:hover {
-    background: #ffffff;
+    background: var(--cor-fundo-cartao, #fff);
     box-shadow: 0 4px 12px rgba(0,0,0,0.06);
     border-color: rgba(0,0,0,0.03);
     transform: translateX(2px);
@@ -3257,7 +3259,7 @@ a:hover {
 .cal-proximos-empty i { font-size: 1.4em; opacity: 0.4; }
 
 
-/* ---- Responsividade CalendÃ¡rio ---- */
+/* ---- Responsividade CalendÃÂ¡rio ---- */
 @media (max-width: 900px) {
     .cal-sidebar-toggle { display: flex; }
     .cal-sidebar {
@@ -3270,12 +3272,12 @@ a:hover {
     .cal-root { position: relative; }
     .cal-week-header { grid-template-columns: 40px repeat(7, 1fr); }
     .cal-week-row { grid-template-columns: 40px repeat(7, 1fr); }
-    .cal-time-label { width: 40px; font-size: 0.65em; padding: 4px 4px; }
+    .cal-time-label { width: 30px; font-size: 0.65em; padding: 4px 4px; }
     .cal-view-btn { padding: 6px 10px; font-size: 0.78em; }
     .cal-current-date { font-size: 1em; }
 }
 @media (max-width: 600px) {
-    .cal-root { height: calc(100vh - 160px); border-radius: 12px; }
+    .cal-root { height: calc(100vh - 160px); border-radius: 8px; }
     .cal-week-header { grid-template-columns: 36px repeat(7, 1fr); }
     .cal-week-row { grid-template-columns: 36px repeat(7, 1fr); }
     .cal-week-head-col { padding: 6px 2px; }
@@ -3291,7 +3293,7 @@ a:hover {
 
 /* ---- Estilos antigos (mantidos para compatibilidade) ---- */
 /* ==========================================================================
-   13b. ESTILOS DA AGENDA (antigo - substituÃ­do)
+   13b. ESTILOS DA AGENDA (antigo - substituÃÂ­do)
    ========================================================================== */
 
 .agenda-cards-grid {
@@ -3348,7 +3350,7 @@ a:hover {
 }
 
 .card-date-badge .dia {
-    font-size: 1.8em;
+    font-size: 1.5em;
     font-weight: 800;
     color: var(--cor-primaria);
     line-height: 1;
@@ -3389,7 +3391,7 @@ a:hover {
 .type-tag {
     display: inline-block;
     padding: 4px 10px;
-    border-radius: 12px;
+    border-radius: 8px;
     font-size: 0.75em;
     font-weight: 700;
     text-transform: uppercase;
@@ -3455,19 +3457,19 @@ a:hover {
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(1, 16, 41, 0.5); /* Fundo azul escuro translÃºcido */
+    background-color: rgba(1, 16, 41, 0.5); /* Fundo azul escuro translÃÂºcido */
     backdrop-filter: blur(8px); /* Efeito Glassmorphism de fundo */
     animation: fadeInModalBg 0.4s ease-out forwards;
 }
 
 .modal-content {
-    background: #ffffff;
-    margin: 8vh auto;
-    padding: 30px 40px;
+    background: var(--cor-fundo-cartao, #fff);
+    margin: 5vh auto;
+    padding: 24px 30px;
     border: 1px solid rgba(250, 152, 72, 0.15);
     width: 90%;
-    max-width: 480px;
-    border-radius: 24px;
+    max-width: 420px;
+    border-radius: 16px;
     position: relative;
     box-shadow: 0 25px 60px rgba(1, 16, 41, 0.2);
     animation: zoomInModal 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
@@ -3478,8 +3480,8 @@ a:hover {
 .modal-content h3 {
     text-align: center;
     margin-top: 0;
-    margin-bottom: 25px;
-    font-size: 1.8em;
+    margin-bottom: 20px;
+    font-size: 1.5em;
     color: var(--cor-primaria);
     font-weight: 800;
     position: relative;
@@ -3488,10 +3490,10 @@ a:hover {
 .modal-content h3::after {
     content: '';
     display: block;
-    width: 40px;
-    height: 4px;
+    width: 30px;
+    height: 3px;
     background: var(--cor-secundaria);
-    margin: 15px auto 0;
+    margin: 10px auto 0;
     border-radius: 2px;
 }
 
@@ -3506,12 +3508,13 @@ a:hover {
     line-height: 1;
     transition: all 0.3s ease;
     background: rgba(0,0,0,0.03);
-    width: 40px;
+    width: 30px;
     height: 40px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 100;
 }
 
 .close-button:hover,
@@ -3553,7 +3556,7 @@ a:hover {
 
 .form-row {
     display: flex;
-    gap: 15px;
+    gap: 12px;
 }
 .form-row .inputGroup {
     flex: 1;
@@ -3563,15 +3566,16 @@ a:hover {
 .modal-content .inputGroup label {
     font-weight: 700;
     color: var(--cor-primaria);
-    margin-bottom: 6px;
+    margin-bottom: 4px;
+    font-size: 0.9em;
 }
 
 .modal-content .inputGroup input, 
 .modal-content .inputGroup select {
     background-color: #f8f9fa;
-    border: 2px solid transparent;
-    border-radius: 12px;
-    padding: 12px 15px;
+    border: 1px solid rgba(0,0,0,0.05);
+    border-radius: 8px;
+    padding: 10px 14px;
     transition: all 0.3s ease;
 }
 
@@ -3582,12 +3586,12 @@ a:hover {
     box-shadow: 0 0 0 4px rgba(250, 152, 72, 0.15);
 }
 
-/* BotÃµes tipo transaÃ§Ã£o no modal */
+/* BotÃÂµes tipo transaÃÂ§ÃÂ£o no modal */
 .tipo-transacao-group {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 15px;
-    margin-bottom: 25px;
+    gap: 12px;
+    margin-bottom: 20px;
 }
 
 .tipo-transacao-group input[type="radio"] {
@@ -3595,10 +3599,10 @@ a:hover {
 }
 
 .tipo-transacao-group label {
-    padding: 12px;
-    border: 2px solid #eee;
-    background: #f8f9fa;
-    border-radius: 12px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    background: var(--cor-fundo, #f4f7f6);
+    border-radius: 8px;
     text-align: center;
     font-weight: 700;
     cursor: pointer;
@@ -3630,7 +3634,7 @@ a:hover {
 #tipoDespesa:checked+label { background: linear-gradient(135deg, #e74c3c, #c0392b); }
 
 /* ==========================================================================
-   15. SNACKBAR (NotificaÃ§Ãµes)
+   15. SNACKBAR (NotificaÃÂ§ÃÂµes)
    ========================================================================== */
 #snackbar {
     visibility: hidden;
@@ -3731,7 +3735,7 @@ a:hover {
         max-width: 85%;
     }
 
-    /* Coluna Ãºnica para os cards de caminho */
+    /* Coluna ÃÂºnica para os cards de caminho */
     .caminhos .container {
         grid-template-columns: 1fr;
     }
@@ -3762,7 +3766,7 @@ a:hover {
     .financeiro-bottom-grid,
     .repertorio-grid {
         grid-template-columns: 1fr;
-        /* Coluna Ãºnica */
+        /* Coluna ÃÂºnica */
     }
 
     .metricas-grid {
@@ -3781,7 +3785,7 @@ a:hover {
         justify-content: center;
     }
 
-    /* Centraliza aÃ§Ãµes */
+    /* Centraliza aÃÂ§ÃÂµes */
 }
 
 @media (max-width: 768px) {
@@ -3804,7 +3808,7 @@ a:hover {
         margin-left: 15px;
     }
 
-    /* Menos espaÃ§o */
+    /* Menos espaÃÂ§o */
 
     .hero h2 {
         font-size: 2.2em;
@@ -3893,11 +3897,11 @@ a:hover {
     .btnLoginSubmit,
     .btn-adicionar {
         font-size: 1em;
-        padding: 12px;
+        padding: 10px;
     }
 
     .banda-container h1 {
-        font-size: 1.8em;
+        font-size: 1.5em;
     }
 
     .content-header h2 {
@@ -3914,7 +3918,7 @@ a:hover {
 }
 
 /* ==========================================================================
-   (Adicionar ao final ou em seÃ§Ã£o apropriada)
+   (Adicionar ao final ou em seÃÂ§ÃÂ£o apropriada)
    17. ESTILOS ADICIONAIS PARA UPLOAD DE PARTITURA
    ========================================================================== */
 
@@ -3943,16 +3947,16 @@ a:hover {
     color: var(--cor-texto-claro);
 }
 
-/* Ajuste no botÃ£o de ver partitura para ficar mais claro o clique */
+/* Ajuste no botÃÂ£o de ver partitura para ficar mais claro o clique */
 .btn-ver-partitura {
     /* (Estilos existentes) */
     display: inline-flex;
-    /* Para alinhar Ã­cone e texto */
+    /* Para alinhar ÃÂ­cone e texto */
     align-items: center;
     gap: 5px;
 }
 
-/* Garantir que o embed ocupe espaÃ§o no visualizador */
+/* Garantir que o embed ocupe espaÃÂ§o no visualizador */
 #visualizadorPdf embed {
     display: block;
     border: 1px solid var(--cor-borda);
@@ -3962,35 +3966,35 @@ a:hover {
 }
 
 /* ==========================================================================
-   (Adicionar ao final ou em seÃ§Ã£o apropriada)
+   (Adicionar ao final ou em seÃÂ§ÃÂ£o apropriada)
    18. ESTILOS ADICIONAIS PARA MODAL MEMBRO
    ========================================================================== */
 
 .modal-content p.modal-description {
     font-size: 0.9em;
     color: #555;
-    margin-bottom: 25px;
-    /* EspaÃ§o antes do formulÃ¡rio */
+    margin-bottom: 20px;
+    /* EspaÃÂ§o antes do formulÃÂ¡rio */
     text-align: center;
     line-height: 1.5;
 }
 
-/* Ajuste na tabela de membros para espaÃ§amento */
+/* Ajuste na tabela de membros para espaÃÂ§amento */
 .tabela-moderna td:nth-child(2),
 /* Coluna Email */
 .tabela-moderna th:nth-child(2) {
     min-width: 180px;
-    /* Garante um espaÃ§o mÃ­nimo para o email */
+    /* Garante um espaÃÂ§o mÃÂ­nimo para o email */
 }
 
 /* ==========================================================================
-   (Adicionar ao final ou em seÃ§Ã£o apropriada)
+   (Adicionar ao final ou em seÃÂ§ÃÂ£o apropriada)
    19. ESTILOS PARA CONVITES PENDENTES
    ========================================================================== */
 
 .lista-convites {
     list-style: none;
-    /* Remove marcadores padrÃ£o */
+    /* Remove marcadores padrÃÂ£o */
     padding: 0;
     margin: 0;
 }
@@ -4001,28 +4005,28 @@ a:hover {
     /* Alinha itens nas extremidades */
     align-items: center;
     padding: 12px 0;
-    /* EspaÃ§amento vertical */
+    /* EspaÃÂ§amento vertical */
     border-bottom: 1px solid #f1f3f5;
-    /* Linha divisÃ³ria sutil */
+    /* Linha divisÃÂ³ria sutil */
     font-size: 0.95em;
 }
 
 .lista-convites li:last-child {
     border-bottom: none;
-    /* Remove borda do Ãºltimo item */
+    /* Remove borda do ÃÂºltimo item */
 }
 
 .lista-convites li span {
     display: flex;
     align-items: center;
     gap: 10px;
-    /* EspaÃ§o entre Ã­cone e texto */
+    /* EspaÃÂ§o entre ÃÂ­cone e texto */
     color: var(--cor-texto);
 }
 
 .lista-convites li i.fa-user-clock {
     color: var(--cor-texto-claro);
-    /* Ã cone cinza */
+    /* Ã cone cinza */
 }
 
 .lista-convites li strong {
@@ -4034,10 +4038,10 @@ a:hover {
     background: none;
     border: none;
     color: var(--cor-texto-claro);
-    /* Cinza claro por padrÃ£o */
+    /* Cinza claro por padrÃÂ£o */
     cursor: pointer;
     font-size: 1.2em;
-    /* Ã cone um pouco maior */
+    /* Ã cone um pouco maior */
     padding: 5px;
     transition: color 0.2s ease;
 }
@@ -4049,13 +4053,13 @@ a:hover {
 
 /* ==========================================================================
    (Adicionar ao final do CSS)
-   20. ESTILOS PARA PERFIL DE MÃšSICO (perfil-musico.html)
+   20. ESTILOS PARA PERFIL DE MÃÅ¡SICO (perfil-musico.html)
    ========================================================================== */
 
-/* Estilo para Textarea (FormulÃ¡rio de Bio) */
+/* Estilo para Textarea (FormulÃÂ¡rio de Bio) */
 .inputGroup textarea {
     width: 100%;
-    padding: 12px 15px;
+    padding: 10px 14px;
     border: 1px solid var(--cor-borda);
     border-radius: 5px;
     font-size: 1em;
@@ -4078,10 +4082,10 @@ a:hover {
 }
 
 /* ==========================================================================
-   COMPACTAÃ‡ÃƒO GLOBAL â€” banda.html (fix tamanhos grandes)
+   COMPACTAÃâ¡ÃÆO GLOBAL Ã¢â¬â banda.html (fix tamanhos grandes)
    ========================================================================== */
 
-/* --- CalendÃ¡rio: container e altura --- */
+/* --- CalendÃÂ¡rio: container e altura --- */
 .cal-root {
     height: calc(100vh - 210px);
     min-height: 500px;
@@ -4094,7 +4098,7 @@ a:hover {
     min-height: calc(100vh - 110px - 60px);
 }
 
-/* --- Tabs: tamanho adequado e bem distribuÃ­das --- */
+/* --- Tabs: tamanho adequado e bem distribuÃÂ­das --- */
 .banda-tabs {
     margin-bottom: 20px;
     gap: 8px;
@@ -4118,7 +4122,7 @@ a:hover {
     border-radius: 22px;
 }
 
-/* --- Mini-calendÃ¡rio compacto --- */
+/* --- Mini-calendÃÂ¡rio compacto --- */
 .cal-mini { padding: 8px; border-radius: 10px; }
 .cal-mini-header { font-size: 0.78em; margin-bottom: 4px; }
 .cal-mini-nav { width: 20px; height: 20px; }
@@ -4130,7 +4134,7 @@ a:hover {
 .cal-cat-item { font-size: 0.82em; padding: 4px 2px; gap: 7px; }
 .cat-dot { width: 10px; height: 10px; }
 
-/* --- PrÃ³ximos Encontros compacto --- */
+/* --- PrÃÂ³ximos Encontros compacto --- */
 .cal-proximo-item { padding: 7px 6px; gap: 8px; }
 .cal-prox-date { min-width: 30px; padding: 4px 3px; }
 .cal-prox-dia { font-size: 0.95em; }
@@ -4145,7 +4149,7 @@ a:hover {
 .cal-btn-nav { width: 28px; height: 28px; font-size: 0.8em; }
 .cal-view-btn { padding: 5px 12px; font-size: 0.78em; }
 
-/* --- Semana: cabeÃ§alho compacto --- */
+/* --- Semana: cabeÃÂ§alho compacto --- */
 .cal-week-head-col { padding: 7px 2px; }
 .cal-dow-label { font-size: 0.68em; }
 .cal-day-badge { width: 26px; height: 26px; font-size: 0.88em; }
@@ -4155,7 +4159,7 @@ a:hover {
 .cal-day-row  { min-height: 48px; }
 .cal-time-label { font-size: 0.68em; padding: 3px 6px; }
 
-/* --- MÃªs: cÃ©lulas menores --- */
+/* --- MÃÂªs: cÃÂ©lulas menores --- */
 .cal-month-cell { min-height: 80px; padding: 5px 4px; }
 .cal-day-num { width: 22px; height: 22px; font-size: 0.78em; margin-bottom: 2px; }
 .cal-event-chip { font-size: 0.68em; padding: 1px 4px; margin-bottom: 1px; }
@@ -4169,7 +4173,7 @@ a:hover {
 /* --- KPI cards do financeiro compactos --- */
 .fin-kpi-grid { gap: 12px; margin-bottom: 18px; }
 .fin-kpi-card { padding: 18px 16px; gap: 12px; border-radius: 16px; }
-.fin-kpi-icon { width: 44px; height: 44px; font-size: 1.1em; border-radius: 12px; }
+.fin-kpi-icon { width: 44px; height: 44px; font-size: 1.1em; border-radius: 8px; }
 .fin-kpi-value { font-size: 1.2em; }
 .fin-kpi-label { font-size: 0.72em; }
 .fin-chart-card { padding: 20px 20px 16px; border-radius: 18px; }
@@ -4194,8 +4198,8 @@ a:hover {
         gap: 6px; 
         padding: 6px; 
         margin-bottom: 12px; 
-        border-radius: 12px;
-        border: 1px solid rgba(0,0,0,0.05);
+        border-radius: 8px;
+        border: 1px solid var(--cor-borda, rgba(0,0,0,0.1));
         max-width: 100%;
     }
     .tab-link { 
@@ -4250,8 +4254,8 @@ a:hover {
 }
 
 .modal-boas-vindas {
-    background: #ffffff;
-    border-radius: 24px;
+    background: var(--cor-fundo-cartao, #fff);
+    border-radius: 16px;
     width: 100%;
     max-width: 420px;
     max-height: 90vh;
@@ -4352,9 +4356,9 @@ a:hover {
 }
 
 .modal-card {
-    background: #f8f9fa;
+    background: var(--cor-fundo, #f4f7f6);
     border: 1px solid #dee2e6;
-    border-radius: 12px;
+    border-radius: 8px;
     padding: 14px 10px;
     text-align: center;
     transition: all 0.3s ease;
@@ -4414,7 +4418,7 @@ a:hover {
     background: linear-gradient(135deg, #fa9848, #e67e22);
     color: #fff;
     border: none;
-    border-radius: 12px;
+    border-radius: 8px;
     padding: 13px 24px;
     font-family: 'Montserrat', sans-serif;
     font-weight: 700;
@@ -4475,7 +4479,7 @@ a:hover {
 }
 
 /* ==========================================================================
-   SISTEMA DE PERMISSÃ•ES â€” Tabs Bloqueadas
+   SISTEMA DE PERMISSÃâ¢ES Ã¢â¬â Tabs Bloqueadas
    ========================================================================== */
 .tab-link.tab-bloqueada {
     opacity: 0.55;
@@ -4486,13 +4490,13 @@ a:hover {
     position: relative;
 }
 .tab-link.tab-bloqueada::after {
-    content: 'ðŸ”’';
+    content: 'Ã°Å¸ââ';
     font-size: 0.72em;
     margin-left: 4px;
     opacity: 0.8;
 }
 .tab-link-config {
-    margin-left: auto;
+    
     background: linear-gradient(135deg, rgba(250,152,72,0.12), rgba(250,152,72,0.05)) !important;
     color: var(--cor-secundaria) !important;
     border-color: rgba(250,152,72,0.3) !important;
@@ -4547,7 +4551,7 @@ a:hover {
     align-items: center;
     justify-content: center;
     margin: 0 auto 20px;
-    font-size: 1.8em;
+    font-size: 1.5em;
     color: #d97706;
     box-shadow: 0 8px 20px rgba(217,119,6,0.2);
 }
@@ -4563,7 +4567,7 @@ a:hover {
 }
 
 /* ==========================================================================
-   ABA CONFIGURAÃ‡Ã•ES â€” Gerenciamento de PermissÃµes
+   ABA CONFIGURAÃâ¡Ãâ¢ES Ã¢â¬â Gerenciamento de PermissÃÂµes
    ========================================================================== */
 .perm-page-header {
     display: flex;
@@ -4588,7 +4592,7 @@ a:hover {
     font-size: 0.95em;
 }
 
-/* Legenda de mÃ³dulos */
+/* Legenda de mÃÂ³dulos */
 .perm-modulos-legenda {
     display: flex;
     gap: 10px;
@@ -4610,7 +4614,7 @@ a:hover {
 .perm-badge-membros   { background: rgba(59,130,246,0.1); color:#3b82f6; border-color: rgba(59,130,246,0.25); }
 .perm-badge-repertorio{ background: rgba(139,92,246,0.1); color:#8b5cf6; border-color: rgba(139,92,246,0.25); }
 
-/* Grid de cards de permissÃ£o */
+/* Grid de cards de permissÃÂ£o */
 .perm-cards-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
@@ -4663,7 +4667,8 @@ a:hover {
 .perm-card-info p {
     font-size: 0.82em;
     color: #6b7280;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
+    font-size: 0.9em;
 }
 .perm-funcao-badge {
     display: inline-block;
@@ -4688,7 +4693,7 @@ a:hover {
     align-items: center;
     justify-content: space-between;
     padding: 12px 16px;
-    border-radius: 12px;
+    border-radius: 8px;
     background: var(--cor-fundo);
     border: 1px solid var(--cor-borda);
     cursor: pointer;
@@ -4786,7 +4791,7 @@ a:hover {
 }
 
 /* ============================================================
-   ESTILOS DE NOTIFICAÃ‡Ã•ES (SINO, BADGES, DROPDOWN)
+   ESTILOS DE NOTIFICAÃâ¡Ãâ¢ES (SINO, BADGES, DROPDOWN)
    ============================================================ */
 .notif-bell {
     position: relative;
@@ -4835,7 +4840,7 @@ a:hover {
     width: 290px;
     background: #0d1e3d;
     border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 12px;
+    border-radius: 8px;
     box-shadow: 0 8px 30px rgba(0,0,0,0.5);
     z-index: 1000;
     display: none;
@@ -4908,152 +4913,283 @@ a:hover {
 /* ============================================================
    ESTILOS DE CARDS DE INTEGRANTES PREMIUM & SWITCHES
    ============================================================ */
+/* ================================================================ */
+/* ABA CONFIGURAÇÕES / PERMISSÕES - DESIGN ELEGANTE PREMIUM       */
+/* ================================================================ */
+
+/* Cabeçalho da aba */
+.perm-premium-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+    background: linear-gradient(135deg, rgba(250,152,72,0.08) 0%, rgba(1,16,41,0.6) 100%);
+    border: 1px solid rgba(250,152,72,0.2);
+    padding: 24px 28px;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.05);
+    backdrop-filter: blur(10px);
+}
+
+.perm-premium-header h2 {
+    font-size: 1.5em;
+    font-weight: 800;
+    color: #fff;
+    margin: 0 0 4px 0;
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: -0.5px;
+}
+
+.perm-premium-header span#configMembrosCount {
+    font-size: 0.9em;
+    color: var(--cor-secundaria);
+    font-weight: 600;
+}
+
+/* Campo de busca */
+#buscaIntegranteNome {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(0,0,0,0.3);
+    color: #fff;
+    font-size: 0.95em;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+#buscaIntegranteNome:focus {
+    border-color: rgba(250,152,72,0.5);
+    background: rgba(0,0,0,0.4);
+    box-shadow: 0 0 0 3px rgba(250,152,72,0.1);
+}
+
+#buscaIntegranteNome::placeholder { color: rgba(255,255,255,0.35); }
+
+/* Grid de Cards */
 .integrantes-premium-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 24px;
-    margin-top: 25px;
+    gap: 20px;
+    margin-top: 10px;
 }
+
+/* Card de Integrante */
 .member-premium-card {
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 14px;
+    background: linear-gradient(145deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
     padding: 24px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
     position: relative;
     overflow: hidden;
 }
-.member-premium-card:hover {
-    transform: translateY(-5px);
-    background: rgba(255, 255, 255, 0.04);
-    border-color: rgba(250, 152, 72, 0.3);
-    box-shadow: 0 8px 25px rgba(250, 152, 72, 0.08);
+
+/* Linha dourada no topo do card */
+.member-premium-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--cor-secundaria), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
+
+.member-premium-card:hover {
+    transform: translateY(-4px);
+    background: linear-gradient(145deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%);
+    border-color: rgba(250,152,72,0.25);
+    box-shadow: 0 12px 35px rgba(0,0,0,0.3), 0 0 0 1px rgba(250,152,72,0.1);
+}
+
+.member-premium-card:hover::before {
+    opacity: 1;
+}
+
+/* Cabeçalho do Card: Avatar + Nome */
 .member-premium-card-header {
     display: flex;
     align-items: center;
-    gap: 15px;
-    margin-bottom: 20px;
+    gap: 14px;
+    margin-bottom: 18px;
 }
+
+/* Avatar */
 .member-premium-avatar {
     width: 52px;
     height: 52px;
     border-radius: 50%;
-    background: linear-gradient(135deg, var(--cor-secundaria, #fa9848), #f57c00);
+    background: linear-gradient(135deg, var(--cor-secundaria), #e07820);
     color: #011029;
-    font-weight: 700;
-    font-size: 1.3em;
+    font-weight: 800;
+    font-size: 1.25em;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 10px rgba(250, 152, 72, 0.25);
+    box-shadow: 0 4px 14px rgba(250,152,72,0.35);
     font-family: 'Montserrat', sans-serif;
+    flex-shrink: 0;
+    border: 2px solid rgba(250,152,72,0.3);
 }
+
+/* Info Nome e Email */
 .member-premium-info h4 {
     margin: 0;
-    font-size: 1.1em;
+    font-size: 1.05em;
     font-weight: 700;
     color: #fff;
     font-family: 'Montserrat', sans-serif;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
+
 .member-premium-info p {
     margin: 4px 0 0 0;
-    font-size: 0.82em;
-    color: var(--cor-texto-claro, rgba(255,255,255,0.6));
+    font-size: 0.8em;
+    color: rgba(255,255,255,0.45);
     word-break: break-all;
 }
+
+/* Detalhes (Instrumento, Cargo, etc.) */
 .member-premium-details {
-    margin-bottom: 22px;
+    margin-bottom: 18px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
+    padding: 14px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.05);
 }
+
 .member-premium-detail-item {
-    font-size: 0.88em;
-    color: #fff;
+    font-size: 0.85em;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 10px;
 }
+
+.member-premium-detail-item > :first-child {
+    color: rgba(255,255,255,0.5);
+    font-weight: 500;
+}
+
 .member-premium-detail-item span {
-    color: var(--cor-texto-claro);
+    color: #fff;
+    font-weight: 600;
+    text-align: right;
 }
+
+/* Badge de Status */
 .member-premium-status-badge {
-    font-size: 0.78em;
+    font-size: 0.72em;
     font-weight: 700;
-    padding: 4px 10px;
+    padding: 4px 12px;
     border-radius: 20px;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    letter-spacing: 0.8px;
 }
+
 .status-ativo {
-    background: rgba(16, 185, 129, 0.12);
-    color: #10b981;
-    border: 1px solid rgba(16, 185, 129, 0.2);
+    background: rgba(16,185,129,0.15);
+    color: #34d399;
+    border: 1px solid rgba(16,185,129,0.25);
 }
+
 .status-pendente {
-    background: rgba(250, 152, 72, 0.12);
+    background: rgba(250,152,72,0.15);
     color: var(--cor-secundaria);
-    border: 1px solid rgba(250, 152, 72, 0.25);
+    border: 1px solid rgba(250,152,72,0.3);
 }
+
 .status-sem-acesso {
-    background: rgba(239, 68, 68, 0.12);
-    color: #ef4444;
-    border: 1px solid rgba(239, 68, 68, 0.2);
+    background: rgba(239,68,68,0.12);
+    color: #f87171;
+    border: 1px solid rgba(239,68,68,0.2);
 }
+
+/* Ações do Card */
 .member-premium-actions {
     display: flex;
-    gap: 10px;
+    gap: 8px;
     border-top: 1px solid rgba(255,255,255,0.06);
     padding-top: 16px;
     margin-top: auto;
 }
+
 .member-premium-actions button {
     flex: 1;
-    padding: 10px 14px;
-    font-size: 0.85em;
+    padding: 9px 12px;
+    font-size: 0.82em;
     font-weight: 700;
     border-radius: 8px;
     cursor: pointer;
-    transition: all 0.25s ease;
+    transition: all 0.2s ease;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 6px;
     outline: none;
-    font-family: 'Montserrat', sans-serif;
+    font-family: inherit;
+    letter-spacing: 0.3px;
 }
+
 .btn-premium-edit {
-    background: rgba(255, 255, 255, 0.05);
-    color: #fff;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255,255,255,0.05);
+    color: rgba(255,255,255,0.8);
+    border: 1px solid rgba(255,255,255,0.1);
 }
+
 .btn-premium-edit:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    border-color: rgba(255,255,255,0.2);
+    transform: translateY(-1px);
 }
+
 .btn-premium-remove {
-    background: rgba(239, 68, 68, 0.05);
-    color: #ef4444;
-    border: 1px solid rgba(239, 68, 68, 0.1);
+    background: rgba(239,68,68,0.06);
+    color: #f87171;
+    border: 1px solid rgba(239,68,68,0.12);
 }
+
 .btn-premium-remove:hover {
-    background: rgba(239, 68, 68, 0.12);
-    border-color: rgba(239, 68, 68, 0.25);
+    background: rgba(239,68,68,0.15);
+    border-color: rgba(239,68,68,0.3);
+    transform: translateY(-1px);
 }
+
 .btn-premium-resend {
-    background: rgba(250, 152, 72, 0.05);
+    background: rgba(250,152,72,0.07);
     color: var(--cor-secundaria);
-    border: 1px solid rgba(250, 152, 72, 0.15);
+    border: 1px solid rgba(250,152,72,0.15);
 }
+
 .btn-premium-resend:hover {
-    background: rgba(250, 152, 72, 0.12);
-    border-color: rgba(250, 152, 72, 0.3);
+    background: rgba(250,152,72,0.15);
+    border-color: rgba(250,152,72,0.35);
+    transform: translateY(-1px);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .perm-premium-header {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 18px;
+    }
+    .integrantes-premium-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* PREMIUM TOGGLE SWITCH STYLES */
@@ -5364,7 +5500,7 @@ a:hover {
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    border: 2px solid transparent;
+    border: 1px solid rgba(0,0,0,0.05);
     cursor: pointer;
     transition: transform 0.2s ease, border-color 0.2s ease;
 }
@@ -5401,7 +5537,7 @@ a:hover {
 .star-rating {
     display: flex;
     gap: 8px;
-    font-size: 1.8em;
+    font-size: 1.5em;
     color: #cbd5e1;
     cursor: pointer;
     margin-top: 5px;
@@ -5448,7 +5584,8 @@ a:hover {
     border-color: var(--cor-secundaria);
     box-shadow: 0 4px 10px rgba(250, 152, 72, 0.3);
 }
-/* Botão Circular (Adicionar Instrumento) */
+
+/* BotÃ£o Circular (Adicionar Instrumento) */
 .btn-circular {
     width: 45px;
     height: 45px;
@@ -5476,7 +5613,7 @@ a:hover {
     background-color: #c0392b;
 }
 
-/* Override BotÃ£o Circular */
+/* Override BotÃÂ£o Circular */
 .btn-circular {
     width: 35px !important;
     height: 35px !important;
@@ -5502,7 +5639,7 @@ a:hover {
 .instrument-block .instrument-body {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 15px;
+    gap: 12px;
 }
 @media (max-width: 600px) {
     .instrument-block .instrument-body {
@@ -5516,7 +5653,7 @@ a:hover {
 .danger-zone {
     margin-top: 32px;
     border: 1.5px solid #ff4d4d55;
-    border-radius: 12px;
+    border-radius: 8px;
     overflow: hidden;
     background: linear-gradient(135deg, #fff8f8 0%, #fff 100%);
 }
@@ -5592,7 +5729,7 @@ a:hover {
 }
 
 /* ================================================
-   MODAL DE EXCLUSÃO DE CONTA
+   MODAL DE EXCLUSÃO DE CONTA
    ================================================ */
 .modal-danger {
     max-width: 440px;
@@ -5716,3 +5853,792 @@ a:hover {
 
 
 
+
+/* ============================================================ */
+/* ============================================================ */
+
+/* ============================================================ */
+
+/* Grid responsivo */
+#listaVagasContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    align-items: stretch;
+}
+
+/* Cartão da Vaga */
+.vaga-card-compact {
+    background: var(--cor-fundo-cartao, #fff);
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+}
+
+.vaga-card-compact::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 3px;
+    background: var(--cor-secundaria);
+}
+
+.vaga-card-compact:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    border-color: #cbd5e1;
+}
+
+/* Cabeçalho */
+.vaga-card-header {
+    padding: 20px 20px 15px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.vaga-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.vaga-title-row h4 {
+    margin: 0;
+    font-size: 1.15em;
+    font-weight: 700;
+    color: #0f172a;
+    line-height: 1.3;
+}
+
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.7em;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.status-aberta { background: #dcfce7; color: #166534; }
+.status-fechada { background: #fee2e2; color: #991b1b; }
+
+/* Detalhes (Instrumento, Vagas, Local) */
+.vaga-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.vaga-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    color: #334155;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.8em;
+    font-weight: 500;
+}
+.vaga-meta span i { color: var(--cor-secundaria); }
+
+/* Corpo da Vaga (Descrição) */
+.vaga-card-body {
+    padding: 15px 20px;
+    flex-grow: 1;
+    background: #fafaf9;
+}
+.vaga-card-body p {
+    margin: 0;
+    color: var(--cor-texto);
+    font-size: 0.9em;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Rodapé (Botões) */
+.vaga-card-footer {
+    padding: 15px 20px;
+    background: var(--cor-fundo-cartao, #fff);
+    border-top: 1px solid #f1f5f9;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.btn-candidatos {
+    width: 100%;
+    justify-content: center;
+    background: var(--cor-secundaria);
+    color: #ffffff;
+    font-weight: 700;
+    border-radius: 8px;
+    padding: 10px;
+    border: none;
+    box-shadow: 0 4px 6px rgba(250, 152, 72, 0.2);
+    transition: background 0.2s;
+}
+.btn-candidatos:hover {
+    background: #ea8c42;
+}
+
+.vaga-card-footer > div {
+    display: flex;
+    gap: 8px;
+}
+
+.vaga-card-footer .btn-encerrar-vaga, 
+.vaga-card-footer .btn-excluir-vaga {
+    flex: 1;
+    justify-content: center;
+    padding: 8px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.85em;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-encerrar-vaga {
+    background: #ffffff !important;
+    color: #334155 !important;
+    border: 1px solid #cbd5e1 !important;
+}
+.btn-encerrar-vaga:hover { background: #f1f5f9 !important; }
+
+.btn-excluir-vaga {
+    background: #ffffff !important;
+    color: #dc2626 !important;
+    border: 1px solid #fca5a5 !important;
+}
+.btn-excluir-vaga:hover { background: #fef2f2 !important; }
+
+/* Lista de Candidatos (Modal) */
+#candidatosList > div {
+    background: var(--cor-fundo-cartao, #fff);
+    border: 1px solid #e2e8f0;
+    border-left: 4px solid var(--cor-secundaria);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 12px;
+}
+
+@media (max-width: 600px) {
+    .vaga-card-footer > div {
+        flex-direction: column;
+    }
+}
+
+
+/* ================================================================ */
+/* MODULO DE VAGAS - DESIGN PROFISSIONAL                            */
+/* ================================================================ */
+
+.vagas-page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+    background: #f0f4f8;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 25px 30px;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+}
+
+.vagas-page-header h2 {
+    margin: 0 0 4px 0;
+    font-size: 1.5em;
+    font-weight: 700;
+    color: var(--cor-texto);
+}
+
+.vagas-subtitle {
+    margin: 0;
+    color: var(--cor-texto-claro);
+    font-size: 0.95em;
+}
+
+.vagas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    align-items: start;
+}
+
+.vagas-empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--cor-texto-claro);
+}
+
+.vagas-empty i {
+    font-size: 3em;
+    display: block;
+    margin-bottom: 15px;
+    opacity: 0.4;
+}
+
+.vaga-card-compact {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.vaga-card-compact:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+    border-color: rgba(255,255,255,0.18);
+}
+
+.vaga-card-header {
+    padding: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    position: relative;
+}
+
+.vaga-card-header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--cor-secundaria);
+    border-radius: 12px 12px 0 0;
+}
+
+.vaga-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.vaga-title-row h4 {
+    margin: 0;
+    font-size: 1.1em;
+    font-weight: 700;
+    color: var(--cor-texto);
+    line-height: 1.3;
+    flex: 1;
+}
+
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.7em;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.status-aberta {
+    background: rgba(39, 174, 96, 0.2);
+    color: #4ade80;
+    border: 1px solid rgba(39, 174, 96, 0.3);
+}
+
+.status-fechada {
+    background: rgba(231, 76, 60, 0.2);
+    color: #f87171;
+    border: 1px solid rgba(231, 76, 60, 0.3);
+}
+
+.vaga-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.vaga-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--cor-texto-claro);
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 0.82em;
+    font-weight: 500;
+}
+
+.vaga-meta span i {
+    color: var(--cor-secundaria);
+    font-size: 0.85em;
+}
+
+.vaga-card-body {
+    padding: 16px 20px;
+    flex-grow: 1;
+}
+
+.vaga-card-body p {
+    margin: 0;
+    color: var(--cor-texto-claro);
+    font-size: 0.9em;
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.vaga-card-footer {
+    padding: 15px 20px;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.btn-candidatos {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    background: var(--cor-secundaria);
+    color: #011029;
+    font-weight: 700;
+    font-size: 0.9em;
+    border-radius: 8px;
+    padding: 10px 16px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-candidatos:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+}
+
+.vaga-actions-row {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-encerrar-vaga {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.85em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: rgba(255,255,255,0.05);
+    color: var(--cor-texto-claro);
+    border: 1px solid rgba(255,255,255,0.12);
+}
+
+.btn-encerrar-vaga:hover {
+    background: rgba(255,255,255,0.1);
+    color: var(--cor-texto);
+}
+
+.btn-excluir-vaga {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.85em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: rgba(231, 76, 60, 0.1);
+    color: #f87171;
+    border: 1px solid rgba(231, 76, 60, 0.2);
+}
+
+.btn-excluir-vaga:hover {
+    background: rgba(231, 76, 60, 0.25);
+    border-color: rgba(231, 76, 60, 0.4);
+}
+
+#candidatosList > div {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-left: 4px solid var(--cor-secundaria);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 12px;
+    transition: background 0.2s;
+}
+
+#candidatosList > div:hover {
+    background: rgba(255,255,255,0.07);
+}
+
+@media (max-width: 768px) {
+    .vagas-page-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .vagas-page-header > div { text-align: center; }
+    #abrirModalVagaBtn {
+        width: 100%;
+        justify-content: center;
+    }
+    .vagas-grid {
+        grid-template-columns: 1fr;
+    }
+    .vaga-title-row {
+        flex-direction: column;
+        gap: 8px;
+    }
+}
+
+/* ================================================================ */
+/* MÓDULO DE PERMISSÕES - DESIGN ELEGANTE & MARKETING               */
+/* ================================================================ */
+
+#configuracoes.tab-content {
+    background-color: transparent !important;
+}
+
+.perm-premium-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+    background: #f0f4f8;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 25px 30px;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+}
+
+.perm-header-title {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.perm-header-title h2 {
+    font-size: 1.5em;
+    font-weight: 800;
+    color: var(--cor-texto); /* Escuro elegante */
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.perm-header-title span {
+    font-size: 0.95em;
+    color: var(--cor-secundaria);
+    font-weight: 600;
+}
+
+.perm-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    flex: 1;
+    justify-content: flex-end;
+    max-width: 600px;
+}
+
+.perm-header-actions .search-wrapper {
+    position: relative;
+    flex: 1;
+    max-width: 350px;
+    min-width: 200px;
+}
+
+.perm-header-actions input {
+    width: 100%;
+    padding: 12px 18px;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    background: #ffffff;
+    color: var(--cor-texto);
+    font-family: inherit;
+    font-size: 0.95em;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.perm-header-actions input::placeholder {
+    color: var(--cor-texto-claro);
+}
+
+.perm-header-actions input:focus {
+    border-color: var(--cor-secundaria);
+    background: var(--cor-fundo-cartao, #fff);
+    box-shadow: 0 0 0 3px rgba(250, 152, 72, 0.1);
+}
+
+.perm-header-actions button {
+    height: 46px;
+    padding: 0 24px;
+    border-radius: 10px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95em;
+    background: var(--cor-secundaria);
+    color: #fff; /* Fundo claro com botão laranja/destaque e texto branco */
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(250, 152, 72, 0.3);
+    transition: all 0.3s ease;
+}
+.perm-header-actions button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(250, 152, 72, 0.4);
+}
+
+/* Grid de Membros */
+.integrantes-premium-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 25px;
+    margin-top: 20px;
+}
+
+/* Card do Integrante */
+.integrantes-premium-grid > div.member-card-premium {
+    background: var(--cor-fundo-cartao, #fff);
+    border: 1px solid var(--cor-borda, rgba(0,0,0,0.1));
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+}
+
+.integrantes-premium-grid > div.member-card-premium:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+}
+
+.member-premium-card-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.member-premium-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--cor-secundaria);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4em;
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(250, 152, 72, 0.3);
+}
+
+.member-premium-info h4 {
+    margin: 0 0 4px 0;
+    font-size: 1.15em;
+    font-weight: 700;
+    color: var(--cor-texto);
+}
+
+.member-premium-info p {
+    margin: 0;
+    font-size: 0.85em;
+    color: var(--cor-texto-claro);
+}
+
+.member-premium-details {
+    background: var(--cor-fundo, #f4f7f6);
+    border-radius: 10px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.member-premium-detail-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9em;
+}
+
+.member-premium-detail-item span:first-child {
+    color: var(--cor-texto-claro);
+    font-weight: 500;
+}
+
+.member-premium-detail-item strong {
+    color: var(--cor-texto);
+    font-weight: 700;
+}
+
+.member-premium-status-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    font-weight: 700;
+}
+
+.member-premium-status-badge.status-ativo {
+    background: rgba(72, 187, 120, 0.15);
+    color: #38a169;
+}
+
+.admin-badge span {
+    font-size: 0.85em;
+    font-weight: 700;
+    color: #dd6b20;
+    background: rgba(221, 107, 32, 0.1);
+    padding: 8px 16px;
+    border-radius: 8px;
+    width: 100%;
+    display: block;
+    text-align: center;
+}
+
+.member-premium-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px solid rgba(0,0,0,0.05);
+}
+
+.btn-premium-edit, .btn-premium-remove {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.85em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+}
+
+.btn-premium-edit {
+    background: var(--cor-fundo, #f4f7f6);
+    color: var(--cor-texto);
+}
+
+.btn-premium-edit:hover {
+    background: #e0e6ed;
+    color: var(--cor-primaria);
+}
+
+.btn-premium-remove {
+    background: #fef2f2;
+    color: #ef4444;
+}
+
+.btn-premium-remove:hover {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+/* Responsividade Configurações */
+@media (max-width: 768px) {
+    .perm-premium-header {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 20px;
+        text-align: center;
+    }
+    .perm-header-actions {
+        flex-direction: column;
+        align-items: stretch;
+        max-width: 100%;
+    }
+    .perm-header-actions .search-wrapper {
+        max-width: 100%;
+    }
+    .integrantes-premium-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* ==========================================================================
+   OTIMIZAÇÃO DE MODAIS PARA MOBILE (Pop-ups menores e mais ajustados)
+   ========================================================================== */
+@media (max-width: 768px) {
+    .modal-content {
+        margin: 5vh auto !important; /* Mais proximo do topo pra nao sumir o botao salvar */
+        width: 90% !important;
+        padding: 20px !important;
+        border-radius: 12px !important;
+    }
+    
+    .modal-content h3 {
+        font-size: 1.3em !important;
+        margin-bottom: 15px !important;
+    }
+    
+    .inputGroup {
+        margin-bottom: 12px !important;
+    }
+    
+    .inputGroup label {
+        font-size: 0.85em !important;
+        margin-bottom: 6px !important;
+    }
+    
+    .inputGroup input, 
+    .inputGroup select, 
+    .inputGroup textarea {
+        padding: 10px 12px !important;
+        font-size: 0.95em !important;
+    }
+    
+    .form-grid-2 {
+        gap: 12px !important;
+    }
+    
+    .btn-adicionar, .btn-remover, .btn-adicionar-principal {
+        padding: 10px 15px !important;
+        font-size: 0.9em !important;
+    }
+    
+    .tipo-transacao-group {
+        gap: 8px !important;
+    }
+    
+    .tipo-transacao-btn {
+        padding: 10px !important;
+        font-size: 0.85em !important;
+    }
+}

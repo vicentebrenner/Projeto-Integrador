@@ -23,7 +23,7 @@ services:
       context: ./backend-springboot/Projeto
     container_name: musicmakers-backend
     ports:
-      - "8080:8080"
+      - "8081:8080"
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/musicmakers_db
       - SPRING_DATASOURCE_USERNAME=postgres

@@ -464,15 +464,28 @@
         } catch (e) {}
     }
 
-    function preencherModalCards() {
+    async function preencherModalCards() {
         try {
-            // Agenda
-            const dadosAgenda = JSON.parse(localStorage.getItem('dadosAgenda')) || [];
-            const hoje = new Date(); hoje.setHours(0,0,0,0);
-            const showsFuturos = dadosAgenda.filter(e => {
-                const d = new Date(e.data + 'T12:00:00');
-                return !isNaN(d) && d >= hoje && (e.tipo === 'show' || !e.tipo);
-            });
+            const usuario = JSON.parse(localStorage.getItem('usuarioLogado'));
+            if (!usuario || !usuario.bandaId) return;
+
+            const bandaId = usuario.bandaId;
+            const token = localStorage.getItem('authToken');
+            const headers = { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' };
+
+            // Agenda (Apenas LocalStorage pois a API ainda não está pronta)
+            let showsFuturos = [];
+            try {
+                const dadosAgenda = JSON.parse(localStorage.getItem('dadosAgenda')) || [];
+                const hoje = new Date(); hoje.setHours(0,0,0,0);
+                showsFuturos = dadosAgenda.filter(ev => {
+                    const d = new Date(ev.data + 'T12:00:00');
+                    return !isNaN(d) && d >= hoje && (ev.tipo === 'show' || !ev.tipo);
+                });
+            } catch (e) {
+                console.warn('Erro ao ler agenda do localStorage', e);
+            }
+
             const elShow = document.getElementById('modalProxEventos');
             if (elShow) {
                 if (showsFuturos.length > 0) {
@@ -487,18 +500,43 @@
             }
 
             // Financeiro
-            const dadosFinanceiros = localStorage.getItem('dadosFinanceiros') ? JSON.parse(localStorage.getItem('dadosFinanceiros')) : [];
+            let saldo = 0;
+            try {
+                const resFin = await fetch(`http://localhost:8081/api/financeiro/banda/${bandaId}`, { headers });
+                if (resFin.ok) {
+                    const data = await resFin.json();
+                    saldo = data.reduce((acc, curr) => acc + (curr.tipo === 'RECEITA' ? curr.valor : -curr.valor), 0);
+                } else {
+                    throw new Error('API indisponivel');
+                }
+            } catch (e) {
+                const dadosFinanceiros = localStorage.getItem('dadosFinanceiros') ? JSON.parse(localStorage.getItem('dadosFinanceiros')) : [];
+                saldo = dadosFinanceiros.reduce((acc, curr) => acc + (curr.tipo === 'RECEITA' ? curr.valor : -curr.valor), 0);
+            }
+
             const elFin = document.getElementById('modalFinanceiro');
             if (elFin) {
-                const saldo = dadosFinanceiros.reduce((acc, curr) => acc + (curr.tipo === 'RECEITA' ? curr.valor : -curr.valor), 0);
                 elFin.textContent = `Saldo: R$ ${saldo.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
             }
 
             // Repertório
-            const dadosRepertorio = localStorage.getItem('dadosRepertorio') ? JSON.parse(localStorage.getItem('dadosRepertorio')) : [];
+            let qtdMusicas = 0;
+            try {
+                const resRep = await fetch(`http://localhost:8081/api/musicas/banda/${bandaId}`, { headers });
+                if (resRep.ok) {
+                    const data = await resRep.json();
+                    qtdMusicas = data.length;
+                } else {
+                    throw new Error('API indisponivel');
+                }
+            } catch (e) {
+                const dadosRepertorio = localStorage.getItem('dadosRepertorio') ? JSON.parse(localStorage.getItem('dadosRepertorio')) : [];
+                qtdMusicas = dadosRepertorio.length;
+            }
+
             const elRep = document.getElementById('modalRepertorio');
             if (elRep) {
-                elRep.textContent = `${dadosRepertorio.length} música(s) cadastrada(s)`;
+                elRep.textContent = `${qtdMusicas} música(s) cadastrada(s)`;
             }
         } catch (e) {
             console.error("Erro ao preencher cards do modal:", e);
@@ -564,11 +602,16 @@
             `;
         }
 
-        // 3) Modal de boas-vindas: exibe apenas se for primeiro acesso pós-login
+        // 3) Modal de boas-vindas: exibe apenas se for primeiro acesso pós-login E for GESTOR
         if (localStorage.getItem(CHAVE) === 'true') {
-            preencherNome();
-            preencherModalCards();
-            if (overlay) overlay.style.display = 'flex';
+            if (usuarioLogado.tipoUsuario === 'GESTOR' || usuarioLogado.gestor === true) {
+                preencherNome();
+                preencherModalCards();
+                if (overlay) overlay.style.display = 'flex';
+            } else {
+                if (overlay) overlay.remove();
+                window.location.href = destino; // Se for músico, já redireciona para a home dele
+            }
         } else {
             if (overlay) overlay.remove();
         }

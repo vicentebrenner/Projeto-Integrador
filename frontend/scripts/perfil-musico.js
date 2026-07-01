@@ -21,6 +21,14 @@ document.addEventListener('DOMContentLoaded', function () {
         email: usuarioLogado.email || "",
         corAvatar: "#fa9848",
         local: "",
+        pais: "Brasil",
+        estado: "",
+        regiao: "",
+        cidade: "",
+        bairro: "",
+        funcao: "",
+        formacaoMusical: "",
+        ministeriosInteresse: "",
         instrumentos: "",
         nivelHabilidade: "",
         tempoExperiencia: "",
@@ -36,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function inicializarPerfil() {
         const token = localStorage.getItem('authToken');
-        fetch(`http://localhost:8080/api/musicos/usuario/${usuarioLogado.id}`, {
+        fetch(`http://localhost:8081/api/musicos/usuario/${usuarioLogado.id}`, {
             headers: { 'Authorization': `Bearer ${token}` }
         })
             .then(res => {
@@ -51,6 +59,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 dadosPerfil.dataNascimento = data.dataNascimento || "";
                 dadosPerfil.corAvatar = data.corAvatar || "#fa9848";
                 dadosPerfil.local = data.localizacao || "";
+                dadosPerfil.pais = data.pais || "Brasil";
+                dadosPerfil.estado = data.estado || "";
+                dadosPerfil.regiao = data.regiao || "";
+                dadosPerfil.cidade = data.cidade || "";
+                dadosPerfil.bairro = data.bairro || "";
+                dadosPerfil.funcao = data.funcao || "";
+                dadosPerfil.formacaoMusical = data.formacaoMusical || "";
+                dadosPerfil.ministeriosInteresse = data.ministeriosInteresse || "";
                 dadosPerfil.instrumentos = data.instrumentosPrincipais || "";
                 dadosPerfil.nivelHabilidade = data.nivelHabilidade || "";
                 dadosPerfil.tempoExperiencia = data.tempoExperiencia || "";
@@ -82,6 +98,14 @@ document.addEventListener('DOMContentLoaded', function () {
             dataNascimento: dadosPerfil.dataNascimento,
             corAvatar: dadosPerfil.corAvatar,
             localizacao: dadosPerfil.local,
+            pais: dadosPerfil.pais,
+            estado: dadosPerfil.estado,
+            regiao: dadosPerfil.regiao,
+            cidade: dadosPerfil.cidade,
+            bairro: dadosPerfil.bairro,
+            funcao: dadosPerfil.funcao,
+            formacaoMusical: dadosPerfil.formacaoMusical,
+            ministeriosInteresse: dadosPerfil.ministeriosInteresse,
             instrumentosPrincipais: dadosPerfil.instrumentos,
             nivelHabilidade: dadosPerfil.nivelHabilidade,
             tempoExperiencia: dadosPerfil.tempoExperiencia,
@@ -96,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function () {
         };
 
         const token = localStorage.getItem('authToken');
-        fetch(`http://localhost:8080/api/musicos/usuario/${usuarioLogado.id}/completo`, {
+        fetch(`http://localhost:8081/api/musicos/usuario/${usuarioLogado.id}/completo`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -211,14 +235,26 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('perfilNome').value = dadosPerfil.nome;
         if(document.getElementById("perfilWhatsapp")) document.getElementById("perfilWhatsapp").value = dadosPerfil.whatsapp || "";
         if(document.getElementById("perfilDataNascimento")) document.getElementById("perfilDataNascimento").value = dadosPerfil.dataNascimento || "";
-        if (dadosPerfil.local) {
+        
+        if (document.getElementById('perfilPais')) document.getElementById('perfilPais').value = dadosPerfil.pais || 'Brasil';
+        if (document.getElementById('perfilRegiao')) document.getElementById('perfilRegiao').value = dadosPerfil.regiao || '';
+        if (document.getElementById('perfilBairro')) document.getElementById('perfilBairro').value = dadosPerfil.bairro || '';
+        
+        if (dadosPerfil.estado) {
+            const selectEstado = document.getElementById('perfilEstado');
+            const checkInterval = setInterval(() => {
+                if (selectEstado && selectEstado.options.length > 1) {
+                    selectEstado.value = dadosPerfil.estado;
+                    carregarCidades(dadosPerfil.estado, dadosPerfil.cidade);
+                    clearInterval(checkInterval);
+                }
+            }, 100);
+        } else if (dadosPerfil.local) {
             let partes = dadosPerfil.local.split('/');
             if (partes.length !== 2) partes = dadosPerfil.local.split('-');
-
             if (partes.length === 2) {
                 const cidade = partes[0].trim();
                 const uf = partes[1].trim();
-
                 const selectEstado = document.getElementById('perfilEstado');
                 const checkInterval = setInterval(() => {
                     if (selectEstado && selectEstado.options.length > 1) {
@@ -282,6 +318,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         document.getElementById('perfilInfluencias').value = dadosPerfil.influencias || '';
+        if (document.getElementById('perfilFuncao')) document.getElementById('perfilFuncao').value = dadosPerfil.funcao || '';
+        if (document.getElementById('perfilFormacaoMusical')) document.getElementById('perfilFormacaoMusical').value = dadosPerfil.formacaoMusical || '';
+        if (document.getElementById('perfilMinisteriosInteresse')) document.getElementById('perfilMinisteriosInteresse').value = dadosPerfil.ministeriosInteresse || '';
         document.getElementById('perfilStatusBusca').value = dadosPerfil.statusBusca || '';
         document.getElementById('perfilDisponibilidade').value = dadosPerfil.disponibilidade || '';
         document.getElementById('perfilEquipamento').value = dadosPerfil.equipamento || '';
@@ -544,6 +583,11 @@ document.addEventListener('DOMContentLoaded', function () {
             if(document.getElementById("perfilDataNascimento")) dadosPerfil.dataNascimento = document.getElementById("perfilDataNascimento").value;
             const uf = document.getElementById('perfilEstado').value;
             const cidade = document.getElementById('perfilCidade').value;
+            dadosPerfil.estado = uf;
+            dadosPerfil.cidade = cidade;
+            dadosPerfil.pais = document.getElementById('perfilPais') ? document.getElementById('perfilPais').value : "Brasil";
+            dadosPerfil.regiao = document.getElementById('perfilRegiao') ? document.getElementById('perfilRegiao').value : "";
+            dadosPerfil.bairro = document.getElementById('perfilBairro') ? document.getElementById('perfilBairro').value : "";
             dadosPerfil.local = (cidade && uf) ? `${cidade}/${uf}` : '';
             const blocos = document.querySelectorAll('#listaInstrumentos .instrument-block');
             let arrayBlocos = [];
@@ -569,6 +613,9 @@ document.addEventListener('DOMContentLoaded', function () {
             dadosPerfil.generosMusicais = document.getElementById('perfilGeneros').value;
 
             dadosPerfil.influencias = document.getElementById('perfilInfluencias').value;
+            if(document.getElementById('perfilFuncao')) dadosPerfil.funcao = document.getElementById('perfilFuncao').value;
+            if(document.getElementById('perfilFormacaoMusical')) dadosPerfil.formacaoMusical = document.getElementById('perfilFormacaoMusical').value;
+            if(document.getElementById('perfilMinisteriosInteresse')) dadosPerfil.ministeriosInteresse = document.getElementById('perfilMinisteriosInteresse').value;
             dadosPerfil.statusBusca = document.getElementById('perfilStatusBusca').value;
             dadosPerfil.disponibilidade = document.getElementById('perfilDisponibilidade').value;
             dadosPerfil.equipamento = document.getElementById('perfilEquipamento').value;
@@ -753,7 +800,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             try {
                 const token = localStorage.getItem('authToken');
-                const response = await fetch(`http://localhost:8080/api/usuarios/${usuarioLogado.id}`, {
+                const response = await fetch(`http://localhost:8081/api/usuarios/${usuarioLogado.id}`, {
                     method: "DELETE",
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -984,7 +1031,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             try {
                 const token = localStorage.getItem('authToken');
-                const response = await fetch(`http://localhost:8080/api/usuarios/${usuarioLogado.id}/senha`, {
+                const response = await fetch(`http://localhost:8081/api/usuarios/${usuarioLogado.id}/senha`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
