@@ -17,14 +17,30 @@
             <a href="index.html" class="logo">
                 <img src="assets/logo.png" alt="Music Makers" class="logo-img">
             </a>
-            <nav class="menuPrincipal">
-                <ul>
-                    <li><a href="index.html#funcionalidades">Funcionalidades</a></li>
-                    <li><a href="index.html#como-funciona">Como Funciona</a></li>
-                    <li><a href="sobre.html">Sobre nós</a></li>
-                    <li><a href="login.html" class="btnLogin">Entrar</a></li>
-                </ul>
-            </nav>
+            <div class="header-right-controls" style="display: flex; align-items: center; gap: 20px;">
+                <!-- Sino de Notificações (Convites de Banda) -->
+                <div class="notif-bell" id="notifBell">
+                    <i class="fas fa-bell"></i>
+                    <span class="notif-badge" id="notifBadge" style="display: none;">0</span>
+                    <div class="notif-dropdown" id="notifDropdown">
+                        <div class="notif-dropdown-header">
+                            <span>Notificações</span>
+                        </div>
+                        <div class="notif-dropdown-list" id="notifDropdownList">
+                            <p class="notif-empty">Nenhuma notificação</p>
+                        </div>
+                    </div>
+                </div>
+
+                <nav class="menuPrincipal">
+                    <ul>
+                        <li><a href="index.html#funcionalidades">Funcionalidades</a></li>
+                        <li><a href="index.html#como-funciona">Como Funciona</a></li>
+                        <li><a href="sobre.html">Sobre nós</a></li>
+                        <li><a href="login.html" class="btnLogin">Entrar</a></li>
+                    </ul>
+                </nav>
+            </div>
         </div>
     </header>
 
@@ -51,6 +67,8 @@
                         <button class="tab-link" data-tab="portfolio"><i class="fas fa-video"></i> Meu
                             Portfólio</button>
                         <button class="tab-link" data-tab="vagas"><i class="fas fa-briefcase"></i> Vagas</button>
+                        <button class="tab-link" data-tab="convites"><i class="fas fa-envelope-open-text"></i> Convites
+                            <span class="tab-badge" id="tabBadgeConvites" style="display: none;">0</span></button>
                     </nav>
                 </aside>
 
@@ -407,11 +425,21 @@
                     <div id="vagas" class="tab-content">
                         <div class="content-header">
                             <h2>Vagas em Aberto</h2>
+                            <p class="small-text">Confira as vagas publicadas pelas bandas e candidate-se.</p>
                         </div>
-                        <div class="card-style profile-card empty-state">
-                            <i class="fas fa-tools"></i>
-                            <h3>Em breve!</h3>
-                            <p>Aqui você poderá ver as vagas publicadas por bandas e se candidatar.</p>
+                        <div id="listaVagasMusicoContainer" class="vagas-grid">
+                            <p class="empty-state"><i class="fas fa-spinner fa-spin"></i> Carregando vagas...</p>
+                        </div>
+                    </div>
+
+                    <!-- ABA: CONVITES -->
+                    <div id="convites" class="tab-content">
+                        <div class="content-header">
+                            <h2>Convites de Bandas</h2>
+                            <p class="small-text">Aceite ou recuse convites enviados por gestores de banda.</p>
+                        </div>
+                        <div id="listaConvites">
+                            <p class="empty-state"><i class="fas fa-spinner fa-spin"></i> Carregando convites...</p>
                         </div>
                     </div>
 
@@ -557,7 +585,7 @@
     <script src="scripts/config.js"></script>
     <script src="scripts/utils.js"></script>
     <script src="scripts/global.js?v=20"></script>
-    <script src="scripts/perfil-musico.js?v=27"></script>
+    <script src="scripts/perfil-musico.js?v=28"></script>
 </body>
 
 </html>

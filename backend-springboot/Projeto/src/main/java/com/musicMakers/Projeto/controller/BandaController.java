@@ -1,6 +1,7 @@
 package com.musicMakers.Projeto.controller;
 
 import com.musicMakers.Projeto.domain.entity.Banda;
+import com.musicMakers.Projeto.domain.dto.BandaUpdateDTO;
 import com.musicMakers.Projeto.service.BandaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +35,11 @@ public class BandaController {
         return ResponseEntity.ok(bandaService.criarBanda(banda, idUsuario));
     }
     
+    @PutMapping("/{id}")
+    public ResponseEntity<Banda> atualizarBanda(@PathVariable Long id, @RequestBody BandaUpdateDTO dto) {
+        return ResponseEntity.ok(bandaService.atualizarBanda(id, dto));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarBanda(@PathVariable Long id) {
         bandaService.deletarBanda(id);

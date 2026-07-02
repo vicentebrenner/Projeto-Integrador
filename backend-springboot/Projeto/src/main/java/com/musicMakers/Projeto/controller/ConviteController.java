@@ -2,6 +2,8 @@ package com.musicMakers.Projeto.controller;
 
 import com.musicMakers.Projeto.domain.entity.ConviteBanda;
 import com.musicMakers.Projeto.domain.entity.MembroBanda;
+import com.musicMakers.Projeto.domain.entity.Usuario;
+import com.musicMakers.Projeto.security.UsuarioAutenticadoProvider;
 import com.musicMakers.Projeto.service.ConviteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,18 +19,21 @@ public class ConviteController {
     @Autowired
     private ConviteService conviteService;
 
+    @Autowired
+    private UsuarioAutenticadoProvider usuarioAutenticadoProvider;
+
     /**
      * POST /api/convites
-     * Body: { "bandaId": 1, "gestorId": 2, "usuarioConvidadoId": 3 }
+     * Body: { "bandaId": 1, "usuarioConvidadoId": 3 }
      */
     @PostMapping
     public ResponseEntity<?> enviarConvite(@RequestBody Map<String, Object> body) {
         try {
             Long bandaId = Long.valueOf(body.get("bandaId").toString());
-            Long gestorId = Long.valueOf(body.get("gestorId").toString());
             Long usuarioConvidadoId = Long.valueOf(body.get("usuarioConvidadoId").toString());
 
-            ConviteBanda convite = conviteService.enviarConvite(bandaId, gestorId, usuarioConvidadoId);
+            Usuario usuarioAtual = usuarioAutenticadoProvider.getUsuarioAutenticado();
+            ConviteBanda convite = conviteService.enviarConvite(bandaId, usuarioAtual, usuarioConvidadoId);
             return ResponseEntity.ok(convite);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
@@ -37,12 +42,12 @@ public class ConviteController {
 
     /**
      * GET /api/convites/pendentes
-     * Query: ?usuarioId=X
      */
     @GetMapping("/pendentes")
-    public ResponseEntity<?> listarPendentes(@RequestParam Long usuarioId) {
+    public ResponseEntity<?> listarPendentes() {
         try {
-            List<ConviteBanda> pendentes = conviteService.listarPendentes(usuarioId);
+            Usuario usuarioAtual = usuarioAutenticadoProvider.getUsuarioAutenticado();
+            List<ConviteBanda> pendentes = conviteService.listarPendentes(usuarioAtual.getId());
             return ResponseEntity.ok(pendentes);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
@@ -64,12 +69,12 @@ public class ConviteController {
 
     /**
      * PUT /api/convites/{id}/aceitar
-     * Query: ?usuarioId=X
      */
     @PutMapping("/{id}/aceitar")
-    public ResponseEntity<?> aceitarConvite(@PathVariable Long id, @RequestParam Long usuarioId) {
+    public ResponseEntity<?> aceitarConvite(@PathVariable Long id) {
         try {
-            MembroBanda membro = conviteService.aceitarConvite(id, usuarioId);
+            Usuario usuarioAtual = usuarioAutenticadoProvider.getUsuarioAutenticado();
+            MembroBanda membro = conviteService.aceitarConvite(id, usuarioAtual.getId());
             return ResponseEntity.ok(Map.of(
                 "message", "Convite aceito com sucesso!",
                 "membroId", membro.getId(),
@@ -83,12 +88,12 @@ public class ConviteController {
 
     /**
      * PUT /api/convites/{id}/recusar
-     * Query: ?usuarioId=X
      */
     @PutMapping("/{id}/recusar")
-    public ResponseEntity<?> recusarConvite(@PathVariable Long id, @RequestParam Long usuarioId) {
+    public ResponseEntity<?> recusarConvite(@PathVariable Long id) {
         try {
-            conviteService.recusarConvite(id, usuarioId);
+            Usuario usuarioAtual = usuarioAutenticadoProvider.getUsuarioAutenticado();
+            conviteService.recusarConvite(id, usuarioAtual.getId());
             return ResponseEntity.ok(Map.of("message", "Convite recusado com sucesso!"));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));

@@ -812,6 +812,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="transacao-valor ${isDespesa ? 'despesa' : 'receita'}">
                         ${isDespesa ? '-' : '+'} R$ ${valor.toFixed(2).replace('.', ',')}
                     </div>
+                    <div class="transacao-acoes" style="display:flex; gap:6px; margin-left:8px; flex-shrink:0;">
+                        <button type="button" class="btn-icon-modern btn-editar-transacao" data-id="${item.id}" title="Editar transação"><i class="fas fa-pencil-alt"></i></button>
+                        <button type="button" class="btn-icon-modern btn-excluir-transacao" data-id="${item.id}" title="Excluir transação"><i class="fas fa-trash-alt"></i></button>
+                    </div>
                 `;
                 fragment.appendChild(div);
             });
@@ -1136,23 +1140,131 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Configura os modais específicos
-    setupModal('transacaoModal', 'abrirModalTransacaoBtn', 'formAdicionarTransacao', (form, closeModal) => {
-        const valor = parseFloat(form.valor.value);
-        if (isNaN(valor) || valor <= 0) {
-            showSnackbar("Valor inválido.");
+    // --- MODAL DE TRANSAÇÃO (Financeiro) - CRUD real (criar/editar) ---
+    const modalTransacao = document.getElementById('transacaoModal');
+    const formTransacao = document.getElementById('formAdicionarTransacao');
+    const btnAbrirTransacao = document.getElementById('abrirModalTransacaoBtn');
+    const inputTransacaoId = document.getElementById('transacaoId');
+
+    function abrirModalTransacao(item) {
+        if (!modalTransacao || !formTransacao) return;
+        formTransacao.reset();
+        const tituloModal = document.getElementById('transacaoModalTitulo');
+        if (tituloModal) tituloModal.textContent = item ? 'Editar Transação' : 'Nova Transação';
+        if (inputTransacaoId) inputTransacaoId.value = item ? item.id : '';
+        if (item) {
+            if (item.tipo === 'DESPESA') {
+                formTransacao.tipo.value = 'DESPESA';
+            } else {
+                formTransacao.tipo.value = 'RECEITA';
+            }
+            formTransacao.descricao.value = item.descricao || '';
+            formTransacao.valor.value = item.valor != null ? item.valor : '';
+            formTransacao.data.value = item.data || '';
+            formTransacao.categoria.value = item.categoria || '';
+        }
+        modalTransacao.classList.remove('fade-out');
+        modalTransacao.style.display = 'block';
+    }
+
+    function fecharModalTransacao() {
+        if (!modalTransacao) return;
+        modalTransacao.classList.add('fade-out');
+        setTimeout(() => {
+            modalTransacao.style.display = 'none';
+            modalTransacao.classList.remove('fade-out');
+            if (formTransacao) formTransacao.reset();
+            if (inputTransacaoId) inputTransacaoId.value = '';
+        }, 300);
+    }
+
+    if (btnAbrirTransacao) {
+        btnAbrirTransacao.onclick = () => abrirModalTransacao(null);
+    }
+    if (modalTransacao) {
+        modalTransacao.querySelector('.close-button')?.addEventListener('click', fecharModalTransacao);
+        window.addEventListener('click', (event) => {
+            if (event.target === modalTransacao) fecharModalTransacao();
+        });
+    }
+
+    if (formTransacao) {
+        formTransacao.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const valor = parseFloat(formTransacao.valor.value);
+            if (isNaN(valor) || valor <= 0) {
+                showSnackbar("Valor inválido.", "error");
+                return;
+            }
+
+            const transacaoId = inputTransacaoId ? inputTransacaoId.value : '';
+            const payload = {
+                tipo: formTransacao.tipo.value,
+                descricao: formTransacao.descricao.value,
+                valor: valor,
+                dataTransacao: formTransacao.data.value,
+                categoria: formTransacao.categoria.value
+            };
+
+            const bandaId = window._bandaId || usuarioLogado?.bandaId;
+            const method = transacaoId ? 'PUT' : 'POST';
+            const url = transacaoId
+                ? getApiUrl(`/api/financeiro/${transacaoId}`)
+                : getApiUrl(`/api/financeiro/banda/${bandaId}`);
+
+            try {
+                const resp = await fetch(url, {
+                    method,
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
+                    body: JSON.stringify(payload)
+                });
+
+                if (resp.ok) {
+                    fecharModalTransacao();
+                    carregarFinanceiro();
+                    showSnackbar(transacaoId ? "Transação atualizada com sucesso!" : "Transação salva com sucesso!");
+                } else {
+                    showSnackbar("Erro ao salvar transação.", "error");
+                }
+            } catch (err) {
+                console.error(err);
+                showSnackbar("Erro de conexão com o servidor.", "error");
+            }
+        });
+    }
+
+    // Editar / Excluir transação (delegação de eventos)
+    document.body.addEventListener('click', async function(e) {
+        const btnEditarTransacao = e.target.closest('.btn-editar-transacao');
+        if (btnEditarTransacao) {
+            const id = parseInt(btnEditarTransacao.dataset.id);
+            const item = dadosFinanceiros.find(t => t.id === id);
+            if (item) abrirModalTransacao(item);
             return;
         }
-        dadosFinanceiros.push({
-            tipo: form.tipo.value,
-            descricao: form.descricao.value,
-            valor: valor, // Usar o valor validado
-            data: form.data.value,
-            categoria: form.categoria.value
-        });
-        carregarFinanceiro(); // Atualiza a tabela e o gráfico
-        showSnackbar("Salvo com sucesso!");
-        if (closeModal) closeModal();
+
+        const btnExcluirTransacao = e.target.closest('.btn-excluir-transacao');
+        if (btnExcluirTransacao) {
+            const id = parseInt(btnExcluirTransacao.dataset.id);
+            if (!confirm('Tem certeza que deseja excluir esta transação?')) return;
+            try {
+                const resp = await fetch(getApiUrl(`/api/financeiro/${id}`), {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                if (resp.ok) {
+                    dadosFinanceiros = dadosFinanceiros.filter(t => t.id !== id);
+                    localStorage.setItem('dadosFinanceiros', JSON.stringify(dadosFinanceiros));
+                    carregarFinanceiro();
+                    showSnackbar('Transação excluída com sucesso.');
+                } else {
+                    showSnackbar('Erro ao excluir transação.', 'error');
+                }
+            } catch (err) {
+                console.error(err);
+                showSnackbar('Erro de conexão com o servidor.', 'error');
+            }
+        }
     });
 
     setupModal('eventoModal', 'abrirModalEventoBtn', 'formAdicionarEvento', (form, closeModal) => {
@@ -1172,40 +1284,57 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
 
-    setupModal('musicaModal', 'abrirModalMusicaBtn', 'formAdicionarMusica', (form, closeModal) => {
+    setupModal('musicaModal', 'abrirModalMusicaBtn', 'formAdicionarMusica', async (form, closeModal) => {
         const nomeMusica = form.nomeMusica.value;
         const origemMusica = form.origemMusica.value;
         const fileInput = form.partituraMusica;
-        let partituraUrlTemp = null; // Usaremos URL temporária
+        let partituraUrlTemp = null; // Usaremos URL temporária (não persiste entre sessões)
 
         // Verifica se um arquivo foi selecionado e é PDF
         if (fileInput.files.length > 0) {
             const file = fileInput.files[0];
             if (file.type === "application/pdf") {
                 partituraUrlTemp = URL.createObjectURL(file);
-                console.log("URL temporária criada:", partituraUrlTemp);
             } else {
-                showSnackbar("Erro: Selecione um arquivo PDF.");
+                showSnackbar("Erro: Selecione um arquivo PDF.", "error");
                 return; // Impede o salvamento se não for PDF
             }
         }
 
-        // Adiciona a música ao array de dados
-        dadosRepertorio.push({
-            nome: nomeMusica,
-            origem: origemMusica,
-            partituraUrl: partituraUrlTemp // Salva a URL temporária (ou null)
-        });
+        const bandaId = window._bandaId || usuarioLogado?.bandaId;
+        if (!bandaId) {
+            showSnackbar("Você não está vinculado a uma banda.", "error");
+            return;
+        }
 
-        carregarRepertorio(); // Atualiza a tabela
-        showSnackbar("Salvo com sucesso!");
-        if (closeModal) closeModal(); // Fecha modal animado
+        try {
+            const resp = await fetch(getApiUrl(`/api/musicas/banda/${bandaId}`), {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
+                body: JSON.stringify({
+                    nome: nomeMusica,
+                    origem: origemMusica,
+                    partituraUrl: partituraUrlTemp
+                })
+            });
+
+            if (resp.ok) {
+                carregarRepertorio(); // Atualiza a tabela
+                showSnackbar("Música adicionada com sucesso!");
+                if (closeModal) closeModal(); // Fecha modal animado
+            } else {
+                showSnackbar("Erro ao salvar música.", "error");
+            }
+        } catch (err) {
+            console.error(err);
+            showSnackbar("Erro de conexão com o servidor.", "error");
+        }
     });
 
     // --- EVENTOS DE CLIQUE GERAIS (Delegação de eventos) ---
-    document.body.addEventListener('click', function(e) {
+    document.body.addEventListener('click', async function(e) {
 
-        // Botão Remover (Membro, Agenda, Repertório)
+        // Botão Remover (Agenda, Repertório)
         const btnRemover = e.target.closest('.btn-remover');
         if (btnRemover) {
             const tipo = btnRemover.dataset.tipo;
@@ -1215,7 +1344,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
             let itemRemovido = null;
 
-            
             if (tipo === 'agenda' && index < dadosAgenda.length) {
                 itemRemovido = dadosAgenda.splice(index, 1)[0];
                 localStorage.setItem('dadosAgenda', JSON.stringify(dadosAgenda));
@@ -1228,8 +1356,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (musica.id) {
                     try {
                         const token = localStorage.getItem('authToken');
-                        fetch(getApiUrl(`/api/musicas/${musica.id}`), { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
-                    } catch(e) {}
+                        const resp = await fetch(getApiUrl(`/api/musicas/${musica.id}`), { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
+                        if (!resp.ok) {
+                            showSnackbar('Erro ao remover música.', 'error');
+                            return;
+                        }
+                    } catch (err) {
+                        console.error(err);
+                        showSnackbar('Erro de conexão com o servidor.', 'error');
+                        return;
+                    }
                 }
                 itemRemovido = dadosRepertorio.splice(index, 1)[0];
                 localStorage.setItem('dadosRepertorio', JSON.stringify(dadosRepertorio));
@@ -1238,25 +1374,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (visualizadorPdf && musica.partituraUrl) {
                     visualizadorPdf.innerHTML = '<p>Selecione uma música para ver a partitura.</p>';
                 }
-            } else if (tipo === 'financeiro' && index < dadosFinanceiros.length) {
-                const fin = dadosFinanceiros[index];
-                if (fin.id) {
-                    try {
-                        const token = localStorage.getItem('authToken');
-                        fetch(getApiUrl(`/api/financeiro/${fin.id}`), { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
-                    } catch(e) {}
-                }
-                itemRemovido = dadosFinanceiros.splice(index, 1)[0];
-                localStorage.setItem('dadosFinanceiros', JSON.stringify(dadosFinanceiros));
-                carregarFinanceiro();
             }
 
             if (itemRemovido) {
                  showSnackbar(`"${itemRemovido.titulo || itemRemovido.nome || itemRemovido.email || 'Item'}" removido.`);
-                 // Se for financeiro, recarregar análise
-                 if (tipo === 'financeiro') {
-                    carregarFinanceiro();
-                 }
             }
         }
 
@@ -1377,7 +1498,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (!temAcesso) {
                 tab.classList.add('tab-bloqueada');
-                tab.title = `Ð¡ Acesso bloqueado — solicite ao gestor`;
+                tab.title = 'Acesso bloqueado — solicite ao gestor';
                 tab.innerHTML = `<i class="fas fa-lock" style="margin-right:6px;opacity:.7"></i>${MODULOS_LABELS[modulo].label}`;
             } else {
                 tab.classList.remove('tab-bloqueada');
@@ -1427,6 +1548,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // State to hold members and invites for search filtering
     let localMembersList = [];
     let localInvitesList = [];
+    let bandaAtual = null;
 
     async function carregarConfiguracoes() {
         const grid = document.getElementById('integrantesCardsGrid');
@@ -1446,6 +1568,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     });
                     if (respBanda.ok) {
                         const bandaData = await respBanda.json();
+                        bandaAtual = bandaData;
                         const headerName = document.getElementById('configBandaNome');
                         if (headerName) headerName.textContent = bandaData.nome;
                     }
@@ -1500,6 +1623,74 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error("Erro em carregarConfiguracoes:", e);
             grid.innerHTML = '<p class="empty-state"><i class="fas fa-exclamation-triangle"></i> Erro ao carregar integrantes.</p>';
         }
+    }
+
+    // ---- MODAL DE EDITAR BANDA ----
+    const btnEditarBanda = document.getElementById('btnEditarBanda');
+    const modalEditarBanda = document.getElementById('editarBandaModal');
+    const formEditarBanda = document.getElementById('formEditarBanda');
+
+    function abrirModalEditarBanda() {
+        if (!modalEditarBanda || !formEditarBanda) return;
+        formEditarBanda.reset();
+        if (bandaAtual) {
+            formEditarBanda.nome.value = bandaAtual.nome || '';
+            formEditarBanda.generoMusical.value = bandaAtual.generoMusical || '';
+            formEditarBanda.descricao.value = bandaAtual.descricao || '';
+        }
+        modalEditarBanda.style.display = 'block';
+    }
+
+    function fecharModalEditarBanda() {
+        if (modalEditarBanda) modalEditarBanda.style.display = 'none';
+    }
+
+    if (btnEditarBanda) {
+        btnEditarBanda.addEventListener('click', abrirModalEditarBanda);
+    }
+    if (modalEditarBanda) {
+        modalEditarBanda.querySelector('.close-button')?.addEventListener('click', fecharModalEditarBanda);
+        window.addEventListener('click', (event) => {
+            if (event.target === modalEditarBanda) fecharModalEditarBanda();
+        });
+    }
+    if (formEditarBanda) {
+        formEditarBanda.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const bandaId = window._bandaId || usuarioLogado?.bandaId;
+            if (!bandaId) {
+                showSnackbar('Banda não encontrada.', 'error');
+                return;
+            }
+
+            const payload = {
+                nome: formEditarBanda.nome.value,
+                generoMusical: formEditarBanda.generoMusical.value,
+                descricao: formEditarBanda.descricao.value
+            };
+
+            try {
+                const resp = await fetch(getApiUrl(`/api/bandas/${bandaId}`), {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
+                    body: JSON.stringify(payload)
+                });
+
+                if (resp.ok) {
+                    const bandaAtualizada = await resp.json();
+                    bandaAtual = bandaAtualizada;
+                    const headerName = document.getElementById('configBandaNome');
+                    if (headerName) headerName.textContent = bandaAtualizada.nome;
+                    fecharModalEditarBanda();
+                    showSnackbar('Banda atualizada com sucesso!');
+                } else {
+                    showSnackbar('Erro ao atualizar a banda.', 'error');
+                }
+            } catch (err) {
+                console.error(err);
+                showSnackbar('Erro de conexão com o servidor.', 'error');
+            }
+        });
     }
 
     async function buscarMembrosDaBanda() {
@@ -2291,17 +2482,44 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     const modalCandidatos = document.getElementById('candidatosModal');
+    let vagaIdAtualModal = null;
+    let subTabCandidatosAtiva = 'recebidas';
+
     if (modalCandidatos) {
         modalCandidatos.querySelector('.close-button').addEventListener('click', () => {
             modalCandidatos.style.display = 'none';
         });
     }
 
+    const subTabRecomendados = document.getElementById('subTabRecomendados');
+    const subTabRecebidas = document.getElementById('subTabRecebidas');
+
+    function ativarSubTabCandidatos(subtab) {
+        subTabCandidatosAtiva = subtab;
+        [subTabRecomendados, subTabRecebidas].forEach(btn => btn && btn.classList.remove('active'));
+        if (subtab === 'recomendados') {
+            subTabRecomendados?.classList.add('active');
+            renderCandidatosRecomendados(vagaIdAtualModal);
+        } else {
+            subTabRecebidas?.classList.add('active');
+            renderCandidaturasRecebidas(vagaIdAtualModal);
+        }
+    }
+
+    if (subTabRecomendados) subTabRecomendados.addEventListener('click', () => ativarSubTabCandidatos('recomendados'));
+    if (subTabRecebidas) subTabRecebidas.addEventListener('click', () => ativarSubTabCandidatos('recebidas'));
+
     async function abrirModalCandidatos(vagaId) {
+        vagaIdAtualModal = vagaId;
         modalCandidatos.style.display = 'block';
+        // Abre sempre na sub-aba "Candidaturas Recebidas" por padrão
+        ativarSubTabCandidatos('recebidas');
+    }
+
+    async function renderCandidatosRecomendados(vagaId) {
         const list = document.getElementById('candidatosList');
         list.innerHTML = '<p><i class="fas fa-spinner fa-spin"></i> Buscando os melhores músicos...</p>';
-        
+
         try {
             const resp = await fetch(getApiUrl(`/api/vagas/${vagaId}/candidatos-compativeis`), {
                 headers: { 'Authorization': `Bearer ${authToken}` }
@@ -2313,22 +2531,23 @@ document.addEventListener('DOMContentLoaded', function() {
                     list.innerHTML = '<p class="empty-state">Nenhum músico compatível encontrado no momento.</p>';
                     return;
                 }
-                
+
                 candidatos.forEach(c => {
+                    const perfil = c.perfilMusico || {};
                     const row = document.createElement('div');
                     row.style = "display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:15px; border-radius:10px; margin-bottom:10px;";
-                    
-                    const pMatch = c.pontuacaoMatch;
+
+                    const pMatch = c.percentualCompatibilidade;
                     let colorMatch = '#ef4444';
                     if (pMatch >= 80) colorMatch = '#10b981';
                     else if (pMatch >= 50) colorMatch = '#f59e0b';
-                    
+
                     row.innerHTML = `
                         <div style="flex:1;">
-                            <h4 style="margin:0;">${c.nomeMusico}</h4>
+                            <h4 style="margin:0;">${c.nomeMusico || ''}</h4>
                             <p style="font-size:0.85em; color:var(--cor-texto-claro); margin:5px 0;">
-                                <i class="fas fa-map-marker-alt"></i> ${c.cidade||''}/${c.estado||''} | 
-                                <i class="fas fa-guitar"></i> ${c.instrumentosPrincipais}
+                                <i class="fas fa-map-marker-alt"></i> ${perfil.cidade||''}/${perfil.estado||''} |
+                                <i class="fas fa-guitar"></i> ${perfil.instrumentosPrincipais||''}
                             </p>
                         </div>
                         <div style="text-align:center; padding: 10px 20px; background:rgba(255,255,255,0.05); border-radius:8px;">
@@ -2336,7 +2555,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             <br><small>Match</small>
                         </div>
                         <div style="margin-left:20px;">
-                            <a href="perfil-musico.html?id=${c.musicoId}" class="btn-adicionar" style="text-decoration:none; display:inline-block;">Ver Perfil</a>
+                            <a href="perfil-musico.html?id=${perfil.id||''}" class="btn-adicionar" style="text-decoration:none; display:inline-block;">Ver Perfil</a>
                         </div>
                     `;
                     list.appendChild(row);
@@ -2349,6 +2568,89 @@ document.addEventListener('DOMContentLoaded', function() {
             list.innerHTML = '<p>Erro de conexão.</p>';
         }
     }
+
+    async function renderCandidaturasRecebidas(vagaId) {
+        const list = document.getElementById('candidatosList');
+        list.innerHTML = '<p><i class="fas fa-spinner fa-spin"></i> Buscando candidaturas...</p>';
+
+        try {
+            const resp = await fetch(getApiUrl(`/api/candidaturas/vaga/${vagaId}`), {
+                headers: { 'Authorization': `Bearer ${authToken}` }
+            });
+            if (!resp.ok) {
+                list.innerHTML = '<p>Erro ao buscar candidaturas.</p>';
+                return;
+            }
+
+            const candidaturas = await resp.json();
+            list.innerHTML = '';
+            if (candidaturas.length === 0) {
+                list.innerHTML = '<p class="empty-state">Nenhuma candidatura recebida para esta vaga ainda.</p>';
+                return;
+            }
+
+            candidaturas.forEach(c => {
+                const row = document.createElement('div');
+                row.style = "display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:15px; border-radius:10px; margin-bottom:10px; gap:15px; flex-wrap:wrap;";
+
+                let statusBadge = '';
+                let acoesHtml = '';
+                if (c.status === 'APROVADO') {
+                    statusBadge = '<span class="status-badge status-aberta">APROVADO</span>';
+                } else if (c.status === 'REJEITADO') {
+                    statusBadge = '<span class="status-badge status-fechada">REJEITADO</span>';
+                } else {
+                    statusBadge = '<span class="status-badge" style="background:#fef3c7;color:#92400e;">PENDENTE</span>';
+                    acoesHtml = `
+                        <button type="button" class="btn-adicionar btn-aprovar-candidatura" data-id="${c.id}">Aprovar</button>
+                        <button type="button" class="btn-danger-outline btn-rejeitar-candidatura" data-id="${c.id}">Rejeitar</button>
+                    `;
+                }
+
+                row.innerHTML = `
+                    <div style="flex:1; min-width:200px;">
+                        <h4 style="margin:0;">${c.nomeMusico || ''}</h4>
+                        <p style="font-size:0.85em; color:var(--cor-texto-claro); margin:5px 0;">
+                            <i class="fas fa-map-marker-alt"></i> ${c.cidade||''}/${c.estado||''} |
+                            <i class="fas fa-guitar"></i> ${c.instrumentosPrincipais||''}
+                        </p>
+                    </div>
+                    <div>${statusBadge}</div>
+                    <div style="display:flex; gap:10px;">${acoesHtml}</div>
+                `;
+                list.appendChild(row);
+            });
+        } catch (e) {
+            console.error(e);
+            list.innerHTML = '<p>Erro de conexão.</p>';
+        }
+    }
+
+    // Aprovar / Rejeitar candidatura (delegação de eventos)
+    document.body.addEventListener('click', async function(e) {
+        const btnAprovar = e.target.closest('.btn-aprovar-candidatura');
+        const btnRejeitar = e.target.closest('.btn-rejeitar-candidatura');
+        if (!btnAprovar && !btnRejeitar) return;
+
+        const id = (btnAprovar || btnRejeitar).dataset.id;
+        const acao = btnAprovar ? 'aprovar' : 'rejeitar';
+
+        try {
+            const resp = await fetch(getApiUrl(`/api/candidaturas/${id}/${acao}`), {
+                method: 'PUT',
+                headers: { 'Authorization': `Bearer ${authToken}` }
+            });
+            if (resp.ok) {
+                showSnackbar(acao === 'aprovar' ? 'Candidatura aprovada com sucesso!' : 'Candidatura rejeitada.');
+                renderCandidaturasRecebidas(vagaIdAtualModal);
+            } else {
+                showSnackbar('Erro ao processar a candidatura.');
+            }
+        } catch (err) {
+            console.error(err);
+            showSnackbar('Erro de conexão com o servidor.');
+        }
+    });
 
 
     // ============================================================

@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /* ==========================================================================
    1. VARIÃÂVEIS GLOBAIS E RESET
    ========================================================================== */
@@ -1382,6 +1383,30 @@ a:hover {
     color: #555;
 }
 
+.cadastro-container {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+.btn-cadastro-outline {
+    display: inline-block;
+    padding: 10px 24px;
+    border: 1.5px solid var(--cor-secundaria);
+    border-radius: 8px;
+    color: var(--cor-secundaria);
+    background: transparent;
+    font-weight: 700;
+    font-size: 0.9em;
+    transition: all 0.25s ease;
+}
+.btn-cadastro-outline:hover {
+    background: var(--cor-secundaria);
+    color: #fff;
+    transform: translateY(-1px);
+}
+
 .recoveryInstruction {
     font-size: 0.95em;
     color: #555;
@@ -1410,6 +1435,12 @@ a:hover {
     opacity: 1;
     max-height: 40px;
     /* Altura ajustada */
+}
+
+.mensagemErro.geral {
+    text-align: center;
+    font-size: 0.9em;
+    margin-top: 12px;
 }
 
 .inputErro {
@@ -1577,14 +1608,6 @@ a:hover {
 /* ==========================================================================
    11. PÃÂGINA DE GESTÃÆO DA BANDA (banda.html)
    ========================================================================== */
-.banda-container {
-    padding-top: 70px;
-    padding-bottom: 40px;
-    min-height: calc(100vh - 70px - 60px);
-    display: flex;
-    flex-direction: column;
-}
-
 .banda-container h1 {
     font-size: 2.8em;
     color: var(--cor-primaria);
@@ -1923,7 +1946,7 @@ a:hover {
 }
 
 .filter-btn.ativo {
-    background: var(--cor-fundo-cartao, #fff);
+    background: var(--cor-fundo-card);
     color: var(--cor-primaria);
     box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
@@ -1943,7 +1966,7 @@ a:hover {
 
 /* Extrato Financeiro Moderno (Fintech Style) */
 .financeiro-extrato-card {
-    background: var(--cor-fundo-cartao, #fff);
+    background: var(--cor-fundo-card);
     border-radius: 16px;
     padding: 35px;
     box-shadow: 0 12px 40px rgba(0,0,0,0.04);
@@ -1992,7 +2015,7 @@ a:hover {
 }
 
 .transacao-item-moderno:hover {
-    background: var(--cor-fundo-cartao, #fff);
+    background: var(--cor-fundo-card);
     box-shadow: 0 8px 25px rgba(0,0,0,0.04);
     border-color: rgba(0,0,0,0.03);
     transform: translateX(5px);
@@ -2689,7 +2712,7 @@ a:hover {
     gap: 14px;
 }
 .transacao-item-moderno:hover {
-    background: var(--cor-fundo-cartao, #fff);
+    background: var(--cor-fundo-card);
     box-shadow: 0 8px 25px rgba(0,0,0,0.04);
     border-color: rgba(0,0,0,0.03);
     transform: translateX(4px);
@@ -3207,7 +3230,7 @@ a:hover {
     border: 1px solid transparent;
 }
 .cal-proximo-item:hover {
-    background: var(--cor-fundo-cartao, #fff);
+    background: var(--cor-fundo-card);
     box-shadow: 0 4px 12px rgba(0,0,0,0.06);
     border-color: rgba(0,0,0,0.03);
     transform: translateX(2px);
@@ -3271,7 +3294,6 @@ a:hover {
     .cal-sidebar.aberto { transform: translateX(0); }
     .cal-root { position: relative; }
     .cal-week-header { grid-template-columns: 40px repeat(7, 1fr); }
-    .cal-week-row { grid-template-columns: 40px repeat(7, 1fr); }
     .cal-time-label { width: 30px; font-size: 0.65em; padding: 4px 4px; }
     .cal-view-btn { padding: 6px 10px; font-size: 0.78em; }
     .cal-current-date { font-size: 1em; }
@@ -3279,7 +3301,6 @@ a:hover {
 @media (max-width: 600px) {
     .cal-root { height: calc(100vh - 160px); border-radius: 8px; }
     .cal-week-header { grid-template-columns: 36px repeat(7, 1fr); }
-    .cal-week-row { grid-template-columns: 36px repeat(7, 1fr); }
     .cal-week-head-col { padding: 6px 2px; }
     .cal-dow-label { font-size: 0.65em; }
     .cal-day-badge { width: 24px; height: 24px; font-size: 0.8em; }
@@ -3295,112 +3316,6 @@ a:hover {
 /* ==========================================================================
    13b. ESTILOS DA AGENDA (antigo - substituÃÂ­do)
    ========================================================================== */
-
-.agenda-cards-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 25px;
-}
-
-.agenda-card-modern {
-    background-color: var(--cor-fundo-card);
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-    padding: 25px;
-    display: flex;
-    align-items: flex-start;
-    gap: 20px;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    border: 1px solid rgba(0,0,0,0.02);
-}
-
-.agenda-card-modern::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 6px;
-    height: 100%;
-    background-color: var(--cor-secundaria);
-    transition: width 0.3s ease;
-}
-
-.agenda-card-modern.show::before { background-color: var(--cor-info); }
-.agenda-card-modern.gravacao::before { background-color: #9b59b6; }
-.agenda-card-modern.ensaio::before { background-color: var(--cor-sucesso); }
-
-.agenda-card-modern:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-}
-
-.card-date-badge {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    border-radius: 16px;
-    padding: 15px 10px;
-    text-align: center;
-    min-width: 70px;
-    box-shadow: inset 0 2px 4px rgba(255,255,255,0.8), 0 4px 10px rgba(0,0,0,0.03);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    z-index: 1;
-}
-
-.card-date-badge .dia {
-    font-size: 1.5em;
-    font-weight: 800;
-    color: var(--cor-primaria);
-    line-height: 1;
-    font-family: var(--fonte-principal);
-}
-
-.card-date-badge .mes {
-    font-size: 0.8em;
-    font-weight: 700;
-    color: var(--cor-secundaria);
-    text-transform: uppercase;
-    margin-top: 4px;
-    letter-spacing: 1px;
-}
-
-.card-content {
-    flex-grow: 1;
-    position: relative;
-    z-index: 1;
-}
-
-.card-content h4 {
-    margin: 0 0 8px 0;
-    font-size: 1.3em;
-    color: var(--cor-primaria);
-    line-height: 1.2;
-}
-
-.card-content .location {
-    font-size: 0.9em;
-    color: var(--cor-texto-claro);
-    margin: 0 0 12px 0;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.type-tag {
-    display: inline-block;
-    padding: 4px 10px;
-    border-radius: 8px;
-    font-size: 0.75em;
-    font-weight: 700;
-    text-transform: uppercase;
-    background-color: rgba(250, 152, 72, 0.1);
-    color: var(--cor-secundaria);
-}
-.type-tag.show { background-color: rgba(52, 152, 219, 0.1); color: var(--cor-info); }
-.type-tag.gravacao { background-color: rgba(155, 89, 182, 0.1); color: #8e44ad; }
-.type-tag.ensaio { background-color: rgba(46, 204, 113, 0.1); color: var(--cor-sucesso); }
 
 .card-hover-actions {
     position: absolute;
@@ -3463,7 +3378,7 @@ a:hover {
 }
 
 .modal-content {
-    background: var(--cor-fundo-cartao, #fff);
+    background: var(--cor-fundo-card);
     margin: 5vh auto;
     padding: 24px 30px;
     border: 1px solid rgba(250, 152, 72, 0.15);
@@ -3495,6 +3410,16 @@ a:hover {
     background: var(--cor-secundaria);
     margin: 10px auto 0;
     border-radius: 2px;
+}
+
+.modal-content--md {
+    max-width: 550px;
+}
+
+.perm-modal-categoria {
+    background: var(--cor-fundo, #f4f7f6);
+    border-radius: 10px;
+    padding: 15px;
 }
 
 .close-button {
@@ -3915,6 +3840,15 @@ a:hover {
     .caminho-card h3 {
         font-size: 1.5em;
     }
+
+    .perfil-dropdown {
+        width: min(220px, calc(100vw - 30px));
+        right: -10px;
+    }
+    .notif-dropdown {
+        width: min(290px, calc(100vw - 30px));
+        right: -10px;
+    }
 }
 
 /* ==========================================================================
@@ -4096,6 +4030,8 @@ a:hover {
     padding-top: 110px;
     padding-bottom: 40px;
     min-height: calc(100vh - 110px - 60px);
+    display: flex;
+    flex-direction: column;
 }
 
 /* --- Tabs: tamanho adequado e bem distribuÃÂ­das --- */
@@ -4155,8 +4091,6 @@ a:hover {
 .cal-day-badge { width: 26px; height: 26px; font-size: 0.88em; }
 
 /* --- Linhas de hora menores (48px em vez de 60px) --- */
-.cal-week-row { min-height: 48px; }
-.cal-day-row  { min-height: 48px; }
 .cal-time-label { font-size: 0.68em; padding: 3px 6px; }
 
 /* --- MÃÂªs: cÃÂ©lulas menores --- */
@@ -4213,11 +4147,11 @@ a:hover {
     .fin-kpi-card { padding: 14px 12px; }
     .fin-kpi-value { font-size: 1em; }
     
-    .cal-week-header, .cal-week-row {
+    .cal-week-header {
         min-width: 0;
         width: 100%;
     }
-    .cal-week-head-col, .cal-day-cell {
+    .cal-week-head-col {
         min-width: 0;
         overflow: hidden;
     }
@@ -4254,7 +4188,7 @@ a:hover {
 }
 
 .modal-boas-vindas {
-    background: var(--cor-fundo-cartao, #fff);
+    background: var(--cor-fundo-card);
     border-radius: 16px;
     width: 100%;
     max-width: 420px;
@@ -4489,12 +4423,6 @@ a:hover {
     border-bottom-color: transparent !important;
     position: relative;
 }
-.tab-link.tab-bloqueada::after {
-    content: 'Ã°Å¸ââ';
-    font-size: 0.72em;
-    margin-left: 4px;
-    opacity: 0.8;
-}
 .tab-link-config {
     
     background: linear-gradient(135deg, rgba(250,152,72,0.12), rgba(250,152,72,0.05)) !important;
@@ -4569,81 +4497,6 @@ a:hover {
 /* ==========================================================================
    ABA CONFIGURAÃâ¡Ãâ¢ES Ã¢â¬â Gerenciamento de PermissÃÂµes
    ========================================================================== */
-.perm-page-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    margin-bottom: 28px;
-}
-.perm-page-header h2 {
-    font-size: 1.6em;
-    color: var(--cor-primaria);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-.perm-page-header h2 i {
-    color: var(--cor-secundaria);
-    font-size: 0.85em;
-}
-.perm-subtitle {
-    color: #6b7280;
-    margin-top: 6px;
-    font-size: 0.95em;
-}
-
-/* Legenda de mÃÂ³dulos */
-.perm-modulos-legenda {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin-bottom: 28px;
-}
-.perm-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 6px 14px;
-    border-radius: 50px;
-    font-size: 0.82em;
-    font-weight: 700;
-    border: 1.5px solid;
-}
-.perm-badge-agenda    { background: rgba(16,185,129,0.1); color:#10b981; border-color: rgba(16,185,129,0.25); }
-.perm-badge-financeiro{ background: rgba(245,158,11,0.1); color:#d97706; border-color: rgba(245,158,11,0.25); }
-.perm-badge-membros   { background: rgba(59,130,246,0.1); color:#3b82f6; border-color: rgba(59,130,246,0.25); }
-.perm-badge-repertorio{ background: rgba(139,92,246,0.1); color:#8b5cf6; border-color: rgba(139,92,246,0.25); }
-
-/* Grid de cards de permissÃÂ£o */
-.perm-cards-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-    gap: 24px;
-}
-
-/* Card individual */
-.perm-card {
-    background: #fff;
-    border-radius: 18px;
-    border: 1px solid var(--cor-borda);
-    box-shadow: var(--sombra-card);
-    overflow: hidden;
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
-}
-.perm-card:hover {
-    box-shadow: 0 12px 32px rgba(0,0,0,0.1);
-    transform: translateY(-3px);
-}
-
-/* Header do card */
-.perm-card-header {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 22px 22px 18px;
-    border-bottom: 1px solid var(--cor-borda);
-    background: linear-gradient(135deg, rgba(1,16,41,0.03), rgba(250,152,72,0.04));
-}
 .perm-avatar {
     width: 52px;
     height: 52px;
@@ -4659,17 +4512,6 @@ a:hover {
     flex-shrink: 0;
     box-shadow: 0 4px 12px rgba(1,16,41,0.2);
 }
-.perm-card-info h4 {
-    font-size: 1.05em;
-    color: var(--cor-primaria);
-    margin-bottom: 2px;
-}
-.perm-card-info p {
-    font-size: 0.82em;
-    color: #6b7280;
-    margin-bottom: 4px;
-    font-size: 0.9em;
-}
 .perm-funcao-badge {
     display: inline-block;
     background: rgba(250,152,72,0.1);
@@ -4679,115 +4521,6 @@ a:hover {
     font-size: 0.75em;
     font-weight: 700;
     border: 1px solid rgba(250,152,72,0.25);
-}
-
-/* Lista de toggles */
-.perm-toggles {
-    padding: 18px 22px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-.perm-toggle-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 16px;
-    border-radius: 8px;
-    background: var(--cor-fundo);
-    border: 1px solid var(--cor-borda);
-    cursor: pointer;
-    transition: background 0.2s ease, border-color 0.2s ease;
-}
-.perm-toggle-item:hover {
-    background: rgba(250,152,72,0.04);
-    border-color: rgba(250,152,72,0.2);
-}
-.perm-toggle-info {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-weight: 600;
-    color: var(--cor-primaria);
-    font-size: 0.9em;
-}
-.perm-toggle-info i {
-    font-size: 0.95em;
-    color: var(--cor-secundaria);
-    width: 18px;
-    text-align: center;
-}
-
-/* Toggle switch */
-.perm-toggle-switch {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-}
-.perm-checkbox {
-    opacity: 0;
-    width: 0;
-    height: 0;
-    position: absolute;
-}
-.perm-slider {
-    display: block;
-    width: 46px;
-    height: 26px;
-    background: #d1d5db;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: background 0.25s ease;
-    position: relative;
-}
-.perm-slider::before {
-    content: '';
-    position: absolute;
-    left: 3px;
-    top: 3px;
-    width: 20px;
-    height: 20px;
-    background: #fff;
-    border-radius: 50%;
-    transition: transform 0.25s ease;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-}
-.perm-checkbox:checked + .perm-slider {
-    background: linear-gradient(135deg, #10b981, #059669);
-}
-.perm-checkbox:checked + .perm-slider::before {
-    transform: translateX(20px);
-}
-
-/* Footer do card */
-.perm-card-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 22px;
-    border-top: 1px solid var(--cor-borda);
-    background: linear-gradient(135deg, rgba(1,16,41,0.02), rgba(250,152,72,0.03));
-}
-.perm-save-status {
-    font-size: 0.85em;
-    font-weight: 600;
-    transition: color 0.3s ease;
-}
-.btn-salvar-permissoes {
-    padding: 10px 20px;
-    font-size: 0.88em;
-    border-radius: 10px;
-}
-.btn-salvar-permissoes:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    transform: none !important;
-}
-
-@media (max-width: 600px) {
-    .perm-cards-grid { grid-template-columns: 1fr; }
-    .perm-modulos-legenda { gap: 6px; }
-    .perm-badge { font-size: 0.75em; padding: 4px 10px; }
 }
 
 /* ============================================================
@@ -4913,286 +4646,21 @@ a:hover {
 /* ============================================================
    ESTILOS DE CARDS DE INTEGRANTES PREMIUM & SWITCHES
    ============================================================ */
-/* ================================================================ */
-/* ABA CONFIGURAÇÕES / PERMISSÕES - DESIGN ELEGANTE PREMIUM       */
-/* ================================================================ */
-
-/* Cabeçalho da aba */
-.perm-premium-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 20px;
-    flex-wrap: wrap;
-    margin-bottom: 30px;
-    background: linear-gradient(135deg, rgba(250,152,72,0.08) 0%, rgba(1,16,41,0.6) 100%);
-    border: 1px solid rgba(250,152,72,0.2);
-    padding: 24px 28px;
-    border-radius: 16px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.05);
-    backdrop-filter: blur(10px);
-}
-
-.perm-premium-header h2 {
-    font-size: 1.5em;
-    font-weight: 800;
-    color: #fff;
-    margin: 0 0 4px 0;
-    font-family: 'Montserrat', sans-serif;
-    letter-spacing: -0.5px;
-}
-
-.perm-premium-header span#configMembrosCount {
-    font-size: 0.9em;
-    color: var(--cor-secundaria);
-    font-weight: 600;
-}
-
-/* Campo de busca */
-#buscaIntegranteNome {
-    width: 100%;
-    padding: 12px 16px;
-    border-radius: 10px;
-    border: 1px solid rgba(255,255,255,0.12);
-    background: rgba(0,0,0,0.3);
-    color: #fff;
-    font-size: 0.95em;
-    outline: none;
-    transition: all 0.3s ease;
-}
-
-#buscaIntegranteNome:focus {
-    border-color: rgba(250,152,72,0.5);
-    background: rgba(0,0,0,0.4);
-    box-shadow: 0 0 0 3px rgba(250,152,72,0.1);
-}
-
-#buscaIntegranteNome::placeholder { color: rgba(255,255,255,0.35); }
-
-/* Grid de Cards */
-.integrantes-premium-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
-    margin-top: 10px;
-}
-
-/* Card de Integrante */
-.member-premium-card {
-    background: linear-gradient(145deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 16px;
-    padding: 24px;
-    display: flex;
-    flex-direction: column;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-    position: relative;
-    overflow: hidden;
-}
-
-/* Linha dourada no topo do card */
-.member-premium-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--cor-secundaria), transparent);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.member-premium-card:hover {
-    transform: translateY(-4px);
-    background: linear-gradient(145deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%);
-    border-color: rgba(250,152,72,0.25);
-    box-shadow: 0 12px 35px rgba(0,0,0,0.3), 0 0 0 1px rgba(250,152,72,0.1);
-}
-
-.member-premium-card:hover::before {
-    opacity: 1;
-}
-
-/* Cabeçalho do Card: Avatar + Nome */
-.member-premium-card-header {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-bottom: 18px;
-}
-
-/* Avatar */
-.member-premium-avatar {
-    width: 52px;
-    height: 52px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--cor-secundaria), #e07820);
-    color: #011029;
-    font-weight: 800;
-    font-size: 1.25em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 14px rgba(250,152,72,0.35);
-    font-family: 'Montserrat', sans-serif;
-    flex-shrink: 0;
-    border: 2px solid rgba(250,152,72,0.3);
-}
-
-/* Info Nome e Email */
-.member-premium-info h4 {
-    margin: 0;
-    font-size: 1.05em;
-    font-weight: 700;
-    color: #fff;
-    font-family: 'Montserrat', sans-serif;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.member-premium-info p {
-    margin: 4px 0 0 0;
-    font-size: 0.8em;
-    color: rgba(255,255,255,0.45);
-    word-break: break-all;
-}
-
-/* Detalhes (Instrumento, Cargo, etc.) */
-.member-premium-details {
-    margin-bottom: 18px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 14px;
-    background: rgba(0,0,0,0.2);
-    border-radius: 10px;
-    border: 1px solid rgba(255,255,255,0.05);
-}
-
-.member-premium-detail-item {
-    font-size: 0.85em;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-}
-
-.member-premium-detail-item > :first-child {
-    color: rgba(255,255,255,0.5);
-    font-weight: 500;
-}
-
-.member-premium-detail-item span {
-    color: #fff;
-    font-weight: 600;
-    text-align: right;
-}
-
-/* Badge de Status */
-.member-premium-status-badge {
-    font-size: 0.72em;
-    font-weight: 700;
-    padding: 4px 12px;
-    border-radius: 20px;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-}
-
-.status-ativo {
-    background: rgba(16,185,129,0.15);
-    color: #34d399;
-    border: 1px solid rgba(16,185,129,0.25);
-}
-
-.status-pendente {
-    background: rgba(250,152,72,0.15);
-    color: var(--cor-secundaria);
-    border: 1px solid rgba(250,152,72,0.3);
-}
-
-.status-sem-acesso {
-    background: rgba(239,68,68,0.12);
-    color: #f87171;
-    border: 1px solid rgba(239,68,68,0.2);
-}
-
-/* Ações do Card */
-.member-premium-actions {
-    display: flex;
-    gap: 8px;
-    border-top: 1px solid rgba(255,255,255,0.06);
-    padding-top: 16px;
-    margin-top: auto;
-}
-
-.member-premium-actions button {
-    flex: 1;
-    padding: 9px 12px;
-    font-size: 0.82em;
-    font-weight: 700;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    outline: none;
-    font-family: inherit;
-    letter-spacing: 0.3px;
-}
-
-.btn-premium-edit {
-    background: rgba(255,255,255,0.05);
-    color: rgba(255,255,255,0.8);
-    border: 1px solid rgba(255,255,255,0.1);
-}
-
-.btn-premium-edit:hover {
-    background: rgba(255,255,255,0.1);
-    color: #fff;
-    border-color: rgba(255,255,255,0.2);
-    transform: translateY(-1px);
-}
-
-.btn-premium-remove {
-    background: rgba(239,68,68,0.06);
-    color: #f87171;
-    border: 1px solid rgba(239,68,68,0.12);
-}
-
-.btn-premium-remove:hover {
-    background: rgba(239,68,68,0.15);
-    border-color: rgba(239,68,68,0.3);
-    transform: translateY(-1px);
-}
-
-.btn-premium-resend {
-    background: rgba(250,152,72,0.07);
-    color: var(--cor-secundaria);
-    border: 1px solid rgba(250,152,72,0.15);
-}
-
-.btn-premium-resend:hover {
-    background: rgba(250,152,72,0.15);
-    border-color: rgba(250,152,72,0.35);
-    transform: translateY(-1px);
-}
-
-/* Responsividade */
-@media (max-width: 768px) {
-    .perm-premium-header {
-        flex-direction: column;
-        align-items: stretch;
-        padding: 18px;
-    }
-    .integrantes-premium-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
 /* PREMIUM TOGGLE SWITCH STYLES */
+.perm-toggle-switch-premium {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+    cursor: pointer;
+}
+.perm-slider-premium {
+    position: absolute;
+    inset: 0;
+    background-color: #d1d5db;
+    transition: .3s;
+    border-radius: 24px;
+}
 .perm-checkbox-premium:checked + .perm-slider-premium {
     background-color: #10b981 !important;
     box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
@@ -5869,7 +5337,7 @@ a:hover {
 
 /* Cartão da Vaga */
 .vaga-card-compact {
-    background: var(--cor-fundo-cartao, #fff);
+    background: var(--cor-fundo-card);
     border: 1px solid #e2e8f0;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
@@ -5967,7 +5435,7 @@ a:hover {
 /* Rodapé (Botões) */
 .vaga-card-footer {
     padding: 15px 20px;
-    background: var(--cor-fundo-cartao, #fff);
+    background: var(--cor-fundo-card);
     border-top: 1px solid #f1f5f9;
     display: flex;
     flex-direction: column;
@@ -6023,7 +5491,7 @@ a:hover {
 
 /* Lista de Candidatos (Modal) */
 #candidatosList > div {
-    background: var(--cor-fundo-cartao, #fff);
+    background: var(--cor-fundo-card);
     border: 1px solid #e2e8f0;
     border-left: 4px solid var(--cor-secundaria);
     border-radius: 8px;
@@ -6391,7 +5859,7 @@ a:hover {
 
 .perm-header-actions input:focus {
     border-color: var(--cor-secundaria);
-    background: var(--cor-fundo-cartao, #fff);
+    background: var(--cor-fundo-card);
     box-shadow: 0 0 0 3px rgba(250, 152, 72, 0.1);
 }
 
@@ -6425,8 +5893,8 @@ a:hover {
 }
 
 /* Card do Integrante */
-.integrantes-premium-grid > div.member-card-premium {
-    background: var(--cor-fundo-cartao, #fff);
+.integrantes-premium-grid > div.member-premium-card {
+    background: var(--cor-fundo-card);
     border: 1px solid var(--cor-borda, rgba(0,0,0,0.1));
     border-radius: 16px;
     padding: 24px;
@@ -6437,7 +5905,7 @@ a:hover {
     height: 100%;
 }
 
-.integrantes-premium-grid > div.member-card-premium:hover {
+.integrantes-premium-grid > div.member-premium-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 12px 30px rgba(0,0,0,0.08);
 }
@@ -6468,6 +5936,9 @@ a:hover {
     font-size: 1.15em;
     font-weight: 700;
     color: var(--cor-texto);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .member-premium-info p {
@@ -6513,6 +5984,12 @@ a:hover {
 .member-premium-status-badge.status-ativo {
     background: rgba(72, 187, 120, 0.15);
     color: #38a169;
+}
+
+.member-premium-status-badge.status-pendente {
+    background: rgba(250,152,72,0.15);
+    color: var(--cor-secundaria);
+    border: 1px solid rgba(250,152,72,0.3);
 }
 
 .admin-badge span {

@@ -2,65 +2,151 @@
    financeiro-dashboard.js  –  Music Makers
    ============================================================ */
 
-// ── EXEMPLOS FIXOS (exibidos quando o backend não está disponível)
-const EXEMPLOS_FINANCEIRO = [
-  // ── Janeiro 2025
-  { tipo: 'RECEITA', descricao: 'Cachê Show Bar do Rock',       valor: 1200.00, data: '2025-01-15', categoria: 'Show' },
-  { tipo: 'DESPESA', descricao: 'Aluguel Sala de Ensaio Jan',    valor: 350.00,  data: '2025-01-10', categoria: 'Estúdio' },
-  { tipo: 'DESPESA', descricao: 'Cordas de Guitarra',            valor: 89.90,   data: '2025-01-20', categoria: 'Equipamento' },
-  // ── Fevereiro 2025
-  { tipo: 'RECEITA', descricao: 'Cachê Festa de Carnaval',       valor: 2500.00, data: '2025-02-22', categoria: 'Show' },
-  { tipo: 'DESPESA', descricao: 'Aluguel Sala de Ensaio Fev',    valor: 350.00,  data: '2025-02-05', categoria: 'Estúdio' },
-  { tipo: 'DESPESA', descricao: 'Transporte Van',                valor: 180.00,  data: '2025-02-22', categoria: 'Transporte' },
-  // ── Março 2025
-  { tipo: 'RECEITA', descricao: 'Venda Camisetas Banda',         valor: 450.00,  data: '2025-03-10', categoria: 'Merchandising' },
-  { tipo: 'RECEITA', descricao: 'Cachê Show Aniversário',        valor: 1800.00, data: '2025-03-28', categoria: 'Show' },
-  { tipo: 'DESPESA', descricao: 'Aluguel Sala de Ensaio Mar',    valor: 350.00,  data: '2025-03-08', categoria: 'Estúdio' },
-  { tipo: 'DESPESA', descricao: 'Alimentação Pós-Show',          valor: 120.50,  data: '2025-03-28', categoria: 'Alimentação' },
-  // ── Abril 2025
-  { tipo: 'RECEITA', descricao: 'Cachê Show Pub Central',        valor: 1500.00, data: '2025-04-12', categoria: 'Show' },
-  { tipo: 'DESPESA', descricao: 'Aluguel Sala de Ensaio Abr',    valor: 350.00,  data: '2025-04-03', categoria: 'Estúdio' },
-  { tipo: 'DESPESA', descricao: 'Manutenção Amplificador',       valor: 250.00,  data: '2025-04-18', categoria: 'Equipamento' },
-  // ── Maio 2025
-  { tipo: 'RECEITA', descricao: 'Cachê Festival Regional',       valor: 3000.00, data: '2025-05-17', categoria: 'Show' },
-  { tipo: 'RECEITA', descricao: 'Venda Adesivos e Bonés',        valor: 320.00,  data: '2025-05-17', categoria: 'Merchandising' },
-  { tipo: 'DESPESA', descricao: 'Aluguel Sala de Ensaio Mai',    valor: 350.00,  data: '2025-05-05', categoria: 'Estúdio' },
-  { tipo: 'DESPESA', descricao: 'Combustível Viagem Festival',   valor: 290.00,  data: '2025-05-16', categoria: 'Transporte' },
-  { tipo: 'DESPESA', descricao: 'Hospedagem Festival',           valor: 400.00,  data: '2025-05-16', categoria: 'Transporte' },
-];
+// --- VERIFICA LOGIN ---
+const usuarioLogadoString = localStorage.getItem('usuarioLogado');
+const authToken = localStorage.getItem('authToken');
+
+if (!usuarioLogadoString || !authToken) {
+    window.location.href = 'login.html';
+}
+
+const usuarioLogado = usuarioLogadoString ? JSON.parse(usuarioLogadoString) : null;
+
+// --- SNACKBAR AUTO-CONTIDO ---
+function showSnackbar(message, type = 'success') {
+    const styleId = 'financeiroDashboardSnackbarStyles';
+    if (!document.getElementById(styleId)) {
+        const style = document.createElement('style');
+        style.id = styleId;
+        style.textContent = `
+            #snackbar {
+                visibility: hidden;
+                min-width: 280px;
+                max-width: 420px;
+                background: #ffffff;
+                color: #34495e;
+                text-align: left;
+                border-radius: 10px;
+                padding: 14px 18px;
+                position: fixed;
+                z-index: 99999;
+                left: 50%;
+                bottom: 30px;
+                transform: translateX(-50%) translateY(20px);
+                opacity: 0;
+                transition: opacity 0.3s, transform 0.3s;
+                box-shadow: 0 8px 30px rgba(0,0,0,.15);
+                border-left: 4px solid #28a745;
+                font-family: 'Inter', sans-serif;
+                font-size: 0.9rem;
+            }
+            #snackbar.show {
+                visibility: visible;
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
+    let snackbar = document.getElementById('snackbar');
+    if (!snackbar) {
+        snackbar = document.createElement('div');
+        snackbar.id = 'snackbar';
+        document.body.appendChild(snackbar);
+    }
+
+    const isError = type === 'error';
+    snackbar.style.borderLeftColor = isError ? '#e74c3c' : '#28a745';
+    snackbar.textContent = message;
+    snackbar.className = 'show';
+    setTimeout(() => { snackbar.className = snackbar.className.replace('show', ''); }, 3000);
+}
+
+// --- RESOLVE BANDA ID ---
+function resolverBandaId() {
+    if (window._bandaId) return window._bandaId;
+    if (usuarioLogado && usuarioLogado.bandaId) {
+        window._bandaId = usuarioLogado.bandaId;
+        return window._bandaId;
+    }
+    return null;
+}
 
 let transacoes = [];
-const BANDA_ID = 1; // Fixo para teste
+
+function mostrarEstadoErro(mensagem) {
+    const mainContent = document.getElementById('dashboardMainContent');
+    const errorState = document.getElementById('dashboardErrorState');
+    const errorMsg = document.getElementById('dashboardErrorMessage');
+    const badgeLive = document.getElementById('badgeLive');
+
+    if (mainContent) mainContent.style.display = 'none';
+    if (errorState) {
+        errorState.style.display = 'block';
+        if (errorMsg) errorMsg.textContent = mensagem;
+    }
+    if (badgeLive) {
+        badgeLive.classList.add('badge-erro');
+        badgeLive.textContent = 'Erro ao carregar';
+    }
+}
+
+function mostrarEstadoSucesso() {
+    const mainContent = document.getElementById('dashboardMainContent');
+    const errorState = document.getElementById('dashboardErrorState');
+    const badgeLive = document.getElementById('badgeLive');
+
+    if (mainContent) mainContent.style.display = '';
+    if (errorState) errorState.style.display = 'none';
+    if (badgeLive) {
+        badgeLive.classList.remove('badge-erro');
+        badgeLive.textContent = 'Dados em tempo real';
+    }
+}
 
 async function carregarTransacoes() {
-  try {
-    const token = localStorage.getItem('authToken');
-    const response = await fetch(getApiUrl(`/api/financeiro/banda/${BANDA_ID}`), {
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
-    if (response.ok) {
-      const data = await response.json();
-      transacoes = data.map(t => ({
-        tipo: t.tipo,
-        descricao: t.descricao,
-        valor: t.valor,
-        data: t.dataTransacao,
-        categoria: t.categoria
-      }));
-      // Se o banco retornou vazio, usa exemplos
-      if (transacoes.length === 0) {
-        transacoes = [...EXEMPLOS_FINANCEIRO];
-      }
-      renderizar();
-      return;
-    }
-  } catch (error) {
-    console.error('Erro ao buscar financeiro (usando exemplos):', error);
-  }
+    const bandaId = resolverBandaId();
 
-  // Fallback: se o backend falhou ou não respondeu, exibe os exemplos
-  transacoes = [...EXEMPLOS_FINANCEIRO];
-  renderizar();
+    if (!bandaId) {
+        mostrarEstadoErro('Você ainda não está vinculado a uma banda.');
+        return;
+    }
+
+    try {
+        const token = localStorage.getItem('authToken');
+        const response = await fetch(getApiUrl(`/api/financeiro/banda/${bandaId}`), {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (response.status === 401) {
+            localStorage.removeItem('usuarioLogado');
+            localStorage.removeItem('authToken');
+            window.location.href = 'login.html';
+            return;
+        }
+
+        if (!response.ok) {
+            mostrarEstadoErro('Não foi possível carregar os dados financeiros. Tente novamente.');
+            return;
+        }
+
+        const data = await response.json();
+        transacoes = data.map(t => ({
+            id: t.id,
+            tipo: t.tipo,
+            descricao: t.descricao,
+            valor: t.valor,
+            data: t.dataTransacao,
+            categoria: t.categoria
+        }));
+
+        mostrarEstadoSucesso();
+        renderizar();
+    } catch (error) {
+        console.error('Erro ao buscar financeiro:', error);
+        mostrarEstadoErro('Erro de conexão. Verifique sua internet e tente novamente.');
+    }
 }
 
 // ── ESTADO
@@ -272,18 +358,16 @@ function renderizar() {
 // ── FUNÇÕES GLOBAIS (chamadas pelo HTML)
 window.aplicarPeriodo = function (periodo) {
   periodoAtivo = periodo;
-  document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('btn' + periodo.replace('m', '') + (periodo === 'all' ? 'All' : 'm'))?.classList.add('active');
-  // fallback direto pelo id
   const map = { '1m': 'btn1m', '3m': 'btn3m', '6m': 'btn6m', 'all': 'btnAll' };
   document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
   document.getElementById(map[periodo])?.classList.add('active');
   renderizar();
 };
 
-
+window.carregarTransacoes = carregarTransacoes;
 
 // ── INIT
 document.addEventListener('DOMContentLoaded', () => {
+  if (!usuarioLogadoString || !authToken) return; // já redirecionando para login.html
   carregarTransacoes();
 });

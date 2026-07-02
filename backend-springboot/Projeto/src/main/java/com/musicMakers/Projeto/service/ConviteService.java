@@ -2,6 +2,7 @@ package com.musicMakers.Projeto.service;
 
 import com.musicMakers.Projeto.domain.entity.*;
 import com.musicMakers.Projeto.repository.*;
+import com.musicMakers.Projeto.security.AutorizacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +29,9 @@ public class ConviteService {
     @Autowired
     private PermissaoMembroRepository permissaoRepository;
 
+    @Autowired
+    private AutorizacaoService autorizacaoService;
+
     public List<ConviteBanda> listarPendentes(Long usuarioId) {
         return conviteRepository.findByUsuarioConvidadoIdAndStatus(usuarioId, "PENDENTE");
     }
@@ -37,12 +41,11 @@ public class ConviteService {
     }
 
     @Transactional
-    public ConviteBanda enviarConvite(Long bandaId, Long gestorId, Long usuarioConvidadoId) {
+    public ConviteBanda enviarConvite(Long bandaId, Usuario usuarioAutenticado, Long usuarioConvidadoId) {
         Banda banda = bandaRepository.findById(bandaId)
                 .orElseThrow(() -> new RuntimeException("Banda não encontrada"));
 
-        Usuario gestor = usuarioRepository.findById(gestorId)
-                .orElseThrow(() -> new RuntimeException("Gestor não encontrado"));
+        autorizacaoService.exigirGestorDaBanda(bandaId, usuarioAutenticado);
 
         Usuario convidado = usuarioRepository.findById(usuarioConvidadoId)
                 .orElseThrow(() -> new RuntimeException("Músico convidado não encontrado"));
@@ -64,7 +67,7 @@ public class ConviteService {
 
         ConviteBanda convite = new ConviteBanda();
         convite.setBanda(banda);
-        convite.setUsuarioGestor(gestor);
+        convite.setUsuarioGestor(usuarioAutenticado);
         convite.setUsuarioConvidado(convidado);
         convite.setStatus("PENDENTE");
         convite.setDataEnvio(LocalDateTime.now());

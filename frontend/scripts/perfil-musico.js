@@ -48,6 +48,11 @@ document.addEventListener('DOMContentLoaded', function () {
             headers: { 'Authorization': `Bearer ${token}` }
         })
             .then(res => {
+                if (res.status === 401) {
+                    const erroAuth = new Error("Sessão expirada");
+                    erroAuth.status = 401;
+                    throw erroAuth;
+                }
                 if (!res.ok) throw new Error("Perfil não encontrado");
                 return res.json();
             })
@@ -85,7 +90,17 @@ document.addEventListener('DOMContentLoaded', function () {
                 carregarPortfolio();
             })
             .catch(err => {
+                if (err && err.status === 401) {
+                    showSnackbar('Sua sessão expirou. Faça login novamente.', 'error');
+                    localStorage.removeItem('usuarioLogado');
+                    localStorage.removeItem('authToken');
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 1500);
+                    return;
+                }
                 console.warn(err);
+                showSnackbar('Não foi possível carregar seus dados. Verifique sua conexão e tente novamente.', 'error');
                 carregarPerfil();
                 carregarPortfolio();
             });
@@ -591,6 +606,9 @@ document.addEventListener('DOMContentLoaded', function () {
             dadosPerfil.local = (cidade && uf) ? `${cidade}/${uf}` : '';
             const blocos = document.querySelectorAll('#listaInstrumentos .instrument-block');
             let arrayBlocos = [];
+            let primeiroNivel = '';
+            let primeiroExperiencia = '';
+            let jaEncontrouPrimeiro = false;
             blocos.forEach(bloco => {
                 const selectInst = bloco.querySelector('.perfilInstrumentos');
                 const iNome = selectInst ? selectInst.value : '';
@@ -603,12 +621,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 if (iNome && iNome.trim() !== '') {
                     arrayBlocos.push(`${iNome}::${iNivel}::${iExp}`);
+                    if (!jaEncontrouPrimeiro) {
+                        primeiroNivel = iNivel;
+                        primeiroExperiencia = iExp;
+                        jaEncontrouPrimeiro = true;
+                    }
                 }
             });
             console.log("Salvando instrumentos:", arrayBlocos.join('|'));
             dadosPerfil.instrumentos = arrayBlocos.join('|');
-            dadosPerfil.nivelHabilidade = '';
-            dadosPerfil.tempoExperiencia = '';
+            dadosPerfil.nivelHabilidade = primeiroNivel;
+            dadosPerfil.tempoExperiencia = primeiroExperiencia;
 
             dadosPerfil.generosMusicais = document.getElementById('perfilGeneros').value;
 
@@ -752,8 +775,316 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    // ============================================================
+    // CONVITES DE BANDA (Sino de Notificações + Aba Convites)
+    // ============================================================
+    let convitesPendentes = [];
+
+    async function carregarConvites() {
+        try {
+            const token = localStorage.getItem('authToken');
+            const res = await fetch(getApiUrl('/api/convites/pendentes'), {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (res.ok) {
+                convitesPendentes = await res.json();
+                renderConvites();
+                renderSino();
+            }
+        } catch (e) {
+            console.error('Erro ao carregar convites:', e);
+        }
+    }
+
+    function renderConvites() {
+        const container = document.getElementById('listaConvites');
+        if (!container) return;
+
+        if (convitesPendentes.length === 0) {
+            container.innerHTML = `<p class="empty-state"><i class="fas fa-envelope-open-text"></i><br>Você não possui convites de bandas pendentes no momento.</p>`;
+            return;
+        }
+
+        container.innerHTML = '';
+        convitesPendentes.forEach(c => {
+            const card = document.createElement('div');
+            card.className = 'card-style';
+            card.style.cssText = 'display:flex; justify-content:space-between; align-items:center; gap:15px; margin-bottom:15px; flex-wrap:wrap;';
+
+            const dataEnvio = c.dataEnvio ? new Date(c.dataEnvio).toLocaleDateString('pt-BR') : '';
+            const bandaNome = (c.banda && c.banda.nome) || 'Banda';
+            const bandaGenero = (c.banda && c.banda.generoMusical) || 'Não informado';
+            const bandaDescricao = (c.banda && c.banda.descricao) || 'Sem descrição.';
+            const gestorNome = (c.usuarioGestor && c.usuarioGestor.nome) || '';
+
+            card.innerHTML = `
+                <div>
+                    <h3 style="margin-bottom: 5px;">${bandaNome}</h3>
+                    <p style="font-size: 0.9em; margin-bottom: 5px;"><strong>Gênero:</strong> ${bandaGenero}</p>
+                    <p style="font-size: 0.9em; margin-bottom: 5px; color: var(--cor-texto-claro);">${bandaDescricao}</p>
+                    <small style="color: var(--cor-texto-claro);">Convidado por: ${gestorNome}${dataEnvio ? ' em ' + dataEnvio : ''}</small>
+                </div>
+                <div style="display: flex; gap: 10px; flex-shrink: 0;">
+                    <button type="button" class="btn-adicionar btn-aceitar-convite" data-id="${c.id}">Aceitar</button>
+                    <button type="button" class="btn-danger-outline btn-recusar-convite" data-id="${c.id}">Recusar</button>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    function renderSino() {
+        const count = convitesPendentes.length;
+        const notifBadge = document.getElementById('notifBadge');
+        const tabBadge = document.getElementById('tabBadgeConvites');
+        const notifList = document.getElementById('notifDropdownList');
+
+        if (notifBadge) {
+            if (count > 0) {
+                notifBadge.textContent = count;
+                notifBadge.style.display = 'block';
+            } else {
+                notifBadge.style.display = 'none';
+            }
+        }
+
+        if (tabBadge) {
+            if (count > 0) {
+                tabBadge.textContent = count;
+                tabBadge.style.display = 'inline-block';
+            } else {
+                tabBadge.style.display = 'none';
+            }
+        }
+
+        if (notifList) {
+            if (count === 0) {
+                notifList.innerHTML = `<p class="notif-empty">Nenhum convite pendente</p>`;
+                return;
+            }
+            notifList.innerHTML = '';
+            convitesPendentes.forEach(c => {
+                const bandaNome = (c.banda && c.banda.nome) || 'Banda';
+                const row = document.createElement('div');
+                row.className = 'notif-item';
+                row.style.cursor = 'pointer';
+                row.innerHTML = `
+                    <div style="font-weight: 600;">${bandaNome}</div>
+                    <div style="font-size: 0.8em;">Convidou você para entrar na banda!</div>
+                `;
+                row.addEventListener('click', () => {
+                    const tabBtn = document.querySelector('[data-tab="convites"]');
+                    if (tabBtn) tabBtn.click();
+                });
+                notifList.appendChild(row);
+            });
+        }
+    }
+
+    const notifBell = document.getElementById('notifBell');
+    const notifDropdown = document.getElementById('notifDropdown');
+    if (notifBell && notifDropdown) {
+        notifBell.addEventListener('click', function (e) {
+            e.stopPropagation();
+            notifDropdown.classList.toggle('show');
+        });
+        document.addEventListener('click', function () {
+            notifDropdown.classList.remove('show');
+        });
+    }
+
+    // Aceitar / Recusar convite (delegação de eventos)
+    document.body.addEventListener('click', async function (e) {
+        const acceptBtn = e.target.closest('.btn-aceitar-convite');
+        const refuseBtn = e.target.closest('.btn-recusar-convite');
+
+        if (acceptBtn) {
+            const inviteId = acceptBtn.dataset.id;
+            acceptBtn.disabled = true;
+            try {
+                const token = localStorage.getItem('authToken');
+                const res = await fetch(getApiUrl(`/api/convites/${inviteId}/aceitar`), {
+                    method: 'PUT',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    usuarioLogado.membroId = data.membroId;
+                    usuarioLogado.bandaId = data.bandaId;
+                    usuarioLogado.gestor = data.gestor;
+                    localStorage.setItem('usuarioLogado', JSON.stringify(usuarioLogado));
+
+                    showSnackbar('Convite aceito! Redirecionando para o painel da banda...', 'success');
+                    setTimeout(() => { window.location.href = 'banda.html'; }, 1200);
+                } else {
+                    showSnackbar('Erro ao aceitar convite.', 'error');
+                    acceptBtn.disabled = false;
+                }
+            } catch (err) {
+                console.error('Erro ao aceitar convite:', err);
+                showSnackbar('Erro de conexão com o servidor.', 'error');
+                acceptBtn.disabled = false;
+            }
+        }
+
+        if (refuseBtn) {
+            if (!confirm('Deseja realmente recusar este convite?')) return;
+            const inviteId = refuseBtn.dataset.id;
+            refuseBtn.disabled = true;
+            try {
+                const token = localStorage.getItem('authToken');
+                const res = await fetch(getApiUrl(`/api/convites/${inviteId}/recusar`), {
+                    method: 'PUT',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (res.ok) {
+                    showSnackbar('Convite recusado com sucesso.', 'success');
+                    carregarConvites();
+                } else {
+                    showSnackbar('Erro ao recusar convite.', 'error');
+                    refuseBtn.disabled = false;
+                }
+            } catch (err) {
+                console.error('Erro ao recusar convite:', err);
+                showSnackbar('Erro de conexão com o servidor.', 'error');
+                refuseBtn.disabled = false;
+            }
+        }
+    });
+
+    // ============================================================
+    // VAGAS EM ABERTO (Candidatura do Músico)
+    // ============================================================
+    async function carregarVagasMusico() {
+        const container = document.getElementById('listaVagasMusicoContainer');
+        if (!container) return;
+        container.innerHTML = '<p class="empty-state"><i class="fas fa-spinner fa-spin"></i> Carregando vagas...</p>';
+
+        try {
+            const token = localStorage.getItem('authToken');
+            const [respVagas, respCandidaturas] = await Promise.all([
+                fetch(getApiUrl('/api/vagas'), { headers: { 'Authorization': `Bearer ${token}` } }),
+                fetch(getApiUrl('/api/candidaturas/minhas'), { headers: { 'Authorization': `Bearer ${token}` } })
+            ]);
+
+            if (respVagas.status === 401 || respCandidaturas.status === 401) {
+                showSnackbar('Sua sessão expirou. Faça login novamente.', 'error');
+                localStorage.removeItem('usuarioLogado');
+                localStorage.removeItem('authToken');
+                setTimeout(() => { window.location.href = 'login.html'; }, 1500);
+                return;
+            }
+
+            if (!respVagas.ok) {
+                container.innerHTML = '<p class="empty-state"><i class="fas fa-exclamation-triangle"></i> Erro ao carregar vagas.</p>';
+                return;
+            }
+
+            const vagas = await respVagas.json();
+            const candidaturas = respCandidaturas.ok ? await respCandidaturas.json() : [];
+
+            renderVagasMusico(vagas, candidaturas);
+        } catch (e) {
+            console.error('Erro ao carregar vagas:', e);
+            container.innerHTML = '<p class="empty-state"><i class="fas fa-exclamation-triangle"></i> Erro de conexão. Tente novamente.</p>';
+        }
+    }
+
+    function renderVagasMusico(vagas, candidaturas) {
+        const container = document.getElementById('listaVagasMusicoContainer');
+        if (!container) return;
+        container.innerHTML = '';
+
+        if (!vagas || vagas.length === 0) {
+            container.innerHTML = '<p class="empty-state"><i class="fas fa-briefcase"></i><br>Nenhuma vaga em aberto no momento.</p>';
+            return;
+        }
+
+        vagas.forEach(v => {
+            const candidatura = candidaturas.find(c => c.vagaId === v.id);
+            const div = document.createElement('div');
+            div.className = 'vaga-card-compact';
+
+            const statusLabel = v.status === 'ABERTA'
+                ? '<span class="status-badge status-aberta">ABERTA</span>'
+                : `<span class="status-badge status-fechada">${v.status}</span>`;
+
+            let acaoHtml = '';
+            if (candidatura) {
+                if (candidatura.status === 'APROVADO') {
+                    acaoHtml = '<span class="status-badge status-aberta">APROVADO</span>';
+                } else if (candidatura.status === 'REJEITADO') {
+                    acaoHtml = '<span class="status-badge status-fechada">REJEITADO</span>';
+                } else {
+                    acaoHtml = '<span class="status-badge" style="background:#fef3c7;color:#92400e;">PENDENTE</span>';
+                }
+            } else {
+                acaoHtml = `<button type="button" class="btn-adicionar btn-candidatar-vaga" data-id="${v.id}">Candidatar-se</button>`;
+            }
+
+            div.innerHTML = `
+                <div class="vaga-card-header">
+                    <div class="vaga-title-row">
+                        <h4>${v.titulo}</h4>
+                        ${statusLabel}
+                    </div>
+                    <div class="vaga-meta">
+                        <span><i class="fas fa-guitar"></i> ${v.funcao || ''}</span>
+                        <span><i class="fas fa-users"></i> ${v.quantidadeVagas || 1} vaga(s)</span>
+                        <span><i class="fas fa-map-marker-alt"></i> ${v.cidade || 'Qualquer'}/${v.estado || 'Qualquer'}</span>
+                    </div>
+                </div>
+                <div class="vaga-card-body">
+                    <p><strong>${v.bandaNome || ''}</strong></p>
+                    <p>${v.descricao || 'Sem descrição.'}</p>
+                </div>
+                <div class="vaga-card-footer">
+                    ${acaoHtml}
+                </div>
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    // Candidatar-se a uma vaga (delegação de eventos)
+    document.body.addEventListener('click', async function (e) {
+        const btnCandidatar = e.target.closest('.btn-candidatar-vaga');
+        if (!btnCandidatar) return;
+
+        const vagaId = parseInt(btnCandidatar.dataset.id);
+        btnCandidatar.disabled = true;
+        btnCandidatar.textContent = 'Enviando...';
+        try {
+            const token = localStorage.getItem('authToken');
+            const res = await fetch(getApiUrl('/api/candidaturas'), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ vagaId })
+            });
+            if (res.ok) {
+                showSnackbar('Candidatura enviada com sucesso!', 'success');
+                carregarVagasMusico();
+            } else {
+                showSnackbar('Erro ao enviar candidatura.', 'error');
+                btnCandidatar.disabled = false;
+                btnCandidatar.textContent = 'Candidatar-se';
+            }
+        } catch (err) {
+            console.error('Erro ao se candidatar:', err);
+            showSnackbar('Erro de conexão com o servidor.', 'error');
+            btnCandidatar.disabled = false;
+            btnCandidatar.textContent = 'Candidatar-se';
+        }
+    });
+
     // --- INICIALIZAÇÃO ---
     inicializarPerfil();
+    carregarConvites();
+    carregarVagasMusico();
+    setInterval(carregarConvites, 30000);
     // --- LÓGICA DE EXCLUSÃO DE CONTA ---
     const btnExcluirConta = document.getElementById("btnExcluirConta");
     const modalExcluirConta = document.getElementById("modalExcluirConta");

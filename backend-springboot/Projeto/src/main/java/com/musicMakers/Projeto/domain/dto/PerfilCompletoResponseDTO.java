@@ -19,6 +19,14 @@ public class PerfilCompletoResponseDTO {
 
     // Dados do Perfil Músico
     private String localizacao;
+    private String pais;
+    private String estado;
+    private String regiao;
+    private String cidade;
+    private String bairro;
+    private String funcao;
+    private String ministeriosInteresse;
+    private String formacaoMusical;
     private String instrumentosPrincipais;
     private String nivelHabilidade;
     private String tempoExperiencia;
@@ -45,6 +53,14 @@ public class PerfilCompletoResponseDTO {
         // Dados do perfil
         if (perfil != null) {
             dto.setLocalizacao(perfil.getLocalizacao());
+            dto.setPais(perfil.getPais());
+            dto.setEstado(perfil.getEstado());
+            dto.setRegiao(perfil.getRegiao());
+            dto.setCidade(perfil.getCidade());
+            dto.setBairro(perfil.getBairro());
+            dto.setFuncao(perfil.getFuncao());
+            dto.setMinisteriosInteresse(perfil.getMinisteriosInteresse());
+            dto.setFormacaoMusical(perfil.getFormacaoMusical());
             dto.setInstrumentosPrincipais(perfil.getInstrumentosPrincipais());
             dto.setNivelHabilidade(perfil.getNivelHabilidade());
             dto.setTempoExperiencia(perfil.getTempoExperiencia());

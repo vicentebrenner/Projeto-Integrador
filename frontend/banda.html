@@ -157,9 +157,14 @@
                         <h2>Painel Financeiro</h2>
                         <p class="fin-subtitle">Visão geral das finanças da banda</p>
                     </div>
-                    <button id="abrirModalTransacaoBtn" class="btn-adicionar-principal">
-                        <i class="fas fa-plus"></i> Nova Transação
-                    </button>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <a href="financeiro-dashboard.html" class="btn-adicionar-principal" style="text-decoration: none;">
+                            <i class="fas fa-chart-line"></i> Ver Dashboard Completo
+                        </a>
+                        <button id="abrirModalTransacaoBtn" class="btn-adicionar-principal">
+                            <i class="fas fa-plus"></i> Nova Transação
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Cards de KPIs -->
@@ -312,7 +317,12 @@
                 <!-- Cabeçalho Superior Premium -->
                 <div class="perm-premium-header">
                     <div class="perm-header-title">
-                        <h2 id="configBandaNome">Carregando Banda...</h2>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <h2 id="configBandaNome">Carregando Banda...</h2>
+                            <button type="button" id="btnEditarBanda" class="btn-icon-modern" title="Editar informações da banda">
+                                <i class="fas fa-pencil-alt"></i>
+                            </button>
+                        </div>
                         <span id="configMembrosCount"><i class="fas fa-users"></i> 0 integrantes</span>
                     </div>
                     
@@ -352,13 +362,13 @@
 
     <!-- MODAL DE CONVITE (COMPLETO E MODERNIZADO) -->
     <div id="membroModal" class="modal">
-        <div class="modal-content" style="max-width: 550px; background: #07152e; border: 1px solid rgba(255,255,255,0.12); border-radius: 14px; padding: 25px 30px;">
-            <span class="close-button" style="color: rgba(255,255,255,0.5); cursor: pointer;">&times;</span>
-            <h3 style="font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 1.4em; color: #fff; margin-bottom: 5px;">Convidar Integrante</h3>
+        <div class="modal-content modal-content--md">
+            <span class="close-button">&times;</span>
+            <h3>Convidar Integrante</h3>
             <p class="modal-description" style="color: var(--cor-texto-claro); font-size: 0.9em; margin-bottom: 20px;">Busque por nome de músicos cadastrados no Music Makers para enviar o convite.</p>
             
             <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-                <input type="text" id="emailMembro" placeholder="Digite o nome do músico..." style="flex: 1; padding: 12px 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12); background: rgba(0, 0, 0, 0.3); color: #fff; outline: none; font-size: 0.95em;">
+                <input type="text" id="emailMembro" placeholder="Digite o nome do músico..." style="flex: 1; padding: 12px 15px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.05); background: #f8f9fa; color: #333; outline: none; font-size: 0.95em;">
                 <button type="button" id="btnBuscarMembroModal" class="btn-adicionar-principal" style="padding: 0 20px; border-radius: 8px; font-weight: 600; height: 46px;"><i class="fas fa-search"></i> Buscar</button>
             </div>
             
@@ -370,30 +380,30 @@
 
     <!-- MODAL DE EDIÇÃO DE PERMISSÕES PREMIUM -->
     <div id="modalEdicaoPermissoes" class="modal">
-        <div class="modal-content" style="max-width: 550px; background: #07152e; border: 1px solid rgba(255,255,255,0.12); border-radius: 14px; padding: 25px 30px;">
-            <span class="close-button" style="color: rgba(255,255,255,0.5); cursor: pointer;">&times;</span>
+        <div class="modal-content modal-content--md">
+            <span class="close-button">&times;</span>
             <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 15px;">
                 <div id="modalPermMembroAvatar" class="perm-avatar" style="width: 55px; height: 55px; font-size: 1.4em; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: var(--cor-secundaria); color: #011029; font-weight: 700;">A</div>
                 <div>
-                    <h3 id="modalPermMembroNome" style="font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 1.3em; color: #fff; margin: 0;">Nome do Músico</h3>
+                    <h3 id="modalPermMembroNome">Nome do Músico</h3>
                     <p id="modalPermMembroEmail" style="color: var(--cor-texto-claro); font-size: 0.85em; margin: 3px 0 0 0;">membro@email.com</p>
                 </div>
             </div>
-            
+
             <form id="formEdicaoPermissoes">
                 <input type="hidden" id="modalPermMembroId">
-                
+
                 <!-- Categoria 1: Dashboard e Gestão -->
                 <div style="margin-bottom: 22px;">
                     <h4 style="font-size: 0.9em; text-transform: uppercase; color: var(--cor-secundaria); letter-spacing: 1px; margin-bottom: 12px; font-weight: 700; font-family: 'Montserrat', sans-serif;">Dashboard e Gestão</h4>
-                    <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center;">
+                    <div class="perm-modal-categoria" style="display: flex; justify-content: space-between; align-items: center;">
                         <div>
-                            <span style="font-weight: 600; color: #fff; font-size: 0.95em;">Gerenciar Equipe</span>
+                            <span style="font-weight: 600; font-size: 0.95em;">Gerenciar Equipe</span>
                             <p style="font-size: 0.8em; color: var(--cor-texto-claro); margin: 3px 0 0 0;">Permite visualizar a equipe e ajustar permissões básicas.</p>
                         </div>
-                        <label class="perm-toggle-switch-premium" style="position: relative; display: inline-block; width: 44px; height: 24px; cursor: pointer;">
+                        <label class="perm-toggle-switch-premium">
                             <input type="checkbox" id="permSwitchMembros" class="perm-checkbox-premium" style="opacity: 0; width: 0; height: 0;">
-                            <span class="perm-slider-premium" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255,255,255,0.12); transition: .3s; border-radius: 24px;"></span>
+                            <span class="perm-slider-premium"></span>
                         </label>
                     </div>
                 </div>
@@ -401,14 +411,14 @@
                 <!-- Categoria 2: Agenda e Eventos -->
                 <div style="margin-bottom: 22px;">
                     <h4 style="font-size: 0.9em; text-transform: uppercase; color: var(--cor-secundaria); letter-spacing: 1px; margin-bottom: 12px; font-weight: 700; font-family: 'Montserrat', sans-serif;">Agenda e Eventos</h4>
-                    <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center;">
+                    <div class="perm-modal-categoria" style="display: flex; justify-content: space-between; align-items: center;">
                         <div>
-                            <span style="font-weight: 600; color: #fff; font-size: 0.95em;">Agenda & Shows</span>
+                            <span style="font-weight: 600; font-size: 0.95em;">Agenda & Shows</span>
                             <p style="font-size: 0.8em; color: var(--cor-texto-claro); margin: 3px 0 0 0;">Permite visualizar, criar e gerenciar ensaios e shows na agenda.</p>
                         </div>
-                        <label class="perm-toggle-switch-premium" style="position: relative; display: inline-block; width: 44px; height: 24px; cursor: pointer;">
+                        <label class="perm-toggle-switch-premium">
                             <input type="checkbox" id="permSwitchAgenda" class="perm-checkbox-premium" style="opacity: 0; width: 0; height: 0;">
-                            <span class="perm-slider-premium" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255,255,255,0.12); transition: .3s; border-radius: 24px;"></span>
+                            <span class="perm-slider-premium"></span>
                         </label>
                     </div>
                 </div>
@@ -416,14 +426,14 @@
                 <!-- Categoria 3: Financeiro -->
                 <div style="margin-bottom: 22px;">
                     <h4 style="font-size: 0.9em; text-transform: uppercase; color: var(--cor-secundaria); letter-spacing: 1px; margin-bottom: 12px; font-weight: 700; font-family: 'Montserrat', sans-serif;">Financeiro</h4>
-                    <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center;">
+                    <div class="perm-modal-categoria" style="display: flex; justify-content: space-between; align-items: center;">
                         <div>
-                            <span style="font-weight: 600; color: #fff; font-size: 0.95em;">Financeiro & Relatórios</span>
+                            <span style="font-weight: 600; font-size: 0.95em;">Financeiro & Relatórios</span>
                             <p style="font-size: 0.8em; color: var(--cor-texto-claro); margin: 3px 0 0 0;">Permite visualizar fluxo de caixa, transações e resumos financeiros.</p>
                         </div>
-                        <label class="perm-toggle-switch-premium" style="position: relative; display: inline-block; width: 44px; height: 24px; cursor: pointer;">
+                        <label class="perm-toggle-switch-premium">
                             <input type="checkbox" id="permSwitchFinanceiro" class="perm-checkbox-premium" style="opacity: 0; width: 0; height: 0;">
-                            <span class="perm-slider-premium" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255,255,255,0.12); transition: .3s; border-radius: 24px;"></span>
+                            <span class="perm-slider-premium"></span>
                         </label>
                     </div>
                 </div>
@@ -431,26 +441,51 @@
                 <!-- Categoria 4: Repertório -->
                 <div style="margin-bottom: 30px;">
                     <h4 style="font-size: 0.9em; text-transform: uppercase; color: var(--cor-secundaria); letter-spacing: 1px; margin-bottom: 12px; font-weight: 700; font-family: 'Montserrat', sans-serif;">Músicas e Repertório</h4>
-                    <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center;">
+                    <div class="perm-modal-categoria" style="display: flex; justify-content: space-between; align-items: center;">
                         <div>
-                            <span style="font-weight: 600; color: #fff; font-size: 0.95em;">Repertório & Partituras</span>
+                            <span style="font-weight: 600; font-size: 0.95em;">Repertório & Partituras</span>
                             <p style="font-size: 0.8em; color: var(--cor-texto-claro); margin: 3px 0 0 0;">Permite adicionar e visualizar músicas e partituras em PDF.</p>
                         </div>
-                        <label class="perm-toggle-switch-premium" style="position: relative; display: inline-block; width: 44px; height: 24px; cursor: pointer;">
+                        <label class="perm-toggle-switch-premium">
                             <input type="checkbox" id="permSwitchRepertorio" class="perm-checkbox-premium" style="opacity: 0; width: 0; height: 0;">
-                            <span class="perm-slider-premium" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255,255,255,0.12); transition: .3s; border-radius: 24px;"></span>
+                            <span class="perm-slider-premium"></span>
                         </label>
                     </div>
                 </div>
 
                 <div style="display: flex; justify-content: flex-end; gap: 12px;">
-                    <button type="button" class="btn-remover" id="btnCancelarEdicaoPerm" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; border-radius: 8px; padding: 12px 20px; font-weight: 600; height: 46px; cursor: pointer;">Cancelar</button>
-                    <button type="submit" class="btn-adicionar" style="border-radius: 8px; padding: 12px 25px; font-weight: 700; background: var(--cor-secundaria); color: #011029; border: none; cursor: pointer; height: 46px;">Salvar Alterações</button>
+                    <button type="button" class="btn-modal-cancel" id="btnCancelarEdicaoPerm">Cancelar</button>
+                    <button type="submit" class="btn-adicionar">Salvar Alterações</button>
                 </div>
             </form>
         </div>
     </div>
 
+
+    <!-- MODAL DE EDITAR BANDA -->
+    <div id="editarBandaModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3>Editar Banda</h3>
+            <form id="formEditarBanda">
+                <div class="inputGroup">
+                    <label for="editarBandaNome">Nome da Banda</label>
+                    <input type="text" id="editarBandaNome" name="nome" required>
+                </div>
+                <div class="inputGroup">
+                    <label for="editarBandaGenero">Gênero Musical</label>
+                    <input type="text" id="editarBandaGenero" name="generoMusical" placeholder="Ex: Rock, Pop, Sertanejo...">
+                </div>
+                <div class="inputGroup">
+                    <label for="editarBandaDescricao">Descrição</label>
+                    <textarea id="editarBandaDescricao" name="descricao" rows="4" placeholder="Conte um pouco sobre a banda..."></textarea>
+                </div>
+                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 15px;">
+                    <button type="submit" class="btn-adicionar">Salvar Alterações</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <!-- MODAL DE CRIAR/EDITAR VAGA (RESTAURADO) -->
     <div id="vagaModal" class="modal">
@@ -518,12 +553,15 @@
         </div>
     </div>
 
-    <!-- MODAL DE CANDIDATOS COMPATÍVEIS (RESTAURADO) -->
+    <!-- MODAL DE CANDIDATOS (RECOMENDADOS + CANDIDATURAS RECEBIDAS) -->
     <div id="candidatosModal" class="modal">
         <div class="modal-content" style="max-width: 800px; max-height: 90vh; display: flex; flex-direction: column;">
             <span class="close-button">&times;</span>
-            <h3>Candidatos Recomendados</h3>
-            <p>Músicos que deram match com a sua vaga.</p>
+            <h3>Candidatos da Vaga</h3>
+            <div style="display: flex; gap: 20px; border-bottom: 1px solid rgba(0,0,0,0.08); margin-top: 10px;">
+                <button type="button" class="sub-tab-link" id="subTabRecomendados" data-subtab-candidatos="recomendados">Recomendados</button>
+                <button type="button" class="sub-tab-link active" id="subTabRecebidas" data-subtab-candidatos="recebidas">Candidaturas Recebidas</button>
+            </div>
             <div id="candidatosList" style="overflow-y: auto; flex: 1; padding-right: 10px; margin-top: 15px;">
                 <p>Carregando...</p>
             </div>
@@ -560,8 +598,9 @@
     <div id="transacaoModal" class="modal">
         <div class="modal-content">
             <span class="close-button">&times;</span>
-            <h3>Nova Transação</h3>
+            <h3 id="transacaoModalTitulo">Nova Transação</h3>
             <form id="formAdicionarTransacao">
+                <input type="hidden" id="transacaoId" name="transacaoId" value="">
                 <div class="inputGroup"><label>Tipo</label>
                     <div class="tipo-transacao-group"><input type="radio" id="tipoReceita" name="tipo" value="RECEITA"
                             checked><label for="tipoReceita"><i class="fas fa-plus-circle"></i> Receita</label><input

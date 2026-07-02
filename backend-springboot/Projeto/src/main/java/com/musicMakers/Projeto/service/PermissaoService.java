@@ -2,8 +2,11 @@ package com.musicMakers.Projeto.service;
 
 import com.musicMakers.Projeto.domain.entity.MembroBanda;
 import com.musicMakers.Projeto.domain.entity.PermissaoMembro;
+import com.musicMakers.Projeto.domain.entity.Usuario;
 import com.musicMakers.Projeto.repository.MembroBandaRepository;
 import com.musicMakers.Projeto.repository.PermissaoMembroRepository;
+import com.musicMakers.Projeto.security.AutorizacaoService;
+import com.musicMakers.Projeto.security.UsuarioAutenticadoProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +24,12 @@ public class PermissaoService {
 
     @Autowired
     private MembroBandaRepository membroBandaRepository;
+
+    @Autowired
+    private UsuarioAutenticadoProvider usuarioAutenticadoProvider;
+
+    @Autowired
+    private AutorizacaoService autorizacaoService;
 
     /**
      * Retorna um Map de módulo → permitido para um membro específico.
@@ -50,6 +59,9 @@ public class PermissaoService {
     public Map<String, Boolean> salvarPermissoes(Long membroId, Map<String, Boolean> permissoes) {
         MembroBanda membro = membroBandaRepository.findById(membroId)
                 .orElseThrow(() -> new RuntimeException("Membro não encontrado: " + membroId));
+
+        Usuario usuarioAtual = usuarioAutenticadoProvider.getUsuarioAutenticado();
+        autorizacaoService.exigirGestorDaBanda(membro.getBanda().getId(), usuarioAtual);
 
         // Remove todas as permissões existentes deste membro e grava novamente
         permissaoRepository.deleteAllByMembroBandaId(membroId);

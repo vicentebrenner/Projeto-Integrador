@@ -7,11 +7,13 @@ import lombok.Data;
 public class CandidatoCompativelDTO {
     private PerfilMusico perfilMusico;
     private int percentualCompatibilidade;
-    private String statusCandidatura; // "NAO_CANDIDATADO", "PENDENTE", "APROVADO", "RECUSADO"
-    
-    public CandidatoCompativelDTO(PerfilMusico perfilMusico, int percentualCompatibilidade, String statusCandidatura) {
+    private String statusCandidatura; // "NAO_CANDIDATADO", "PENDENTE", "APROVADO", "REJEITADO"
+    private String nomeMusico;
+
+    public CandidatoCompativelDTO(PerfilMusico perfilMusico, int percentualCompatibilidade, String statusCandidatura, String nomeMusico) {
         this.perfilMusico = perfilMusico;
         this.percentualCompatibilidade = percentualCompatibilidade;
         this.statusCandidatura = statusCandidatura;
+        this.nomeMusico = nomeMusico;
     }
 }

@@ -1,6 +1,7 @@
 package com.musicMakers.Projeto.controller;
 
 import com.musicMakers.Projeto.domain.entity.Financeiro;
+import com.musicMakers.Projeto.domain.dto.FinanceiroUpdateDTO;
 import com.musicMakers.Projeto.service.FinanceiroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,11 @@ public class FinanceiroController {
     @PostMapping("/banda/{bandaId}")
     public ResponseEntity<Financeiro> adicionarTransacao(@PathVariable Long bandaId, @RequestBody Financeiro financeiro) {
         return ResponseEntity.ok(financeiroService.adicionarTransacao(bandaId, financeiro));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Financeiro> atualizarTransacao(@PathVariable Long id, @RequestBody FinanceiroUpdateDTO dto) {
+        return ResponseEntity.ok(financeiroService.atualizarTransacao(id, dto));
     }
 
     @DeleteMapping("/{id}")

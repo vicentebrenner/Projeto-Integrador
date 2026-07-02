@@ -48,4 +48,12 @@ public class Vaga {
     private String cidade;
     private String bairro;
     private String funcao;
+
+    public String getBandaNome() {
+        return banda != null ? banda.getNome() : null;
+    }
+
+    public Long getBandaId() {
+        return banda != null ? banda.getId() : null;
+    }
 }

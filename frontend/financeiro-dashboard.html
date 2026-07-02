@@ -161,6 +161,16 @@
       animation: pulse 1.5s infinite
     }
 
+    .badge-live.badge-erro {
+      background: #fee2e2;
+      color: #991b1b
+    }
+
+    .badge-live.badge-erro::before {
+      background: #ef4444;
+      animation: none
+    }
+
     @keyframes pulse {
 
       0%,
@@ -171,6 +181,46 @@
       50% {
         opacity: .4
       }
+    }
+
+    /* ── ERROR STATE ── */
+    .error-state {
+      display: none;
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      padding: 60px 30px;
+      text-align: center;
+    }
+
+    .error-state .error-icon {
+      font-size: 2.5rem;
+      color: #ef4444;
+      margin-bottom: 16px;
+      display: block
+    }
+
+    .error-state p {
+      color: var(--text-muted);
+      font-size: .95rem;
+      margin-bottom: 20px
+    }
+
+    .error-state button {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: .85rem;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif
+    }
+
+    .error-state button:hover {
+      background: var(--accent)
     }
 
     /* ── KPI CARDS ── */
@@ -549,7 +599,7 @@
   <header class="topbar">
     <span class="topbar-logo">Music <span>Makers</span></span>
     <nav class="topbar-nav">
-      <a href="dashboard.html">Painel</a>
+      <a href="index.html">Painel</a>
       <a href="banda.html">Minha Banda</a>
       <a href="financeiro-dashboard.html" class="active">Financeiro</a>
     </nav>
@@ -564,9 +614,17 @@
           <h1>Dashboard Financeiro</h1>
           <p>Evolução de faturamento e despesas da banda</p>
         </div>
-        <span class="badge-live">Dados em tempo real</span>
+        <span class="badge-live" id="badgeLive">Dados em tempo real</span>
       </div>
 
+      <!-- ERROR STATE -->
+      <div class="error-state" id="dashboardErrorState">
+        <span class="error-icon">&#9888;</span>
+        <p id="dashboardErrorMessage">Não foi possível carregar os dados financeiros.</p>
+        <button type="button" onclick="carregarTransacoes()">Tentar novamente</button>
+      </div>
+
+      <div id="dashboardMainContent">
       <!-- KPI CARDS -->
       <div class="kpi-grid">
         <div class="kpi-card green">
@@ -648,6 +706,8 @@
         </div>
 
       </div>
+      </div>
+      <!-- /dashboardMainContent -->
 
     </main>
   </div>
