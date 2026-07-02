@@ -46,6 +46,9 @@ public class AuthController {
     @Autowired
     private ConviteBandaRepository conviteBandaRepository;
 
+    @Autowired
+    private com.musicMakers.Projeto.service.PasswordResetService passwordResetService;
+
     @Value("${google.client.id}")
     private String googleClientId;
 
@@ -109,6 +112,24 @@ public class AuthController {
         usuarioRepository.save(usuario);
 
         return ResponseEntity.ok(Map.of("message", "Usuário cadastrado com sucesso!"));
+    }
+
+    // --- SOLICITAR RECUPERAÇÃO DE SENHA ---
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(@RequestBody Map<String, String> body) {
+        String mensagem = passwordResetService.solicitarRecuperacao(body.get("email"));
+        return ResponseEntity.ok(mensagem);
+    }
+
+    // --- REDEFINIR SENHA (via token recebido por e-mail) ---
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody Map<String, String> body) {
+        try {
+            String mensagem = passwordResetService.redefinirSenha(body.get("token"), body.get("novaSenha"));
+            return ResponseEntity.ok(mensagem);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     // --- LOGIN COM GOOGLE ---

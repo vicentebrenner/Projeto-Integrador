@@ -32,6 +32,10 @@ services:
       # CORS — defina como a URL do frontend depois do primeiro deploy (ex: https://musicmakers-frontend.onrender.com)
       - key: CORS_ALLOWED_ORIGINS
         sync: false
+      # URL pública do frontend — usada para montar o link de redefinição de senha no e-mail
+      # (ex: https://musicmakers-frontend.onrender.com), defina depois do primeiro deploy
+      - key: FRONTEND_URL
+        sync: false
       # E-mail (opcional — recuperação de senha)
       - key: MAIL_HOST
         sync: false
