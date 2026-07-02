@@ -3,7 +3,7 @@ services:
   - name: musicmakers-backend
     type: web
     runtime: docker
-    plan: free
+    # plan: free
     dockerfilePath: ./backend-springboot/Projeto/Dockerfile
     dockerContext: ./backend-springboot/Projeto
     envVars:
@@ -54,7 +54,7 @@ services:
   - name: musicmakers-frontend
     type: web
     runtime: static
-    plan: free
+    # plan: free
     rootDir: frontend
     buildCommand: node generate-config.js
     staticPublishPath: .
