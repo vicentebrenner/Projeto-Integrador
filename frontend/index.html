@@ -554,7 +554,7 @@
         // Só redireciona para setup de perfil se a flag for EXPLICITAMENTE 'false'
         if (flagPerfil === 'false') {
             if (usuario.tipoUsuario === 'GESTOR' || usuario.gestor === true) {
-                return 'configurar-banda.html';
+                return 'perfil-gestor.html';
             } else {
                 return 'perfil-musico.html';
             }

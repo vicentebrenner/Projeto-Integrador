@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Perfil de Gestor - Music Makers</title>
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <link rel="stylesheet" href="styles.css?v=26">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body>
+
+    <header class="cabecalho">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <img src="assets/logo.png" alt="Music Makers" class="logo-img">
+            </a>
+            <div class="header-right-controls" style="display: flex; align-items: center; gap: 20px;">
+                <nav class="menuPrincipal">
+                    <ul>
+                        <li><a href="index.html#funcionalidades">Funcionalidades</a></li>
+                        <li><a href="index.html#como-funciona">Como Funciona</a></li>
+                        <li><a href="sobre.html">Sobre nós</a></li>
+                        <li><a href="login.html" class="btnLogin">Entrar</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="profile-settings-page">
+        <div class="container">
+            <div class="profile-header-title">
+                <div class="profile-header-title-icon">
+                    <i class="fas fa-user-tie"></i>
+                </div>
+                <div>
+                    <h1>Painel do Gestor</h1>
+                    <p>Gerencie seu perfil pessoal e suas informações de gestão no Music Makers.</p>
+                </div>
+            </div>
+
+            <div class="profile-settings-wrapper">
+                <!-- Sidebar -->
+                <aside class="profile-sidebar">
+                    <nav class="profile-nav">
+                        <button class="tab-link ativo" data-tab="perfil"><i class="fas fa-user-edit"></i> Meu
+                            Perfil</button>
+                        <button class="tab-link" data-tab="conta"><i class="fas fa-shield-alt"></i> Conta e
+                            Segurança</button>
+                    </nav>
+                </aside>
+
+                <!-- Conteúdo das Abas -->
+                <div class="profile-content">
+
+                    <!-- ABA: PERFIL GERAL -->
+                    <div id="perfil" class="tab-content ativo">
+                        <div class="content-header">
+                            <h2>Perfil Público</h2>
+                        </div>
+                        <div class="card-style profile-card">
+
+                            <form id="formPerfilGestor">
+                                <!-- Avatar e Cores -->
+                                <div class="avatar-section">
+                                    <div class="avatar-preview" id="avatarPreview" style="background-color: #fa9848;">
+                                        <span id="avatarInitials">MM</span>
+                                    </div>
+                                    <div class="avatar-options">
+                                        <h4>Cor do Avatar</h4>
+                                        <p class="small-text">Escolha uma cor para te representar no sistema.</p>
+                                        <div class="color-picker" id="colorPicker">
+                                            <button type="button" class="color-swatch selected"
+                                                style="background-color: #fa9848;" data-color="#fa9848"></button>
+                                            <button type="button" class="color-swatch"
+                                                style="background-color: #3498db;" data-color="#3498db"></button>
+                                            <button type="button" class="color-swatch"
+                                                style="background-color: #2ecc71;" data-color="#2ecc71"></button>
+                                            <button type="button" class="color-swatch"
+                                                style="background-color: #9b59b6;" data-color="#9b59b6"></button>
+                                            <button type="button" class="color-swatch"
+                                                style="background-color: #e74c3c;" data-color="#e74c3c"></button>
+                                            <button type="button" class="color-swatch"
+                                                style="background-color: #f1c40f;" data-color="#f1c40f"></button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-section-title mt-4">
+                                    <h3><i class="fas fa-id-card"></i> Informações Básicas</h3>
+                                    <hr>
+                                </div>
+                                <div class="form-grid-2">
+                                    <div class="inputGroup">
+                                        <label for="perfilNome">Nome Completo</label>
+                                        <input type="text" id="perfilNome" name="perfilNome" placeholder="Seu nome"
+                                            required>
+                                    </div>
+                                    <div class="inputGroup">
+                                        <label for="perfilWhatsapp">WhatsApp / Telefone</label>
+                                        <input type="tel" id="perfilWhatsapp" name="perfilWhatsapp"
+                                            placeholder="(11) 99999-9999">
+                                    </div>
+                                </div>
+
+                                <div class="form-grid-2">
+                                    <div class="inputGroup">
+                                        <label for="perfilEstado">Estado</label>
+                                        <select id="perfilEstado" name="perfilEstado" required>
+                                            <option value="">Selecione o estado...</option>
+                                        </select>
+                                    </div>
+                                    <div class="inputGroup">
+                                        <label for="perfilCidade">Cidade</label>
+                                        <select id="perfilCidade" name="perfilCidade" required disabled>
+                                            <option value="">Selecione o estado primeiro...</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-section-title mt-4">
+                                    <h3><i class="fas fa-briefcase"></i> Informações Profissionais</h3>
+                                    <hr>
+                                </div>
+                                <div class="form-grid-2">
+                                    <div class="inputGroup">
+                                        <label for="perfilNomeProdutora">Nome da Produtora / Agência
+                                            (Opcional)</label>
+                                        <input type="text" id="perfilNomeProdutora" name="perfilNomeProdutora"
+                                            placeholder="Ex: XYZ Produções">
+                                    </div>
+                                    <div class="inputGroup">
+                                        <label for="perfilTempoExperienciaGestao">Tempo de Experiência na
+                                            Gestão</label>
+                                        <select id="perfilTempoExperienciaGestao" name="perfilTempoExperienciaGestao">
+                                            <option value="">Selecione...</option>
+                                            <option value="Menos de 1 ano">Menos de 1 ano</option>
+                                            <option value="1 a 3 anos">1 a 3 anos</option>
+                                            <option value="3 a 5 anos">3 a 5 anos</option>
+                                            <option value="5 a 10 anos">5 a 10 anos</option>
+                                            <option value="Mais de 10 anos">Mais de 10 anos</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-section-title mt-4">
+                                    <h3><i class="fas fa-music"></i> Gêneros Musicais</h3>
+                                    <hr>
+                                </div>
+                                <div class="inputGroup">
+                                    <label>Gêneros Musicais</label>
+                                    <div class="genre-pills" id="genrePillsContainer">
+                                        <span class="genre-pill" data-value="Rock">Rock</span>
+                                        <span class="genre-pill" data-value="Pop">Pop</span>
+                                        <span class="genre-pill" data-value="Sertanejo">Sertanejo</span>
+                                        <span class="genre-pill" data-value="MPB">MPB</span>
+                                        <span class="genre-pill" data-value="Funk">Funk</span>
+                                        <span class="genre-pill" data-value="Samba / Pagode">Samba / Pagode</span>
+                                        <span class="genre-pill" data-value="Gospel">Gospel</span>
+                                        <span class="genre-pill" data-value="Eletrônica">Eletrônica</span>
+                                        <div style="flex-basis: 100%; height: 0; margin: -3px 0;"></div>
+                                        <span class="genre-pill" data-value="Hip Hop / Rap">Hip Hop / Rap</span>
+                                        <span class="genre-pill" data-value="Jazz">Jazz</span>
+                                        <span class="genre-pill" data-value="Blues">Blues</span>
+                                        <span class="genre-pill" data-value="Metal">Metal</span>
+                                        <span class="genre-pill" data-value="Reggae">Reggae</span>
+                                        <span class="genre-pill" data-value="Clássica">Clássica</span>
+                                        <span class="genre-pill" data-value="Forró">Forró</span>
+                                        <span class="genre-pill" data-value="Axé">Axé</span>
+                                        <span class="genre-pill" data-value="Outro">Outro</span>
+                                    </div>
+                                    <input type="hidden" id="perfilGeneros" name="perfilGeneros" value="">
+                                </div>
+
+                                <div class="form-section-title mt-4">
+                                    <h3><i class="fas fa-user-circle"></i> Sobre Mim</h3>
+                                    <hr>
+                                </div>
+                                <div class="inputGroup">
+                                    <label for="perfilBio">Sua Bio (Resumo sobre a carreira na gestão)</label>
+                                    <textarea id="perfilBio" name="perfilBio" rows="4"
+                                        placeholder="Fale sobre sua trajetória gerenciando bandas e artistas..."></textarea>
+                                </div>
+                                <div class="inputGroup">
+                                    <label for="perfilLinksProfissionais">Links Profissionais (LinkedIn,
+                                        etc)</label>
+                                    <textarea id="perfilLinksProfissionais" name="perfilLinksProfissionais" rows="2"
+                                        placeholder="Cole aqui seus links profissionais separados por vírgula ou linha."></textarea>
+                                </div>
+
+                                <div class="form-actions">
+                                    <button type="submit" class="btnCta">Salvar Perfil</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- ABA: CONTA E SEGURANÇA -->
+                    <div id="conta" class="tab-content">
+                        <div class="content-header">
+                            <h2>Conta e Segurança</h2>
+                        </div>
+
+                        <div class="card-style profile-card mb-4">
+                            <h3>Alterar Senha</h3>
+                            <p class="small-text mb-3">Escolha uma senha forte contendo letras e números.</p>
+                            <form id="formContaSenha">
+                                <div class="inputGroup">
+                                    <label for="senhaAtual">Senha Atual</label>
+                                    <div class="password-wrapper">
+                                        <input type="password" id="senhaAtual" name="senhaAtual" placeholder="••••••••"
+                                            required>
+                                        <button type="button" class="toggle-password"
+                                            onclick="toggleSenha('senhaAtual', this)">
+                                            <i class="fas fa-eye-slash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="form-grid-2">
+                                    <div class="inputGroup">
+                                        <label for="novaSenha">Nova Senha</label>
+                                        <div class="password-wrapper">
+                                            <input type="password" id="novaSenha" name="novaSenha"
+                                                placeholder="••••••••" required>
+                                            <button type="button" class="toggle-password"
+                                                onclick="toggleSenha('novaSenha', this)">
+                                                <i class="fas fa-eye-slash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="inputGroup">
+                                        <label for="confirmaSenha">Confirmar Nova Senha</label>
+                                        <div class="password-wrapper">
+                                            <input type="password" id="confirmaSenha" name="confirmaSenha"
+                                                placeholder="••••••••" required>
+                                            <button type="button" class="toggle-password"
+                                                onclick="toggleSenha('confirmaSenha', this)">
+                                                <i class="fas fa-eye-slash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn-adicionar-principal">Alterar Senha</button>
+                            </form>
+                        </div>
+
+                        <!-- Zona de Perigo -->
+                        <div class="danger-zone">
+                            <div class="danger-zone-header">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                    viewBox="0 0 16 16">
+                                    <path
+                                        d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+                                </svg>
+                                <span>Cuidado!</span>
+                            </div>
+                            <div class="danger-zone-body">
+                                <div class="danger-zone-info">
+                                    <p class="danger-zone-title">Excluir minha conta</p>
+                                    <p class="danger-zone-desc">Esta ação é permanente e não pode ser desfeita. Todos os
+                                        seus dados serão removidos.</p>
+                                </div>
+                                <button type="button" id="btnExcluirConta" class="btn-danger-outline">
+                                    <i class="fas fa-trash-alt"></i>
+                                    Excluir Conta
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal Excluir Conta -->
+    <div id="modalExcluirConta" class="modal">
+        <div class="modal-content modal-danger">
+            <button class="modal-close-btn" id="closeModalExcluir" aria-label="Fechar">&times;</button>
+
+            <div class="modal-danger-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 16 16">
+                    <path
+                        d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+                </svg>
+            </div>
+
+            <h3 class="modal-danger-title">Excluir Conta Permanentemente</h3>
+            <p class="modal-danger-desc">Esta ação é <strong>irreversível</strong>. Todos os seus dados e perfil
+                serão apagados para sempre.</p>
+
+            <div class="modal-danger-warning">
+                <i class="fas fa-lock"></i>
+                <span>Para confirmar, digite sua senha atual abaixo:</span>
+            </div>
+
+            <form id="formExcluirConta">
+                <div class="inputGroup" style="text-align: left; margin-bottom: 20px;">
+                    <label for="senhaExclusao">Sua Senha</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="senhaExclusao" name="senhaExclusao" placeholder="••••••••" required>
+                        <button type="button" class="toggle-password" onclick="toggleSenha('senhaExclusao', this)">
+                            <i class="fas fa-eye-slash"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-danger-actions">
+                    <button type="button" class="btn-modal-cancel" id="cancelarExclusaoBtn">Cancelar</button>
+                    <button type="submit" class="btn-modal-danger">Excluir Permanentemente</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <a href="index.html">
+                        <img src="assets/logo.png" alt="Logo Music Makers" class="footer-logo-img">
+                    </a>
+                </div>
+
+                <div class="footer-address">
+                    <h4>Endereço:</h4>
+                    <p>Montenegro/RS</p>
+                </div>
+
+                <div class="footer-social">
+                    <h4>Nossas Redes Sociais:</h4>
+                    <ul class="social-list">
+                        <li>Vicente Brenner: <a href="https://www.instagram.com/vicentebrenner/" target="_blank"
+                                rel="noopener noreferrer"><i class="fa-brands fa-instagram"></i></a></li>
+                        <li>Jean Carlo: <a href="https://www.instagram.com/jean.csouza/" target="_blank"
+                                rel="noopener noreferrer"><i class="fa-brands fa-instagram"></i></a></li>
+                        <li>Murilo Silva: <a href="https://www.instagram.com/silvazn.04/" target="_blank"
+                                rel="noopener noreferrer"><i class="fa-brands fa-instagram"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-divider"></div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Music Makers. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+    <div id="snackbar"></div>
+
+    <script src="scripts/config.js"></script>
+    <script src="scripts/utils.js"></script>
+    <script src="scripts/global.js?v=20"></script>
+    <script src="scripts/perfil-gestor.js?v=1"></script>
+</body>
+
+</html>

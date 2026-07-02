@@ -23,8 +23,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const perfilLi = document.createElement('li');
         perfilLi.classList.add('perfil-container');
         
-        const linkPerfil = tipoUsuario === 'GESTOR' 
-            ? `<a href="banda.html">Painel da Banda</a>` 
+        const linkPerfil = tipoUsuario === 'GESTOR'
+            ? `<a href="perfil-gestor.html">Meu Perfil (Gestor)</a><a href="banda.html">Painel da Banda</a>`
             : `<a href="perfil-musico.html">Meu Perfil Músico</a>`;
 
         const corBackground = usuarioLogado.corAvatar || '#fa9848';
