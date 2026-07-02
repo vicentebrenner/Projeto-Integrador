@@ -212,9 +212,9 @@
                                     <label for="senhaAtual">Senha Atual</label>
                                     <div class="password-wrapper">
                                         <input type="password" id="senhaAtual" name="senhaAtual" placeholder="••••••••"
-                                            required>
+                                            required autocomplete="current-password">
                                         <button type="button" class="toggle-password"
-                                            onclick="toggleSenha('senhaAtual', this)">
+                                            onclick="toggleSenha('senhaAtual', this)" aria-label="Mostrar ou ocultar senha">
                                             <i class="fas fa-eye-slash"></i>
                                         </button>
                                     </div>
@@ -224,9 +224,9 @@
                                         <label for="novaSenha">Nova Senha</label>
                                         <div class="password-wrapper">
                                             <input type="password" id="novaSenha" name="novaSenha"
-                                                placeholder="••••••••" required>
+                                                placeholder="••••••••" required autocomplete="new-password">
                                             <button type="button" class="toggle-password"
-                                                onclick="toggleSenha('novaSenha', this)">
+                                                onclick="toggleSenha('novaSenha', this)" aria-label="Mostrar ou ocultar senha">
                                                 <i class="fas fa-eye-slash"></i>
                                             </button>
                                         </div>
@@ -235,9 +235,9 @@
                                         <label for="confirmaSenha">Confirmar Nova Senha</label>
                                         <div class="password-wrapper">
                                             <input type="password" id="confirmaSenha" name="confirmaSenha"
-                                                placeholder="••••••••" required>
+                                                placeholder="••••••••" required autocomplete="new-password">
                                             <button type="button" class="toggle-password"
-                                                onclick="toggleSenha('confirmaSenha', this)">
+                                                onclick="toggleSenha('confirmaSenha', this)" aria-label="Mostrar ou ocultar senha">
                                                 <i class="fas fa-eye-slash"></i>
                                             </button>
                                         </div>
@@ -302,7 +302,7 @@
                     <label for="senhaExclusao">Sua Senha</label>
                     <div class="password-wrapper">
                         <input type="password" id="senhaExclusao" name="senhaExclusao" placeholder="••••••••" required>
-                        <button type="button" class="toggle-password" onclick="toggleSenha('senhaExclusao', this)">
+                        <button type="button" class="toggle-password" onclick="toggleSenha('senhaExclusao', this)" aria-label="Mostrar ou ocultar senha">
                             <i class="fas fa-eye-slash"></i>
                         </button>
                     </div>

@@ -40,7 +40,10 @@ public class SecurityConfig {
             
             // Desabilita CSRF (necessário para APIs REST stateless)
             .csrf(csrf -> csrf.disable())
-            
+
+            // Protege contra clickjacking bloqueando o carregamento em iframes de outras origens
+            .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()))
+
             .authorizeHttpRequests(auth -> auth
                 // Permite erros e forwards para não mascarar exceções com 403
                 .dispatcherTypeMatchers(jakarta.servlet.DispatcherType.FORWARD, jakarta.servlet.DispatcherType.ERROR).permitAll()

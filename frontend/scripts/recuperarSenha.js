@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     loginBox.innerHTML = `
                         <h2>Link Solicitado!</h2>
                         <p class="recoveryInstruction">
-                            ${mensagem}
+                            ${escapeHtml(mensagem)}
                         </p>
                         <div class="loginLinks">
                            <a href="login.html">Voltar para o Login</a>

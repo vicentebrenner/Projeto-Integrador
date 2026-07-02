@@ -77,9 +77,9 @@
                         <!-- Mini calendário -->
                         <div class="cal-mini">
                             <div class="cal-mini-header">
-                                <button class="cal-mini-nav" id="miniPrev"><i class="fas fa-chevron-left"></i></button>
+                                <button class="cal-mini-nav" id="miniPrev" aria-label="Mês anterior"><i class="fas fa-chevron-left"></i></button>
                                 <span id="miniLabel"></span>
-                                <button class="cal-mini-nav" id="miniNext"><i class="fas fa-chevron-right"></i></button>
+                                <button class="cal-mini-nav" id="miniNext" aria-label="Próximo mês"><i class="fas fa-chevron-right"></i></button>
                             </div>
                             <div class="cal-mini-grid">
                                 <span>D</span><span>S</span><span>T</span><span>Q</span><span>Q</span><span>S</span><span>S</span>
@@ -126,12 +126,12 @@
                         <div class="cal-toolbar">
                             <div class="cal-toolbar-left">
                                 <button class="cal-btn-today" id="calBtnHoje">Hoje</button>
-                                <button class="cal-btn-nav" id="calPrev"><i class="fas fa-chevron-left"></i></button>
-                                <button class="cal-btn-nav" id="calNext"><i class="fas fa-chevron-right"></i></button>
+                                <button class="cal-btn-nav" id="calPrev" aria-label="Mês anterior"><i class="fas fa-chevron-left"></i></button>
+                                <button class="cal-btn-nav" id="calNext" aria-label="Próximo mês"><i class="fas fa-chevron-right"></i></button>
                                 <h2 class="cal-current-date" id="calCurrentDate">Maio 2026</h2>
                             </div>
                             <div class="cal-toolbar-right">
-                                <button class="cal-sidebar-toggle" id="calSidebarToggle"><i
+                                <button class="cal-sidebar-toggle" id="calSidebarToggle" aria-label="Recolher/expandir calendário"><i
                                         class="fas fa-bars"></i></button>
                                 <div class="cal-view-switcher">
                                     <button class="cal-view-btn" data-view="mes">Mês</button>
@@ -328,7 +328,7 @@
                     
                     <div class="perm-header-actions">
                         <div class="search-wrapper">
-                            <input type="text" id="buscaIntegranteNome" placeholder="🔍 Pesquisar integrante...">
+                            <input type="text" id="buscaIntegranteNome" placeholder="🔍 Pesquisar integrante..." aria-label="Pesquisar integrante">
                         </div>
                         <button id="btnAbrirModalConvidar" class="btn-adicionar-principal"><i class="fas fa-plus"></i> Convidar Integrante</button>
                     </div>
@@ -368,7 +368,7 @@
             <p class="modal-description" style="color: var(--cor-texto-claro); font-size: 0.9em; margin-bottom: 20px;">Busque por nome de músicos cadastrados no Music Makers para enviar o convite.</p>
             
             <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-                <input type="text" id="emailMembro" placeholder="Digite o nome do músico..." style="flex: 1; padding: 12px 15px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.05); background: #f8f9fa; color: #333; outline: none; font-size: 0.95em;">
+                <input type="text" id="emailMembro" placeholder="Digite o nome do músico..." aria-label="Buscar músico por nome" style="flex: 1; padding: 12px 15px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.05); background: #f8f9fa; color: #333; outline: none; font-size: 0.95em;">
                 <button type="button" id="btnBuscarMembroModal" class="btn-adicionar-principal" style="padding: 0 20px; border-radius: 8px; font-weight: 600; height: 46px;"><i class="fas fa-search"></i> Buscar</button>
             </div>
             

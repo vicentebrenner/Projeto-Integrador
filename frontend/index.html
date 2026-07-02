@@ -342,15 +342,15 @@
                     <div class="cta-login-box">
                         <div class="login-card-inner">
                             <h3>Entrar na Plataforma</h3>
-                            <form action="dashboard.html">
+                            <form id="formLoginHome">
                                 <div class="input-field">
-                                    <label>E-mail</label>
-                                    <input type="email" placeholder="seu@email.com" required>
+                                    <label for="cta-email">E-mail</label>
+                                    <input type="email" id="cta-email" placeholder="seu@email.com" autocomplete="email" required>
                                 </div>
                                 <div class="input-field">
-                                    <label>Senha</label>
+                                    <label for="cta-password">Senha</label>
                                     <div class="password-wrapper">
-                                        <input type="password" id="cta-password" placeholder="••••••••" required>
+                                        <input type="password" id="cta-password" placeholder="••••••••" autocomplete="current-password" required>
                                         <button type="button" class="toggle-password" onclick="toggleCtaPassword()">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="rgba(255,255,255,0.5)" viewBox="0 0 16 16" id="eye-icon">
                                                 <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
@@ -437,6 +437,21 @@
     <script src="scripts/utils.js"></script>
     <script src="scripts/global.js"></script>
     <script>
+        // O card de login da home nunca autenticou de verdade (o form apontava para
+        // "dashboard.html", uma página inexistente, via GET — o que também vazava a
+        // senha digitada na URL/histórico do navegador). Como não fazia login real,
+        // a correção segura é encaminhar para a página de login de verdade em vez de
+        // duplicar toda a lógica de autenticação (com suas regras de GESTOR/perfil) aqui.
+        document.addEventListener('DOMContentLoaded', function () {
+            const formLoginHome = document.getElementById('formLoginHome');
+            if (formLoginHome) {
+                formLoginHome.addEventListener('submit', function (event) {
+                    event.preventDefault();
+                    window.location.href = 'login.html';
+                });
+            }
+        });
+
         function toggleCtaPassword() {
             const passwordInput = document.getElementById('cta-password');
             const eyeIcon = document.querySelector('#eye-icon');
@@ -458,17 +473,15 @@
     const btnComecarAgora = document.getElementById('btnComecarAgora');
 
     function preencherNome() {
-        try {
-            const usuario = JSON.parse(localStorage.getItem('usuarioLogado'));
-            const nome = (usuario && usuario.nome) ? usuario.nome : 'Músico';
-            const el = document.getElementById('nomeUsuarioModal');
-            if (el) el.textContent = nome;
-        } catch (e) {}
+        const usuario = parseJsonSeguro(localStorage.getItem('usuarioLogado'));
+        const nome = (usuario && usuario.nome) ? usuario.nome : 'Músico';
+        const el = document.getElementById('nomeUsuarioModal');
+        if (el) el.textContent = nome;
     }
 
     async function preencherModalCards() {
         try {
-            const usuario = JSON.parse(localStorage.getItem('usuarioLogado'));
+            const usuario = parseJsonSeguro(localStorage.getItem('usuarioLogado'));
             if (!usuario || !usuario.bandaId) return;
 
             const bandaId = usuario.bandaId;
@@ -551,9 +564,12 @@
     function getDestinoUsuario(usuario) {
         if (!usuario) return 'cadastro.html';
         const flagPerfil = localStorage.getItem('perfilConfigurado');
+        // Fonte de verdade da role: claim assinado do JWT (não forjável via DevTools),
+        // com fallback pro localStorage só se o token ainda não puder ser decodificado.
+        const tipoUsuarioSeguro = getTipoUsuarioSeguro() || usuario.tipoUsuario;
         // Só redireciona para setup de perfil se a flag for EXPLICITAMENTE 'false'
         if (flagPerfil === 'false') {
-            if (usuario.tipoUsuario === 'GESTOR' || usuario.gestor === true) {
+            if (tipoUsuarioSeguro === 'GESTOR' || usuario.gestor === true) {
                 return 'perfil-gestor.html';
             } else {
                 return 'perfil-musico.html';
@@ -563,10 +579,7 @@
     }
 
     // --- LEITURA DO ESTADO DE LOGIN ---
-    let usuarioLogado = null;
-    try {
-        usuarioLogado = JSON.parse(localStorage.getItem('usuarioLogado'));
-    } catch(e) {}
+    const usuarioLogado = parseJsonSeguro(localStorage.getItem('usuarioLogado'));
 
     if (usuarioLogado) {
         // ===== USUÁRIO LOGADO =====
@@ -591,9 +604,9 @@
 
             ctaLoginBox.innerHTML = `
                 <div class="login-card-inner" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:40px 24px;text-align:center;">
-                    <div style="width:72px;height:72px;border-radius:50%;background:${cor};display:flex;align-items:center;justify-content:center;font-size:1.6rem;font-weight:700;color:#fff;letter-spacing:1px;flex-shrink:0;">${iniciais}</div>
+                    <div style="width:72px;height:72px;border-radius:50%;background:${escapeHtml(cor)};display:flex;align-items:center;justify-content:center;font-size:1.6rem;font-weight:700;color:#fff;letter-spacing:1px;flex-shrink:0;">${escapeHtml(iniciais)}</div>
                     <div>
-                        <h3 style="margin:0 0 6px;">Bem-vindo de volta, ${primeiroNome}!</h3>
+                        <h3 style="margin:0 0 6px;">Bem-vindo de volta, ${escapeHtml(primeiroNome)}!</h3>
                         <p style="margin:0;opacity:0.7;font-size:0.95rem;">Você já está logado na plataforma.</p>
                     </div>
                     <a href="${destino}" class="btnCta btn-block" style="width:100%;text-align:center;text-decoration:none;display:block;">
@@ -606,7 +619,8 @@
 
         // 3) Modal de boas-vindas: exibe apenas se for primeiro acesso pós-login E for GESTOR
         if (localStorage.getItem(CHAVE) === 'true') {
-            if (usuarioLogado.tipoUsuario === 'GESTOR' || usuarioLogado.gestor === true) {
+            const tipoUsuarioSeguro = getTipoUsuarioSeguro() || usuarioLogado.tipoUsuario;
+            if (tipoUsuarioSeguro === 'GESTOR' || usuarioLogado.gestor === true) {
                 preencherNome();
                 preencherModalCards();
                 if (overlay) overlay.style.display = 'flex';

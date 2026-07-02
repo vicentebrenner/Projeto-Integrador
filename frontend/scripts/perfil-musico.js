@@ -7,8 +7,10 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
     }
 
-    const usuarioLogado = JSON.parse(usuarioLogadoString);
-    if (usuarioLogado && usuarioLogado.tipoUsuario !== 'MUSICO') {
+    const usuarioLogado = parseJsonSeguro(usuarioLogadoString) || {};
+    const tipoUsuarioSeguro = getTipoUsuarioSeguro();
+    const tipoUsuarioAtual = tipoUsuarioSeguro !== null ? tipoUsuarioSeguro : usuarioLogado.tipoUsuario;
+    if (usuarioLogado && tipoUsuarioAtual !== 'MUSICO') {
         window.location.href = 'banda.html'; // Redireciona gestor para o painel da banda
         return;
     }
@@ -135,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function () {
         };
 
         const token = localStorage.getItem('authToken');
-        fetch(getApiUrl(`/api/musicos/usuario/${usuarioLogado.id}/completo`), {
+        return fetch(getApiUrl(`/api/musicos/usuario/${usuarioLogado.id}/completo`), {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -209,7 +211,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         ${svgPath}
                     </svg>
                 </div>
-                <div class="snackbar-text">${message}</div>
+                <div class="snackbar-text">${escapeHtml(message)}</div>
                 <button class="snackbar-close" onclick="document.getElementById('snackbar').className = document.getElementById('snackbar').className.replace('show', '')">&times;</button>
             `;
             snackbar.className = "show";
@@ -380,8 +382,8 @@ document.addEventListener('DOMContentLoaded', function () {
             const item = document.createElement('div');
             item.className = 'video-card';
             item.innerHTML = `
-                <div class="video-thumbnail-wrapper" data-videoid="${videoId}" data-embedurl="${embedUrl}">
-                    <img src="${thumbnailUrl}" alt="${video.titulo}" class="video-thumbnail" loading="lazy">
+                <div class="video-thumbnail-wrapper" data-videoid="${videoId}" data-embedurl="${escapeHtml(embedUrl)}">
+                    <img src="${thumbnailUrl}" alt="${escapeHtml(video.titulo)}" class="video-thumbnail" loading="lazy">
                     <div class="video-play-overlay">
                         <div class="play-btn">
                             <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="white" viewBox="0 0 16 16">
@@ -398,7 +400,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     </div>
                 </div>
                 <div class="video-card-footer">
-                    <h4 class="video-card-title">${video.titulo}</h4>
+                    <h4 class="video-card-title">${escapeHtml(video.titulo)}</h4>
                    <div class="video-card-actions">
                         <a href="${youtubeUrl}" target="_blank" rel="noopener noreferrer" class="btn-video-yt" title="Abrir no YouTube">
                             <i class="fas fa-external-link-alt"></i>
@@ -540,7 +542,7 @@ document.addEventListener('DOMContentLoaded', function () {
         5: 'Profissional'
     };
 
-    window.updateStars = function (value) {
+    function updateStars(value) {
         if (!starContainer) return;
         const stars = starContainer.querySelectorAll('i');
         stars.forEach(star => {
@@ -567,7 +569,7 @@ document.addEventListener('DOMContentLoaded', function () {
         starContainer.addEventListener('click', (e) => {
             if (e.target.tagName === 'I') {
                 const value = parseInt(e.target.getAttribute('data-value'));
-                window.updateStars(value);
+                updateStars(value);
             }
         });
     }
@@ -590,6 +592,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Salvar o formulário de Perfil Geral
     const formPerfil = document.getElementById('formPerfilMusico');
+    const btnSalvarPerfil = formPerfil ? formPerfil.querySelector('button[type="submit"]') : null;
     if (formPerfil) {
         formPerfil.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -645,7 +648,10 @@ document.addEventListener('DOMContentLoaded', function () {
             dadosPerfil.redesSociais = document.getElementById('perfilRedesSociais').value;
             dadosPerfil.bio = document.getElementById('perfilBio').value;
 
-            salvarDados(); // O salvarDados agora gerencia o popup
+            if (btnSalvarPerfil) btnSalvarPerfil.disabled = true;
+            Promise.resolve(salvarDados()).finally(() => { // O salvarDados agora gerencia o popup
+                if (btnSalvarPerfil) btnSalvarPerfil.disabled = false;
+            });
         });
     }
 
@@ -657,28 +663,6 @@ document.addEventListener('DOMContentLoaded', function () {
             dadosPerfil.email = document.getElementById('contaEmail').value;
             showSnackbar("E-mail atualizado com sucesso!");
             salvarDados(); // Salva no localStorage
-        });
-    }
-
-    // Salvar Formulário de Senha
-    const formSenha = document.getElementById('formContaSenha');
-    if (formSenha) {
-        formSenha.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const novaSenha = document.getElementById('novaSenha').value;
-            const confirmaSenha = document.getElementById('confirmaSenha').value;
-
-            if (novaSenha !== confirmaSenha) {
-                showSnackbar("As senhas não coincidem!");
-                return;
-            }
-            if (novaSenha.length < 6) {
-                showSnackbar("A nova senha deve ter pelo menos 6 caracteres.");
-                return;
-            }
-
-            showSnackbar("Senha alterada com sucesso!");
-            formSenha.reset();
         });
     }
 
@@ -793,6 +777,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         } catch (e) {
             console.error('Erro ao carregar convites:', e);
+            showSnackbar('Erro ao carregar convites', 'error');
         }
     }
 
@@ -819,10 +804,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
             card.innerHTML = `
                 <div>
-                    <h3 style="margin-bottom: 5px;">${bandaNome}</h3>
-                    <p style="font-size: 0.9em; margin-bottom: 5px;"><strong>Gênero:</strong> ${bandaGenero}</p>
-                    <p style="font-size: 0.9em; margin-bottom: 5px; color: var(--cor-texto-claro);">${bandaDescricao}</p>
-                    <small style="color: var(--cor-texto-claro);">Convidado por: ${gestorNome}${dataEnvio ? ' em ' + dataEnvio : ''}</small>
+                    <h3 style="margin-bottom: 5px;">${escapeHtml(bandaNome)}</h3>
+                    <p style="font-size: 0.9em; margin-bottom: 5px;"><strong>Gênero:</strong> ${escapeHtml(bandaGenero)}</p>
+                    <p style="font-size: 0.9em; margin-bottom: 5px; color: var(--cor-texto-claro);">${escapeHtml(bandaDescricao)}</p>
+                    <small style="color: var(--cor-texto-claro);">Convidado por: ${escapeHtml(gestorNome)}${dataEnvio ? ' em ' + dataEnvio : ''}</small>
                 </div>
                 <div style="display: flex; gap: 10px; flex-shrink: 0;">
                     <button type="button" class="btn-adicionar btn-aceitar-convite" data-id="${c.id}">Aceitar</button>
@@ -869,7 +854,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 row.className = 'notif-item';
                 row.style.cursor = 'pointer';
                 row.innerHTML = `
-                    <div style="font-weight: 600;">${bandaNome}</div>
+                    <div style="font-weight: 600;">${escapeHtml(bandaNome)}</div>
                     <div style="font-size: 0.8em;">Convidou você para entrar na banda!</div>
                 `;
                 row.addEventListener('click', () => {
@@ -1025,18 +1010,18 @@ document.addEventListener('DOMContentLoaded', function () {
             div.innerHTML = `
                 <div class="vaga-card-header">
                     <div class="vaga-title-row">
-                        <h4>${v.titulo}</h4>
+                        <h4>${escapeHtml(v.titulo)}</h4>
                         ${statusLabel}
                     </div>
                     <div class="vaga-meta">
-                        <span><i class="fas fa-guitar"></i> ${v.funcao || ''}</span>
+                        <span><i class="fas fa-guitar"></i> ${escapeHtml(v.funcao) || ''}</span>
                         <span><i class="fas fa-users"></i> ${v.quantidadeVagas || 1} vaga(s)</span>
-                        <span><i class="fas fa-map-marker-alt"></i> ${v.cidade || 'Qualquer'}/${v.estado || 'Qualquer'}</span>
+                        <span><i class="fas fa-map-marker-alt"></i> ${escapeHtml(v.cidade) || 'Qualquer'}/${escapeHtml(v.estado) || 'Qualquer'}</span>
                     </div>
                 </div>
                 <div class="vaga-card-body">
-                    <p><strong>${v.bandaNome || ''}</strong></p>
-                    <p>${v.descricao || 'Sem descrição.'}</p>
+                    <p><strong>${escapeHtml(v.bandaNome) || ''}</strong></p>
+                    <p>${escapeHtml(v.descricao) || 'Sem descrição.'}</p>
                 </div>
                 <div class="vaga-card-footer">
                     ${acaoHtml}
@@ -1091,6 +1076,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const closeModalExcluir = document.getElementById("closeModalExcluir");
     const cancelarExclusaoBtn = document.getElementById("cancelarExclusaoBtn");
     const formExcluirConta = document.getElementById("formExcluirConta");
+    const btnExcluirContaSubmit = formExcluirConta ? formExcluirConta.querySelector('button[type="submit"]') : null;
 
     let cacheSenhaExclusao = '';
 
@@ -1129,6 +1115,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
 
+            if (btnExcluirContaSubmit) btnExcluirContaSubmit.disabled = true;
             try {
                 const token = localStorage.getItem('authToken');
                 const response = await fetch(getApiUrl(`/api/usuarios/${usuarioLogado.id}`), {
@@ -1163,6 +1150,8 @@ document.addEventListener('DOMContentLoaded', function () {
             } catch (error) {
                 console.error("Erro ao excluir conta:", error);
                 showSnackbar('Erro de conexão. Verifique sua internet e tente novamente.', 'error');
+            } finally {
+                if (btnExcluirContaSubmit) btnExcluirContaSubmit.disabled = false;
             }
         });
     }
@@ -1185,6 +1174,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         } catch (error) {
             console.error('Erro ao carregar estados:', error);
+            showSnackbar('Erro ao carregar lista de estados.', 'error');
         }
     }
 
@@ -1321,6 +1311,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // --- ALTERAR SENHA ---
     const formContaSenha = document.getElementById('formContaSenha');
+    const btnAlterarSenha = formContaSenha ? formContaSenha.querySelector('button[type="submit"]') : null;
     if (formContaSenha) {
         let cacheSenhaAtual = '';
         let cacheNovaSenha = '';
@@ -1360,6 +1351,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
 
+            if (btnAlterarSenha) btnAlterarSenha.disabled = true;
             try {
                 const token = localStorage.getItem('authToken');
                 const response = await fetch(getApiUrl(`/api/usuarios/${usuarioLogado.id}/senha`), {
@@ -1417,6 +1409,8 @@ document.addEventListener('DOMContentLoaded', function () {
             } catch (error) {
                 console.error('Erro na alteração de senha:', error);
                 showSnackbar('Erro de conexão. Verifique sua internet e tente novamente.', 'error');
+            } finally {
+                if (btnAlterarSenha) btnAlterarSenha.disabled = false;
             }
         });
 

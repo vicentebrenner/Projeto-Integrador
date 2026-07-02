@@ -7,10 +7,14 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
     }
 
-    const usuarioLogado = JSON.parse(usuarioLogadoString);
-    if (usuarioLogado && usuarioLogado.tipoUsuario !== 'GESTOR') {
-        window.location.href = 'perfil-musico.html'; // Redireciona músico para o perfil dele
-        return;
+    const usuarioLogado = parseJsonSeguro(usuarioLogadoString);
+    if (usuarioLogado) {
+        const tipoUsuarioSeguro = getTipoUsuarioSeguro();
+        const tipoUsuario = tipoUsuarioSeguro !== null ? tipoUsuarioSeguro : usuarioLogado.tipoUsuario;
+        if (tipoUsuario !== 'GESTOR') {
+            window.location.href = 'perfil-musico.html'; // Redireciona músico para o perfil dele
+            return;
+        }
     }
 
     // --- DADOS DO PERFIL (Integrado com API) ---
@@ -87,6 +91,9 @@ document.addEventListener('DOMContentLoaded', function () {
             linksProfissionais: dadosPerfil.linksProfissionais
         };
 
+        const btnSalvar = formPerfil ? formPerfil.querySelector('button[type="submit"]') : null;
+        if (btnSalvar) btnSalvar.disabled = true;
+
         const token = localStorage.getItem('authToken');
         fetch(getApiUrl(`/api/gestores/usuario/${usuarioLogado.id}/completo`), {
             method: 'POST',
@@ -132,6 +139,9 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(err => {
                 console.error(err);
                 showSnackbar(err.message || "Erro ao salvar perfil.", 'error');
+            })
+            .finally(() => {
+                if (btnSalvar) btnSalvar.disabled = false;
             });
     }
 
@@ -166,7 +176,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         ${svgPath}
                     </svg>
                 </div>
-                <div class="snackbar-text">${message}</div>
+                <div class="snackbar-text">${escapeHtml(message)}</div>
                 <button class="snackbar-close" onclick="document.getElementById('snackbar').className = document.getElementById('snackbar').className.replace('show', '')">&times;</button>
             `;
             snackbar.className = "show";
@@ -421,6 +431,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
 
+            const btnExcluirConfirmar = formExcluirConta.querySelector('button[type="submit"]');
+            if (btnExcluirConfirmar) btnExcluirConfirmar.disabled = true;
+
             try {
                 const token = localStorage.getItem('authToken');
                 const response = await fetch(getApiUrl(`/api/usuarios/${usuarioLogado.id}`), {
@@ -455,6 +468,8 @@ document.addEventListener('DOMContentLoaded', function () {
             } catch (error) {
                 console.error("Erro ao excluir conta:", error);
                 showSnackbar('Erro de conexão. Verifique sua internet e tente novamente.', 'error');
+            } finally {
+                if (btnExcluirConfirmar) btnExcluirConfirmar.disabled = false;
             }
         });
     }
@@ -499,6 +514,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 showSnackbar('A nova senha não pode ser igual à senha atual.', 'error');
                 return;
             }
+
+            const btnAlterarSenha = formContaSenha.querySelector('button[type="submit"]');
+            if (btnAlterarSenha) btnAlterarSenha.disabled = true;
 
             try {
                 const token = localStorage.getItem('authToken');
@@ -557,6 +575,8 @@ document.addEventListener('DOMContentLoaded', function () {
             } catch (error) {
                 console.error('Erro na alteração de senha:', error);
                 showSnackbar('Erro de conexão. Verifique sua internet e tente novamente.', 'error');
+            } finally {
+                if (btnAlterarSenha) btnAlterarSenha.disabled = false;
             }
         });
 

@@ -4,6 +4,7 @@ import com.musicMakers.Projeto.domain.entity.Banda;
 import com.musicMakers.Projeto.domain.entity.MembroBanda;
 import com.musicMakers.Projeto.domain.entity.Usuario;
 import com.musicMakers.Projeto.domain.dto.BandaUpdateDTO;
+import com.musicMakers.Projeto.exception.AcessoNegadoException;
 import com.musicMakers.Projeto.repository.BandaRepository;
 import com.musicMakers.Projeto.repository.MembroBandaRepository;
 import com.musicMakers.Projeto.repository.UsuarioRepository;
@@ -48,11 +49,17 @@ public class BandaService {
 
     @Transactional
     public Banda criarBanda(Banda banda, Long idUsuarioCriador) {
+        Usuario usuarioAtual = usuarioAutenticadoProvider.getUsuarioAutenticado();
+        autorizacaoService.exigirDonoRecurso(idUsuarioCriador, usuarioAtual);
+        if (!"GESTOR".equals(usuarioAtual.getTipoUsuario())) {
+            throw new AcessoNegadoException("Apenas gestores podem criar bandas.");
+        }
+
         // Salva a banda
         Banda novaBanda = bandaRepository.save(banda);
 
         // CORREÇÃO: Passamos o Long direto, sem converter para int
-        Usuario criador = usuarioRepository.findById(idUsuarioCriador) 
+        Usuario criador = usuarioRepository.findById(idUsuarioCriador)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
         MembroBanda membro = new MembroBanda();

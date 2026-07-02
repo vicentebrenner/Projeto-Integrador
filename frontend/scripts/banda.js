@@ -15,10 +15,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- DADOS DE EXEMPLO ---
     // Agenda começa vazia — eventos reais são adicionados pelo usuário
-    let dadosAgenda = JSON.parse(localStorage.getItem('dadosAgenda')) || [];
-    let dadosMembros = JSON.parse(localStorage.getItem('dadosMembros')) || [];
-    let dadosFinanceiros = JSON.parse(localStorage.getItem('dadosFinanceiros')) || [];
-    let dadosRepertorio = JSON.parse(localStorage.getItem('dadosRepertorio')) || [];
+    let dadosAgenda = parseJsonSeguro(localStorage.getItem('dadosAgenda'), []);
+    let dadosMembros = parseJsonSeguro(localStorage.getItem('dadosMembros'), []);
+    let dadosFinanceiros = parseJsonSeguro(localStorage.getItem('dadosFinanceiros'), []);
+    let dadosRepertorio = parseJsonSeguro(localStorage.getItem('dadosRepertorio'), []);
 
     // NOVO: Simulação de usuários cadastrados no sistema
     const dadosUsuariosSimulados = [
@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
                     </svg>
                 </div>
-                <div class="snackbar-text">${message}</div>
+                <div class="snackbar-text">${escapeHtml(message)}</div>
                 <button class="snackbar-close" onclick="document.getElementById('snackbar').className = document.getElementById('snackbar').className.replace('show', '')">&times;</button>
             `;
             snackbar.className = "show"; // Adiciona a classe que torna visível
@@ -700,6 +700,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const token = localStorage.getItem('authToken');
         if(window._bandaId) {
             const res = await fetch(getApiUrl(`/api/financeiro/banda/${window._bandaId}`), { headers: { 'Authorization': `Bearer ${token}` } });
+            if (res.status === 401) {
+                localStorage.removeItem('usuarioLogado');
+                localStorage.removeItem('authToken');
+                window.location.href = 'login.html';
+                return;
+            }
             if(res.ok) {
                 let json = await res.json();
                 dadosFinanceiros = json.map(t => ({
@@ -713,7 +719,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 localStorage.setItem('dadosFinanceiros', JSON.stringify(dadosFinanceiros));
             }
         }
-    } catch(e) { console.warn('Erro API Financeiro', e); }
+    } catch(e) {
+        console.warn('Erro API Financeiro', e);
+        showSnackbar('Erro ao carregar dados financeiros.', 'error');
+    }
         const tabela = document.getElementById('corpoTabelaFinanceira');
         const saldoEl = document.getElementById('saldoAtual');
         const receitaEl = document.getElementById('receitaMes');
@@ -803,9 +812,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         <i class="fas ${iconeBase}"></i>
                     </div>
                     <div class="transacao-info">
-                        <h4>${item.descricao}</h4>
+                        <h4>${escapeHtml(item.descricao)}</h4>
                         <div class="transacao-meta">
-                            <span class="categoria-tag cat-${categoriaClass}">${item.categoria}</span>
+                            <span class="categoria-tag cat-${categoriaClass}">${escapeHtml(item.categoria)}</span>
                             <span class="transacao-data"><i class="far fa-calendar-alt"></i> ${dataItem.toLocaleDateString('pt-BR')}</span>
                         </div>
                     </div>
@@ -1022,11 +1031,11 @@ document.addEventListener('DOMContentLoaded', function() {
         membrosBanda.forEach((membro) => {
             const tr = document.createElement('tr');
             tr.innerHTML = `
-                <td>${membro.nome || '(Sem Nome)'}</td>
-                <td>${membro.email}</td>
-                <td><span class="perm-funcao-badge" style="background: rgba(250, 152, 72, 0.1); color: var(--cor-secundaria); padding: 4px 8px; border-radius: 4px; font-size: 0.85em; font-weight: 600;">${membro.funcao || 'Músico'}</span></td>
+                <td>${escapeHtml(membro.nome) || '(Sem Nome)'}</td>
+                <td>${escapeHtml(membro.email)}</td>
+                <td><span class="perm-funcao-badge" style="background: rgba(250, 152, 72, 0.1); color: var(--cor-secundaria); padding: 4px 8px; border-radius: 4px; font-size: 0.85em; font-weight: 600;">${escapeHtml(membro.funcao) || 'Músico'}</span></td>
                 <td>
-                    ${isGestor ? `<button class="btn-icon btn-remover-membro-real" data-id="${membro.membroId}" data-nome="${membro.nome}" title="Remover membro" style="background:none; border:none; color:#ef4444; cursor:pointer;"><i class="fas fa-user-minus"></i></button>` : `<i class="fas fa-user-check" style="color:#10b981;"></i>`}
+                    ${isGestor ? `<button class="btn-icon btn-remover-membro-real" data-id="${membro.membroId}" data-nome="${escapeHtml(membro.nome)}" title="Remover membro" style="background:none; border:none; color:#ef4444; cursor:pointer;"><i class="fas fa-user-minus"></i></button>` : `<i class="fas fa-user-check" style="color:#10b981;"></i>`}
                 </td>`;
             fragment.appendChild(tr);
         });
@@ -1069,12 +1078,21 @@ document.addEventListener('DOMContentLoaded', function() {
         const token = localStorage.getItem('authToken');
         if(window._bandaId) {
             const res = await fetch(getApiUrl(`/api/musicas/banda/${window._bandaId}`), { headers: { 'Authorization': `Bearer ${token}` } });
+            if (res.status === 401) {
+                localStorage.removeItem('usuarioLogado');
+                localStorage.removeItem('authToken');
+                window.location.href = 'login.html';
+                return;
+            }
             if(res.ok) {
                 dadosRepertorio = await res.json();
                 localStorage.setItem('dadosRepertorio', JSON.stringify(dadosRepertorio));
             }
         }
-    } catch(e) { console.warn('Erro API Músicas', e); }
+    } catch(e) {
+        console.warn('Erro API Músicas', e);
+        showSnackbar('Erro ao carregar repertório.', 'error');
+    }
         const containerCards = document.getElementById('corpoRepertorioCards');
         if (!containerCards) return;
         containerCards.innerHTML = '';
@@ -1093,11 +1111,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     <i class="fas fa-music"></i>
                 </div>
                 <div class="rep-card-info">
-                    <h4>${musica.nome}</h4>
-                    <p class="origin"><i class="fas fa-user-edit"></i> ${musica.origem || 'Desconhecido'}</p>
+                    <h4>${escapeHtml(musica.nome)}</h4>
+                    <p class="origin"><i class="fas fa-user-edit"></i> ${escapeHtml(musica.origem) || 'Desconhecido'}</p>
                 </div>
                 <div class="rep-card-actions">
-                    ${musica.partituraUrl ? `<button class="btn-ver-partitura-modern" data-partitura-url="${musica.partituraUrl}" title="Ver Partitura"><i class="fas fa-eye"></i> Ver</button>` : '<span class="no-sheet">Sem Partitura</span>'}
+                    ${musica.partituraUrl ? `<button class="btn-ver-partitura-modern" data-partitura-url="${escapeHtml(musica.partituraUrl)}" title="Ver Partitura"><i class="fas fa-eye"></i> Ver</button>` : '<span class="no-sheet">Sem Partitura</span>'}
                     <button class="btn-icon-modern btn-remover" data-tipo="repertorio" data-index="${index}" title="Remover música"><i class="fas fa-trash-alt"></i></button>
                 </div>`;
             fragment.appendChild(card);
@@ -1388,8 +1406,15 @@ document.addEventListener('DOMContentLoaded', function() {
             const pdfUrl = partituraBtn.dataset.partituraUrl;
             const pdfViewer = document.getElementById('visualizadorPdf');
             if(pdfViewer && pdfUrl) {
-                 // Usa <embed> para visualização inline
-                 pdfViewer.innerHTML = `<embed src="${pdfUrl}" type="application/pdf" width="100%" height="900px" />`;
+                 // Usa <embed> para visualização inline — construído via DOM (não via innerHTML)
+                 // para que a URL seja atribuída como propriedade e não interpretada como HTML.
+                 pdfViewer.innerHTML = '';
+                 const embedEl = document.createElement('embed');
+                 embedEl.src = pdfUrl;
+                 embedEl.type = 'application/pdf';
+                 embedEl.width = '100%';
+                 embedEl.height = '900px';
+                 pdfViewer.appendChild(embedEl);
             } else if (pdfViewer) {
                  pdfViewer.innerHTML = '<p>Erro ao carregar a partitura.</p>';
             }
@@ -1431,7 +1456,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // --- INICIALIZAÇÃO ---
-    const usuarioLogado = JSON.parse(localStorage.getItem('usuarioLogado'));
+    const usuarioLogado = parseJsonSeguro(localStorage.getItem('usuarioLogado'));
     const authToken = localStorage.getItem('authToken');
 
     // Redireciona usuários anônimos para o login
@@ -1442,7 +1467,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Considera GESTOR se tipoUsuario=GESTOR OU se o campo gestor=true (vindo do login)
     const tipoUsuario = usuarioLogado ? (usuarioLogado.tipoUsuario || 'MUSICO') : 'MUSICO';
-    const isGestor = tipoUsuario === 'GESTOR' || usuarioLogado?.gestor === true;
+    // Fonte de verdade: role assinada no JWT (não confiável apenas via localStorage, que pode ser
+    // editado pelo usuário no DevTools). Só cai para o localStorage se não houver token válido.
+    const tipoUsuarioSeguro = getTipoUsuarioSeguro();
+    const isGestor = tipoUsuarioSeguro ? (tipoUsuarioSeguro === 'GESTOR') : (tipoUsuario === 'GESTOR' || usuarioLogado?.gestor === true);
 
     // Força o gestor que não tem banda cadastrada a ir para a página de configuração inicial
     if (isGestor && !usuarioLogado.bandaId) {
@@ -1609,6 +1637,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 } catch(e) {
                     console.warn("Erro ao buscar convites para configurações:", e);
+                    showSnackbar('Erro ao carregar convites da banda.', 'error');
                 }
             }
 
@@ -1669,6 +1698,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 descricao: formEditarBanda.descricao.value
             };
 
+            const btnSubmitEditarBanda = formEditarBanda.querySelector('button[type="submit"]');
+            if (btnSubmitEditarBanda) btnSubmitEditarBanda.disabled = true;
+
             try {
                 const resp = await fetch(getApiUrl(`/api/bandas/${bandaId}`), {
                     method: 'PUT',
@@ -1689,6 +1721,8 @@ document.addEventListener('DOMContentLoaded', function() {
             } catch (err) {
                 console.error(err);
                 showSnackbar('Erro de conexão com o servidor.', 'error');
+            } finally {
+                if (btnSubmitEditarBanda) btnSubmitEditarBanda.disabled = false;
             }
         });
     }
@@ -1703,10 +1737,17 @@ document.addEventListener('DOMContentLoaded', function() {
             const respPerm = await fetch(getApiUrl(`/api/permissoes/banda/${window._bandaId}`), {
                 headers: { 'Authorization': `Bearer ${authToken}` }
             });
+            if (respPerm.status === 401) {
+                localStorage.removeItem('usuarioLogado');
+                localStorage.removeItem('authToken');
+                window.location.href = 'login.html';
+                return [];
+            }
             if (!respPerm.ok) return [];
             return await respPerm.json();
         } catch(e) {
             console.warn('Erro ao buscar membros da banda:', e);
+            showSnackbar('Erro ao carregar membros da banda.', 'error');
             return [];
         }
     }
@@ -1755,7 +1796,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 actionsHTML = `
                     <div class="member-premium-actions">
                         <button class="btn-premium-edit" data-id="${m.membroId}"><i class="fas fa-user-cog"></i> Permissões</button>
-                        <button class="btn-premium-remove" data-id="${m.membroId}" data-nome="${m.nome}"><i class="fas fa-user-minus"></i> Remover</button>
+                        <button class="btn-premium-remove" data-id="${m.membroId}" data-nome="${escapeHtml(m.nome)}"><i class="fas fa-user-minus"></i> Remover</button>
                     </div>
                 `;
             }
@@ -1763,16 +1804,16 @@ document.addEventListener('DOMContentLoaded', function() {
             card.innerHTML = `
                 <div>
                     <div class="member-premium-card-header">
-                        <div class="member-premium-avatar">${initials}</div>
+                        <div class="member-premium-avatar">${escapeHtml(initials)}</div>
                         <div class="member-premium-info">
-                            <h4>${m.nome}</h4>
-                            <p>${m.email}</p>
+                            <h4>${escapeHtml(m.nome)}</h4>
+                            <p>${escapeHtml(m.email)}</p>
                         </div>
                     </div>
                     <div class="member-premium-details">
                         <div class="member-premium-detail-item">
                             <span>Cargo:</span>
-                            <strong>${roleLabel}</strong>
+                            <strong>${escapeHtml(roleLabel)}</strong>
                         </div>
                         <div class="member-premium-detail-item">
                             <span>Status:</span>
@@ -1805,10 +1846,10 @@ document.addEventListener('DOMContentLoaded', function() {
             card.innerHTML = `
                 <div>
                     <div class="member-premium-card-header">
-                        <div class="member-premium-avatar" style="background: linear-gradient(135deg, #a1a1a1, #707070); color: #fff;">${initials}</div>
+                        <div class="member-premium-avatar" style="background: linear-gradient(135deg, #a1a1a1, #707070); color: #fff;">${escapeHtml(initials)}</div>
                         <div class="member-premium-info">
-                            <h4>${c.usuarioConvidado.nome}</h4>
-                            <p>${c.usuarioConvidado.email}</p>
+                            <h4>${escapeHtml(c.usuarioConvidado.nome)}</h4>
+                            <p>${escapeHtml(c.usuarioConvidado.email)}</p>
                         </div>
                     </div>
                     <div class="member-premium-details">
@@ -1823,7 +1864,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 </div>
                 <div class="member-premium-actions" style="display: flex; gap: 10px; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px; margin-top: auto; width: 100%;">
-                    <button class="btn-premium-remove btn-cancelar-convite" data-id="${c.id}" data-nome="${c.usuarioConvidado.nome}"><i class="fas fa-times"></i> Cancelar</button>
+                    <button class="btn-premium-remove btn-cancelar-convite" data-id="${c.id}" data-nome="${escapeHtml(c.usuarioConvidado.nome)}"><i class="fas fa-times"></i> Cancelar</button>
                 </div>
             `;
             grid.appendChild(card);
@@ -1954,6 +1995,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         resultadosBuscaModal.innerHTML = '<p style="text-align:center; color:var(--cor-texto-claro); padding:10px 0;"><i class="fas fa-spinner fa-spin"></i> Pesquisando...</p>';
 
+        if (btnBuscarMembroModal) btnBuscarMembroModal.disabled = true;
+
         try {
             const resp = await fetch(getApiUrl(`/api/usuarios/buscar?nome=${encodeURIComponent(query)}`), {
                 headers: { 'Authorization': `Bearer ${authToken}` }
@@ -1967,6 +2010,8 @@ document.addEventListener('DOMContentLoaded', function() {
         } catch (e) {
             console.error('Erro ao pesquisar:', e);
             resultadosBuscaModal.innerHTML = '<p style="text-align:center; color:#ef4444; padding:10px 0;">Erro de conexão.</p>';
+        } finally {
+            if (btnBuscarMembroModal) btnBuscarMembroModal.disabled = false;
         }
     }
 
@@ -1992,13 +2037,13 @@ document.addEventListener('DOMContentLoaded', function() {
             if (isAlreadyInvited) {
                 btnHTML = `<button class="btn-adicionar" disabled style="padding: 8px 14px; font-size:0.85em; font-weight:600; background:rgba(255,255,255,0.1); color:rgba(255,255,255,0.4); border:none;"><i class="fas fa-check"></i> Convidado</button>`;
             } else {
-                btnHTML = `<button class="btn-adicionar btn-enviar-convite-modal" data-id="${m.id}" data-nome="${m.nome}" style="padding: 8px 14px; font-size:0.85em; font-weight:600;"><i class="fas fa-paper-plane"></i> Convidar</button>`;
+                btnHTML = `<button class="btn-adicionar btn-enviar-convite-modal" data-id="${m.id}" data-nome="${escapeHtml(m.nome)}" style="padding: 8px 14px; font-size:0.85em; font-weight:600;"><i class="fas fa-paper-plane"></i> Convidar</button>`;
             }
 
             div.innerHTML = `
                 <div>
-                    <h4 style="color:#fff; font-weight:700; margin: 0; font-size: 0.95em;">${m.nome}</h4>
-                    <p style="font-size:0.8em; color:var(--cor-texto-claro); margin: 3px 0 0 0;">${m.email}</p>
+                    <h4 style="color:#fff; font-weight:700; margin: 0; font-size: 0.95em;">${escapeHtml(m.nome)}</h4>
+                    <p style="font-size:0.8em; color:var(--cor-texto-claro); margin: 3px 0 0 0;">${escapeHtml(m.email)}</p>
                 </div>
                 ${btnHTML}
             `;
@@ -2014,7 +2059,9 @@ document.addEventListener('DOMContentLoaded', function() {
             btn.addEventListener('click', async function() {
                 const musicoId = this.dataset.id;
                 const nome = this.dataset.nome;
-                
+
+                this.disabled = true;
+
                 try {
                     const resp = await fetch(getApiUrl('/api/convites'), {
                         method: 'POST',
@@ -2028,10 +2075,9 @@ document.addEventListener('DOMContentLoaded', function() {
                             usuarioConvidadoId: musicoId
                         })
                     });
-                    
+
                     if (resp.ok) {
                         showSnackbar(`Convite enviado para ${nome}!`);
-                        this.disabled = true;
                         this.innerHTML = '<i class="fas fa-check"></i> Enviado';
                         this.style.background = 'rgba(255,255,255,0.15)';
                         this.style.color = 'var(--cor-texto-claro)';
@@ -2040,10 +2086,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     } else {
                         const errData = await resp.json();
                         showSnackbar(`Erro: ${errData.error || 'Não foi possível enviar o convite.'}`);
+                        this.disabled = false;
                     }
                 } catch(e) {
                     console.error('Erro ao enviar convite:', e);
                     showSnackbar('Erro ao conectar com o servidor.');
+                    this.disabled = false;
                 }
             });
         });
@@ -2139,11 +2187,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     li.innerHTML = `
                         <span>
                             <i class="fas fa-user-clock"></i>
-                            <strong>${c.usuarioConvidado.nome}</strong> (${c.usuarioConvidado.email}) - Convidado em ${dataEnvio}
+                            <strong>${escapeHtml(c.usuarioConvidado.nome)}</strong> (${escapeHtml(c.usuarioConvidado.email)}) - Convidado em ${dataEnvio}
                         </span>
                         <div style="display:inline-flex; align-items:center; gap:10px;">
                             <span class="status-pendente" style="color:var(--cor-secundaria); font-weight:600; font-size:0.9em; margin-left:10px;">Pendente</span>
-                            <button class="btn-remover btn-cancelar-convite-membros-tab" data-id="${c.id}" data-nome="${c.usuarioConvidado.nome}" style="background:none; border:none; color:#ef4444; padding:0; cursor:pointer; font-weight:600; font-size:1em; margin-left:10px;" title="Cancelar Convite">
+                            <button class="btn-remover btn-cancelar-convite-membros-tab" data-id="${c.id}" data-nome="${escapeHtml(c.usuarioConvidado.nome)}" style="background:none; border:none; color:#ef4444; padding:0; cursor:pointer; font-weight:600; font-size:1em; margin-left:10px;" title="Cancelar Convite">
                                 <i class="fas fa-times-circle"></i>
                             </button>
                         </div>
@@ -2221,7 +2269,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             const statusColor = c.status === 'ACEITO' ? '#10b981' : '#ef4444';
                             const statusText = c.status === 'ACEITO' ? 'aceitou' : 'recusou';
                             item.innerHTML = `
-                                <div><strong>${c.usuarioConvidado.nome}</strong> <span style="color:${statusColor}">${statusText}</span> o convite para a banda.</div>
+                                <div><strong>${escapeHtml(c.usuarioConvidado.nome)}</strong> <span style="color:${statusColor}">${statusText}</span> o convite para a banda.</div>
                                 <small style="color:rgba(255,255,255,0.3); font-size:0.8em;">${new Date(c.dataResposta || c.dataEnvio).toLocaleDateString('pt-BR')}</small>
                             `;
                             notifList.appendChild(item);
@@ -2298,7 +2346,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     selectVagaEstado.appendChild(option);
                 });
             })
-            .catch(err => console.error("Erro ao buscar estados IBGE", err));
+            .catch(err => {
+                console.error("Erro ao buscar estados IBGE", err);
+                showSnackbar('Erro ao carregar lista de estados.', 'error');
+            });
             
         selectVagaEstado.addEventListener('change', (e) => {
             const uf = e.target.value;
@@ -2318,7 +2369,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         selectVagaCidade.appendChild(option);
                     });
                 })
-                .catch(err => console.error("Erro ao buscar cidades IBGE", err));
+                .catch(err => {
+                    console.error("Erro ao buscar cidades IBGE", err);
+                    showSnackbar('Erro ao carregar lista de cidades.', 'error');
+                });
         });
     }
 
@@ -2340,14 +2394,17 @@ document.addEventListener('DOMContentLoaded', function() {
             const vId = document.getElementById('vagaId').value;
             const method = vId ? 'PUT' : 'POST';
             const url = vId ? getApiUrl(`/api/vagas/${vId}`) : getApiUrl(`/api/vagas/banda/${payload.bandaId}`);
-            
+
+            const btnSubmitVaga = formVaga.querySelector('button[type="submit"]');
+            if (btnSubmitVaga) btnSubmitVaga.disabled = true;
+
             try {
                 const resp = await fetch(url, {
                     method,
                     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
                     body: JSON.stringify(payload)
                 });
-                
+
                 if (resp.ok) {
                     showSnackbar("Vaga salva com sucesso!");
                     modalVaga.style.display = 'none';
@@ -2358,6 +2415,8 @@ document.addEventListener('DOMContentLoaded', function() {
             } catch (err) {
                 console.error(err);
                 showSnackbar("Erro de conexão.");
+            } finally {
+                if (btnSubmitVaga) btnSubmitVaga.disabled = false;
             }
         });
     }
@@ -2372,6 +2431,12 @@ document.addEventListener('DOMContentLoaded', function() {
             const resp = await fetch(getApiUrl(`/api/vagas/banda/${bandaId}`), {
                 headers: { 'Authorization': `Bearer ${authToken}` }
             });
+            if (resp.status === 401) {
+                localStorage.removeItem('usuarioLogado');
+                localStorage.removeItem('authToken');
+                window.location.href = 'login.html';
+                return;
+            }
             if (resp.ok) {
                 const vagas = await resp.json();
                 renderVagas(vagas);
@@ -2400,17 +2465,17 @@ document.addEventListener('DOMContentLoaded', function() {
             div.innerHTML = `
                 <div class="vaga-card-header">
                     <div class="vaga-title-row">
-                        <h4>${v.titulo}</h4>
+                        <h4>${escapeHtml(v.titulo)}</h4>
                         ${statusLabel}
                     </div>
                     <div class="vaga-meta">
-                        <span><i class="fas fa-guitar"></i> ${v.funcao}</span>
+                        <span><i class="fas fa-guitar"></i> ${escapeHtml(v.funcao)}</span>
                         <span><i class="fas fa-users"></i> ${v.quantidadeVagas || 1} vaga(s)</span>
-                        <span><i class="fas fa-map-marker-alt"></i> ${v.cidade||'Qualquer'}/${v.estado||'Qualquer'}</span>
+                        <span><i class="fas fa-map-marker-alt"></i> ${escapeHtml(v.cidade)||'Qualquer'}/${escapeHtml(v.estado)||'Qualquer'}</span>
                     </div>
                 </div>
                 <div class="vaga-card-body">
-                    <p>${v.descricao || 'Sem descrição.'}</p>
+                    <p>${escapeHtml(v.descricao) || 'Sem descrição.'}</p>
                 </div>
                 <div class="vaga-card-footer">
                     <button class="btn-candidatos" data-id="${v.id}"><i class="fas fa-user-check"></i> Ver Candidatos</button>
@@ -2544,10 +2609,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
                     row.innerHTML = `
                         <div style="flex:1;">
-                            <h4 style="margin:0;">${c.nomeMusico || ''}</h4>
+                            <h4 style="margin:0;">${escapeHtml(c.nomeMusico) || ''}</h4>
                             <p style="font-size:0.85em; color:var(--cor-texto-claro); margin:5px 0;">
-                                <i class="fas fa-map-marker-alt"></i> ${perfil.cidade||''}/${perfil.estado||''} |
-                                <i class="fas fa-guitar"></i> ${perfil.instrumentosPrincipais||''}
+                                <i class="fas fa-map-marker-alt"></i> ${escapeHtml(perfil.cidade)||''}/${escapeHtml(perfil.estado)||''} |
+                                <i class="fas fa-guitar"></i> ${escapeHtml(perfil.instrumentosPrincipais)||''}
                             </p>
                         </div>
                         <div style="text-align:center; padding: 10px 20px; background:rgba(255,255,255,0.05); border-radius:8px;">
@@ -2609,10 +2674,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 row.innerHTML = `
                     <div style="flex:1; min-width:200px;">
-                        <h4 style="margin:0;">${c.nomeMusico || ''}</h4>
+                        <h4 style="margin:0;">${escapeHtml(c.nomeMusico) || ''}</h4>
                         <p style="font-size:0.85em; color:var(--cor-texto-claro); margin:5px 0;">
-                            <i class="fas fa-map-marker-alt"></i> ${c.cidade||''}/${c.estado||''} |
-                            <i class="fas fa-guitar"></i> ${c.instrumentosPrincipais||''}
+                            <i class="fas fa-map-marker-alt"></i> ${escapeHtml(c.cidade)||''}/${escapeHtml(c.estado)||''} |
+                            <i class="fas fa-guitar"></i> ${escapeHtml(c.instrumentosPrincipais)||''}
                         </p>
                     </div>
                     <div>${statusBadge}</div>
@@ -2632,8 +2697,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const btnRejeitar = e.target.closest('.btn-rejeitar-candidatura');
         if (!btnAprovar && !btnRejeitar) return;
 
-        const id = (btnAprovar || btnRejeitar).dataset.id;
+        const btnClicado = btnAprovar || btnRejeitar;
+        const id = btnClicado.dataset.id;
         const acao = btnAprovar ? 'aprovar' : 'rejeitar';
+
+        btnClicado.disabled = true;
 
         try {
             const resp = await fetch(getApiUrl(`/api/candidaturas/${id}/${acao}`), {
@@ -2649,6 +2717,8 @@ document.addEventListener('DOMContentLoaded', function() {
         } catch (err) {
             console.error(err);
             showSnackbar('Erro de conexão com o servidor.');
+        } finally {
+            btnClicado.disabled = false;
         }
     });
 
@@ -2720,7 +2790,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             <h3 style="font-size: 1.3rem; margin-bottom: 10px; color: var(--cor-primaria); border: none; padding: 0;">Fui Convidado</h3>
                             <p style="font-size: 0.95rem; color: var(--cor-texto); line-height: 1.5; margin-bottom: 20px;">
                                 Peça ao líder da banda para enviar um convite para o seu e-mail:
-                                <br><strong style="color: var(--cor-primaria); background: var(--cor-fundo); padding: 6px 12px; border-radius: 6px; display: inline-block; margin-top: 10px; font-size: 0.9rem; border: 1px solid var(--cor-borda);">${userEmail}</strong>
+                                <br><strong style="color: var(--cor-primaria); background: var(--cor-fundo); padding: 6px 12px; border-radius: 6px; display: inline-block; margin-top: 10px; font-size: 0.9rem; border: 1px solid var(--cor-borda);">${escapeHtml(userEmail)}</strong>
                             </p>
                             <span style="font-size: 0.85rem; color: var(--cor-info); font-weight: 600; margin-top: auto;">
                                 <i class="fas fa-circle-notch fa-spin" style="margin-right: 5px;"></i> Aguardando convite...

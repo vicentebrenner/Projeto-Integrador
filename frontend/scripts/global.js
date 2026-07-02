@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     const menuPrincipalUl = document.querySelector('.menuPrincipal ul');
-    const usuarioLogado = JSON.parse(localStorage.getItem('usuarioLogado'));
+    const usuarioLogado = parseJsonSeguro(localStorage.getItem('usuarioLogado'));
 
     if (usuarioLogado && menuPrincipalUl) {
         const btnLoginAntigo = document.querySelector('.btnLogin');
@@ -18,21 +18,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 inicial = (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
             }
         }
-        const tipoUsuario = usuarioLogado.tipoUsuario || 'MUSICO';
+        // Fonte de verdade da role: claim assinado do JWT, não o localStorage (forjável via DevTools).
+        // localStorage.tipoUsuario serve só de fallback cosmético caso o token ainda não tenha sido decodificado.
+        const tipoUsuario = getTipoUsuarioSeguro() || usuarioLogado.tipoUsuario || 'MUSICO';
 
         const perfilLi = document.createElement('li');
         perfilLi.classList.add('perfil-container');
-        
+
         const linkPerfil = tipoUsuario === 'GESTOR'
             ? `<a href="perfil-gestor.html">Meu Perfil (Gestor)</a><a href="banda.html">Painel da Banda</a>`
             : `<a href="perfil-musico.html">Meu Perfil Músico</a>`;
 
-        const corBackground = usuarioLogado.corAvatar || '#fa9848';
+        const corBackground = escapeHtml(usuarioLogado.corAvatar || '#fa9848');
 
         perfilLi.innerHTML = `
-            <div class="perfil-icone" id="perfilIcone" style="background-color: ${corBackground};">${inicial}</div>
+            <div class="perfil-icone" id="perfilIcone" style="background-color: ${corBackground};">${escapeHtml(inicial)}</div>
             <div class="perfil-dropdown" id="perfilDropdown">
-                <p>Olá, ${nome.split(' ')[0]}!</p>
+                <p>Olá, ${escapeHtml(nome.split(' ')[0])}!</p>
                 <hr>
                 ${linkPerfil}
                 <a href="#" id="btnLogout">Sair</a>

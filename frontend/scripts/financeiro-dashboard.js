@@ -10,7 +10,7 @@ if (!usuarioLogadoString || !authToken) {
     window.location.href = 'login.html';
 }
 
-const usuarioLogado = usuarioLogadoString ? JSON.parse(usuarioLogadoString) : null;
+const usuarioLogado = usuarioLogadoString ? parseJsonSeguro(usuarioLogadoString) : null;
 
 // --- SNACKBAR AUTO-CONTIDO ---
 function showSnackbar(message, type = 'success') {
@@ -223,8 +223,8 @@ function renderizarExtrato(lista) {
     return `<div class="transacao">
       <div class="transacao-icon ${isR ? 'receita' : 'despesa'}">${icon}</div>
       <div class="transacao-info">
-        <div class="transacao-desc">${t.descricao}</div>
-        <div class="transacao-meta">${t.categoria} · ${d}</div>
+        <div class="transacao-desc">${escapeHtml(t.descricao)}</div>
+        <div class="transacao-meta">${escapeHtml(t.categoria)} · ${d}</div>
       </div>
       <div class="transacao-valor ${isR ? 'receita' : 'despesa'}">${isR ? '+' : '-'} ${fmt(t.valor)}</div>
     </div>`;
@@ -247,7 +247,7 @@ function renderizarCategorias(lista) {
     const pct = total > 0 ? ((val / total) * 100).toFixed(0) : 0;
     const cor = COR_CAT[i % COR_CAT.length];
     return `<div class="cat-item">
-      <div class="cat-name">${cat}</div>
+      <div class="cat-name">${escapeHtml(cat)}</div>
       <div class="cat-bar-wrap"><div class="cat-bar" style="width:${pct}%;background:${cor}"></div></div>
       <div class="cat-pct">${pct}%</div>
     </div>`;

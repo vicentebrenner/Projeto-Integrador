@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const btnSalvar = document.getElementById('btnSalvarBanda');
 
     // Retrieve logged in user and token
-    const usuarioLogado = JSON.parse(localStorage.getItem('usuarioLogado'));
+    const usuarioLogado = parseJsonSeguro(localStorage.getItem('usuarioLogado'));
     const authToken = localStorage.getItem('authToken');
 
     // If not authenticated or not a gestor, redirect to login
@@ -13,7 +13,9 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
     }
 
-    if (usuarioLogado.tipoUsuario !== 'GESTOR' && usuarioLogado.gestor !== true) {
+    // Fonte de verdade da role: claim assinado do JWT (não forjável), não o localStorage.
+    const tipoUsuarioSeguro = getTipoUsuarioSeguro();
+    if (tipoUsuarioSeguro !== 'GESTOR') {
         window.location.href = 'perfil-musico.html';
         return;
     }
@@ -87,6 +89,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 setTimeout(() => {
                     window.location.href = 'banda.html';
                 }, 1500);
+            } else if (response.status === 401) {
+                localStorage.removeItem('usuarioLogado');
+                localStorage.removeItem('authToken');
+                window.location.href = 'login.html';
+                return;
+            } else if (response.status === 403) {
+                mostrarErro('Você não tem permissão para criar uma banda com este usuário.');
             } else {
                 let errData;
                 try {
