@@ -433,6 +433,8 @@
         </div>
     </footer>
 
+    <script src="scripts/config.js"></script>
+    <script src="scripts/utils.js"></script>
     <script src="scripts/global.js"></script>
     <script>
         function toggleCtaPassword() {
@@ -502,7 +504,7 @@
             // Financeiro
             let saldo = 0;
             try {
-                const resFin = await fetch(`http://localhost:8081/api/financeiro/banda/${bandaId}`, { headers });
+                const resFin = await fetch(getApiUrl(`/api/financeiro/banda/${bandaId}`), { headers });
                 if (resFin.ok) {
                     const data = await resFin.json();
                     saldo = data.reduce((acc, curr) => acc + (curr.tipo === 'RECEITA' ? curr.valor : -curr.valor), 0);
@@ -522,7 +524,7 @@
             // Repertório
             let qtdMusicas = 0;
             try {
-                const resRep = await fetch(`http://localhost:8081/api/musicas/banda/${bandaId}`, { headers });
+                const resRep = await fetch(getApiUrl(`/api/musicas/banda/${bandaId}`), { headers });
                 if (resRep.ok) {
                     const data = await resRep.json();
                     qtdMusicas = data.length;

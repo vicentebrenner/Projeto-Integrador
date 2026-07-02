@@ -16,6 +16,10 @@ function setupPasswordToggle(inputId, toggleId) {
 }
 
 function getApiUrl(path) {
+    // Se definido via build/deploy (ver scripts/config.js), usa a URL configurada.
+    if (window.__API_BASE_URL__ && window.__API_BASE_URL__ !== '') {
+        return `${window.__API_BASE_URL__}${path}`;
+    }
     // Se estiver rodando via protocolo file:/// ou em alguma porta que não seja a padrão 80/443 do container,
     // direciona diretamente para o backend local (porta 8080).
     if (window.location.protocol === 'file:' || (window.location.port !== '' && window.location.port !== '80' && window.location.port !== '443')) {

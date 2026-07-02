@@ -445,13 +445,14 @@
         </div>
     </div>
 
+    <script src="scripts/config.js"></script>
     <script src="scripts/utils.js"></script>
     <script src="scripts/cadastro.js"></script>
     <script>
         function handleGoogleLogin(response) {
             const mensagemErroCadastro = document.getElementById("mensagemErroCadastro");
             
-            fetch("http://localhost:8081/api/auth/google", {
+            fetch(getApiUrl("/api/auth/google"), {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ credential: response.credential })

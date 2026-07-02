@@ -1,6 +1,7 @@
 package com.musicMakers.Projeto.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -22,6 +23,9 @@ public class SecurityConfig {
 
     @Autowired
     private JwtAuthFilter jwtAuthFilter;
+
+    @Value("${cors.allowed-origins}")
+    private String corsAllowedOrigins;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -59,15 +63,8 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         
-        // Permite origens específicas para o Live Server e Docker Frontend (porta 80)
-        configuration.setAllowedOrigins(Arrays.asList(
-            "http://localhost",
-            "http://127.0.0.1",
-            "http://127.0.0.1:5500", 
-            "http://localhost:5500",
-            "http://localhost:8080"
-        ));
-        // Removido: configuration.setAllowedOrigins(Arrays.asList("null")); para evitar conflito com credentials(true)
+        // Permite origens específicas, configuráveis via property cors.allowed-origins
+        configuration.setAllowedOrigins(Arrays.asList(corsAllowedOrigins.split(",")));
         
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));

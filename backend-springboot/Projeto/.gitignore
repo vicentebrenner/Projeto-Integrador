@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Env vars (nunca commitar segredos reais) ###
+.env
+.env.local
+.env.*.local

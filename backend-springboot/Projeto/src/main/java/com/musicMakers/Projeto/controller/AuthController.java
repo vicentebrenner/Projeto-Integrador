@@ -13,6 +13,7 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -45,9 +46,11 @@ public class AuthController {
     @Autowired
     private ConviteBandaRepository conviteBandaRepository;
 
+    @Value("${google.client.id}")
+    private String googleClientId;
+
     // --- LOGIN ---
     // --- LOGIN ---
-    @CrossOrigin(origins = "*")
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> body) {
         String email = body.get("email");
@@ -109,7 +112,6 @@ public class AuthController {
     }
 
     // --- LOGIN COM GOOGLE ---
-    @CrossOrigin(origins = "*")
     @PostMapping("/google")
     public ResponseEntity<?> googleLogin(@RequestBody Map<String, String> body) {
         String tokenString = body.get("credential");
@@ -118,11 +120,9 @@ public class AuthController {
             return ResponseEntity.status(400).body("Token Google ausente. O Google bloqueou o envio do token.");
         }
 
-        String clientId = "327030723105-jcbvbrnbfifl4huo24cd1upqva3h54k7.apps.googleusercontent.com"; // Seu Client ID
-
         try {
             GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new GsonFactory())
-                .setAudience(Collections.singletonList(clientId))
+                .setAudience(Collections.singletonList(googleClientId))
                 .build();
 
             GoogleIdToken idToken = verifier.verify(tokenString);

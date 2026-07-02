@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function inicializarPerfil() {
         const token = localStorage.getItem('authToken');
-        fetch(`http://localhost:8081/api/musicos/usuario/${usuarioLogado.id}`, {
+        fetch(getApiUrl(`/api/musicos/usuario/${usuarioLogado.id}`), {
             headers: { 'Authorization': `Bearer ${token}` }
         })
             .then(res => {
@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function () {
         };
 
         const token = localStorage.getItem('authToken');
-        fetch(`http://localhost:8081/api/musicos/usuario/${usuarioLogado.id}/completo`, {
+        fetch(getApiUrl(`/api/musicos/usuario/${usuarioLogado.id}/completo`), {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -800,7 +800,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             try {
                 const token = localStorage.getItem('authToken');
-                const response = await fetch(`http://localhost:8081/api/usuarios/${usuarioLogado.id}`, {
+                const response = await fetch(getApiUrl(`/api/usuarios/${usuarioLogado.id}`), {
                     method: "DELETE",
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -1031,7 +1031,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             try {
                 const token = localStorage.getItem('authToken');
-                const response = await fetch(`http://localhost:8081/api/usuarios/${usuarioLogado.id}/senha`, {
+                const response = await fetch(getApiUrl(`/api/usuarios/${usuarioLogado.id}/senha`), {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',

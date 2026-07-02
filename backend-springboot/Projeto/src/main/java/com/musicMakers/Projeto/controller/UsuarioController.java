@@ -63,7 +63,6 @@ public class UsuarioController {
         return ResponseEntity.ok(resultado);
     }
 
-    @CrossOrigin(origins = "*")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> excluirConta(@PathVariable Long id, @RequestBody Map<String, String> body) {
         String senhaFornecida = body.get("senha");
@@ -91,7 +90,6 @@ public class UsuarioController {
             return ResponseEntity.status(500).body("Erro ao excluir a conta. Pode haver dependências (como bandas cadastradas) que impedem a exclusão.");
         }
     }
-    @CrossOrigin(origins = "*")
     @PutMapping("/{id}/senha")
     public ResponseEntity<?> alterarSenha(@PathVariable Long id, @RequestBody Map<String, String> body) {
         String senhaAtual = body.get("senhaAtual");

@@ -1,14 +1,14 @@
-# Usamos uma imagem otimizada com o Java Runtime 17
-FROM eclipse-temurin:17-jre-jammy
-
-# Define o diretório de trabalho dentro do container
+FROM maven:3.9-eclipse-temurin-17 AS build
 WORKDIR /app
+COPY pom.xml .
+COPY .mvn .mvn
+COPY mvnw .
+RUN chmod +x mvnw && ./mvnw dependency:go-offline -B
+COPY src ./src
+RUN ./mvnw clean package -DskipTests -B
 
-# Copia o arquivo .jar compilado localmente na máquina hospedeira
-COPY target/*.jar app.jar
-
-# Expõe a porta padrão do Spring Boot
+FROM eclipse-temurin:17-jre-jammy
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
-
-# Comando para iniciar a aplicação
 ENTRYPOINT ["java", "-jar", "app.jar"]
