@@ -7,6 +7,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import java.util.concurrent.CompletableFuture;
+
 @Service
 public class EmailService {
 
@@ -17,22 +19,26 @@ public class EmailService {
     private String remetente;
 
     /**
-     * Envia o e-mail de redefinição de senha. Falhas de envio (SMTP mal configurado, etc.)
-     * são logadas e engolidas aqui de propósito: quem chama (PasswordResetService) sempre
-     * responde a mesma mensagem genérica, para não revelar se o e-mail existe/foi enviado.
+     * Envia o e-mail de redefinição de senha em segundo plano (fora da thread da requisição HTTP).
+     * O SMTP pode demorar ou travar (rede, credenciais, firewall) — se o envio fosse síncrono aqui,
+     * a requisição de /forgot-password ficaria pendurada em "Processando..." até o SMTP responder
+     * ou estourar timeout. Falhas de envio são logadas e engolidas aqui de propósito: quem chama
+     * (PasswordResetService) já respondeu a mensagem genérica ao usuário antes disso rodar.
      */
     public void enviarEmailRedefinicaoSenha(String destinatario, String nomeUsuario, String linkRedefinicao) {
-        try {
-            MimeMessage mensagem = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(mensagem, false, "UTF-8");
-            helper.setTo(destinatario);
-            helper.setFrom(remetente);
-            helper.setSubject("Redefinição de senha - MusicMakers");
-            helper.setText(construirHtml(nomeUsuario, linkRedefinicao), true);
-            mailSender.send(mensagem);
-        } catch (Exception e) {
-            System.err.println("Falha ao enviar e-mail de redefinição de senha para " + destinatario + ": " + e.getMessage());
-        }
+        CompletableFuture.runAsync(() -> {
+            try {
+                MimeMessage mensagem = mailSender.createMimeMessage();
+                MimeMessageHelper helper = new MimeMessageHelper(mensagem, false, "UTF-8");
+                helper.setTo(destinatario);
+                helper.setFrom(remetente);
+                helper.setSubject("Redefinição de senha - MusicMakers");
+                helper.setText(construirHtml(nomeUsuario, linkRedefinicao), true);
+                mailSender.send(mensagem);
+            } catch (Exception e) {
+                System.err.println("Falha ao enviar e-mail de redefinição de senha para " + destinatario + ": " + e.getMessage());
+            }
+        });
     }
 
     private String construirHtml(String nome, String link) {
