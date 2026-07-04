@@ -1,44 +1,69 @@
 package com.musicMakers.Projeto.service;
 
-import jakarta.mail.internet.MimeMessage;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * Envia e-mails via API HTTP do Resend (https://resend.com), em vez de SMTP.
+ * Plataformas como o Render bloqueiam conexões SMTP de saída (portas 25/465/587) por
+ * padrão anti-spam — a API HTTP do Resend roda sobre HTTPS (porta 443), que não é bloqueada.
+ */
 @Service
 public class EmailService {
 
-    @Autowired
-    private JavaMailSender mailSender;
+    private static final String RESEND_API_URL = "https://api.resend.com/emails";
 
-    @Value("${spring.mail.username}")
+    private final RestTemplate restTemplate = criarRestTemplateComTimeout();
+
+    @Value("${resend.api-key}")
+    private String apiKey;
+
+    @Value("${resend.from-email}")
     private String remetente;
 
     /**
      * Envia o e-mail de redefinição de senha em segundo plano (fora da thread da requisição HTTP).
-     * O SMTP pode demorar ou travar (rede, credenciais, firewall) — se o envio fosse síncrono aqui,
-     * a requisição de /forgot-password ficaria pendurada em "Processando..." até o SMTP responder
-     * ou estourar timeout. Falhas de envio são logadas e engolidas aqui de propósito: quem chama
+     * Uma chamada HTTP pode demorar ou falhar (rede, chave invalida, limite excedido) — se fosse
+     * síncrona aqui, a requisição de /forgot-password ficaria pendurada em "Processando..." até
+     * a resposta chegar. Falhas de envio são logadas e engolidas aqui de propósito: quem chama
      * (PasswordResetService) já respondeu a mensagem genérica ao usuário antes disso rodar.
      */
     public void enviarEmailRedefinicaoSenha(String destinatario, String nomeUsuario, String linkRedefinicao) {
         CompletableFuture.runAsync(() -> {
             try {
-                MimeMessage mensagem = mailSender.createMimeMessage();
-                MimeMessageHelper helper = new MimeMessageHelper(mensagem, false, "UTF-8");
-                helper.setTo(destinatario);
-                helper.setFrom(remetente);
-                helper.setSubject("Redefinição de senha - MusicMakers");
-                helper.setText(construirHtml(nomeUsuario, linkRedefinicao), true);
-                mailSender.send(mensagem);
-            } catch (Exception e) {
+                HttpHeaders headers = new HttpHeaders();
+                headers.setBearerAuth(apiKey);
+                headers.setContentType(MediaType.APPLICATION_JSON);
+
+                Map<String, Object> corpo = Map.of(
+                    "from", remetente,
+                    "to", List.of(destinatario),
+                    "subject", "Redefinição de senha - MusicMakers",
+                    "html", construirHtml(nomeUsuario, linkRedefinicao)
+                );
+
+                restTemplate.postForEntity(RESEND_API_URL, new HttpEntity<>(corpo, headers), String.class);
+            } catch (RestClientException e) {
                 System.err.println("Falha ao enviar e-mail de redefinição de senha para " + destinatario + ": " + e.getMessage());
             }
         });
+    }
+
+    private static RestTemplate criarRestTemplateComTimeout() {
+        org.springframework.http.client.SimpleClientHttpRequestFactory factory =
+            new org.springframework.http.client.SimpleClientHttpRequestFactory();
+        factory.setConnectTimeout(5000);
+        factory.setReadTimeout(5000);
+        return new RestTemplate(factory);
     }
 
     private String construirHtml(String nome, String link) {

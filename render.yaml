@@ -36,15 +36,12 @@ services:
       # (ex: https://musicmakers-frontend.onrender.com), defina depois do primeiro deploy
       - key: FRONTEND_URL
         sync: false
-      # E-mail (opcional — recuperação de senha)
-      - key: MAIL_HOST
+      # E-mail via API HTTP do Resend (recuperação de senha) — SMTP não funciona no Render,
+      # que bloqueia conexões de saída nas portas 25/465/587
+      - key: RESEND_API_KEY
         sync: false
-      - key: MAIL_PORT
-        sync: false
-      - key: MAIL_USERNAME
-        sync: false
-      - key: MAIL_PASSWORD
-        sync: false
+      - key: RESEND_FROM_EMAIL
+        value: "MusicMakers <onboarding@resend.dev>"
       # Login com Google (opcional)
       - key: GOOGLE_CLIENT_ID
         sync: false
