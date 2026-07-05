@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class PerfilGestorUpdateDTO {
     private String nome;
+    private String username;
     private String corAvatar;
 
     private String whatsapp;

@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // --- DADOS DO PERFIL (Integrado com API) ---
     let dadosPerfil = {
         nome: usuarioLogado.nome || "Músico",
+        username: "",
         whatsapp: "",
         dataNascimento: "",
         email: usuarioLogado.email || "",
@@ -61,6 +62,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(data => {
                 // O DTO agora retorna tudo na raiz (sem data.usuario)
                 dadosPerfil.nome = data.nome || dadosPerfil.nome;
+                dadosPerfil.username = data.username || "";
                 dadosPerfil.email = data.email || dadosPerfil.email;
                 dadosPerfil.whatsapp = data.whatsapp || "";
                 dadosPerfil.dataNascimento = data.dataNascimento || "";
@@ -111,6 +113,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function salvarDados() {
         const dto = {
             nome: dadosPerfil.nome,
+            username: dadosPerfil.username,
             whatsapp: dadosPerfil.whatsapp,
             dataNascimento: dadosPerfil.dataNascimento,
             corAvatar: dadosPerfil.corAvatar,
@@ -176,7 +179,14 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .catch(err => {
                 console.error(err);
-                showSnackbar(err.message || "Erro ao salvar perfil.");
+                const inputUsername = document.getElementById('perfilUsername');
+                if (err.message && err.message.includes("Username já está em uso")) {
+                    if (inputUsername) inputUsername.closest('.input-with-prefix').classList.add('input-error');
+                    showSnackbar("Este nome de usuário já está em uso. Escolha outro.", 'error');
+                } else {
+                    if (inputUsername) inputUsername.closest('.input-with-prefix').classList.remove('input-error');
+                    showSnackbar(err.message || "Erro ao salvar perfil.", 'error');
+                }
             });
     }
 
@@ -250,6 +260,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Carrega dados do perfil no formulário
     function carregarPerfil() {
         document.getElementById('perfilNome').value = dadosPerfil.nome;
+        if (document.getElementById('perfilUsername')) document.getElementById('perfilUsername').value = dadosPerfil.username || "";
         if(document.getElementById("perfilWhatsapp")) document.getElementById("perfilWhatsapp").value = dadosPerfil.whatsapp || "";
         if(document.getElementById("perfilDataNascimento")) document.getElementById("perfilDataNascimento").value = dadosPerfil.dataNascimento || "";
         
@@ -529,6 +540,17 @@ document.addEventListener('DOMContentLoaded', function () {
             e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
         });
     }
+
+    // Normaliza o Nome de Usuário (minúsculas, sem espaços/caracteres inválidos)
+    const inputUsername = document.getElementById('perfilUsername');
+    if (inputUsername) {
+        inputUsername.addEventListener('input', function (e) {
+            e.target.value = e.target.value.toLowerCase().replace(/[^a-z0-9_.]/g, '');
+            const wrapper = e.target.closest('.input-with-prefix');
+            if (wrapper) wrapper.classList.remove('input-error');
+        });
+    }
+
     // Lógica de Estrelas (Nível de Habilidade)
     const starContainer = document.getElementById('starRatingContainer');
     const inputNivel = document.getElementById('perfilNivel');
@@ -597,6 +619,7 @@ document.addEventListener('DOMContentLoaded', function () {
         formPerfil.addEventListener('submit', (e) => {
             e.preventDefault();
             dadosPerfil.nome = document.getElementById('perfilNome').value;
+            if (document.getElementById('perfilUsername')) dadosPerfil.username = document.getElementById('perfilUsername').value.trim();
             if(document.getElementById("perfilWhatsapp")) dadosPerfil.whatsapp = document.getElementById("perfilWhatsapp").value;
             if(document.getElementById("perfilDataNascimento")) dadosPerfil.dataNascimento = document.getElementById("perfilDataNascimento").value;
             const uf = document.getElementById('perfilEstado').value;

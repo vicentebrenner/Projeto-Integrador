@@ -16,32 +16,24 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- DADOS DE EXEMPLO ---
     // Agenda começa vazia — eventos reais são adicionados pelo usuário
     let dadosAgenda = parseJsonSeguro(localStorage.getItem('dadosAgenda'), []);
-    let dadosMembros = parseJsonSeguro(localStorage.getItem('dadosMembros'), []);
     let dadosFinanceiros = parseJsonSeguro(localStorage.getItem('dadosFinanceiros'), []);
     let dadosRepertorio = parseJsonSeguro(localStorage.getItem('dadosRepertorio'), []);
 
-    // NOVO: Simulação de usuários cadastrados no sistema
-    const dadosUsuariosSimulados = [
-        { id: 1, nome: 'Vicente Brenner', email: 'vicente@email.com' },
-        { id: 2, nome: 'Alex Turner', email: 'alex@email.com' },
-        { id: 3, nome: 'Fulano Silva', email: 'fulano@email.com' },
-        { id: 4, nome: 'Ciclana Souza', email: 'ciclana@email.com' }
-    ];
-
-    // NOVO: Array para guardar convites pendentes
-    let dadosConvitesPendentes = [
-        // Ex: { emailConvidado: 'fulano@email.com', nomeConvidado: 'Fulano Silva', instrumento: 'Baixo', dataConvite: new Date() }
-    ];
-
-
     // --- FUNÇÃO DE NOTIFICAÇÃO (Snackbar) ---
-    function showSnackbar(message) {
+    function showSnackbar(message, type = 'success') {
         const snackbar = document.getElementById("snackbar");
         if (snackbar) {
+            const isError = type === 'error';
+            const iconColor = isError ? '#e74c3c' : '#28a745';
+            const svgPath = isError
+                ? '<path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>'
+                : '<path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>';
+
+            snackbar.style.borderLeftColor = iconColor;
             snackbar.innerHTML = `
                 <div class="snackbar-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#28a745" viewBox="0 0 16 16">
-                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="${iconColor}" viewBox="0 0 16 16">
+                        ${svgPath}
                     </svg>
                 </div>
                 <div class="snackbar-text">${escapeHtml(message)}</div>
@@ -322,7 +314,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 chip.style.top = `${(startMinutes / (24 * 60)) * 100}%`;
                 chip.style.height = `calc(${(duracaoMinutes / (24 * 60)) * 100}% - 2px)`;
 
-                chip.innerHTML = `<strong>${ev.titulo}</strong><small>${ev.hora || ''} · ${ev.local || ''}</small>`;
+                chip.innerHTML = `<strong>${escapeHtml(ev.titulo)}</strong><small>${escapeHtml(ev.hora || '')} · ${escapeHtml(ev.local || '')}</small>`;
                 chip.draggable = true;
                 chip.dataset.idx = dadosAgenda.indexOf(ev);
                 chip.addEventListener('dragstart', onDragStart);
@@ -426,7 +418,7 @@ document.addEventListener('DOMContentLoaded', function() {
             chip.style.top = `${(startMinutes / (24 * 60)) * 100}%`;
             chip.style.height = `calc(${(duracaoMinutes / (24 * 60)) * 100}% - 2px)`;
 
-            chip.innerHTML = `<strong>${ev.titulo}</strong><span>${ev.hora||''} · ${ev.local||''}</span>`;
+            chip.innerHTML = `<strong>${escapeHtml(ev.titulo)}</strong><span>${escapeHtml(ev.hora||'')} · ${escapeHtml(ev.local||'')}</span>`;
             chip.addEventListener('click', e => { e.stopPropagation(); mostrarPopoverEvento(ev, chip); });
             col.appendChild(chip);
         });
@@ -536,7 +528,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="cal-pop-body">
                 <div class="cal-pop-title-row">
                     <span class="cal-pop-type-dot" style="background:${cor}"></span>
-                    <h3 class="cal-pop-title" id="popTitulo_${idx}">${ev.titulo}</h3>
+                    <h3 class="cal-pop-title" id="popTitulo_${idx}">${escapeHtml(ev.titulo)}</h3>
                 </div>
 
                 <div class="cal-pop-row">
@@ -550,13 +542,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 ${ev.hora ? `
                 <div class="cal-pop-row">
                     <span class="cal-pop-icon-wrap"><i class="far fa-clock"></i></span>
-                    <span>${ev.hora}</span>
+                    <span>${escapeHtml(ev.hora)}</span>
                 </div>` : ''}
 
                 ${ev.local ? `
                 <div class="cal-pop-row">
                     <span class="cal-pop-icon-wrap"><i class="fas fa-map-marker-alt"></i></span>
-                    <span>${ev.local}</span>
+                    <span>${escapeHtml(ev.local)}</span>
                 </div>` : ''}
 
                 <div class="cal-pop-row">
@@ -666,8 +658,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     <span class="cal-prox-mes">${mesStr}</span>
                 </div>
                 <div class="cal-prox-info">
-                    <span class="cal-prox-titulo">${ev.titulo}</span>
-                    <span class="cal-prox-diff">${diffTexto}${ev.hora ? ' · ' + ev.hora : ''}</span>
+                    <span class="cal-prox-titulo">${escapeHtml(ev.titulo)}</span>
+                    <span class="cal-prox-diff">${escapeHtml(diffTexto)}${ev.hora ? ' · ' + escapeHtml(ev.hora) : ''}</span>
                 </div>
                 <div class="cal-prox-dot" style="background:${cor}"></div>
             `;
@@ -1058,10 +1050,11 @@ document.addEventListener('DOMContentLoaded', function() {
                                 carregarSubtabIntegrantes();
                             }
                         } else {
-                            showSnackbar('Erro ao remover membro da banda.');
+                            showSnackbar('Erro ao remover membro da banda.', 'error');
                         }
                     } catch (e) {
                         console.error('Erro ao remover membro:', e);
+                        showSnackbar('Erro de conexão ao remover membro. Tente novamente.', 'error');
                     }
                 }
             });
@@ -1366,9 +1359,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 itemRemovido = dadosAgenda.splice(index, 1)[0];
                 localStorage.setItem('dadosAgenda', JSON.stringify(dadosAgenda));
                 carregarAgenda();
-            } else if (tipo === 'membro' && index < dadosMembros.length) {
-                itemRemovido = dadosMembros.splice(index, 1)[0];
-                carregarMembros();
             } else if (tipo === 'repertorio' && index < dadosRepertorio.length) {
                 const musica = dadosRepertorio[index];
                 if (musica.id) {
@@ -1417,18 +1407,6 @@ document.addEventListener('DOMContentLoaded', function() {
                  pdfViewer.appendChild(embedEl);
             } else if (pdfViewer) {
                  pdfViewer.innerHTML = '<p>Erro ao carregar a partitura.</p>';
-            }
-        }
-
-        // NOVO: Botão Cancelar Convite
-        const btnCancelarConvite = e.target.closest('.btn-cancelar-convite');
-        if (btnCancelarConvite) {
-            const index = parseInt(btnCancelarConvite.dataset.index);
-            if (!isNaN(index) && index < dadosConvitesPendentes.length) {
-                const conviteCancelado = dadosConvitesPendentes.splice(index, 1)[0];
-                carregarConvitesPendentes(); // Atualiza a lista na tela
-                showSnackbar(`Convite para ${conviteCancelado.emailConvidado} cancelado.`);
-                // *** LÓGICA REAL (Backend): Chamaria API para cancelar o convite ***
             }
         }
     });
@@ -1989,7 +1967,7 @@ document.addEventListener('DOMContentLoaded', function() {
     async function buscarMembroParaConvite() {
         const query = emailMembroInput.value.trim();
         if (!query) {
-            showSnackbar("Por favor, digite o nome ou e-mail do músico.");
+            showSnackbar("Por favor, digite o nome, @username ou e-mail do músico.");
             return;
         }
 
@@ -2017,7 +1995,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function renderResultadosBuscaModal(musicos) {
         if (!musicos || musicos.length === 0) {
-            resultadosBuscaModal.innerHTML = '<p style="text-align:center; color:var(--cor-texto-claro); padding:10px 0;">Nenhum músico encontrado.</p>';
+            resultadosBuscaModal.innerHTML = '<p style="text-align:center; color:var(--cor-texto-claro); padding:10px 0;"><i class="fas fa-user-slash"></i> Nenhum músico encontrado com esse nome, username ou e-mail.</p>';
             return;
         }
 
@@ -2040,9 +2018,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 btnHTML = `<button class="btn-adicionar btn-enviar-convite-modal" data-id="${m.id}" data-nome="${escapeHtml(m.nome)}" style="padding: 8px 14px; font-size:0.85em; font-weight:600;"><i class="fas fa-paper-plane"></i> Convidar</button>`;
             }
 
+            const usernameLine = m.username
+                ? `<p style="font-size:0.8em; color:var(--cor-secundaria); margin: 2px 0 0 0;">@${escapeHtml(m.username)}</p>`
+                : '';
+
             div.innerHTML = `
                 <div>
                     <h4 style="color:#fff; font-weight:700; margin: 0; font-size: 0.95em;">${escapeHtml(m.nome)}</h4>
+                    ${usernameLine}
                     <p style="font-size:0.8em; color:var(--cor-texto-claro); margin: 3px 0 0 0;">${escapeHtml(m.email)}</p>
                 </div>
                 ${btnHTML}

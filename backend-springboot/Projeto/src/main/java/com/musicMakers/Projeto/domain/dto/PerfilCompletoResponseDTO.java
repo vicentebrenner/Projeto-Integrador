@@ -14,6 +14,7 @@ public class PerfilCompletoResponseDTO {
     // Dados do Usuário
     private Long usuarioId;
     private String nome;
+    private String username;
     private String email;
     private String corAvatar;
 
@@ -47,6 +48,7 @@ public class PerfilCompletoResponseDTO {
         // Dados do usuário
         dto.setUsuarioId(usuario.getId());
         dto.setNome(usuario.getNome());
+        dto.setUsername(usuario.getUsername());
         dto.setEmail(usuario.getEmail());
         dto.setCorAvatar(usuario.getCorAvatar());
 

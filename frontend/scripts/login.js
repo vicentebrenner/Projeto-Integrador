@@ -55,9 +55,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 const usuarioParaSalvar = {
                     id: data.id,
                     nome: data.nome,
+                    username: data.username || null,
                     email: email,
                     corAvatar: data.corAvatar || null,
-                    
+
                     tipoUsuario: data.role,
                     membroId: data.membroId || null,
                     bandaId: data.bandaId || null,

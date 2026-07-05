@@ -29,7 +29,19 @@ public class PerfilMusicoService {
         // Atualiza campos de Usuario
         if (dto.getNome() != null) usuario.setNome(dto.getNome());
 
-
+        if (dto.getUsername() != null) {
+            String novoUsername = dto.getUsername().trim();
+            if (novoUsername.isEmpty()) {
+                usuario.setUsername(null);
+            } else {
+                usuarioRepository.findByUsernameIgnoreCase(novoUsername).ifPresent(existente -> {
+                    if (!existente.getId().equals(usuarioId)) {
+                        throw new IllegalArgumentException("Username já está em uso.");
+                    }
+                });
+                usuario.setUsername(novoUsername);
+            }
+        }
 
         if (dto.getCorAvatar() != null) usuario.setCorAvatar(dto.getCorAvatar());
         usuarioRepository.save(usuario);

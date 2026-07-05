@@ -73,7 +73,8 @@ public class AuthController {
                 resposta.put("token", token);
                 resposta.put("id", usuario.getId());
                 resposta.put("nome", usuario.getNome());
-                
+                resposta.put("username", usuario.getUsername());
+
                 resposta.put("corAvatar", usuario.getCorAvatar());
                 resposta.put("role", usuario.getTipoUsuario());
 
@@ -205,8 +206,9 @@ public class AuthController {
         Map<String, Object> resposta = new HashMap<>();
         resposta.put("id", usuario.getId());
         resposta.put("nome", usuario.getNome());
+        resposta.put("username", usuario.getUsername());
         resposta.put("email", usuario.getEmail());
-        
+
         resposta.put("corAvatar", usuario.getCorAvatar());
         resposta.put("tipoUsuario", usuario.getTipoUsuario());
 

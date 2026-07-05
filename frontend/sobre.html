@@ -6,9 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sobre nós - Music Makers</title>
     <meta name="description"
-        content="Conheça o Music Makers, a plataforma que conecta músicos e bandas para organizar agenda, finanças e repertório.">
+        content="Conheça o Music Makers e a equipe por trás da plataforma que conecta músicos e bandas para organizar agenda, finanças e repertório.">
     <link rel="icon" type="image/png" href="assets/logo.png">
     <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 
@@ -19,7 +24,7 @@
             <a href="index.html" class="logo">
                 <img src="assets/logo.png" alt="Music Makers" class="logo-img">
             </a>
-            <nav class="menuPrincipal">
+            <nav class="menuPrincipal" id="menuPrincipal">
                 <ul>
                     <li><a href="index.html#funcionalidades">Funcionalidades</a></li>
                     <li><a href="index.html#como-funciona">Como Funciona</a></li>
@@ -27,11 +32,18 @@
                     <li><a href="login.html" class="btnLogin">Entrar</a></li>
                 </ul>
             </nav>
+            <button type="button" class="nav-toggle" id="navToggle" aria-label="Abrir menu"
+                aria-expanded="false" aria-controls="menuPrincipal">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
+                </svg>
+            </button>
         </div>
     </header>
 
     <main>
-        <section class="como-funciona">
+        <!-- HERO / QUEM SOMOS -->
+        <section class="como-funciona sobre-hero">
             <div class="container">
                 <span class="section-badge">Quem somos</span>
                 <h2 class="section-titulo">Sobre o Music Makers</h2>
@@ -44,6 +56,111 @@
                     músicos encontram oportunidades, divulgam seu portfólio e se candidatam a bandas de acordo
                     com seu instrumento, nível e disponibilidade.
                 </p>
+            </div>
+        </section>
+
+        <!-- PILARES DO PROJETO -->
+        <section class="sobre-pilares">
+            <div class="container">
+                <div class="pilares-grid">
+                    <div class="pilar-card">
+                        <div class="pilar-icone"><i class="fas fa-bullseye"></i></div>
+                        <h3>Nossa Missão</h3>
+                        <p>Simplificar a rotina de bandas e músicos, reunindo agenda, finanças e repertório em um
+                            único lugar, sem planilhas soltas ou grupos de mensagens perdidos.</p>
+                    </div>
+                    <div class="pilar-card">
+                        <div class="pilar-icone"><i class="fas fa-users"></i></div>
+                        <h3>Feito para Conectar</h3>
+                        <p>Ajudamos músicos a encontrarem bandas compatíveis com seu instrumento e disponibilidade,
+                            e gestores a montarem as formações certas para cada projeto.</p>
+                    </div>
+                    <div class="pilar-card">
+                        <div class="pilar-icone"><i class="fas fa-rocket"></i></div>
+                        <h3>Projeto em Evolução</h3>
+                        <p>Nascido como Projeto Integrador, o Music Makers segue crescendo com novas
+                            funcionalidades pensadas a partir do dia a dia real de bandas.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- EQUIPE -->
+        <section class="sobre-equipe">
+            <div class="container">
+                <span class="section-badge">Quem faz acontecer</span>
+                <h2 class="section-titulo">Nossa Equipe</h2>
+                <p class="section-subtitulo">
+                    Três desenvolvedores, uma paixão em comum por música e tecnologia. Conheça quem criou o
+                    Music Makers do zero.
+                </p>
+
+                <div class="equipe-grid">
+                    <article class="equipe-card">
+                        <div class="equipe-foto-wrapper">
+                            <img src="assets/vicente.jpeg" alt="Foto de Vicente Brenner" class="equipe-foto"
+                                loading="lazy">
+                        </div>
+                        <h3 class="equipe-nome">Vicente Brenner</h3>
+                        <span class="equipe-cargo">Desenvolvedor Full-Stack</span>
+                        <p class="equipe-bio">
+                            Um dos criadores do Music Makers, atuou na construção da plataforma do back-end
+                            ao front-end, sempre com foco em deixar a experiência de bandas e músicos mais simples.
+                        </p>
+                        <div class="equipe-redes">
+                            <a href="https://www.instagram.com/vicentebrenner/" target="_blank"
+                                rel="noopener noreferrer" aria-label="Instagram de Vicente Brenner">
+                                <i class="fa-brands fa-instagram"></i>
+                            </a>
+                        </div>
+                    </article>
+
+                    <article class="equipe-card">
+                        <div class="equipe-foto-wrapper">
+                            <img src="assets/jean.jpeg" alt="Foto de Jean Carlo" class="equipe-foto" loading="lazy">
+                        </div>
+                        <h3 class="equipe-nome">Jean Carlo</h3>
+                        <span class="equipe-cargo">Desenvolvedor Full-Stack</span>
+                        <p class="equipe-bio">
+                            Parte do time que idealizou e construiu o Music Makers, contribuindo para transformar
+                            a ideia de organizar bandas em uma plataforma real e funcional.
+                        </p>
+                        <div class="equipe-redes">
+                            <a href="https://www.instagram.com/jean.csouza/" target="_blank"
+                                rel="noopener noreferrer" aria-label="Instagram de Jean Carlo">
+                                <i class="fa-brands fa-instagram"></i>
+                            </a>
+                        </div>
+                    </article>
+
+                    <article class="equipe-card">
+                        <div class="equipe-foto-wrapper">
+                            <img src="assets/murilo.jpeg" alt="Foto de Murilo Silva" class="equipe-foto"
+                                loading="lazy">
+                        </div>
+                        <h3 class="equipe-nome">Murilo Silva</h3>
+                        <span class="equipe-cargo">Desenvolvedor Full-Stack</span>
+                        <p class="equipe-bio">
+                            Também um dos criadores do Music Makers, ajudou a dar forma à plataforma pensando em
+                            como músicos e gestores de banda usariam o sistema no dia a dia.
+                        </p>
+                        <div class="equipe-redes">
+                            <a href="https://www.instagram.com/silvazn.04/" target="_blank"
+                                rel="noopener noreferrer" aria-label="Instagram de Murilo Silva">
+                                <i class="fa-brands fa-instagram"></i>
+                            </a>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA FINAL -->
+        <section class="sobre-cta">
+            <div class="container sobre-cta-inner">
+                <h2>Pronto para organizar sua banda?</h2>
+                <p>Crie sua conta gratuita e centralize agenda, finanças e repertório em um só lugar.</p>
+                <a href="cadastro.html" class="btnCta">Criar minha conta</a>
             </div>
         </section>
     </main>
@@ -81,6 +198,9 @@
         </div>
     </footer>
 
+    <script src="scripts/config.js"></script>
+    <script src="scripts/utils.js"></script>
+    <script src="scripts/global.js"></script>
 </body>
 
 </html>

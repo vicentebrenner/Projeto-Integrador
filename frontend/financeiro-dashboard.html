@@ -83,7 +83,9 @@
     .topbar-nav {
       display: flex;
       gap: 6px;
-      margin-left: auto
+      margin-left: auto;
+      flex-wrap: wrap;
+      justify-content: flex-end;
     }
 
     .topbar-nav a {
@@ -116,6 +118,12 @@
       flex: 1;
       overflow-y: auto;
       padding: 28px
+    }
+
+    .main>* {
+      max-width: 1400px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     /* ── PAGE HEADER ── */

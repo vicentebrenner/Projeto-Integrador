@@ -116,6 +116,23 @@ a:hover {
     align-items: center;
 }
 
+.nav-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.4em;
+    cursor: pointer;
+    padding: 8px 10px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+    line-height: 1;
+}
+
+.nav-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
 .logo {
     display: flex;
     align-items: center;
@@ -583,6 +600,182 @@ a:hover {
 
 .como-funciona .container {
     text-align: center;
+}
+
+/* ==========================================================================
+   PÁGINA "SOBRE NÓS"
+   ========================================================================== */
+.sobre-hero.como-funciona {
+    padding-bottom: 60px;
+}
+
+.sobre-pilares {
+    padding: 20px 0 100px;
+    background-color: var(--cor-fundo-card);
+}
+
+.pilares-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.pilar-card {
+    background: var(--cor-fundo);
+    border: 1px solid var(--cor-borda);
+    border-radius: 16px;
+    padding: 35px 28px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.pilar-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--sombra-card-hover);
+}
+
+.pilar-icone {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 18px;
+    border-radius: 50%;
+    background: rgba(250, 152, 72, 0.12);
+    color: var(--cor-secundaria);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4em;
+}
+
+.pilar-card h3 {
+    color: var(--cor-primaria);
+    margin-bottom: 10px;
+    font-size: 1.15em;
+}
+
+.pilar-card p {
+    color: #666;
+    font-size: 0.95em;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.sobre-equipe {
+    padding: 100px 0;
+    text-align: center;
+    background: var(--cor-fundo);
+}
+
+.equipe-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 35px;
+    margin-top: 50px;
+    text-align: center;
+}
+
+.equipe-card {
+    background: var(--cor-fundo-card);
+    border-radius: 20px;
+    padding: 40px 25px 30px;
+    box-shadow: var(--sombra-card);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.equipe-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--sombra-card-hover);
+}
+
+.equipe-foto-wrapper {
+    width: 130px;
+    height: 130px;
+    margin: 0 auto 22px;
+    border-radius: 50%;
+    padding: 4px;
+    background: linear-gradient(135deg, var(--cor-secundaria), var(--cor-primaria));
+}
+
+.equipe-foto {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+    border: 3px solid var(--cor-fundo-card);
+}
+
+.equipe-nome {
+    color: var(--cor-primaria);
+    font-size: 1.25em;
+    margin-bottom: 4px;
+}
+
+.equipe-cargo {
+    display: inline-block;
+    color: var(--cor-secundaria);
+    font-weight: 700;
+    font-size: 0.8em;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 16px;
+}
+
+.equipe-bio {
+    color: #666;
+    font-size: 0.95em;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.equipe-redes {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+.equipe-redes a {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(250, 152, 72, 0.1);
+    color: var(--cor-secundaria);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1em;
+    transition: all 0.3s ease;
+}
+
+.equipe-redes a:hover {
+    background: var(--cor-secundaria);
+    color: #fff;
+    transform: translateY(-3px);
+}
+
+.sobre-cta {
+    padding: 90px 0;
+    background: linear-gradient(135deg, var(--cor-primaria), #0f3460);
+    text-align: center;
+}
+
+.sobre-cta-inner h2 {
+    color: #fff;
+    font-size: 2em;
+    margin-bottom: 12px;
+}
+
+.sobre-cta-inner p {
+    color: rgba(255, 255, 255, 0.75);
+    margin-bottom: 30px;
+    font-size: 1.05em;
+}
+
+@media (max-width: 900px) {
+    .pilares-grid,
+    .equipe-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 .passos-wrapper {
@@ -1473,9 +1666,11 @@ a:hover {
 }
 
 .perfil-icone {
-    width: 30px;
+    width: 40px;
     height: 40px;
+    flex-shrink: 0;
     border-radius: 50%;
+    object-fit: cover;
     background-color: var(--cor-secundaria);
     color: #fff;
     /* Inicial branca */
@@ -1523,6 +1718,55 @@ a:hover {
     visibility: visible;
     transform: translateY(0);
     transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s 0s;
+}
+
+/* ==========================================================================
+   9.1 LINKS/BOTÕES DESATIVADOS COM TOOLTIP "EM BREVE"
+   ========================================================================== */
+[data-tooltip] {
+    position: relative;
+}
+
+[data-tooltip]::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    background: var(--cor-primaria);
+    color: #fff;
+    font-size: 0.75em;
+    font-weight: 600;
+    white-space: nowrap;
+    padding: 6px 10px;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    z-index: 20;
+}
+
+[data-tooltip]:hover::after,
+[data-tooltip]:focus-visible::after {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+.link-desativado {
+    opacity: 0.55;
+    cursor: not-allowed;
+    pointer-events: auto;
+    /* precisa continuar recebendo o hover para exibir o tooltip */
+}
+
+button.link-desativado,
+.btn-desativado {
+    opacity: 0.55;
+    cursor: not-allowed;
+    filter: grayscale(0.3);
 }
 
 .perfil-dropdown p {
@@ -3724,13 +3968,67 @@ a:hover {
         font-size: 1.6em;
     }
 
-    /* Esconder links de texto no menu principal em telas pequenas */
-    .menuPrincipal ul li:not(:last-child):not(.perfil-container) {
-        display: none;
+    .nav-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        order: 3;
+    }
+
+    .menuPrincipal {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--cor-fundo-card);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.35s ease;
+    }
+
+    .menuPrincipal.menu-aberto {
+        max-height: 420px;
+    }
+
+    .menuPrincipal ul {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 10px 20px 20px;
     }
 
     .menuPrincipal ul li {
-        margin-left: 15px;
+        margin-left: 0;
+        width: 100%;
+        text-align: center;
+        border-bottom: 1px solid var(--cor-borda);
+    }
+
+    .menuPrincipal ul li:last-child {
+        border-bottom: none;
+    }
+
+    .menuPrincipal ul li a {
+        display: block;
+        padding: 14px 0;
+        color: var(--cor-primaria);
+    }
+
+    .menuPrincipal .perfil-container {
+        padding: 14px 0;
+    }
+
+    /* .btnLogin é branco por padrão (pensado para o cabeçalho escuro);
+       no dropdown mobile o fundo é claro, então precisa de cores próprias. */
+    .menuPrincipal .btnLogin {
+        display: inline-block;
+        color: var(--cor-primaria) !important;
+        border-color: var(--cor-borda);
+        margin-top: 4px;
+    }
+
+    .menuPrincipal .btnLogin:hover {
+        color: var(--cor-secundaria) !important;
     }
 
     /* Menos espaÃÂ§o */
@@ -4900,6 +5198,12 @@ a:hover {
     border: none !important;
     box-shadow: none !important;
     outline: none !important;
+}
+.input-with-prefix.input-error {
+    border-color: var(--cor-erro);
+}
+.input-with-prefix.input-error:focus-within {
+    box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.15);
 }
 
 .form-actions {

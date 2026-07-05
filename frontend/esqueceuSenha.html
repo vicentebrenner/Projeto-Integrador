@@ -318,19 +318,19 @@
             <h2>Recuperar Senha</h2>
             
             <p class="recoveryInstruction">
-                Digite seu e-mail abaixo e enviaremos um link seguro para você redefinir sua senha.
+                Estamos preparando esta funcionalidade com todo o cuidado. Em breve você poderá recuperar sua senha por aqui.
             </p>
-            
+
             <form action="#" method="POST" id="formRecuperacao">
                 <div class="inputGroup">
                     <label for="emailRecuperacao">E-mail</label>
                     <div class="input-wrapper">
-                        <input type="email" id="emailRecuperacao" name="email-recuperacao" placeholder="exemplo@email.com" required autocomplete="email">
+                        <input type="email" id="emailRecuperacao" name="email-recuperacao" placeholder="exemplo@email.com" disabled autocomplete="email">
                         <i class="fa-solid fa-envelope"></i>
                     </div>
                 </div>
-                
-                <button type="submit" class="btnLoginSubmit" id="btnSubmit">
+
+                <button type="submit" class="btnLoginSubmit btn-desativado" id="btnSubmit" disabled data-tooltip="Em breve...">
                     Enviar Link
                 </button>
             </form>
@@ -341,16 +341,12 @@
 
     <script src="scripts/config.js"></script>
     <script src="scripts/utils.js"></script>
-    <script src="scripts/recuperarSenha.js"></script>
 
     <script>
+        // Funcionalidade de recuperação de senha temporariamente desativada.
         const form = document.getElementById('formRecuperacao');
-        const btn = document.getElementById('btnSubmit');
-
         form.addEventListener('submit', function(e) {
-            // Feedback visual no botão ao clicar
-            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Processando...';
-            btn.classList.add('btn-loading');
+            e.preventDefault();
         });
     </script>
 

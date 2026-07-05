@@ -39,13 +39,19 @@
                     </div>
                 </div>
 
-                <nav class="menuPrincipal">
+                <nav class="menuPrincipal" id="menuPrincipal">
                     <ul>
                         <li><a href="index.html">Início</a></li>
                         <li><a href="sobre.html">Sobre nós</a></li>
                         <li><a href="#" id="btnLogoutHeader" class="btnLogin">Sair</a></li>
                     </ul>
                 </nav>
+                <button type="button" class="nav-toggle" id="navToggle" aria-label="Abrir menu"
+                    aria-expanded="false" aria-controls="menuPrincipal">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
+                    </svg>
+                </button>
             </div>
         </div>
     </header>
@@ -365,10 +371,10 @@
         <div class="modal-content modal-content--md">
             <span class="close-button">&times;</span>
             <h3>Convidar Integrante</h3>
-            <p class="modal-description" style="color: var(--cor-texto-claro); font-size: 0.9em; margin-bottom: 20px;">Busque por nome de músicos cadastrados no Music Makers para enviar o convite.</p>
-            
+            <p class="modal-description" style="color: var(--cor-texto-claro); font-size: 0.9em; margin-bottom: 20px;">Busque por nome, @username ou e-mail de músicos cadastrados no Music Makers para enviar o convite.</p>
+
             <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-                <input type="text" id="emailMembro" placeholder="Digite o nome do músico..." aria-label="Buscar músico por nome" style="flex: 1; padding: 12px 15px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.05); background: #f8f9fa; color: #333; outline: none; font-size: 0.95em;">
+                <input type="text" id="emailMembro" placeholder="Nome, @username ou e-mail do músico..." aria-label="Buscar músico por nome, username ou e-mail" style="flex: 1; padding: 12px 15px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.05); background: #f8f9fa; color: #333; outline: none; font-size: 0.95em;">
                 <button type="button" id="btnBuscarMembroModal" class="btn-adicionar-principal" style="padding: 0 20px; border-radius: 8px; font-weight: 600; height: 46px;"><i class="fas fa-search"></i> Buscar</button>
             </div>
             

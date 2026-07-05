@@ -18,7 +18,7 @@
                 <img src="assets/logo.png" alt="Music Makers" class="logo-img">
             </a>
             <div class="header-right-controls" style="display: flex; align-items: center; gap: 20px;">
-                <nav class="menuPrincipal">
+                <nav class="menuPrincipal" id="menuPrincipal">
                     <ul>
                         <li><a href="index.html#funcionalidades">Funcionalidades</a></li>
                         <li><a href="index.html#como-funciona">Como Funciona</a></li>
@@ -26,6 +26,12 @@
                         <li><a href="login.html" class="btnLogin">Entrar</a></li>
                     </ul>
                 </nav>
+                <button type="button" class="nav-toggle" id="navToggle" aria-label="Abrir menu"
+                    aria-expanded="false" aria-controls="menuPrincipal">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
+                    </svg>
+                </button>
             </div>
         </div>
     </header>
@@ -93,11 +99,24 @@
                                     <h3><i class="fas fa-id-card"></i> Informações Básicas</h3>
                                     <hr>
                                 </div>
+                                <div class="inputGroup">
+                                    <label for="perfilNome">Nome Completo</label>
+                                    <input type="text" id="perfilNome" name="perfilNome" placeholder="Seu nome"
+                                        required>
+                                </div>
+
                                 <div class="form-grid-2">
                                     <div class="inputGroup">
-                                        <label for="perfilNome">Nome Completo</label>
-                                        <input type="text" id="perfilNome" name="perfilNome" placeholder="Seu nome"
-                                            required>
+                                        <label for="perfilUsername">Nome de Usuário</label>
+                                        <div class="input-with-prefix">
+                                            <span class="prefix">@</span>
+                                            <input type="text" id="perfilUsername" name="perfilUsername"
+                                                placeholder="seu_usuario" maxlength="30" autocomplete="off"
+                                                pattern="[A-Za-z0-9_\.]+"
+                                                title="Use apenas letras, números, ponto e underline.">
+                                        </div>
+                                        <small class="small-text">Usado por outros músicos para te encontrar ao
+                                            enviar convites de banda.</small>
                                     </div>
                                     <div class="inputGroup">
                                         <label for="perfilWhatsapp">WhatsApp / Telefone</label>

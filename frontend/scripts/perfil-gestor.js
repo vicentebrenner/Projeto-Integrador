@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // --- DADOS DO PERFIL (Integrado com API) ---
     let dadosPerfil = {
         nome: usuarioLogado.nome || "Gestor",
+        username: "",
         whatsapp: "",
         email: usuarioLogado.email || "",
         corAvatar: "#fa9848",
@@ -48,6 +49,7 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .then(data => {
                 dadosPerfil.nome = data.nome || dadosPerfil.nome;
+                dadosPerfil.username = data.username || "";
                 dadosPerfil.email = data.email || dadosPerfil.email;
                 dadosPerfil.whatsapp = data.whatsapp || "";
                 dadosPerfil.corAvatar = data.corAvatar || "#fa9848";
@@ -80,6 +82,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function salvarDados() {
         const dto = {
             nome: dadosPerfil.nome,
+            username: dadosPerfil.username,
             corAvatar: dadosPerfil.corAvatar,
             whatsapp: dadosPerfil.whatsapp,
             estado: dadosPerfil.estado,
@@ -138,7 +141,14 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .catch(err => {
                 console.error(err);
-                showSnackbar(err.message || "Erro ao salvar perfil.", 'error');
+                const inputUsername = document.getElementById('perfilUsername');
+                if (err.message && err.message.includes("Username já está em uso")) {
+                    if (inputUsername) inputUsername.closest('.input-with-prefix').classList.add('input-error');
+                    showSnackbar("Este nome de usuário já está em uso. Escolha outro.", 'error');
+                } else {
+                    if (inputUsername) inputUsername.closest('.input-with-prefix').classList.remove('input-error');
+                    showSnackbar(err.message || "Erro ao salvar perfil.", 'error');
+                }
             })
             .finally(() => {
                 if (btnSalvar) btnSalvar.disabled = false;
@@ -215,6 +225,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Carrega dados do perfil no formulário
     function carregarPerfil() {
         document.getElementById('perfilNome').value = dadosPerfil.nome;
+        if (document.getElementById('perfilUsername')) document.getElementById('perfilUsername').value = dadosPerfil.username || "";
         if (document.getElementById("perfilWhatsapp")) document.getElementById("perfilWhatsapp").value = dadosPerfil.whatsapp || "";
 
         if (dadosPerfil.estado) {
@@ -286,6 +297,16 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    // Normaliza o Nome de Usuário (minúsculas, sem espaços/caracteres inválidos)
+    const inputUsername = document.getElementById('perfilUsername');
+    if (inputUsername) {
+        inputUsername.addEventListener('input', function (e) {
+            e.target.value = e.target.value.toLowerCase().replace(/[^a-z0-9_.]/g, '');
+            const wrapper = e.target.closest('.input-with-prefix');
+            if (wrapper) wrapper.classList.remove('input-error');
+        });
+    }
+
     // Lógica de Pílulas (Gêneros Musicais)
     const genrePillsContainer = document.getElementById('genrePillsContainer');
     const inputGeneros = document.getElementById('perfilGeneros');
@@ -308,6 +329,7 @@ document.addEventListener('DOMContentLoaded', function () {
         formPerfil.addEventListener('submit', (e) => {
             e.preventDefault();
             dadosPerfil.nome = document.getElementById('perfilNome').value;
+            if (document.getElementById('perfilUsername')) dadosPerfil.username = document.getElementById('perfilUsername').value.trim();
             if (document.getElementById("perfilWhatsapp")) dadosPerfil.whatsapp = document.getElementById("perfilWhatsapp").value;
             const uf = document.getElementById('perfilEstado').value;
             const cidade = document.getElementById('perfilCidade').value;
@@ -343,6 +365,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         } catch (error) {
             console.error('Erro ao carregar estados:', error);
+            showSnackbar('Não foi possível carregar a lista de estados. Tente recarregar a página.', 'error');
         }
     }
 

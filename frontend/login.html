@@ -291,6 +291,41 @@
         .loginLinks a:hover {
             color: #fa9848;
         }
+
+        [data-tooltip] {
+            position: relative;
+        }
+        [data-tooltip]::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%) translateY(4px);
+            background: #011029;
+            color: #fff;
+            font-size: 0.75em;
+            font-weight: 600;
+            white-space: nowrap;
+            padding: 6px 10px;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            z-index: 20;
+        }
+        [data-tooltip]:hover::after,
+        [data-tooltip]:focus-visible::after {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+        .link-desativado {
+            opacity: 0.55;
+            cursor: not-allowed;
+        }
+
         .loginLinks p {
             margin-top: 15px;
             font-size: 0.9em;
@@ -463,8 +498,8 @@
                 -->
 
                 <div class="loginLinks">
-                    <p><a href="esqueceuSenha.html">Esqueceu a senha?</a></p>
-    
+                    <p><a href="#" class="link-desativado" tabindex="-1" aria-disabled="true" data-tooltip="Em breve..." onclick="return false;">Esqueceu a senha?</a></p>
+
                     <div class="cadastro-container">
                         <p>Não tem uma conta?</p>
                         <a href="cadastro.html" class="btn-cadastro-outline">Cadastre-se</a>

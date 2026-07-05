@@ -82,3 +82,37 @@ document.addEventListener('click', function(e) {
         }
     }
 });
+
+// ============================================================
+// MENU HAMBÚRGUER (MOBILE)
+// ============================================================
+document.addEventListener('DOMContentLoaded', function() {
+    const navToggle = document.getElementById('navToggle');
+    const menuPrincipal = document.getElementById('menuPrincipal');
+    if (!navToggle || !menuPrincipal) return;
+
+    function fecharMenu() {
+        menuPrincipal.classList.remove('menu-aberto');
+        navToggle.setAttribute('aria-expanded', 'false');
+    }
+
+    navToggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const aberto = menuPrincipal.classList.toggle('menu-aberto');
+        navToggle.setAttribute('aria-expanded', String(aberto));
+    });
+
+    menuPrincipal.addEventListener('click', function(e) {
+        if (e.target.closest('a')) fecharMenu();
+    });
+
+    document.addEventListener('click', function(e) {
+        if (!menuPrincipal.contains(e.target) && !navToggle.contains(e.target)) {
+            fecharMenu();
+        }
+    });
+
+    window.addEventListener('resize', function() {
+        if (window.innerWidth > 768) fecharMenu();
+    });
+});

@@ -17,10 +17,13 @@ public class Usuario {
 
     private String nome;
     private String email;
+
+    @JsonIgnore
     private String senha;
-    
-    
-    
+
+    @Column(unique = true)
+    private String username;
+
     @Column(name = "cor_avatar")
     private String corAvatar;
     

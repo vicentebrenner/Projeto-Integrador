@@ -21,7 +21,7 @@ public class UsuarioController {
 
     /**
      * GET /api/usuarios/buscar?nome=joao
-     * Busca usuários do tipo MUSICO por nome, e-mail exato ou username com @.
+     * Busca usuários do tipo MUSICO por nome, e-mail exato ou username (com ou sem @).
      */
     @GetMapping("/buscar")
     public ResponseEntity<List<Usuario>> buscarMusicosPorNome(@RequestParam(required = false) String nome) {
@@ -39,21 +39,26 @@ public class UsuarioController {
                     resultado.add(u);
                 }
             });
-        } 
-        // Caso 2: Busca por Username/Handle com @ (ex: @joaosilva)
+        }
+        // Caso 2: Busca por username com @ (ex: @joaosilva)
         else if (query.startsWith("@")) {
-            String cleanName = query.substring(1);
-            if (!cleanName.isEmpty()) {
-                List<Usuario> musicos = usuarioRepository.findByNomeContainingIgnoreCaseAndTipoUsuario(cleanName, "MUSICO");
-                resultado.addAll(musicos);
+            String cleanUsername = query.substring(1);
+            if (!cleanUsername.isEmpty()) {
+                resultado.addAll(usuarioRepository.findByUsernameContainingIgnoreCaseAndTipoUsuario(cleanUsername, "MUSICO"));
             }
-        } 
-        // Caso 3: Busca regular por nome ou e-mail exato
+        }
+        // Caso 3: Busca regular por nome, e-mail exato ou username exato (sem @)
         else {
             List<Usuario> musicos = usuarioRepository.findByNomeContainingIgnoreCaseAndTipoUsuario(query, "MUSICO");
             resultado.addAll(musicos);
-            
+
             usuarioRepository.findByEmail(query).ifPresent(u -> {
+                if ("MUSICO".equalsIgnoreCase(u.getTipoUsuario()) && !resultado.contains(u)) {
+                    resultado.add(u);
+                }
+            });
+
+            usuarioRepository.findByUsernameIgnoreCase(query).ifPresent(u -> {
                 if ("MUSICO".equalsIgnoreCase(u.getTipoUsuario()) && !resultado.contains(u)) {
                     resultado.add(u);
                 }
