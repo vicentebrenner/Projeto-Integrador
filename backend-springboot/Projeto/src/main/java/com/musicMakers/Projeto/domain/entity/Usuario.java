@@ -6,6 +6,7 @@ import lombok.ToString;
 import lombok.EqualsAndHashCode;
 import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Data
@@ -18,7 +19,7 @@ public class Usuario {
     private String nome;
     private String email;
 
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String senha;
 
     @Column(unique = true)
