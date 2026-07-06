@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Caminhos de arquivo que o FileProvider pode expor.
+    Necessário para que a câmera possa salvar fotos no diretório do app.
+-->
+<paths>
+    <!-- Imagens salvas no diretório de imagens externo do app -->
+    <external-files-path
+        name="imagens_capturadas"
+        path="Pictures/" />
+
+    <!-- Arquivos de cache (fallback) -->
+    <cache-path
+        name="cache_temporario"
+        path="." />
+</paths>

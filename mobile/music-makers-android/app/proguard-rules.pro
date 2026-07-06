@@ -1,21 +1,21 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+# Regras ProGuard para o projeto Music Makers WebView
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# ─── WebView + JavaScript Interface ───────────────────────────────────────────
+# Preserva a MainActivity para que a interface JS continue funcionando
+-keepclassmembers class br.com.musicmaker.MainActivity {
+    public *;
+}
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+# ─── AndroidX / Material ──────────────────────────────────────────────────────
+-keep class androidx.** { *; }
+-keep class com.google.android.material.** { *; }
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# ─── Splash Screen ────────────────────────────────────────────────────────────
+-keep class androidx.core.splashscreen.** { *; }
+
+# ─── FileProvider ─────────────────────────────────────────────────────────────
+-keep class androidx.core.content.FileProvider { *; }
+
+# ─── Rastreamento de stack traces ─────────────────────────────────────────────
+-keepattributes SourceFile,LineNumberTable
+-renamesourcefileattribute SourceFile
