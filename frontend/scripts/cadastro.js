@@ -107,6 +107,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             localStorage.setItem('usuarioLogado', JSON.stringify(usuarioParaSalvar));
                             localStorage.setItem('authToken', loginData.token);
                             localStorage.setItem('primeiroAcesso', 'true');
+                            localStorage.setItem('perfilConfigurado', 'false');
 
                             showSuccessPopup('Cadastro realizado com sucesso!', () => {
                                 window.location.href = 'index.html';

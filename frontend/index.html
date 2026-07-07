@@ -564,9 +564,6 @@
         }
     }
 
-    // --- DETERMINA DESTINO DO USUÁRIO ---
-    // Regra: se 'perfilConfigurado' for 'false' (setado no login quando não há dados) → editor de perfil
-    //        se for 'true' ou null (flag ausente = usuário antigo) → banda.html
     function getDestinoUsuario(usuario) {
         if (!usuario) return 'cadastro.html';
         const flagPerfil = localStorage.getItem('perfilConfigurado');
@@ -581,7 +578,17 @@
                 return 'perfil-musico.html';
             }
         }
-        return 'banda.html';
+        
+        // Se já está configurado ou é fallback de usuário antigo
+        if (tipoUsuarioSeguro === 'GESTOR' || usuario.gestor === true) {
+            return 'banda.html';
+        } else {
+            if (usuario.bandaId) {
+                return 'banda.html';
+            } else {
+                return 'perfil-musico.html';
+            }
+        }
     }
 
     // --- LEITURA DO ESTADO DE LOGIN ---

@@ -135,7 +135,6 @@ function showSuccessPopup(message, callback) {
     
     closeBtn.addEventListener('click', closePopup);
     
-    // Fechar ao pressionar Enter
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
             document.removeEventListener('keydown', handleKeyDown);
@@ -143,4 +142,75 @@ function showSuccessPopup(message, callback) {
         }
     };
     document.addEventListener('keydown', handleKeyDown);
+}
+
+function showConfirmPopup(title, message, confirmText = 'Confirmar', cancelText = 'Cancelar') {
+    return new Promise((resolve) => {
+        const popupOverlay = document.createElement('div');
+        popupOverlay.className = 'custom-popup-overlay';
+        
+        popupOverlay.innerHTML = `
+            <div class="popup-card">
+                <div class="popup-icon-circle" style="background: linear-gradient(135deg, #e74c3c, #c0392b); box-shadow: 0 0 20px rgba(231,76,60,0.4);">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 16 16">
+                        <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                    </svg>
+                </div>
+                <div class="popup-title">${escapeHtml(title)}</div>
+                <div class="popup-message">${escapeHtml(message)}</div>
+                <div style="display: flex; gap: 10px; width: 100%; margin-top: 20px;">
+                    <button class="popup-btn" id="popupCancelBtn" style="background: transparent; color: #333; border: 1px solid #ccc; flex: 1;">${escapeHtml(cancelText)}</button>
+                    <button class="popup-btn" id="popupConfirmBtn" style="background: #e74c3c; flex: 1;">${escapeHtml(confirmText)}</button>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(popupOverlay);
+        
+        setTimeout(() => {
+            popupOverlay.classList.add('show');
+        }, 10);
+        
+        const closePopup = (result) => {
+            popupOverlay.classList.remove('show');
+            setTimeout(() => {
+                popupOverlay.remove();
+                resolve(result);
+            }, 300);
+        };
+        
+        popupOverlay.querySelector('#popupCancelBtn').addEventListener('click', () => closePopup(false));
+        popupOverlay.querySelector('#popupConfirmBtn').addEventListener('click', () => closePopup(true));
+    });
+}
+
+function showErrorPopup(title, message) {
+    const popupOverlay = document.createElement('div');
+    popupOverlay.className = 'custom-popup-overlay';
+
+    popupOverlay.innerHTML = `
+        <div class="popup-card">
+            <div class="popup-icon-circle" style="background: linear-gradient(135deg, #e74c3c, #c0392b); box-shadow: 0 0 20px rgba(231,76,60,0.4);">
+                <i class="bi bi-x-lg" style="color: white; font-size: 32px; font-style: normal;">&#10006;</i>
+            </div>
+            <div class="popup-title">${escapeHtml(title)}</div>
+            <div class="popup-message">${escapeHtml(message)}</div>
+            <button class="popup-btn" id="popupCloseErrorBtn" style="background: #e74c3c; margin-top: 20px;">Fechar</button>
+        </div>
+    `;
+    
+    document.body.appendChild(popupOverlay);
+    
+    setTimeout(() => {
+        popupOverlay.classList.add('show');
+    }, 10);
+    
+    const closePopup = () => {
+        popupOverlay.classList.remove('show');
+        setTimeout(() => {
+            popupOverlay.remove();
+        }, 300);
+    };
+    
+    popupOverlay.querySelector('#popupCloseErrorBtn').addEventListener('click', closePopup);
 }

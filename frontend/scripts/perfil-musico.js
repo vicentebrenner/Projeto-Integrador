@@ -172,9 +172,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 showSnackbar("Perfil salvo com sucesso!");
 
-                // REDIRECIONAR PARA O PAINEL (banda.html)
+                // ATUALIZAR A PÁGINA PARA REFLETIR AS MUDANÇAS
                 setTimeout(() => {
-                    window.location.href = 'banda.html';
+                    window.location.reload();
                 }, 1000);
             })
             .catch(err => {
@@ -936,7 +936,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         if (refuseBtn) {
-            if (!confirm('Deseja realmente recusar este convite?')) return;
+            if (!(await showConfirmPopup('Recusar Convite', 'Deseja realmente recusar este convite?'))) return;
             const inviteId = refuseBtn.dataset.id;
             refuseBtn.disabled = true;
             try {

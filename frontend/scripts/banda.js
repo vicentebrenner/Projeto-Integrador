@@ -1037,7 +1037,7 @@ document.addEventListener('DOMContentLoaded', function() {
             btn.addEventListener('click', async function() {
                 const membroId = this.dataset.id;
                 const nome = this.dataset.nome;
-                if (confirm(`Tem certeza que deseja remover o músico "${nome}" da banda?`)) {
+                if (await showConfirmPopup('Remover Músico', `Tem certeza que deseja remover o músico "${nome}" da banda?`)) {
                     try {
                         const resp = await fetch(getApiUrl(`/api/bandas/membros/${membroId}`), {
                             method: 'DELETE',
@@ -1257,7 +1257,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const btnExcluirTransacao = e.target.closest('.btn-excluir-transacao');
         if (btnExcluirTransacao) {
             const id = parseInt(btnExcluirTransacao.dataset.id);
-            if (!confirm('Tem certeza que deseja excluir esta transação?')) return;
+            if (!(await showConfirmPopup('Excluir Transação', 'Tem certeza que deseja excluir esta transação?'))) return;
             try {
                 const resp = await fetch(getApiUrl(`/api/financeiro/${id}`), {
                     method: 'DELETE',
@@ -1873,7 +1873,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     async function removerMembroBanda(membroId, nome) {
-        if (!confirm(`Tem certeza que deseja remover o músico "${nome}" da banda?`)) {
+        if (!(await showConfirmPopup('Remover Músico', `Tem certeza que deseja remover o músico "${nome}" da banda?`))) {
             return;
         }
 
@@ -1897,7 +1897,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     async function cancelarConviteBanda(conviteId, nome) {
-        if (!confirm(`Tem certeza que deseja cancelar o convite enviado para "${nome}"?`)) {
+        if (!(await showConfirmPopup('Cancelar Convite', `Tem certeza que deseja cancelar o convite enviado para "${nome}"?`))) {
             return;
         }
 
@@ -2474,7 +2474,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             
             div.querySelector('.btn-excluir-vaga').addEventListener('click', async () => {
-                if(confirm("Tem certeza que deseja excluir esta vaga definitivamente?")) {
+                if(await showConfirmPopup('Excluir Vaga', 'Tem certeza que deseja excluir esta vaga definitivamente?')) {
                     try {
                         const resp = await fetch(getApiUrl(`/api/vagas/${v.id}`), {
                             method: 'DELETE',

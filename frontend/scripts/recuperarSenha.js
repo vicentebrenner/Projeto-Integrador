@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             } catch (error) {
                 console.error('Erro na requisição:', error);
-                alert('Não foi possível conectar ao servidor de autenticação.');
+                showErrorPopup('Erro de Conexão', 'Não foi possível conectar ao servidor de autenticação.');
             }
         });
     }
