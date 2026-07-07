@@ -1,29 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout
+<!--
+    Layout principal: WebView 100% da tela + ProgressBar sobreposta + tela de sem-internet
+-->
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:openDrawer="start">
+    android:background="@color/white"
+    tools:context=".MainActivity">
 
-    <include
-        android:id="@+id/app_bar_main"
-        layout="@layout/app_bar_main"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    <!-- WebView: ocupa 100% da tela -->
+    <WebView
+        android:id="@+id/web_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header_main"
-        app:itemIconSize="25dp"
-        app:itemIconTint="@null"
+    <!-- Barra de progresso de carregamento (sobreposta ao WebView, no topo) -->
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="4dp"
+        android:indeterminate="false"
+        android:max="100"
+        android:progressTint="@color/cor_secundaria"
+        android:progressBackgroundTint="@color/cor_fundo"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible"
+        tools:progress="60" />
 
-        app:menu="@menu/activity_main_drawer" />
-</androidx.drawerlayout.widget.DrawerLayout>
+    <!-- Tela de Sem Internet (sobreposta, visível só quando offline) -->
+    <LinearLayout
+        android:id="@+id/layout_offline"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="32dp"
+        android:background="@color/white"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="gone">
+
+        <!-- Ícone de sem-internet -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="📡"
+            android:textSize="72sp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Título -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/offline_titulo"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="@color/cor_primaria"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Descrição -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/offline_descricao"
+            android:textSize="16sp"
+            android:textColor="#666666"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginBottom="32dp" />
+
+        <!-- Botão Tentar Novamente -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_tentar_novamente"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/offline_botao"
+            android:textColor="@color/white"
+            android:paddingStart="32dp"
+            android:paddingEnd="32dp"
+            app:backgroundTint="@color/cor_secundaria"
+            app:cornerRadius="8dp" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

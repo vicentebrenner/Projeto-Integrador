@@ -1,22 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Theme.MusicMakers" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+
+    <!--
+        Tema base da aplicação.
+        NoActionBar: o WebView ocupa 100% — não queremos barra de ação.
+    -->
+    <style name="Theme.MusicMakers" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/cor_primaria</item>
+        <item name="colorPrimaryVariant">@color/cor_primaria</item>
         <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+        <item name="colorSecondary">@color/cor_secundaria</item>
+        <item name="colorSecondaryVariant">@color/cor_secundaria</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="android:statusBarColor">@color/cor_primaria</item>
+        <item name="android:navigationBarColor">@color/cor_primaria</item>
+        <item name="android:windowBackground">@color/white</item>
     </style>
-    <style name="Theme.MusicMakers.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
+
+    <!--
+        Tema com Splash Screen.
+        A Activity usa este tema; ele será substituído pelo tema base após o splash.
+    -->
+    <style name="Theme.MusicMakers.Splash" parent="Theme.SplashScreen">
+        <!-- Cor de fundo do splash -->
+        <item name="windowSplashScreenBackground">@color/cor_primaria</item>
+        <!-- Ícone animado (usa o ic_launcher) -->
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_foreground</item>
+        <!-- Duração da animação (ms) — máximo 1000ms -->
+        <item name="windowSplashScreenAnimationDuration">800</item>
+        <!-- Tema que será aplicado após o splash terminar -->
+        <item name="postSplashScreenTheme">@style/Theme.MusicMakers</item>
     </style>
-    <style name="Theme.MusicMakers.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-    <style name="Theme.MusicMakers.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 </resources>
