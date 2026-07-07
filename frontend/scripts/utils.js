@@ -100,7 +100,7 @@ function showSuccessPopup(message, callback) {
     // e no <style> embutido de login.html/cadastro.html (páginas autocontidas que não o carregam).
     // 1. Criar container do popup
     const popupOverlay = document.createElement('div');
-    popupOverlay.id = 'customSuccessPopup';
+    popupOverlay.className = 'custom-popup-overlay';
 
     // 2. Montar o HTML do Popup
     popupOverlay.innerHTML = `

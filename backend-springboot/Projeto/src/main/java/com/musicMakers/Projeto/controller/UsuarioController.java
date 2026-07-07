@@ -119,4 +119,36 @@ public class UsuarioController {
         usuarioRepository.save(usuario);
         return ResponseEntity.ok("Senha atualizada com sucesso.");
     }
+
+    @PutMapping("/{id}/tipo")
+    public ResponseEntity<?> alterarTipoUsuario(@PathVariable Long id, @RequestBody Map<String, String> body) {
+        String novoTipo = body.get("tipoUsuario");
+
+        if (novoTipo == null || novoTipo.trim().isEmpty()) {
+            return ResponseEntity.badRequest().body("O novo tipo de usuário é obrigatório.");
+        }
+
+        novoTipo = novoTipo.trim().toUpperCase();
+        if (!novoTipo.equals("MUSICO") && !novoTipo.equals("GESTOR")) {
+            return ResponseEntity.badRequest().body("Tipo de usuário inválido.");
+        }
+
+        Optional<Usuario> usuarioOpt = usuarioRepository.findById(id);
+        if (usuarioOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Usuario usuario = usuarioOpt.get();
+        usuario.setTipoUsuario(novoTipo);
+        
+        // Se mudou para gestor, podemos definir gestor=true
+        if (novoTipo.equals("GESTOR")) {
+            usuario.setGestor(true);
+        } else {
+            usuario.setGestor(false);
+        }
+
+        usuarioRepository.save(usuario);
+        return ResponseEntity.ok(Map.of("mensagem", "Tipo de usuário atualizado com sucesso.", "novoTipo", novoTipo));
+    }
 }

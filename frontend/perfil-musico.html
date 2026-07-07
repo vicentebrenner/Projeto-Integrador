@@ -66,7 +66,8 @@
                 <!-- Sidebar -->
                 <aside class="profile-sidebar">
                     <nav class="profile-nav">
-                        <button class="tab-link ativo" data-tab="perfil"><i class="fas fa-user-edit"></i> Meu
+                        <button class="tab-link ativo" data-tab="visao-geral"><i class="fas fa-home"></i> Visão Geral</button>
+                        <button class="tab-link" data-tab="perfil"><i class="fas fa-user-edit"></i> Meu
                             Perfil</button>
                         <button class="tab-link" data-tab="conta"><i class="fas fa-shield-alt"></i> Conta e
                             Segurança</button>
@@ -81,8 +82,36 @@
                 <!-- Conteúdo das Abas -->
                 <div class="profile-content">
 
+                    <!-- ABA: VISÃO GERAL -->
+                    <div id="visao-geral" class="tab-content ativo">
+                        <div class="content-header">
+                            <h2>Visão Geral</h2>
+                        </div>
+                        <div class="card-style profile-card" style="display: flex; flex-direction: column; gap: 20px;">
+                            <div style="background: rgba(46, 204, 113, 0.1); border-left: 4px solid #2ecc71; padding: 20px; border-radius: 8px;">
+                                <h3 style="margin-top: 0; color: #2ecc71;"><i class="fas fa-clock"></i> Aguardando Convite</h3>
+                                <p style="margin-bottom: 0;">Seu perfil está ativo! Gestores de banda poderão te encontrar pelo seu username ou pelo seu nome na busca. Fique de olho na aba de convites.</p>
+                            </div>
+                            
+                            <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
+                                <h3 style="margin-top: 0;">Seu Username</h3>
+                                <p>Compartilhe seu username com um gestor de banda para facilitar o convite:</p>
+                                <div style="display: flex; gap: 10px; align-items: center; max-width: 400px;">
+                                    <input type="text" id="visaoGeralUsername" class="input-modern" readonly value="@carregando..." style="background: rgba(0,0,0,0.2); font-weight: bold; color: #fa9848;">
+                                    <button class="btn-primary" id="btnCopiarUsername" style="padding: 10px 15px;"><i class="fas fa-copy"></i> Copiar</button>
+                                </div>
+                            </div>
+                            
+                            <div style="background: rgba(250, 152, 72, 0.1); border-left: 4px solid #fa9848; padding: 20px; border-radius: 8px;">
+                                <h3 style="margin-top: 0; color: #fa9848;"><i class="fas fa-guitar"></i> Quer gerenciar sua própria banda?</h3>
+                                <p>Se você tem uma banda e deseja gerenciar integrantes, agenda, repertório e controle financeiro, você pode transformar esta conta em uma conta de <strong>Gestor</strong>.</p>
+                                <button class="btn-secondary" id="btnMudarParaGestor" style="margin-top: 15px; border-color: #fa9848; color: #fa9848;"><i class="fas fa-sync-alt"></i> Mudar para Gestor</button>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- ABA: PERFIL GERAL -->
-                    <div id="perfil" class="tab-content ativo">
+                    <div id="perfil" class="tab-content">
                         <div class="content-header">
                             <h2>Perfil Público</h2>
                         </div>
