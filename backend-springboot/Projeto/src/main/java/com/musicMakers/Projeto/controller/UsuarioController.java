@@ -141,13 +141,6 @@ public class UsuarioController {
         Usuario usuario = usuarioOpt.get();
         usuario.setTipoUsuario(novoTipo);
         
-        // Se mudou para gestor, podemos definir gestor=true
-        if (novoTipo.equals("GESTOR")) {
-            usuario.setGestor(true);
-        } else {
-            usuario.setGestor(false);
-        }
-
         usuarioRepository.save(usuario);
         return ResponseEntity.ok(Map.of("mensagem", "Tipo de usuário atualizado com sucesso.", "novoTipo", novoTipo));
     }
