@@ -19,80 +19,6 @@ document.addEventListener('DOMContentLoaded', function() {
     let dadosFinanceiros = parseJsonSeguro(localStorage.getItem('dadosFinanceiros'), []);
     let dadosRepertorio = parseJsonSeguro(localStorage.getItem('dadosRepertorio'), []);
 
-    // --- LÓGICA DE EXIBIÇÃO: DASHBOARD VS SALA DE ESPERA ---
-    const usuarioLogadoObj = parseJsonSeguro(localStorage.getItem('usuarioLogado'), {});
-    const bandaEmptyState = document.getElementById('bandaEmptyState');
-    const bandaDashboardContent = document.getElementById('bandaDashboardContent');
-    const btnCopiarUsername = document.getElementById('btnCopiarUsernameBanda');
-    const inputUsername = document.getElementById('bandaEmptyStateUsername');
-    const btnMudarParaGestor = document.getElementById('btnMudarParaGestorBanda');
-
-    if (usuarioLogadoObj.tipoUsuario === 'MUSICO' && !localStorage.getItem('temBanda')) {
-        // Exibir Sala de Espera
-        if (bandaDashboardContent) bandaDashboardContent.style.display = 'none';
-        if (bandaEmptyState) bandaEmptyState.style.display = 'block';
-
-        // Carregar username da API
-        const token = localStorage.getItem('authToken');
-        if (token && usuarioLogadoObj.id) {
-            fetch(getApiUrl(`/api/musicos/usuario/${usuarioLogadoObj.id}`), {
-                headers: { 'Authorization': `Bearer ${token}` }
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (inputUsername) {
-                    inputUsername.value = data.username ? `@${data.username}` : '@seu_username';
-                }
-            }).catch(console.error);
-        }
-
-        if (btnCopiarUsername) {
-            btnCopiarUsername.addEventListener('click', () => {
-                if (inputUsername && inputUsername.value !== '@carregando...' && inputUsername.value !== '@seu_username') {
-                    navigator.clipboard.writeText(inputUsername.value).then(() => {
-                        showSuccessPopup('Username copiado para a área de transferência!');
-                    }).catch(err => showSnackbar('Erro ao copiar username.', 'error'));
-                } else {
-                    showSnackbar('Você precisa definir um username primeiro na aba Meu Perfil.', 'error');
-                }
-            });
-        }
-
-        if (btnMudarParaGestor) {
-            btnMudarParaGestor.addEventListener('click', async () => {
-                if (await showConfirmPopup('Mudar para Gestor', 'Tem certeza que deseja transformar sua conta em Gestor? Você será desconectado e precisará fazer login novamente para aplicar a mudança.', 'Confirmar e Sair', 'Cancelar')) {
-                    try {
-                        const resp = await fetch(getApiUrl(`/api/usuarios/${usuarioLogadoObj.id}/tipo`), {
-                            method: 'PUT',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-                            },
-                            body: JSON.stringify({ tipoUsuario: 'GESTOR' })
-                        });
-                        if (resp.ok) {
-                            localStorage.removeItem('usuarioLogado');
-                            localStorage.removeItem('authToken');
-                            localStorage.removeItem('primeiroAcesso');
-                            localStorage.removeItem('perfilConfigurado');
-                            showSuccessPopup('Conta alterada com sucesso! Faça login novamente.', () => {
-                                window.location.href = 'login.html';
-                            });
-                        } else {
-                            showSnackbar('Erro ao alterar tipo de conta.', 'error');
-                        }
-                    } catch (err) {
-                        showSnackbar('Erro de conexão com o servidor.', 'error');
-                    }
-                }
-            });
-        }
-    } else {
-        // Exibir Dashboard
-        if (bandaEmptyState) bandaEmptyState.style.display = 'none';
-        if (bandaDashboardContent) bandaDashboardContent.style.display = 'block';
-    }
-
     // --- FUNÇÃO DE NOTIFICAÇÃO (Snackbar) ---
     function showSnackbar(message, type = 'success') {
         const snackbar = document.getElementById("snackbar");
@@ -2827,48 +2753,106 @@ document.addEventListener('DOMContentLoaded', function() {
         if (mainContainer) {
             const userEmail = (usuarioLogado && usuarioLogado.email) ? usuarioLogado.email : 'o email cadastrado';
             mainContainer.innerHTML = `
-                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 70vh; text-align: center; padding: 20px;">
-                    
-                    <div style="width: 120px; height: 120px; background: linear-gradient(135deg, rgba(250, 152, 72, 0.15), rgba(255, 94, 98, 0.1)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(250, 152, 72, 0.15);">
-                        <i class="fas fa-guitar" style="font-size: 3.5rem; color: var(--cor-secundaria); filter: drop-shadow(0 4px 8px rgba(250, 152, 72, 0.3));"></i>
+                <div class="empty-state-modern">
+                <div class="empty-state-card">
+                    <div class="empty-state-icon pulse-animation">
+                        <i class="fas fa-guitar"></i>
                     </div>
-                    
-                    <h1 style="font-family: 'Montserrat', sans-serif; font-size: 2.5rem; font-weight: 800; margin-bottom: 15px; color: var(--cor-primaria);">Bem-vindo ao Music Makers</h1>
-                    
-                    <p style="font-size: 1.15rem; color: var(--cor-texto); max-width: 600px; line-height: 1.6; margin-bottom: 40px;">
-                        Você ainda não faz parte de nenhuma banda no momento. Para começar a gerenciar ensaios, finanças e repertórios, você precisa de uma banda.
+
+                    <h2 class="gradient-text">Aguardando Convite</h2>
+                    <p class="empty-state-description">
+                        Você ainda não faz parte de nenhuma banda. Gestores podem te encontrar pelo seu username
+                        ou e-mail para te convidar, ou você mesmo pode iniciar o seu próprio projeto.
                     </p>
 
-                    <div style="display: flex; gap: 25px; flex-wrap: wrap; justify-content: center;">
-                        
-                        <!-- Opção 1: Ser Convidado -->
-                        <div class="card-style" style="flex: 1; min-width: 280px; max-width: 350px; padding: 35px 25px; display: flex; flex-direction: column; align-items: center; border: 1px solid var(--cor-borda);">
-                            <i class="fas fa-envelope-open-text" style="font-size: 2.5rem; color: var(--cor-info); margin-bottom: 20px;"></i>
-                            <h3 style="font-size: 1.3rem; margin-bottom: 10px; color: var(--cor-primaria); border: none; padding: 0;">Fui Convidado</h3>
-                            <p style="font-size: 0.95rem; color: var(--cor-texto); line-height: 1.5; margin-bottom: 20px;">
-                                Peça ao líder da banda para enviar um convite para o seu e-mail:
-                                <br><strong style="color: var(--cor-primaria); background: var(--cor-fundo); padding: 6px 12px; border-radius: 6px; display: inline-block; margin-top: 10px; font-size: 0.9rem; border: 1px solid var(--cor-borda);">${escapeHtml(userEmail)}</strong>
-                            </p>
-                            <span style="font-size: 0.85rem; color: var(--cor-info); font-weight: 600; margin-top: auto;">
-                                <i class="fas fa-circle-notch fa-spin" style="margin-right: 5px;"></i> Aguardando convite...
-                            </span>
-                        </div>
-
-                        <!-- Opção 2: Criar Banda -->
-                        <div class="card-style" style="flex: 1; min-width: 280px; max-width: 350px; padding: 35px 25px; display: flex; flex-direction: column; align-items: center; border: 2px solid rgba(250, 152, 72, 0.3); position: relative;">
-                            <div style="position: absolute; top: -12px; background: var(--cor-secundaria); color: #fff; font-size: 0.75rem; font-weight: bold; padding: 4px 12px; border-radius: 20px; text-transform: uppercase; letter-spacing: 1px;">Recomendado</div>
-                            <i class="fas fa-users-cog" style="font-size: 2.5rem; color: var(--cor-secundaria); margin-bottom: 20px;"></i>
-                            <h3 style="font-size: 1.3rem; margin-bottom: 10px; color: var(--cor-primaria); border: none; padding: 0;">Sou o Líder</h3>
-                            <p style="font-size: 0.95rem; color: var(--cor-texto); line-height: 1.5; margin-bottom: 25px;">
-                                Quer iniciar o seu próprio projeto musical e gerenciar todos os integrantes e eventos?
-                            </p>
-                            <button class="btn-adicionar-principal" style="width: 100%; padding: 14px; font-size: 1rem; margin-top: auto; border-radius: 8px; font-weight: 700; box-shadow: 0 4px 15px rgba(250, 152, 72, 0.2);" onclick="window.location.href='configurar-banda.html'">
-                                <i class="fas fa-plus-circle"></i> Criar Nova Banda
+                    <div class="username-share-box">
+                        <span class="username-label">Seu Username</span>
+                        <div class="username-input-group">
+                            <input type="text" id="bandaEmptyStateUsername" class="input-modern-glass" readonly value="@carregando...">
+                            <button type="button" class="glow-btn" id="btnCopiarUsernameBanda">
+                                <i class="fas fa-copy"></i> Copiar
                             </button>
                         </div>
+                        <small>Compartilhe com gestores para facilitar o convite, ou peça para enviarem para <strong>${escapeHtml(userEmail)}</strong>.</small>
+                    </div>
+
+                    <div class="divider-modern"><span>ou</span></div>
+
+                    <div class="gestor-upgrade-box">
+                        <div class="gestor-upgrade-icon"><i class="fas fa-users-cog"></i></div>
+                        <div class="gestor-upgrade-text">
+                            <h3>Quer montar a sua própria banda?</h3>
+                            <p>Crie e gerencie integrantes, agenda, finanças e repertório do zero.</p>
+                        </div>
+                        <button type="button" class="btn-adicionar-principal" style="width:100%;" onclick="window.location.href='configurar-banda.html'">
+                            <i class="fas fa-plus-circle"></i> Criar Nova Banda
+                        </button>
+                        <button type="button" class="outline-glow" id="btnMudarParaGestorBanda">
+                            Ou mude sua conta para Gestor
+                        </button>
                     </div>
                 </div>
+                </div>
             `;
+
+            const inputUsername = document.getElementById('bandaEmptyStateUsername');
+            const btnCopiarUsername = document.getElementById('btnCopiarUsernameBanda');
+            const btnMudarParaGestor = document.getElementById('btnMudarParaGestorBanda');
+
+            const tokenAtual = localStorage.getItem('authToken');
+            if (tokenAtual && usuarioLogado?.id) {
+                fetch(getApiUrl(`/api/musicos/usuario/${usuarioLogado.id}`), {
+                    headers: { 'Authorization': `Bearer ${tokenAtual}` }
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (inputUsername) {
+                        inputUsername.value = data.username ? `@${data.username}` : '@defina-nas-config';
+                    }
+                }).catch(console.error);
+            }
+
+            if (btnCopiarUsername) {
+                btnCopiarUsername.addEventListener('click', () => {
+                    if (inputUsername && inputUsername.value !== '@carregando...' && inputUsername.value !== '@defina-nas-config') {
+                        navigator.clipboard.writeText(inputUsername.value).then(() => {
+                            showSnackbar('Username copiado para a área de transferência!');
+                        }).catch(() => showSnackbar('Erro ao copiar username.', 'error'));
+                    } else {
+                        showSnackbar('Você precisa definir um username primeiro na aba Meu Perfil.', 'error');
+                    }
+                });
+            }
+
+            if (btnMudarParaGestor) {
+                btnMudarParaGestor.addEventListener('click', async () => {
+                    if (await showConfirmPopup('Mudar para Gestor', 'Tem certeza que deseja transformar sua conta em Gestor? Você será desconectado e precisará fazer login novamente para aplicar a mudança.', 'Confirmar e Sair', 'Cancelar')) {
+                        try {
+                            const resp = await fetch(getApiUrl(`/api/usuarios/${usuarioLogado.id}/tipo`), {
+                                method: 'PUT',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+                                },
+                                body: JSON.stringify({ tipoUsuario: 'GESTOR' })
+                            });
+                            if (resp.ok) {
+                                localStorage.removeItem('usuarioLogado');
+                                localStorage.removeItem('authToken');
+                                localStorage.removeItem('primeiroAcesso');
+                                localStorage.removeItem('perfilConfigurado');
+                                showSuccessPopup('Conta alterada com sucesso! Faça login novamente.', () => {
+                                    window.location.href = 'login.html';
+                                });
+                            } else {
+                                showSnackbar('Erro ao alterar tipo de conta.', 'error');
+                            }
+                        } catch (err) {
+                            showSnackbar('Erro de conexão com o servidor.', 'error');
+                        }
+                    }
+                });
+            }
         }
     }
 

@@ -6527,30 +6527,16 @@ button.link-desativado,
 }
 
 .empty-state-card {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 24px;
+    background: var(--cor-fundo-card);
+    border: 1px solid var(--cor-borda);
+    border-radius: 20px;
     padding: 50px 40px;
     max-width: 600px;
     width: 100%;
     text-align: center;
     position: relative;
     overflow: hidden;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
-}
-
-.empty-state-card::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(250, 152, 72, 0.05) 0%, rgba(0, 0, 0, 0) 60%);
-    z-index: 0;
-    pointer-events: none;
+    box-shadow: var(--sombra-card);
 }
 
 .empty-state-card > * {
@@ -6562,18 +6548,16 @@ button.link-desativado,
     width: 90px;
     height: 90px;
     margin: 0 auto 30px;
-    background: linear-gradient(135deg, rgba(250, 152, 72, 0.2), rgba(250, 152, 72, 0.05));
+    background: rgba(250, 152, 72, 0.12);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid rgba(250, 152, 72, 0.3);
 }
 
 .empty-state-icon i {
     font-size: 3rem;
     color: var(--cor-secundaria);
-    filter: drop-shadow(0 0 10px rgba(250, 152, 72, 0.5));
 }
 
 .pulse-animation {
@@ -6587,23 +6571,21 @@ button.link-desativado,
 }
 
 .gradient-text {
-    background: linear-gradient(90deg, #fff, #fa9848);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--cor-primaria);
     font-size: 2.2rem;
     margin-bottom: 15px;
 }
 
 .empty-state-description {
-    color: rgba(255, 255, 255, 0.7);
+    color: #666;
     font-size: 1.1rem;
     line-height: 1.6;
     margin-bottom: 40px;
 }
 
 .username-share-box {
-    background: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: var(--cor-fundo);
+    border: 1px solid var(--cor-borda);
     border-radius: 16px;
     padding: 25px;
     margin-bottom: 30px;
@@ -6611,9 +6593,9 @@ button.link-desativado,
 
 .username-label {
     display: block;
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 0.95rem;
-    font-weight: 600;
+    color: var(--cor-texto-claro);
+    font-size: 0.85rem;
+    font-weight: 700;
     margin-bottom: 12px;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -6627,11 +6609,11 @@ button.link-desativado,
 
 .input-modern-glass {
     flex: 1;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--cor-fundo-card);
+    border: 1px solid var(--cor-borda);
     border-radius: 12px;
     padding: 14px 20px;
-    color: #fa9848;
+    color: var(--cor-secundaria);
     font-weight: 700;
     font-size: 1.1rem;
     text-align: center;
@@ -6640,8 +6622,8 @@ button.link-desativado,
 }
 
 .input-modern-glass:focus {
-    border-color: rgba(250, 152, 72, 0.5);
-    box-shadow: 0 0 15px rgba(250, 152, 72, 0.2);
+    border-color: var(--cor-secundaria);
+    box-shadow: 0 0 0 3px rgba(250, 152, 72, 0.15);
 }
 
 .glow-btn {
@@ -6649,17 +6631,25 @@ button.link-desativado,
     border-radius: 12px;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
-    font-weight: 600;
+    font-weight: 700;
+    background: var(--cor-secundaria);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(250, 152, 72, 0.3);
 }
 
 .glow-btn:hover {
-    box-shadow: 0 8px 25px rgba(250, 152, 72, 0.5);
+    background: #e67e22;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(250, 152, 72, 0.4);
 }
 
 .username-share-box small {
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--cor-texto-claro);
     font-size: 0.85rem;
 }
 
@@ -6667,7 +6657,7 @@ button.link-desativado,
     display: flex;
     align-items: center;
     text-align: center;
-    color: rgba(255, 255, 255, 0.3);
+    color: var(--cor-texto-claro);
     margin: 30px 0;
 }
 
@@ -6675,12 +6665,12 @@ button.link-desativado,
 .divider-modern::after {
     content: '';
     flex: 1;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--cor-borda);
 }
 
 .divider-modern span {
     padding: 0 15px;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     text-transform: uppercase;
     letter-spacing: 1px;
 }
@@ -6695,18 +6685,17 @@ button.link-desativado,
 
 .gestor-upgrade-icon i {
     font-size: 2rem;
-    color: #ffd700;
-    filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.4));
+    color: #f1c40f;
 }
 
 .gestor-upgrade-text h3 {
-    color: #fff;
+    color: var(--cor-primaria);
     font-size: 1.3rem;
     margin-bottom: 8px;
 }
 
 .gestor-upgrade-text p {
-    color: rgba(255, 255, 255, 0.6);
+    color: #666;
     font-size: 0.95rem;
     line-height: 1.5;
     margin-bottom: 15px;
@@ -6728,5 +6717,15 @@ button.link-desativado,
 .outline-glow:hover {
     background: var(--cor-secundaria);
     color: #fff;
-    box-shadow: 0 0 20px rgba(250, 152, 72, 0.4);
+    box-shadow: 0 4px 15px rgba(250, 152, 72, 0.3);
+}
+
+@media (max-width: 560px) {
+    .empty-state-card {
+        padding: 35px 22px;
+    }
+
+    .username-input-group {
+        flex-direction: column;
+    }
 }
