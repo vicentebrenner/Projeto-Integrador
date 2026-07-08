@@ -1419,7 +1419,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.getElementById('abrirModalMusicaBtn')?.addEventListener('click', () => {
         document.getElementById('musicaId').value = '';
-        document.getElementById('musicaModalTitulo').textContent = 'Adicionar Música ao Repertório';
+        document.getElementById('musicaModalTitulo').textContent = 'Adicionar Música';
         document.getElementById('musicaStatusGroup').style.display = 'none';
     });
 

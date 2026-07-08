@@ -234,7 +234,7 @@
     /* ── KPI CARDS ── */
     .kpi-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 16px;
       margin-bottom: 24px
     }
@@ -428,7 +428,7 @@
     /* ── BOTTOM GRID ── */
     .bottom-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       gap: 16px
     }
 
@@ -546,6 +546,7 @@
 
     .cat-bar-wrap {
       flex: 1;
+      min-width: 0;
       height: 8px;
       background: var(--surface2);
       border-radius: 50px;
@@ -577,17 +578,17 @@
 
     @media(max-width:900px) {
       .kpi-grid {
-        grid-template-columns: repeat(2, 1fr)
+        grid-template-columns: repeat(2, minmax(0, 1fr))
       }
 
       .bottom-grid {
-        grid-template-columns: 1fr
+        grid-template-columns: minmax(0, 1fr)
       }
     }
 
     @media(max-width:600px) {
       .kpi-grid {
-        grid-template-columns: 1fr 1fr
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr)
       }
 
       .main {

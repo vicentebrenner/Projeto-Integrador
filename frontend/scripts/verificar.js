@@ -8,19 +8,19 @@ document.addEventListener('DOMContentLoaded', function() {
     const codigoInput = document.getElementById('codigo');
     const mensagemErroVerificacao = document.getElementById('mensagemErroVerificacao');
     
-    const email = localStorage.getItem('emailParaVerificacao');
-
-    if (!email) {
-        mostrarErro('E-mail para verificação não encontrado. Por favor, tente se cadastrar novamente.');
-        return;
-    }
-
     const mostrarErro = (mensagem) => {
         if (mensagemErroVerificacao) {
             mensagemErroVerificacao.textContent = mensagem;
             mensagemErroVerificacao.classList.add('visivel');
         }
     };
+
+    const email = localStorage.getItem('emailParaVerificacao');
+
+    if (!email) {
+        mostrarErro('E-mail para verificação não encontrado. Por favor, tente se cadastrar novamente.');
+        return;
+    }
 
     formVerificacao.addEventListener('submit', async function(event) {
         event.preventDefault();

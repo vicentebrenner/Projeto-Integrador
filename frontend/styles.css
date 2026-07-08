@@ -1263,7 +1263,9 @@ a:hover {
     }
     
     .cta-features {
-        align-items: center;
+        align-items: flex-start;
+        width: fit-content;
+        margin: 0 auto;
     }
     
     .cta-login-box {
@@ -1394,6 +1396,7 @@ a:hover {
     }
 
     .footer-address {
+        margin-left: 0;
         margin-right: 0;
         text-align: center;
     }
@@ -1402,8 +1405,13 @@ a:hover {
         align-items: center;
     }
 
+    .footer-social h4 {
+        text-align: center;
+    }
+
     .footer-social .social-list {
         justify-content: center;
+        flex-wrap: wrap;
     }
 }
 
@@ -2556,7 +2564,7 @@ button.link-desativado,
 /* Layout principal: grÃÂ¡fico + extrato */
 .fin-main-layout {
     display: grid;
-    grid-template-columns: 1fr 380px;
+    grid-template-columns: minmax(0, 1fr) 380px;
     gap: 22px;
     align-items: start;
 }
@@ -2666,7 +2674,7 @@ button.link-desativado,
 /* Responsividade */
 @media (max-width: 1100px) {
     .fin-main-layout {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
     .fin-extrato-card {
         max-height: 500px;
@@ -2707,9 +2715,15 @@ button.link-desativado,
 /* RepertÃÂ³rio Moderno */
 .repertorio-main {
     display: grid;
-    grid-template-columns: 1fr 450px;
+    grid-template-columns: minmax(0, 1fr) 450px;
     gap: 30px;
     align-items: start;
+}
+
+@media (max-width: 900px) {
+    .repertorio-main {
+        grid-template-columns: minmax(0, 1fr);
+    }
 }
 
 .profile-header-title {
@@ -3106,6 +3120,9 @@ button.link-desativado,
         flex-direction: column;
         align-items: stretch;
     }
+    .repertorio-card-modern .status-badge {
+        align-self: flex-start;
+    }
     .rep-card-actions {
         margin-left: 0;
         justify-content: flex-start;
@@ -3331,10 +3348,17 @@ button.link-desativado,
 .form-section-title h3 {
     font-size: 1.2rem;
     color: var(--cor-primaria);
-    margin-bottom: 5px;
+    margin: 0 0 5px;
+    padding: 0;
+    border-bottom: none;
+    width: 100%;
     display: flex;
     align-items: center;
     gap: 10px;
+}
+
+.form-section-title h3 i {
+    flex-shrink: 0;
 }
 
 .form-section-title hr {
@@ -3884,6 +3908,7 @@ button.link-desativado,
     text-align: center;
     margin-top: 0;
     margin-bottom: 20px;
+    padding: 0 30px;
     font-size: 1.5em;
     color: var(--cor-primaria);
     font-weight: 800;
@@ -4402,6 +4427,15 @@ button.link-desativado,
         font-size: 1em;
     }
 
+    .section-titulo {
+        font-size: 1.7em;
+    }
+
+    .section-subtitulo {
+        font-size: 1em;
+        margin-bottom: 40px;
+    }
+
     .hero-imagem {
         display: none;
     }
@@ -4791,16 +4825,30 @@ button.link-desativado,
         border: 1px solid var(--cor-borda, rgba(0,0,0,0.1));
         max-width: 100%;
     }
-    .tab-link { 
-        width: 100%; 
-        padding: 8px 0; 
-        font-size: 0.85em; 
-        text-align: center; 
+    .tab-link {
+        width: 100%;
+        padding: 8px 0;
+        font-size: 0.85em;
+        text-align: center;
         border-radius: 8px;
     }
+    /* Se sobrar um tab sozinho na última linha (número ímpar de tabs visíveis),
+       ocupa a linha inteira em vez de ficar só na metade esquerda */
+    .tab-link:last-child:nth-child(odd) {
+        grid-column: 1 / -1;
+    }
     .fin-kpi-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-    .fin-kpi-card { padding: 14px 12px; }
+    .fin-kpi-card { flex-direction: column; align-items: flex-start; padding: 14px 12px; gap: 8px; }
+    .fin-kpi-icon { width: 32px; height: 32px; font-size: 0.9em; flex-shrink: 0; }
     .fin-kpi-value { font-size: 1em; }
+    .fin-kpi-info { width: 100%; }
+    .fin-kpi-label {
+        white-space: normal;
+        overflow: visible;
+        text-overflow: clip;
+        font-size: 0.7em;
+        line-height: 1.3;
+    }
     
     .cal-week-header {
         min-width: 0;
@@ -5652,6 +5700,7 @@ button.link-desativado,
 @media (max-width: 768px) {
     .profile-settings-wrapper {
         flex-direction: column;
+        align-items: stretch;
     }
     .profile-sidebar {
         width: 100%;
@@ -5664,6 +5713,9 @@ button.link-desativado,
         flex-direction: column;
         align-items: flex-start;
         gap: 20px;
+    }
+    .profile-card {
+        padding: 24px 18px;
     }
 }
 
