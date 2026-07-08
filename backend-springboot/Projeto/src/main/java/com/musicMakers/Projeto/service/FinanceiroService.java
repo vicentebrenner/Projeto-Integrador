@@ -45,6 +45,9 @@ public class FinanceiroService {
         if(financeiro.getDataTransacao() == null) {
             financeiro.setDataTransacao(LocalDate.now());
         }
+        if(financeiro.getStatus() == null) {
+            financeiro.setStatus("PAGO");
+        }
         return financeiroRepository.save(financeiro);
     }
 
@@ -79,6 +82,9 @@ public class FinanceiroService {
         }
         if (dto.getCategoria() != null) {
             financeiro.setCategoria(dto.getCategoria());
+        }
+        if (dto.getStatus() != null) {
+            financeiro.setStatus(dto.getStatus());
         }
 
         return financeiroRepository.save(financeiro);

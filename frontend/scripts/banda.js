@@ -556,11 +556,34 @@ document.addEventListener('DOMContentLoaded', function() {
                     <span class="cal-pop-tipo-badge" style="background:${cor}20;color:${cor}">${nomeTipo[ev.tipo] || 'Outro'}</span>
                 </div>
             </div>
+            <div class="cal-pop-rsvp">
+                <p class="cal-pop-rsvp-label">Sua presença</p>
+                <div class="cal-pop-rsvp-buttons">
+                    <button type="button" class="cal-pop-rsvp-btn confirmar ${ev.rsvp === 'confirmado' ? 'ativo' : ''}" data-rsvp="confirmado">
+                        <i class="fas fa-check"></i> Confirmar
+                    </button>
+                    <button type="button" class="cal-pop-rsvp-btn recusar ${ev.rsvp === 'recusado' ? 'ativo' : ''}" data-rsvp="recusado">
+                        <i class="fas fa-times"></i> Recusar
+                    </button>
+                </div>
+            </div>
             <div class="cal-pop-footer">
                 <button class="cal-pop-delete" data-idx="${idx}">
                     <i class="fas fa-trash-alt"></i> Remover evento
                 </button>
             </div>`;
+
+        // RSVP: confirmar/recusar presença (clicar de novo no mesmo botão remove a resposta)
+        pop.querySelectorAll('.cal-pop-rsvp-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const valor = btn.dataset.rsvp;
+                ev.rsvp = ev.rsvp === valor ? null : valor;
+                localStorage.setItem('dadosAgenda', JSON.stringify(dadosAgenda));
+                pop.querySelectorAll('.cal-pop-rsvp-btn').forEach(b => b.classList.remove('ativo'));
+                if (ev.rsvp) btn.classList.add('ativo');
+                showSnackbar(ev.rsvp === 'confirmado' ? 'Presença confirmada!' : ev.rsvp === 'recusado' ? 'Presença recusada.' : 'Resposta removida.');
+            });
+        });
 
         // Fechar
         pop.querySelector('.cal-pop-close').addEventListener('click', () => pop.remove());
@@ -690,8 +713,10 @@ document.addEventListener('DOMContentLoaded', function() {
     async function carregarFinanceiro() {
     try {
         const token = localStorage.getItem('authToken');
-        if(window._bandaId) {
-            const res = await fetch(getApiUrl(`/api/financeiro/banda/${window._bandaId}`), { headers: { 'Authorization': `Bearer ${token}` } });
+        const bandaId = window._bandaId || usuarioLogado?.bandaId;
+        if(bandaId) {
+            window._bandaId = bandaId;
+            const res = await fetch(getApiUrl(`/api/financeiro/banda/${bandaId}`), { headers: { 'Authorization': `Bearer ${token}` } });
             if (res.status === 401) {
                 localStorage.removeItem('usuarioLogado');
                 localStorage.removeItem('authToken');
@@ -706,7 +731,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     descricao: t.descricao,
                     valor: t.valor,
                     data: t.dataTransacao || t.data,
-                    categoria: t.categoria
+                    categoria: t.categoria,
+                    status: t.status || 'PAGO'
                 }));
                 localStorage.setItem('dadosFinanceiros', JSON.stringify(dadosFinanceiros));
             }
@@ -765,10 +791,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 saldoTotal += isDespesa ? -valor : valor;
             });
 
-            // Filtra pelo período
+            // Filtra pelo período e, opcionalmente, por tipo (receita/despesa)
             const dadosFiltrados = dadosFinanceiros.filter(item =>
-                new Date(item.data + "T12:00:00") >= dataCorte
+                new Date(item.data + "T12:00:00") >= dataCorte &&
+                (filtroSerieAtual === 'both' || item.tipo.toLowerCase() === filtroSerieAtual)
             );
+            window._dadosFinanceirosFiltrados = dadosFiltrados;
 
             if (dadosFiltrados.length === 0) {
                 tabela.innerHTML = '<p class="empty-state"><i class="fas fa-search"></i><br>Nenhuma transação no período.</p>';
@@ -798,6 +826,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const categoriaClass = item.categoria.toLowerCase().replace(/[^a-z0-9]/g, '-');
                 const iconeBase = isDespesa ? 'fa-arrow-trend-down' : 'fa-arrow-trend-up';
                 const corIcone = isDespesa ? 'despesa-icon' : 'receita-icon';
+                const pendente = item.status === 'PENDENTE';
 
                 div.innerHTML = `
                     <div class="transacao-icone ${corIcone}">
@@ -807,6 +836,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <h4>${escapeHtml(item.descricao)}</h4>
                         <div class="transacao-meta">
                             <span class="categoria-tag cat-${categoriaClass}">${escapeHtml(item.categoria)}</span>
+                            <span class="status-badge ${pendente ? 'status-pausada' : 'status-aberta'}">${pendente ? 'Pendente' : 'Pago'}</span>
                             <span class="transacao-data"><i class="far fa-calendar-alt"></i> ${dataItem.toLocaleDateString('pt-BR')}</span>
                         </div>
                     </div>
@@ -1005,35 +1035,80 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+    const PALETA_AVATAR_MEMBRO = ['#fa9848', '#3498db', '#9b59b6', '#2ecc71', '#e74c3c', '#1abc9c', '#e67e22'];
+    function corAvatarMembro(nome) {
+        let hash = 0;
+        for (let i = 0; i < (nome || '').length; i++) hash = nome.charCodeAt(i) + ((hash << 5) - hash);
+        return PALETA_AVATAR_MEMBRO[Math.abs(hash) % PALETA_AVATAR_MEMBRO.length];
+    }
+
+    let todosMembrosBanda = [];
+
     async function carregarMembros() {
-        const tabela = document.getElementById('corpoTabelaMembros');
-        if (!tabela) return;
-        
-        tabela.innerHTML = '<tr><td colspan="4" style="text-align:center;"><i class="fas fa-spinner fa-spin"></i> Carregando integrantes...</td></tr>';
-        
-        const membrosBanda = await buscarMembrosDaBanda();
-        tabela.innerHTML = '';
-        
-        if (!membrosBanda || membrosBanda.length === 0) {
-            tabela.innerHTML = '<tr><td colspan="4">Nenhum integrante cadastrado nesta banda.</td></tr>';
+        const container = document.getElementById('corpoTabelaMembros');
+        if (!container) return;
+
+        container.innerHTML = '<p class="empty-state"><i class="fas fa-spinner fa-spin"></i> Carregando integrantes...</p>';
+
+        todosMembrosBanda = await buscarMembrosDaBanda();
+        const buscaInput = document.getElementById('buscaMembroNome');
+        renderMembrosCards(todosMembrosBanda, buscaInput ? buscaInput.value : '');
+    }
+
+    document.getElementById('buscaMembroNome')?.addEventListener('input', function() {
+        renderMembrosCards(todosMembrosBanda, this.value);
+    });
+
+    function renderMembrosCards(membrosBanda, filtro) {
+        const container = document.getElementById('corpoTabelaMembros');
+        if (!container) return;
+
+        const query = (filtro || '').trim().toLowerCase();
+        const filtrados = query
+            ? membrosBanda.filter(m =>
+                (m.nome || '').toLowerCase().includes(query) ||
+                (m.funcao || '').toLowerCase().includes(query))
+            : membrosBanda;
+
+        container.innerHTML = '';
+
+        if (filtrados.length === 0) {
+            container.innerHTML = `<p class="empty-state"><i class="fas fa-users-slash"></i><br>${query ? 'Nenhum integrante encontrado.' : 'Nenhum integrante cadastrado nesta banda.'}</p>`;
             return;
         }
-        
+
         const fragment = document.createDocumentFragment();
-        membrosBanda.forEach((membro) => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td>${escapeHtml(membro.nome) || '(Sem Nome)'}</td>
-                <td>${escapeHtml(membro.email)}</td>
-                <td><span class="perm-funcao-badge" style="background: rgba(250, 152, 72, 0.1); color: var(--cor-secundaria); padding: 4px 8px; border-radius: 4px; font-size: 0.85em; font-weight: 600;">${escapeHtml(membro.funcao) || 'Músico'}</span></td>
-                <td>
-                    ${isGestor ? `<button class="btn-icon btn-remover-membro-real" data-id="${membro.membroId}" data-nome="${escapeHtml(membro.nome)}" title="Remover membro" style="background:none; border:none; color:#ef4444; cursor:pointer;"><i class="fas fa-user-minus"></i></button>` : `<i class="fas fa-user-check" style="color:#10b981;"></i>`}
-                </td>`;
-            fragment.appendChild(tr);
+        filtrados.forEach((membro) => {
+            const nome = membro.nome || '(Sem Nome)';
+            const iniciais = nome.trim().split(' ').slice(0, 2).map(p => p[0]).join('').toUpperCase();
+            const card = document.createElement('div');
+            card.className = 'membro-card-moderno';
+            card.innerHTML = `
+                <div class="membro-card-topo">
+                    <div class="membro-card-avatar" style="background:${corAvatarMembro(nome)}">${escapeHtml(iniciais)}</div>
+                    <div class="membro-card-info">
+                        <h4>${escapeHtml(nome)}</h4>
+                        <span class="perm-funcao-badge">${escapeHtml(membro.funcao) || 'Músico'}</span>
+                    </div>
+                    ${isGestor ? `<button class="btn-icon-modern btn-remover-membro-real" data-id="${membro.membroId}" data-nome="${escapeHtml(nome)}" title="Remover membro"><i class="fas fa-user-minus"></i></button>` : `<i class="fas fa-user-check membro-card-ativo" title="Membro ativo"></i>`}
+                </div>
+                <button type="button" class="membro-card-vermais" aria-expanded="false">
+                    <span>Ver contato</span> <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="membro-card-detalhes">
+                    <p><i class="fas fa-envelope"></i> ${escapeHtml(membro.email)}</p>
+                </div>`;
+
+            card.querySelector('.membro-card-vermais').addEventListener('click', function() {
+                const aberto = card.classList.toggle('expandido');
+                this.setAttribute('aria-expanded', String(aberto));
+            });
+
+            fragment.appendChild(card);
         });
-        tabela.appendChild(fragment);
-        
-        tabela.querySelectorAll('.btn-remover-membro-real').forEach(btn => {
+        container.appendChild(fragment);
+
+        container.querySelectorAll('.btn-remover-membro-real').forEach(btn => {
             btn.addEventListener('click', async function() {
                 const membroId = this.dataset.id;
                 const nome = this.dataset.nome;
@@ -1069,8 +1144,10 @@ document.addEventListener('DOMContentLoaded', function() {
     async function carregarRepertorio() {
     try {
         const token = localStorage.getItem('authToken');
-        if(window._bandaId) {
-            const res = await fetch(getApiUrl(`/api/musicas/banda/${window._bandaId}`), { headers: { 'Authorization': `Bearer ${token}` } });
+        const bandaId = window._bandaId || usuarioLogado?.bandaId;
+        if(bandaId) {
+            window._bandaId = bandaId;
+            const res = await fetch(getApiUrl(`/api/musicas/banda/${bandaId}`), { headers: { 'Authorization': `Bearer ${token}` } });
             if (res.status === 401) {
                 localStorage.removeItem('usuarioLogado');
                 localStorage.removeItem('authToken');
@@ -1086,17 +1163,51 @@ document.addEventListener('DOMContentLoaded', function() {
         console.warn('Erro API Músicas', e);
         showSnackbar('Erro ao carregar repertório.', 'error');
     }
+        renderRepertorioLista();
+    }
+
+    const STATUS_MUSICA_INFO = {
+        NOVA: { label: 'Nova', classe: 'status-nova' },
+        EM_ESTUDO: { label: 'Em estudo', classe: 'status-pausada' },
+        PRONTA: { label: 'Pronta', classe: 'status-aberta' }
+    };
+
+    function renderRepertorioLista() {
         const containerCards = document.getElementById('corpoRepertorioCards');
         if (!containerCards) return;
         containerCards.innerHTML = '';
-        
-        if (dadosRepertorio.length === 0) { 
-            containerCards.innerHTML = '<p class="empty-state" style="grid-column: 1 / -1;">Nenhuma música no repertório.</p>'; 
-            return; 
+
+        if (dadosRepertorio.length === 0) {
+            containerCards.innerHTML = '<p class="empty-state">Nenhuma música no repertório.</p>';
+            return;
         }
-        
+
+        const buscaInput = document.getElementById('buscaMusica');
+        const ordenarSelect = document.getElementById('ordenarRepertorio');
+        const query = buscaInput ? buscaInput.value.trim().toLowerCase() : '';
+        const ordem = ordenarSelect ? ordenarSelect.value : 'nome';
+
+        let lista = query
+            ? dadosRepertorio.filter(m =>
+                (m.nome || '').toLowerCase().includes(query) ||
+                (m.origem || '').toLowerCase().includes(query))
+            : [...dadosRepertorio];
+
+        if (ordem === 'status') {
+            const ordemStatus = { NOVA: 0, EM_ESTUDO: 1, PRONTA: 2 };
+            lista.sort((a, b) => (ordemStatus[a.status] ?? 0) - (ordemStatus[b.status] ?? 0) || a.nome.localeCompare(b.nome));
+        } else {
+            lista.sort((a, b) => a.nome.localeCompare(b.nome));
+        }
+
+        if (lista.length === 0) {
+            containerCards.innerHTML = '<p class="empty-state"><i class="fas fa-search"></i><br>Nenhuma música encontrada.</p>';
+            return;
+        }
+
         const fragment = document.createDocumentFragment();
-        dadosRepertorio.forEach((musica, index) => {
+        lista.forEach((musica) => {
+            const statusInfo = STATUS_MUSICA_INFO[musica.status] || STATUS_MUSICA_INFO.NOVA;
             const card = document.createElement('div');
             card.className = 'repertorio-card-modern';
             card.innerHTML = `
@@ -1107,14 +1218,23 @@ document.addEventListener('DOMContentLoaded', function() {
                     <h4>${escapeHtml(musica.nome)}</h4>
                     <p class="origin"><i class="fas fa-user-edit"></i> ${escapeHtml(musica.origem) || 'Desconhecido'}</p>
                 </div>
+                <span class="status-badge ${statusInfo.classe}">${statusInfo.label}</span>
                 <div class="rep-card-actions">
-                    ${musica.partituraUrl ? `<button class="btn-ver-partitura-modern" data-partitura-url="${escapeHtml(musica.partituraUrl)}" title="Ver Partitura"><i class="fas fa-eye"></i> Ver</button>` : '<span class="no-sheet">Sem Partitura</span>'}
-                    <button class="btn-icon-modern btn-remover" data-tipo="repertorio" data-index="${index}" title="Remover música"><i class="fas fa-trash-alt"></i></button>
+                    ${musica.partituraUrl ? `
+                        <button class="btn-icon-modern btn-ver-partitura-modern" data-partitura-url="${escapeHtml(musica.partituraUrl)}" title="Ver partitura"><i class="fas fa-eye"></i></button>
+                        <a class="btn-icon-modern" href="${escapeHtml(musica.partituraUrl)}" download title="Baixar cifra"><i class="fas fa-download"></i></a>
+                    ` : '<span class="no-sheet">Sem partitura</span>'}
+                    <button class="btn-icon-modern link-desativado" data-tooltip="Em breve..." title="Ouvir áudio"><i class="fas fa-headphones"></i></button>
+                    <button class="btn-icon-modern btn-editar-musica" data-id="${musica.id}" title="Editar música"><i class="fas fa-edit"></i></button>
+                    <button class="btn-icon-modern btn-remover" data-tipo="repertorio" data-id="${musica.id}" title="Remover música"><i class="fas fa-trash-alt"></i></button>
                 </div>`;
             fragment.appendChild(card);
         });
         containerCards.appendChild(fragment);
     }
+
+    document.getElementById('buscaMusica')?.addEventListener('input', renderRepertorioLista);
+    document.getElementById('ordenarRepertorio')?.addEventListener('change', renderRepertorioLista);
 
     // Removida função carregarAnaliseIA
 
@@ -1173,6 +1293,7 @@ document.addEventListener('DOMContentLoaded', function() {
             formTransacao.valor.value = item.valor != null ? item.valor : '';
             formTransacao.data.value = item.data || '';
             formTransacao.categoria.value = item.categoria || '';
+            formTransacao.status.value = item.status || 'PAGO';
         }
         modalTransacao.classList.remove('fade-out');
         modalTransacao.style.display = 'block';
@@ -1214,7 +1335,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 descricao: formTransacao.descricao.value,
                 valor: valor,
                 dataTransacao: formTransacao.data.value,
-                categoria: formTransacao.categoria.value
+                categoria: formTransacao.categoria.value,
+                status: formTransacao.status.value
             };
 
             const bandaId = window._bandaId || usuarioLogado?.bandaId;
@@ -1295,9 +1417,32 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
 
+    document.getElementById('abrirModalMusicaBtn')?.addEventListener('click', () => {
+        document.getElementById('musicaId').value = '';
+        document.getElementById('musicaModalTitulo').textContent = 'Adicionar Música ao Repertório';
+        document.getElementById('musicaStatusGroup').style.display = 'none';
+    });
+
+    document.body.addEventListener('click', (e) => {
+        const btnEditarMusica = e.target.closest('.btn-editar-musica');
+        if (!btnEditarMusica) return;
+        const musicaId = parseInt(btnEditarMusica.dataset.id);
+        const musica = dadosRepertorio.find(m => m.id === musicaId);
+        if (!musica) return;
+
+        document.getElementById('musicaId').value = musica.id;
+        document.getElementById('musicaModalTitulo').textContent = 'Editar Música';
+        document.getElementById('musicaStatusGroup').style.display = '';
+        document.getElementById('statusMusica').value = musica.status || 'NOVA';
+        document.getElementById('nomeMusica').value = musica.nome || '';
+        document.getElementById('origemMusica').value = musica.origem || '';
+        document.getElementById('musicaModal').style.display = 'block';
+    });
+
     setupModal('musicaModal', 'abrirModalMusicaBtn', 'formAdicionarMusica', async (form, closeModal) => {
         const nomeMusica = form.nomeMusica.value;
         const origemMusica = form.origemMusica.value;
+        const musicaId = form.musicaId.value;
         const fileInput = form.partituraMusica;
         let partituraUrlTemp = null; // Usaremos URL temporária (não persiste entre sessões)
 
@@ -1313,25 +1458,32 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         const bandaId = window._bandaId || usuarioLogado?.bandaId;
-        if (!bandaId) {
+        if (!musicaId && !bandaId) {
             showSnackbar("Você não está vinculado a uma banda.", "error");
             return;
         }
 
+        const payload = { nome: nomeMusica, origem: origemMusica };
+        if (musicaId) {
+            payload.status = form.statusMusica.value;
+        }
+        if (partituraUrlTemp) {
+            payload.partituraUrl = partituraUrlTemp;
+        }
+
+        const method = musicaId ? 'PUT' : 'POST';
+        const url = musicaId ? getApiUrl(`/api/musicas/${musicaId}`) : getApiUrl(`/api/musicas/banda/${bandaId}`);
+
         try {
-            const resp = await fetch(getApiUrl(`/api/musicas/banda/${bandaId}`), {
-                method: 'POST',
+            const resp = await fetch(url, {
+                method,
                 headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
-                body: JSON.stringify({
-                    nome: nomeMusica,
-                    origem: origemMusica,
-                    partituraUrl: partituraUrlTemp
-                })
+                body: JSON.stringify(payload)
             });
 
             if (resp.ok) {
-                carregarRepertorio(); // Atualiza a tabela
-                showSnackbar("Música adicionada com sucesso!");
+                carregarRepertorio();
+                showSnackbar(musicaId ? "Música atualizada com sucesso!" : "Música adicionada com sucesso!");
                 if (closeModal) closeModal(); // Fecha modal animado
             } else {
                 showSnackbar("Erro ao salvar música.", "error");
@@ -1349,18 +1501,20 @@ document.addEventListener('DOMContentLoaded', function() {
         const btnRemover = e.target.closest('.btn-remover');
         if (btnRemover) {
             const tipo = btnRemover.dataset.tipo;
-            const index = parseInt(btnRemover.dataset.index); // Converter para número
-
-            if (isNaN(index)) return; // Se o índice não for válido
 
             let itemRemovido = null;
 
-            if (tipo === 'agenda' && index < dadosAgenda.length) {
+            if (tipo === 'agenda') {
+                const index = parseInt(btnRemover.dataset.index);
+                if (isNaN(index) || index >= dadosAgenda.length) return;
                 itemRemovido = dadosAgenda.splice(index, 1)[0];
                 localStorage.setItem('dadosAgenda', JSON.stringify(dadosAgenda));
                 carregarAgenda();
-            } else if (tipo === 'repertorio' && index < dadosRepertorio.length) {
-                const musica = dadosRepertorio[index];
+            } else if (tipo === 'repertorio') {
+                const musicaId = parseInt(btnRemover.dataset.id);
+                const idxReal = dadosRepertorio.findIndex(m => m.id === musicaId);
+                if (idxReal === -1) return;
+                const musica = dadosRepertorio[idxReal];
                 if (musica.id) {
                     try {
                         const token = localStorage.getItem('authToken');
@@ -1375,7 +1529,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         return;
                     }
                 }
-                itemRemovido = dadosRepertorio.splice(index, 1)[0];
+                itemRemovido = dadosRepertorio.splice(idxReal, 1)[0];
                 localStorage.setItem('dadosRepertorio', JSON.stringify(dadosRepertorio));
                 carregarRepertorio();
                 const visualizadorPdf = document.getElementById('visualizadorPdf');
@@ -1421,17 +1575,49 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // --- FILTROS DE SÉRIE ---
+    // --- FILTROS DE SÉRIE (também filtra o extrato por Receitas/Despesas) ---
     document.querySelectorAll('.fin-series-filters .series-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             document.querySelectorAll('.fin-series-filters .series-btn').forEach(b => b.classList.remove('ativo'));
             this.classList.add('ativo');
             filtroSerieAtual = this.dataset.series;
-            // Apenas re-renderiza o gráfico sem refazer toda a lógica
-            const evolucaoMensal = window._evolucaoMensal || {};
-            renderizarGrafico(evolucaoMensal);
+            carregarFinanceiro();
         });
     });
+
+    // --- EXPORTAR RELATÓRIO (CSV do extrato filtrado atual) ---
+    const btnExportarRelatorio = document.getElementById('btnExportarRelatorio');
+    if (btnExportarRelatorio) {
+        btnExportarRelatorio.addEventListener('click', () => {
+            const dados = window._dadosFinanceirosFiltrados || [];
+            if (dados.length === 0) {
+                showSnackbar('Não há transações para exportar.', 'error');
+                return;
+            }
+            const cabecalho = ['Data', 'Tipo', 'Descrição', 'Categoria', 'Status', 'Valor'];
+            const linhas = dados.map(item => [
+                item.data,
+                item.tipo === 'DESPESA' ? 'Despesa' : 'Receita',
+                item.descricao,
+                item.categoria,
+                item.status === 'PENDENTE' ? 'Pendente' : 'Pago',
+                parseFloat(item.valor).toFixed(2).replace('.', ',')
+            ]);
+            const csv = [cabecalho, ...linhas]
+                .map(linha => linha.map(campo => `"${String(campo).replace(/"/g, '""')}"`).join(';'))
+                .join('\r\n');
+            const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `relatorio-financeiro-${new Date().toISOString().slice(0, 10)}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(url);
+            showSnackbar('Relatório exportado com sucesso!');
+        });
+    }
 
     // --- INICIALIZAÇÃO ---
     const usuarioLogado = parseJsonSeguro(localStorage.getItem('usuarioLogado'));
@@ -1853,6 +2039,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    let permissoesOriginaisModal = {};
+
     function abrirModalPermissoes(membro) {
         const modal = document.getElementById('modalEdicaoPermissoes');
         if (!modal) return;
@@ -1864,10 +2052,16 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('modalPermMembroId').value = membro.membroId;
 
         const perms = membro.permissoes || {};
-        document.getElementById('permSwitchMembros').checked = perms.membros === true;
-        document.getElementById('permSwitchAgenda').checked = perms.agenda === true;
-        document.getElementById('permSwitchFinanceiro').checked = perms.financeiro === true;
-        document.getElementById('permSwitchRepertorio').checked = perms.repertorio === true;
+        permissoesOriginaisModal = {
+            membros: perms.membros === true,
+            agenda: perms.agenda === true,
+            financeiro: perms.financeiro === true,
+            repertorio: perms.repertorio === true
+        };
+        document.getElementById('permSwitchMembros').checked = permissoesOriginaisModal.membros;
+        document.getElementById('permSwitchAgenda').checked = permissoesOriginaisModal.agenda;
+        document.getElementById('permSwitchFinanceiro').checked = permissoesOriginaisModal.financeiro;
+        document.getElementById('permSwitchRepertorio').checked = permissoesOriginaisModal.repertorio;
 
         modal.style.display = 'block';
     }
@@ -2094,6 +2288,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 repertorio: document.getElementById('permSwitchRepertorio').checked
             };
 
+            const LABEL_PERM = { membros: 'Gerenciar Equipe', agenda: 'Agenda & Shows', financeiro: 'Financeiro & Relatórios', repertorio: 'Repertório & Partituras' };
+            const revogadas = Object.keys(newPerms).filter(k => permissoesOriginaisModal[k] === true && newPerms[k] === false);
+            if (revogadas.length > 0) {
+                const lista = revogadas.map(k => LABEL_PERM[k]).join(', ');
+                const nomeMembro = document.getElementById('modalPermMembroNome').textContent;
+                const confirmado = await showConfirmPopup(
+                    'Revogar Acesso',
+                    `Você está revogando o acesso de "${nomeMembro}" a: ${lista}. Deseja continuar?`
+                );
+                if (!confirmado) return;
+            }
+
             const originalBtnText = submitBtn.innerHTML;
             submitBtn.disabled = true;
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...';
@@ -2305,6 +2511,8 @@ document.addEventListener('DOMContentLoaded', function() {
         btnModalVaga.addEventListener('click', () => {
             formVaga.reset();
             document.getElementById('vagaId').value = '';
+            document.getElementById('vagaModalTitulo').textContent = 'Anunciar Vaga';
+            document.getElementById('vagaStatusGroup').style.display = 'none';
             modalVaga.style.display = 'block';
         });
         
@@ -2371,7 +2579,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 estado: document.getElementById('vagaEstado').value,
                 cidade: document.getElementById('vagaCidade').value,
                 descricao: document.getElementById('vagaDescricao').value,
-                requisitosObrigatorios: document.getElementById('vagaRequisitos').value
+                requisitosObrigatorios: document.getElementById('vagaRequisitos').value,
+                status: document.getElementById('vagaStatus').value
             };
             
             const vId = document.getElementById('vagaId').value;
@@ -2432,6 +2641,43 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
+    function statusVagaInfo(status) {
+        if (status === 'ABERTA') return { label: 'Aberta', classe: 'status-aberta' };
+        if (status === 'PAUSADA') return { label: 'Pausada', classe: 'status-pausada' };
+        return { label: status === 'PREENCHIDA' ? 'Preenchida' : (status || 'Preenchida'), classe: 'status-preenchida' };
+    }
+
+    async function atualizarStatusVaga(vagaId, novoStatus) {
+        try {
+            const resp = await fetch(getApiUrl(`/api/vagas/${vagaId}`), {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
+                body: JSON.stringify({ status: novoStatus })
+            });
+            if (resp.ok) {
+                showSnackbar(novoStatus === 'ABERTA' ? 'Vaga reaberta com sucesso.' : 'Status da vaga atualizado.');
+                carregarVagas();
+            } else {
+                showSnackbar('Erro ao atualizar status da vaga.', 'error');
+            }
+        } catch (e) {
+            showSnackbar('Erro de conexão.', 'error');
+        }
+    }
+
+    function compartilharVaga(v) {
+        const texto = `Vaga aberta: ${v.titulo}\nFunção: ${v.funcao}\nLocal: ${v.cidade || 'Qualquer'}/${v.estado || 'Qualquer'}\n\n${v.descricao || ''}`;
+        if (navigator.share) {
+            navigator.share({ title: v.titulo, text: texto }).catch(() => {});
+        } else if (navigator.clipboard) {
+            navigator.clipboard.writeText(texto).then(() => {
+                showSnackbar('Detalhes da vaga copiados para a área de transferência.');
+            }).catch(() => {
+                showSnackbar('Não foi possível copiar os detalhes da vaga.', 'error');
+            });
+        }
+    }
+
     function renderVagas(vagas) {
         const container = document.getElementById('listaVagasContainer');
         container.innerHTML = '';
@@ -2439,17 +2685,18 @@ document.addEventListener('DOMContentLoaded', function() {
             container.innerHTML = '<p class="empty-state">Nenhuma vaga anunciada.</p>';
             return;
         }
-        
+
         vagas.forEach(v => {
             const div = document.createElement('div');
             div.className = 'vaga-card-compact';
-            const statusLabel = v.status === 'ABERTA' ? '<span class="status-badge status-aberta">ABERTA</span>' : `<span class="status-badge status-fechada">${v.status}</span>`;
-            
+            const st = statusVagaInfo(v.status);
+            const aberta = v.status === 'ABERTA';
+
             div.innerHTML = `
                 <div class="vaga-card-header">
                     <div class="vaga-title-row">
                         <h4>${escapeHtml(v.titulo)}</h4>
-                        ${statusLabel}
+                        <span class="status-badge ${st.classe}">${escapeHtml(st.label)}</span>
                     </div>
                     <div class="vaga-meta">
                         <span><i class="fas fa-guitar"></i> ${escapeHtml(v.funcao)}</span>
@@ -2463,16 +2710,24 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="vaga-card-footer">
                     <button class="btn-candidatos" data-id="${v.id}"><i class="fas fa-user-check"></i> Ver Candidatos</button>
                     <div class="vaga-actions-row">
-                        <button class="btn-encerrar-vaga" data-id="${v.id}"><i class="fas fa-edit"></i> Editar</button>
-                        <button class="btn-excluir-vaga" data-id="${v.id}"><i class="fas fa-trash"></i> Excluir</button>
+                        <button class="btn-icon-vaga btn-editar-vaga" data-id="${v.id}" title="Editar"><i class="fas fa-edit"></i></button>
+                        <button class="btn-icon-vaga btn-alternar-status-vaga" data-id="${v.id}" title="${aberta ? 'Pausar vaga' : 'Reabrir vaga'}"><i class="fas fa-${aberta ? 'pause' : 'play'}"></i></button>
+                        <button class="btn-icon-vaga btn-compartilhar-vaga" data-id="${v.id}" title="Compartilhar"><i class="fas fa-share-alt"></i></button>
+                        <button class="btn-icon-vaga btn-excluir-vaga" data-id="${v.id}" title="Excluir"><i class="fas fa-trash"></i></button>
                     </div>
                 </div>
             `;
-            
+
             div.querySelector('.btn-candidatos').addEventListener('click', () => {
                 abrirModalCandidatos(v.id);
             });
-            
+
+            div.querySelector('.btn-compartilhar-vaga').addEventListener('click', () => compartilharVaga(v));
+
+            div.querySelector('.btn-alternar-status-vaga').addEventListener('click', () => {
+                atualizarStatusVaga(v.id, aberta ? 'PAUSADA' : 'ABERTA');
+            });
+
             div.querySelector('.btn-excluir-vaga').addEventListener('click', async () => {
                 if(await showConfirmPopup('Excluir Vaga', 'Tem certeza que deseja excluir esta vaga definitivamente?')) {
                     try {
@@ -2491,26 +2746,29 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 }
             });
-            
-            div.querySelector('.btn-encerrar-vaga').addEventListener('click', () => {
+
+            div.querySelector('.btn-editar-vaga').addEventListener('click', () => {
                 // Preencher o formulário para edição
                 document.getElementById('vagaId').value = v.id;
+                document.getElementById('vagaModalTitulo').textContent = 'Editar Vaga';
+                document.getElementById('vagaStatusGroup').style.display = '';
+                document.getElementById('vagaStatus').value = v.status || 'ABERTA';
                 document.getElementById('vagaTitulo').value = v.titulo || '';
                 document.getElementById('vagaFuncao').value = v.funcao || '';
                 document.getElementById('vagaQuantidade').value = v.quantidadeVagas || 1;
                 document.getElementById('vagaNivel').value = v.nivelExperiencia || '';
                 document.getElementById('vagaDescricao').value = v.descricao || '';
                 document.getElementById('vagaRequisitos').value = v.requisitosObrigatorios || '';
-                
+
                 // Preencher Estado
                 const selectEstado = document.getElementById('vagaEstado');
                 selectEstado.value = v.estado || '';
-                
+
                 // Disparar evento para buscar cidades do estado
                 if (v.estado) {
                     const evt = new Event('change');
                     selectEstado.dispatchEvent(evt);
-                    
+
                     // Aguardar o carregamento das cidades (IBGE) para setar a cidade salva
                     setTimeout(() => {
                         const selectCidade = document.getElementById('vagaCidade');
@@ -2520,11 +2778,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     document.getElementById('vagaCidade').innerHTML = '<option value="">Selecione o estado primeiro...</option>';
                     document.getElementById('vagaCidade').disabled = true;
                 }
-                
+
                 // Abrir modal de edição
                 modalVaga.style.display = 'block';
             });
-            
+
             container.appendChild(div);
         });
     }
@@ -2860,14 +3118,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('bandaTabs')?.addEventListener('click', function(e) {
         const btn = e.target.closest('[data-tab="configuracoes"]');
         if (btn && tipoUsuario === 'GESTOR') {
-            setTimeout(() => {
-                const activeSubtab = document.querySelector('.sub-tab-link.active');
-                if (activeSubtab) {
-                    activeSubtab.click(); // Recarrega a subtab ativa
-                } else {
-                    carregarConfiguracoes();
-                }
-            }, 50);
+            setTimeout(() => carregarConfiguracoes(), 50);
         }
     });
 

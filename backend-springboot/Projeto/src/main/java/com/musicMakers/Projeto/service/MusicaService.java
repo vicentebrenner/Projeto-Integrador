@@ -1,5 +1,6 @@
 package com.musicMakers.Projeto.service;
 
+import com.musicMakers.Projeto.domain.dto.MusicaUpdateDTO;
 import com.musicMakers.Projeto.domain.entity.Banda;
 import com.musicMakers.Projeto.domain.entity.Musica;
 import com.musicMakers.Projeto.domain.entity.Usuario;
@@ -39,6 +40,32 @@ public class MusicaService {
         autorizacaoService.exigirMembroDaBanda(bandaId, usuarioAtual);
 
         musica.setBanda(banda);
+        if (musica.getStatus() == null) {
+            musica.setStatus("NOVA");
+        }
+        return musicaRepository.save(musica);
+    }
+
+    public Musica atualizarMusica(Long musicaId, MusicaUpdateDTO dto) {
+        Musica musica = musicaRepository.findById(musicaId)
+                .orElseThrow(() -> new RuntimeException("Música não encontrada"));
+
+        Usuario usuarioAtual = usuarioAutenticadoProvider.getUsuarioAutenticado();
+        autorizacaoService.exigirMembroDaBanda(musica.getBanda().getId(), usuarioAtual);
+
+        if (dto.getNome() != null) {
+            musica.setNome(dto.getNome());
+        }
+        if (dto.getOrigem() != null) {
+            musica.setOrigem(dto.getOrigem());
+        }
+        if (dto.getStatus() != null) {
+            musica.setStatus(dto.getStatus());
+        }
+        if (dto.getPartituraUrl() != null) {
+            musica.setPartituraUrl(dto.getPartituraUrl());
+        }
+
         return musicaRepository.save(musica);
     }
 

@@ -31,29 +31,38 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const corBackground = escapeHtml(usuarioLogado.corAvatar || '#fa9848');
 
+        const primeiroNome = escapeHtml(nome.split(' ')[0]);
+
         perfilLi.innerHTML = `
-            <div class="perfil-icone" id="perfilIcone" style="background-color: ${corBackground};">${escapeHtml(inicial)}</div>
+            <div class="perfil-toggle" id="perfilToggle">
+                <div class="perfil-icone" id="perfilIcone" style="background-color: ${corBackground};">${escapeHtml(inicial)}</div>
+                <span class="perfil-nome-mobile">${primeiroNome}</span>
+                <svg class="perfil-chevron" width="14" height="14" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+                </svg>
+            </div>
             <div class="perfil-dropdown" id="perfilDropdown">
-                <p>Olá, ${escapeHtml(nome.split(' ')[0])}!</p>
+                <p>Olá, ${primeiroNome}!</p>
                 <hr>
                 ${linkPerfil}
                 <a href="#" id="btnLogout">Sair</a>
             </div>
         `;
-        
+
         menuPrincipalUl.appendChild(perfilLi);
 
-        const perfilIcone = document.getElementById('perfilIcone');
+        const perfilToggle = document.getElementById('perfilToggle');
         const perfilDropdown = document.getElementById('perfilDropdown');
         const btnLogout = document.getElementById('btnLogout');
 
-        perfilIcone.addEventListener('click', () => {
-            perfilDropdown.classList.toggle('ativo');
+        perfilToggle.addEventListener('click', () => {
+            const aberto = perfilDropdown.classList.toggle('ativo');
+            perfilToggle.classList.toggle('aberto', aberto);
         });
-        
+
         btnLogout.addEventListener('click', (event) => {
             event.preventDefault();
-            
+
             localStorage.removeItem('usuarioLogado');
             localStorage.removeItem('authToken');
             localStorage.removeItem('primeiroAcesso');
@@ -62,8 +71,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         window.addEventListener('click', function(event) {
-            if (!perfilIcone.contains(event.target) && !perfilDropdown.contains(event.target)) {
+            if (!perfilToggle.contains(event.target) && !perfilDropdown.contains(event.target)) {
                 perfilDropdown.classList.remove('ativo');
+                perfilToggle.classList.remove('aberto');
             }
         });
 

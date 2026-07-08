@@ -1665,6 +1665,16 @@ a:hover {
     cursor: pointer;
 }
 
+.perfil-toggle {
+    display: flex;
+    align-items: center;
+}
+
+.perfil-nome-mobile,
+.perfil-chevron {
+    display: none;
+}
+
 .perfil-icone {
     width: 40px;
     height: 40px;
@@ -1992,6 +2002,116 @@ button.link-desativado,
 /* ==========================================================================
    12. COMPONENTES DA PÃÂGINA DA BANDA (Tabelas, Grids, etc.)
    ========================================================================== */
+
+.membros-search {
+    margin-bottom: 20px;
+}
+
+.membros-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 18px;
+}
+
+.membro-card-moderno {
+    background: var(--cor-fundo-card);
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--border-radius-padrao);
+    box-shadow: var(--sombra-card);
+    padding: 18px;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.membro-card-moderno:hover {
+    box-shadow: var(--sombra-card-hover);
+    transform: translateY(-2px);
+}
+
+.membro-card-topo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.membro-card-avatar {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.05em;
+}
+
+.membro-card-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.membro-card-info h4 {
+    margin: 0 0 4px;
+    font-size: 1em;
+    color: var(--cor-primaria);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.membro-card-ativo {
+    color: var(--cor-sucesso);
+}
+
+.membro-card-vermais {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: none;
+    border: none;
+    border-top: 1px solid var(--cor-borda);
+    margin-top: 14px;
+    padding-top: 12px;
+    color: var(--cor-texto-claro);
+    font-size: 0.85em;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.membro-card-vermais i {
+    transition: transform 0.2s ease;
+}
+
+.membro-card-moderno.expandido .membro-card-vermais i {
+    transform: rotate(180deg);
+}
+
+.membro-card-detalhes {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.25s ease;
+}
+
+.membro-card-moderno.expandido .membro-card-detalhes {
+    max-height: 60px;
+}
+
+.membro-card-detalhes p {
+    margin: 12px 0 0;
+    font-size: 0.88em;
+    color: var(--cor-texto);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    word-break: break-word;
+}
+
+.membro-card-detalhes p i {
+    color: var(--cor-secundaria);
+}
 
 .table-wrapper {
     overflow-x: auto;
@@ -2342,6 +2462,17 @@ button.link-desativado,
     margin: 0;
     color: var(--cor-texto-claro);
     font-size: 0.95em;
+}
+
+.fin-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.btn-link-modern {
+    text-decoration: none;
 }
 
 /* Grid de KPIs */
@@ -2850,6 +2981,57 @@ button.link-desativado,
     border-radius: 10px 10px 0 0;
 }
 
+/* ---- Repertório: toolbar (busca + ordenação) ---- */
+.repertorio-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+}
+
+.repertorio-search {
+    max-width: none;
+    flex: 1;
+    min-width: 200px;
+}
+
+#ordenarRepertorio {
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 1px solid var(--cor-borda);
+    background: var(--cor-fundo-card);
+    color: var(--cor-texto);
+    font-family: inherit;
+    font-size: 0.9em;
+    cursor: pointer;
+}
+
+/* ---- Repertório: lista estilizada (list-group) ---- */
+.repertorio-cards-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.repertorio-card-modern {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: var(--cor-fundo-card);
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--border-radius-padrao);
+    box-shadow: var(--sombra-card);
+    padding: 14px 18px;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    flex-wrap: wrap;
+}
+
+.repertorio-card-modern:hover {
+    box-shadow: var(--sombra-card-hover);
+    transform: translateY(-1px);
+}
+
 .rep-card-icon {
     width: 45px;
     height: 45px;
@@ -2858,7 +3040,7 @@ button.link-desativado,
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 15px;
+    flex-shrink: 0;
 }
 
 .rep-card-icon i {
@@ -2867,14 +3049,17 @@ button.link-desativado,
 }
 
 .rep-card-info {
-    flex-grow: 1;
-    margin-bottom: 20px;
+    flex: 1 1 180px;
+    min-width: 0;
 }
 
 .rep-card-info h4 {
     margin: 0 0 5px 0;
-    font-size: 1.2em;
+    font-size: 1.05em;
     color: var(--cor-primaria);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .rep-card-info .origin {
@@ -2889,10 +3074,11 @@ button.link-desativado,
 
 .rep-card-actions {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    border-top: 1px solid #eee;
-    padding-top: 15px;
+    gap: 6px;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+    margin-left: auto;
 }
 
 .btn-ver-partitura-modern {
@@ -2913,6 +3099,17 @@ button.link-desativado,
 .btn-ver-partitura-modern:hover {
     background: var(--cor-primaria);
     color: #fff;
+}
+
+@media (max-width: 560px) {
+    .repertorio-card-modern {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .rep-card-actions {
+        margin-left: 0;
+        justify-content: flex-start;
+    }
 }
 
 .no-sheet {
@@ -3444,6 +3641,53 @@ button.link-desativado,
     border-radius: 20px;
     text-transform: capitalize;
 }
+/* RSVP (confirmar/recusar presença) */
+.cal-pop-rsvp {
+    padding: 14px 20px;
+    border-top: 1px solid #f3f4f6;
+}
+.cal-pop-rsvp-label {
+    margin: 0 0 10px;
+    font-size: 0.8em;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: var(--cor-texto-claro);
+}
+.cal-pop-rsvp-buttons {
+    display: flex;
+    gap: 8px;
+}
+.cal-pop-rsvp-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 9px 10px;
+    border-radius: 10px;
+    font-size: 0.85em;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: var(--cor-fundo);
+    border: 1px solid var(--cor-borda);
+    color: var(--cor-texto);
+}
+.cal-pop-rsvp-btn:hover {
+    background: #eef1f4;
+}
+.cal-pop-rsvp-btn.confirmar.ativo {
+    background: #dcfce7;
+    border-color: #86efac;
+    color: #15803d;
+}
+.cal-pop-rsvp-btn.recusar.ativo {
+    background: #fee2e2;
+    border-color: #fca5a5;
+    color: #b91c1c;
+}
+
 /* Footer */
 .cal-pop-footer {
     padding: 12px 20px 16px;
@@ -3664,6 +3908,56 @@ button.link-desativado,
     background: var(--cor-fundo, #f4f7f6);
     border-radius: 10px;
     padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.perm-modal-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+    border-bottom: 1px solid var(--cor-borda);
+    padding-bottom: 15px;
+}
+
+.perm-modal-email {
+    color: var(--cor-texto-claro);
+    font-size: 0.85em;
+    margin: 3px 0 0;
+}
+
+.perm-categoria-bloco {
+    margin-bottom: 22px;
+}
+
+.perm-categoria-titulo {
+    font-size: 0.9em;
+    text-transform: uppercase;
+    color: var(--cor-secundaria);
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    font-weight: 700;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.perm-categoria-nome {
+    font-weight: 600;
+    font-size: 0.95em;
+}
+
+.perm-categoria-desc {
+    font-size: 0.8em;
+    color: var(--cor-texto-claro);
+    margin: 3px 0 0;
+}
+
+.perm-modal-footer-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
 }
 
 .close-button {
@@ -3988,7 +4282,10 @@ button.link-desativado,
     }
 
     .menuPrincipal.menu-aberto {
-        max-height: 420px;
+        /* Cresce com o conteúdo (inclusive o acordeão do perfil) sem nunca cortar,
+           e rola se a tela for baixa demais para caber tudo. */
+        max-height: calc(100vh - 90px);
+        overflow-y: auto;
     }
 
     .menuPrincipal ul {
@@ -4014,21 +4311,85 @@ button.link-desativado,
         color: var(--cor-primaria);
     }
 
-    .menuPrincipal .perfil-container {
-        padding: 14px 0;
-    }
-
     /* .btnLogin é branco por padrão (pensado para o cabeçalho escuro);
        no dropdown mobile o fundo é claro, então precisa de cores próprias. */
     .menuPrincipal .btnLogin {
-        display: inline-block;
+        display: block;
+        width: 100%;
         color: var(--cor-primaria) !important;
         border-color: var(--cor-borda);
-        margin-top: 4px;
+        margin-top: 6px;
     }
 
     .menuPrincipal .btnLogin:hover {
         color: var(--cor-secundaria) !important;
+    }
+
+    /* --- Card de perfil no menu mobile: vira um acordeão em vez do
+       popover flutuante do desktop, que ficava cortado pelo overflow:hidden
+       do menu e com o avatar desalinhado do resto da lista. --- */
+    .menuPrincipal .perfil-container {
+        padding: 0;
+        text-align: left;
+    }
+
+    .menuPrincipal .perfil-toggle {
+        justify-content: center;
+        gap: 10px;
+        padding: 14px 0;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .menuPrincipal .perfil-nome-mobile {
+        display: inline-block;
+        font-weight: 600;
+        color: var(--cor-primaria);
+    }
+
+    .menuPrincipal .perfil-chevron {
+        display: inline-block;
+        color: var(--cor-texto-claro);
+        transition: transform 0.25s ease;
+        flex-shrink: 0;
+    }
+
+    .menuPrincipal .perfil-toggle.aberto .perfil-chevron {
+        transform: rotate(180deg);
+    }
+
+    .menuPrincipal .perfil-dropdown {
+        position: static;
+        width: 100%;
+        max-height: 0;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        overflow: hidden;
+        background-color: transparent;
+        box-shadow: none;
+        border-radius: 0;
+        padding: 0;
+        transition: max-height 0.3s ease;
+    }
+
+    .menuPrincipal .perfil-dropdown.ativo {
+        max-height: 260px;
+    }
+
+    /* Nome já aparece no toggle acima; evita repetição no acordeão mobile */
+    .menuPrincipal .perfil-dropdown p,
+    .menuPrincipal .perfil-dropdown hr {
+        display: none;
+    }
+
+    .menuPrincipal .perfil-dropdown a {
+        text-align: center;
+        border-top: 1px solid var(--cor-borda);
+    }
+
+    .menuPrincipal #btnLogout {
+        color: #e74c3c;
     }
 
     /* Menos espaÃÂ§o */
@@ -4139,10 +4500,6 @@ button.link-desativado,
         font-size: 1.5em;
     }
 
-    .perfil-dropdown {
-        width: min(220px, calc(100vw - 30px));
-        right: -10px;
-    }
     .notif-dropdown {
         width: min(290px, calc(100vw - 30px));
         right: -10px;
@@ -4952,6 +5309,11 @@ button.link-desativado,
     height: 24px;
     cursor: pointer;
 }
+.perm-checkbox-premium {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
 .perm-slider-premium {
     position: absolute;
     inset: 0;
@@ -5626,190 +5988,6 @@ button.link-desativado,
 
 
 
-/* ============================================================ */
-/* ============================================================ */
-
-/* ============================================================ */
-
-/* Grid responsivo */
-#listaVagasContainer {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
-    align-items: stretch;
-}
-
-/* Cartão da Vaga */
-.vaga-card-compact {
-    background: var(--cor-fundo-card);
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    transition: transform 0.2s, box-shadow 0.2s;
-    position: relative;
-}
-
-.vaga-card-compact::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 3px;
-    background: var(--cor-secundaria);
-}
-
-.vaga-card-compact:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-    border-color: #cbd5e1;
-}
-
-/* Cabeçalho */
-.vaga-card-header {
-    padding: 20px 20px 15px;
-    border-bottom: 1px solid #f1f5f9;
-}
-
-.vaga-title-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 12px;
-    margin-bottom: 15px;
-}
-
-.vaga-title-row h4 {
-    margin: 0;
-    font-size: 1.15em;
-    font-weight: 700;
-    color: #0f172a;
-    line-height: 1.3;
-}
-
-.status-badge {
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 0.7em;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-.status-aberta { background: #dcfce7; color: #166534; }
-.status-fechada { background: #fee2e2; color: #991b1b; }
-
-/* Detalhes (Instrumento, Vagas, Local) */
-.vaga-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-}
-
-.vaga-meta span {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    color: #334155;
-    padding: 4px 10px;
-    border-radius: 6px;
-    font-size: 0.8em;
-    font-weight: 500;
-}
-.vaga-meta span i { color: var(--cor-secundaria); }
-
-/* Corpo da Vaga (Descrição) */
-.vaga-card-body {
-    padding: 15px 20px;
-    flex-grow: 1;
-    background: #fafaf9;
-}
-.vaga-card-body p {
-    margin: 0;
-    color: var(--cor-texto);
-    font-size: 0.9em;
-    line-height: 1.5;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-
-/* Rodapé (Botões) */
-.vaga-card-footer {
-    padding: 15px 20px;
-    background: var(--cor-fundo-card);
-    border-top: 1px solid #f1f5f9;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.btn-candidatos {
-    width: 100%;
-    justify-content: center;
-    background: var(--cor-secundaria);
-    color: #ffffff;
-    font-weight: 700;
-    border-radius: 8px;
-    padding: 10px;
-    border: none;
-    box-shadow: 0 4px 6px rgba(250, 152, 72, 0.2);
-    transition: background 0.2s;
-}
-.btn-candidatos:hover {
-    background: #ea8c42;
-}
-
-.vaga-card-footer > div {
-    display: flex;
-    gap: 8px;
-}
-
-.vaga-card-footer .btn-encerrar-vaga, 
-.vaga-card-footer .btn-excluir-vaga {
-    flex: 1;
-    justify-content: center;
-    padding: 8px;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 0.85em;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.btn-encerrar-vaga {
-    background: #ffffff !important;
-    color: #334155 !important;
-    border: 1px solid #cbd5e1 !important;
-}
-.btn-encerrar-vaga:hover { background: #f1f5f9 !important; }
-
-.btn-excluir-vaga {
-    background: #ffffff !important;
-    color: #dc2626 !important;
-    border: 1px solid #fca5a5 !important;
-}
-.btn-excluir-vaga:hover { background: #fef2f2 !important; }
-
-/* Lista de Candidatos (Modal) */
-#candidatosList > div {
-    background: var(--cor-fundo-card);
-    border: 1px solid #e2e8f0;
-    border-left: 4px solid var(--cor-secundaria);
-    border-radius: 8px;
-    padding: 15px;
-    margin-bottom: 12px;
-}
-
-@media (max-width: 600px) {
-    .vaga-card-footer > div {
-        flex-direction: column;
-    }
-}
-
-
 /* ================================================================ */
 /* MODULO DE VAGAS - DESIGN PROFISSIONAL                            */
 /* ================================================================ */
@@ -5863,9 +6041,10 @@ button.link-desativado,
 }
 
 .vaga-card-compact {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 8px;
+    background: var(--cor-fundo-card);
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--border-radius-padrao);
+    box-shadow: var(--sombra-card);
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -5874,13 +6053,13 @@ button.link-desativado,
 
 .vaga-card-compact:hover {
     transform: translateY(-3px);
-    box-shadow: 0 12px 30px rgba(0,0,0,0.3);
-    border-color: rgba(255,255,255,0.18);
+    box-shadow: var(--sombra-card-hover);
+    border-color: var(--cor-secundaria);
 }
 
 .vaga-card-header {
     padding: 20px;
-    border-bottom: 1px solid rgba(255,255,255,0.07);
+    border-bottom: 1px solid var(--cor-borda);
     position: relative;
 }
 
@@ -5922,15 +6101,35 @@ button.link-desativado,
 }
 
 .status-aberta {
-    background: rgba(39, 174, 96, 0.2);
-    color: #4ade80;
-    border: 1px solid rgba(39, 174, 96, 0.3);
+    background: rgba(46, 204, 113, 0.15);
+    color: #1e8449;
+    border: 1px solid rgba(46, 204, 113, 0.3);
 }
 
+.status-pausada {
+    background: rgba(241, 196, 15, 0.18);
+    color: #92720d;
+    border: 1px solid rgba(241, 196, 15, 0.35);
+}
+
+.status-preenchida {
+    background: rgba(149, 165, 166, 0.2);
+    color: #566065;
+    border: 1px solid rgba(149, 165, 166, 0.35);
+}
+
+/* Usada para candidaturas rejeitadas e como fallback legado de vaga fechada */
 .status-fechada {
-    background: rgba(231, 76, 60, 0.2);
-    color: #f87171;
+    background: rgba(231, 76, 60, 0.15);
+    color: #a93226;
     border: 1px solid rgba(231, 76, 60, 0.3);
+}
+
+/* Usada em Repertório para músicas recém-adicionadas */
+.status-nova {
+    background: rgba(52, 152, 219, 0.15);
+    color: #1f618d;
+    border: 1px solid rgba(52, 152, 219, 0.3);
 }
 
 .vaga-meta {
@@ -5943,9 +6142,9 @@ button.link-desativado,
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1);
-    color: var(--cor-texto-claro);
+    background: var(--cor-fundo);
+    border: 1px solid var(--cor-borda);
+    color: var(--cor-texto);
     padding: 5px 10px;
     border-radius: 6px;
     font-size: 0.82em;
@@ -5975,7 +6174,7 @@ button.link-desativado,
 
 .vaga-card-footer {
     padding: 15px 20px;
-    border-top: 1px solid rgba(255,255,255,0.07);
+    border-top: 1px solid var(--cor-borda);
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -5988,7 +6187,7 @@ button.link-desativado,
     align-items: center;
     gap: 8px;
     background: var(--cor-secundaria);
-    color: #011029;
+    color: #ffffff;
     font-weight: 700;
     font-size: 0.9em;
     border-radius: 8px;
@@ -6008,53 +6207,40 @@ button.link-desativado,
     gap: 8px;
 }
 
-.btn-encerrar-vaga {
+.btn-icon-vaga {
     flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 6px;
     padding: 8px 12px;
     border-radius: 8px;
-    font-weight: 600;
-    font-size: 0.85em;
+    font-size: 0.9em;
     cursor: pointer;
     transition: all 0.2s ease;
-    background: rgba(255,255,255,0.05);
-    color: var(--cor-texto-claro);
-    border: 1px solid rgba(255,255,255,0.12);
+    background: var(--cor-fundo);
+    color: var(--cor-texto);
+    border: 1px solid var(--cor-borda);
 }
 
-.btn-encerrar-vaga:hover {
-    background: rgba(255,255,255,0.1);
-    color: var(--cor-texto);
+.btn-icon-vaga:hover {
+    background: #eef1f4;
+    border-color: #cbd5e1;
 }
 
 .btn-excluir-vaga {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 6px;
-    padding: 8px 12px;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 0.85em;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    background: rgba(231, 76, 60, 0.1);
-    color: #f87171;
-    border: 1px solid rgba(231, 76, 60, 0.2);
+    color: var(--cor-erro);
+    border-color: rgba(231, 76, 60, 0.3);
+    background: rgba(231, 76, 60, 0.06);
 }
 
 .btn-excluir-vaga:hover {
-    background: rgba(231, 76, 60, 0.25);
+    background: rgba(231, 76, 60, 0.15);
     border-color: rgba(231, 76, 60, 0.4);
 }
 
 #candidatosList > div {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.1);
+    background: var(--cor-fundo-card);
+    border: 1px solid var(--cor-borda);
     border-left: 4px solid var(--cor-secundaria);
     border-radius: 8px;
     padding: 15px;
@@ -6063,7 +6249,7 @@ button.link-desativado,
 }
 
 #candidatosList > div:hover {
-    background: rgba(255,255,255,0.07);
+    background: var(--cor-fundo);
 }
 
 @media (max-width: 768px) {
@@ -6082,6 +6268,12 @@ button.link-desativado,
     .vaga-title-row {
         flex-direction: column;
         gap: 8px;
+    }
+    .vaga-actions-row {
+        flex-wrap: wrap;
+    }
+    .btn-icon-vaga {
+        flex: 1 1 calc(50% - 4px);
     }
 }
 
@@ -6111,6 +6303,12 @@ button.link-desativado,
     display: flex;
     flex-direction: column;
     gap: 5px;
+}
+
+.perm-header-title-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .perm-header-title h2 {
@@ -6144,9 +6342,19 @@ button.link-desativado,
     min-width: 200px;
 }
 
+.perm-header-actions .search-wrapper i {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--cor-texto-claro);
+    font-size: 0.9em;
+    pointer-events: none;
+}
+
 .perm-header-actions input {
     width: 100%;
-    padding: 12px 18px;
+    padding: 12px 18px 12px 40px;
     border-radius: 10px;
     border: 1px solid rgba(0, 0, 0, 0.08);
     background: #ffffff;
@@ -6186,6 +6394,55 @@ button.link-desativado,
 .perm-header-actions button:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(250, 152, 72, 0.4);
+}
+
+/* ==========================================================================
+   9.2 BUSCA MODERNA REUTILIZÁVEL (Membros, Repertório, etc.)
+   ========================================================================== */
+.search-wrapper-modern {
+    position: relative;
+    flex: 1;
+    max-width: 350px;
+    min-width: 200px;
+}
+
+.search-wrapper-modern i {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--cor-texto-claro);
+    font-size: 0.9em;
+    pointer-events: none;
+}
+
+.search-wrapper-modern input {
+    width: 100%;
+    padding: 12px 18px 12px 40px;
+    border-radius: 10px;
+    border: 1px solid var(--cor-borda);
+    background: var(--cor-fundo-card);
+    color: var(--cor-texto);
+    font-family: inherit;
+    font-size: 0.95em;
+    outline: none;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+.search-wrapper-modern input::placeholder {
+    color: var(--cor-texto-claro);
+}
+
+.search-wrapper-modern input:focus {
+    border-color: var(--cor-secundaria);
+    box-shadow: 0 0 0 3px rgba(250, 152, 72, 0.1);
+}
+
+@media (max-width: 768px) {
+    .search-wrapper-modern {
+        max-width: 100%;
+    }
 }
 
 /* Grid de Membros */

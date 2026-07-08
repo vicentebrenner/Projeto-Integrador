@@ -12,4 +12,5 @@ public class FinanceiroUpdateDTO {
     private BigDecimal valor;
     private LocalDate dataTransacao;
     private String categoria;
+    private String status;
 }

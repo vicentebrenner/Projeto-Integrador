@@ -1014,8 +1014,10 @@ document.addEventListener('DOMContentLoaded', function () {
             div.className = 'vaga-card-compact';
 
             const statusLabel = v.status === 'ABERTA'
-                ? '<span class="status-badge status-aberta">ABERTA</span>'
-                : `<span class="status-badge status-fechada">${v.status}</span>`;
+                ? '<span class="status-badge status-aberta">Aberta</span>'
+                : v.status === 'PAUSADA'
+                    ? '<span class="status-badge status-pausada">Pausada</span>'
+                    : `<span class="status-badge status-preenchida">${escapeHtml(v.status === 'PREENCHIDA' ? 'Preenchida' : v.status)}</span>`;
 
             let acaoHtml = '';
             if (candidatura) {
@@ -1024,7 +1026,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 } else if (candidatura.status === 'REJEITADO') {
                     acaoHtml = '<span class="status-badge status-fechada">REJEITADO</span>';
                 } else {
-                    acaoHtml = '<span class="status-badge" style="background:#fef3c7;color:#92400e;">PENDENTE</span>';
+                    acaoHtml = '<span class="status-badge status-pausada">Pendente</span>';
                 }
             } else {
                 acaoHtml = `<button type="button" class="btn-adicionar btn-candidatar-vaga" data-id="${v.id}">Candidatar-se</button>`;

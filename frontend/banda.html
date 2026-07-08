@@ -165,10 +165,13 @@
                         <h2>Painel Financeiro</h2>
                         <p class="fin-subtitle">Visão geral das finanças da banda</p>
                     </div>
-                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                        <a href="financeiro-dashboard.html" class="btn-adicionar-principal" style="text-decoration: none;">
+                    <div class="fin-header-actions">
+                        <a href="financeiro-dashboard.html" class="btn-adicionar-principal btn-link-modern">
                             <i class="fas fa-chart-line"></i> Ver Dashboard Completo
                         </a>
+                        <button id="btnExportarRelatorio" type="button" class="btn-icon-modern" title="Exportar relatório (CSV)">
+                            <i class="fas fa-file-export"></i>
+                        </button>
                         <button id="abrirModalTransacaoBtn" class="btn-adicionar-principal">
                             <i class="fas fa-plus"></i> Nova Transação
                         </button>
@@ -265,24 +268,12 @@
                     <button id="abrirModalMembroBtn" class="btn-adicionar-principal"><i class="fas fa-user-plus"></i>
                         Convidar Membro por E-mail</button>
                 </div>
-                <div class="card-style">
-                    <div class="table-wrapper">
-                        <table class="tabela-moderna">
-                            <thead>
-                                <tr>
-                                    <th>Nome</th>
-                                    <th>E-mail</th>
-                                    <th>Instrumento</th>
-                                    <th>Ação</th>
-                                </tr>
-                            </thead>
-                            <tbody id="corpoTabelaMembros">
-                                <tr>
-                                    <td colspan="4">Carregando membros...</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                <div class="search-wrapper-modern membros-search">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="buscaMembroNome" placeholder="Pesquisar por nome ou função..." aria-label="Pesquisar membro">
+                </div>
+                <div id="corpoTabelaMembros" class="membros-cards-grid">
+                    <p class="empty-state"><i class="fas fa-spinner fa-spin"></i> Carregando integrantes...</p>
                 </div>
 
                 <div id="convitesPendentesContainer" class="card-style" style="margin-top: 30px;">
@@ -302,6 +293,16 @@
                 </div>
                 <div class="repertorio-main">
                     <div class="repertorio-lista">
+                        <div class="repertorio-toolbar">
+                            <div class="search-wrapper-modern repertorio-search">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="buscaMusica" placeholder="Pesquisar música ou artista..." aria-label="Pesquisar música">
+                            </div>
+                            <select id="ordenarRepertorio" aria-label="Ordenar repertório">
+                                <option value="nome">Ordenar por nome (A-Z)</option>
+                                <option value="status">Ordenar por status</option>
+                            </select>
+                        </div>
                         <div id="corpoRepertorioCards" class="repertorio-cards-grid">
                             <!-- Cards injetados via JS -->
                             <p>Carregando repertório...</p>
@@ -325,7 +326,7 @@
                 <!-- Cabeçalho Superior Premium -->
                 <div class="perm-premium-header">
                     <div class="perm-header-title">
-                        <div style="display: flex; align-items: center; gap: 10px;">
+                        <div class="perm-header-title-row">
                             <h2 id="configBandaNome">Carregando Banda...</h2>
                             <button type="button" id="btnEditarBanda" class="btn-icon-modern" title="Editar informações da banda">
                                 <i class="fas fa-pencil-alt"></i>
@@ -336,7 +337,8 @@
                     
                     <div class="perm-header-actions">
                         <div class="search-wrapper">
-                            <input type="text" id="buscaIntegranteNome" placeholder="🔍 Pesquisar integrante..." aria-label="Pesquisar integrante">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="buscaIntegranteNome" placeholder="Pesquisar integrante..." aria-label="Pesquisar integrante">
                         </div>
                         <button id="btnAbrirModalConvidar" class="btn-adicionar-principal"><i class="fas fa-plus"></i> Convidar Integrante</button>
                     </div>
@@ -391,11 +393,11 @@
     <div id="modalEdicaoPermissoes" class="modal">
         <div class="modal-content modal-content--md">
             <span class="close-button">&times;</span>
-            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 15px;">
-                <div id="modalPermMembroAvatar" class="perm-avatar" style="width: 55px; height: 55px; font-size: 1.4em; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: var(--cor-secundaria); color: #011029; font-weight: 700;">A</div>
+            <div class="perm-modal-header">
+                <div id="modalPermMembroAvatar" class="perm-avatar">A</div>
                 <div>
                     <h3 id="modalPermMembroNome">Nome do Músico</h3>
-                    <p id="modalPermMembroEmail" style="color: var(--cor-texto-claro); font-size: 0.85em; margin: 3px 0 0 0;">membro@email.com</p>
+                    <p id="modalPermMembroEmail" class="perm-modal-email">membro@email.com</p>
                 </div>
             </div>
 
@@ -403,66 +405,66 @@
                 <input type="hidden" id="modalPermMembroId">
 
                 <!-- Categoria 1: Dashboard e Gestão -->
-                <div style="margin-bottom: 22px;">
-                    <h4 style="font-size: 0.9em; text-transform: uppercase; color: var(--cor-secundaria); letter-spacing: 1px; margin-bottom: 12px; font-weight: 700; font-family: 'Montserrat', sans-serif;">Dashboard e Gestão</h4>
-                    <div class="perm-modal-categoria" style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="perm-categoria-bloco">
+                    <h4 class="perm-categoria-titulo">Dashboard e Gestão</h4>
+                    <div class="perm-modal-categoria">
                         <div>
-                            <span style="font-weight: 600; font-size: 0.95em;">Gerenciar Equipe</span>
-                            <p style="font-size: 0.8em; color: var(--cor-texto-claro); margin: 3px 0 0 0;">Permite visualizar a equipe e ajustar permissões básicas.</p>
+                            <span class="perm-categoria-nome">Gerenciar Equipe</span>
+                            <p class="perm-categoria-desc">Permite visualizar a equipe e ajustar permissões básicas.</p>
                         </div>
                         <label class="perm-toggle-switch-premium">
-                            <input type="checkbox" id="permSwitchMembros" class="perm-checkbox-premium" style="opacity: 0; width: 0; height: 0;">
+                            <input type="checkbox" id="permSwitchMembros" class="perm-checkbox-premium">
                             <span class="perm-slider-premium"></span>
                         </label>
                     </div>
                 </div>
 
                 <!-- Categoria 2: Agenda e Eventos -->
-                <div style="margin-bottom: 22px;">
-                    <h4 style="font-size: 0.9em; text-transform: uppercase; color: var(--cor-secundaria); letter-spacing: 1px; margin-bottom: 12px; font-weight: 700; font-family: 'Montserrat', sans-serif;">Agenda e Eventos</h4>
-                    <div class="perm-modal-categoria" style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="perm-categoria-bloco">
+                    <h4 class="perm-categoria-titulo">Agenda e Eventos</h4>
+                    <div class="perm-modal-categoria">
                         <div>
-                            <span style="font-weight: 600; font-size: 0.95em;">Agenda & Shows</span>
-                            <p style="font-size: 0.8em; color: var(--cor-texto-claro); margin: 3px 0 0 0;">Permite visualizar, criar e gerenciar ensaios e shows na agenda.</p>
+                            <span class="perm-categoria-nome">Agenda & Shows</span>
+                            <p class="perm-categoria-desc">Permite visualizar, criar e gerenciar ensaios e shows na agenda.</p>
                         </div>
                         <label class="perm-toggle-switch-premium">
-                            <input type="checkbox" id="permSwitchAgenda" class="perm-checkbox-premium" style="opacity: 0; width: 0; height: 0;">
+                            <input type="checkbox" id="permSwitchAgenda" class="perm-checkbox-premium">
                             <span class="perm-slider-premium"></span>
                         </label>
                     </div>
                 </div>
 
                 <!-- Categoria 3: Financeiro -->
-                <div style="margin-bottom: 22px;">
-                    <h4 style="font-size: 0.9em; text-transform: uppercase; color: var(--cor-secundaria); letter-spacing: 1px; margin-bottom: 12px; font-weight: 700; font-family: 'Montserrat', sans-serif;">Financeiro</h4>
-                    <div class="perm-modal-categoria" style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="perm-categoria-bloco">
+                    <h4 class="perm-categoria-titulo">Financeiro</h4>
+                    <div class="perm-modal-categoria">
                         <div>
-                            <span style="font-weight: 600; font-size: 0.95em;">Financeiro & Relatórios</span>
-                            <p style="font-size: 0.8em; color: var(--cor-texto-claro); margin: 3px 0 0 0;">Permite visualizar fluxo de caixa, transações e resumos financeiros.</p>
+                            <span class="perm-categoria-nome">Financeiro & Relatórios</span>
+                            <p class="perm-categoria-desc">Permite visualizar fluxo de caixa, transações e resumos financeiros.</p>
                         </div>
                         <label class="perm-toggle-switch-premium">
-                            <input type="checkbox" id="permSwitchFinanceiro" class="perm-checkbox-premium" style="opacity: 0; width: 0; height: 0;">
+                            <input type="checkbox" id="permSwitchFinanceiro" class="perm-checkbox-premium">
                             <span class="perm-slider-premium"></span>
                         </label>
                     </div>
                 </div>
 
                 <!-- Categoria 4: Repertório -->
-                <div style="margin-bottom: 30px;">
-                    <h4 style="font-size: 0.9em; text-transform: uppercase; color: var(--cor-secundaria); letter-spacing: 1px; margin-bottom: 12px; font-weight: 700; font-family: 'Montserrat', sans-serif;">Músicas e Repertório</h4>
-                    <div class="perm-modal-categoria" style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="perm-categoria-bloco">
+                    <h4 class="perm-categoria-titulo">Músicas e Repertório</h4>
+                    <div class="perm-modal-categoria">
                         <div>
-                            <span style="font-weight: 600; font-size: 0.95em;">Repertório & Partituras</span>
-                            <p style="font-size: 0.8em; color: var(--cor-texto-claro); margin: 3px 0 0 0;">Permite adicionar e visualizar músicas e partituras em PDF.</p>
+                            <span class="perm-categoria-nome">Repertório & Partituras</span>
+                            <p class="perm-categoria-desc">Permite adicionar e visualizar músicas e partituras em PDF.</p>
                         </div>
                         <label class="perm-toggle-switch-premium">
-                            <input type="checkbox" id="permSwitchRepertorio" class="perm-checkbox-premium" style="opacity: 0; width: 0; height: 0;">
+                            <input type="checkbox" id="permSwitchRepertorio" class="perm-checkbox-premium">
                             <span class="perm-slider-premium"></span>
                         </label>
                     </div>
                 </div>
 
-                <div style="display: flex; justify-content: flex-end; gap: 12px;">
+                <div class="perm-modal-footer-actions">
                     <button type="button" class="btn-modal-cancel" id="btnCancelarEdicaoPerm">Cancelar</button>
                     <button type="submit" class="btn-adicionar">Salvar Alterações</button>
                 </div>
@@ -500,7 +502,7 @@
     <div id="vagaModal" class="modal">
         <div class="modal-content">
             <span class="close-button" onclick="document.getElementById('vagaModal').style.display='none'">&times;</span>
-            <h3>Anunciar Vaga</h3>
+            <h3 id="vagaModalTitulo">Anunciar Vaga</h3>
             <form id="formAdicionarVaga">
                 <input type="hidden" id="vagaId" name="vagaId">
                 <div class="form-grid-2">
@@ -532,6 +534,14 @@
                             <option value="Avançado">Avançado</option>
                         </select>
                     </div>
+                </div>
+                <div class="inputGroup" id="vagaStatusGroup" style="display:none">
+                    <label for="vagaStatus">Status da Vaga</label>
+                    <select id="vagaStatus" name="vagaStatus">
+                        <option value="ABERTA">Aberta</option>
+                        <option value="PAUSADA">Pausada</option>
+                        <option value="PREENCHIDA">Preenchida</option>
+                    </select>
                 </div>
                 <div class="form-grid-2">
                     <div class="inputGroup">
@@ -634,6 +644,12 @@
                         <option value="Marketing">Marketing</option>
                         <option value="Outros">Outros</option>
                     </select></div>
+                <div class="inputGroup"><label for="statusTransacao">Status do Pagamento</label>
+                    <select id="statusTransacao" name="status">
+                        <option value="PAGO">Pago</option>
+                        <option value="PENDENTE">Pendente</option>
+                    </select>
+                </div>
                 <button type="submit" class="btn-adicionar">Salvar Transação</button>
             </form>
         </div>
@@ -642,12 +658,21 @@
     <div id="musicaModal" class="modal">
         <div class="modal-content">
             <span class="close-button">&times;</span>
-            <h3>Adicionar Música ao Repertório</h3>
+            <h3 id="musicaModalTitulo">Adicionar Música ao Repertório</h3>
             <form id="formAdicionarMusica">
+                <input type="hidden" id="musicaId" name="musicaId">
                 <div class="inputGroup"><label for="nomeMusica">Nome da Música</label><input type="text" id="nomeMusica"
                         name="nomeMusica" required></div>
                 <div class="inputGroup"><label for="origemMusica">Origem (Artista/Compositor)</label><input type="text"
                         id="origemMusica" name="origemMusica"></div>
+                <div class="inputGroup" id="musicaStatusGroup" style="display:none">
+                    <label for="statusMusica">Status</label>
+                    <select id="statusMusica" name="statusMusica">
+                        <option value="NOVA">Nova</option>
+                        <option value="EM_ESTUDO">Em estudo</option>
+                        <option value="PRONTA">Pronta</option>
+                    </select>
+                </div>
                 <div class="inputGroup"><label for="partituraMusica">Partitura (PDF)</label><input type="file"
                         id="partituraMusica" name="partituraMusica" accept=".pdf"><small>Opcional. Selecione um arquivo
                         PDF.</small></div>

@@ -23,6 +23,8 @@ public class Financeiro {
     
     @Column(name = "data_transacao")
     private LocalDate dataTransacao;
-    
+
     private String categoria;
+
+    private String status; // PAGO, PENDENTE
 }

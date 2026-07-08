@@ -1,5 +1,6 @@
 package com.musicMakers.Projeto.controller;
 
+import com.musicMakers.Projeto.domain.dto.MusicaUpdateDTO;
 import com.musicMakers.Projeto.domain.entity.Musica;
 import com.musicMakers.Projeto.service.MusicaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,11 @@ public class MusicaController {
     @PostMapping("/banda/{bandaId}")
     public ResponseEntity<Musica> adicionarMusica(@PathVariable Long bandaId, @RequestBody Musica musica) {
         return ResponseEntity.ok(musicaService.adicionarMusica(bandaId, musica));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Musica> atualizarMusica(@PathVariable Long id, @RequestBody MusicaUpdateDTO dto) {
+        return ResponseEntity.ok(musicaService.atualizarMusica(id, dto));
     }
 
     @DeleteMapping("/{id}")

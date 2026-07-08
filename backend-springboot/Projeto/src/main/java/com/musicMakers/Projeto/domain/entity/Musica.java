@@ -22,4 +22,6 @@ public class Musica {
 
     @Column(name = "partitura_url", columnDefinition = "TEXT")
     private String partituraUrl;
+
+    private String status; // NOVA, EM_ESTUDO, PRONTA
 }
