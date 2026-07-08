@@ -1456,7 +1456,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
 
-    const usuarioPertenceBanda = usuarioLogado && usuarioLogado.bandaId !== null;
+    const usuarioPertenceBanda = !!(usuarioLogado && usuarioLogado.bandaId);
 
     // --- LOGOUT ---
     const btnLogoutHeader = document.getElementById('btnLogoutHeader');
