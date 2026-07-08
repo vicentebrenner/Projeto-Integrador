@@ -4254,7 +4254,7 @@ button.link-desativado,
     .financeiro-main-grid,
     .financeiro-bottom-grid,
     .repertorio-main {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
         /* Coluna ÃÂºnica */
     }
 
