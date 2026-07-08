@@ -4535,10 +4535,6 @@ button.link-desativado,
         font-size: 1.5em;
     }
 
-    .notif-dropdown {
-        width: min(290px, calc(100vw - 30px));
-        right: -10px;
-    }
 }
 
 /* ==========================================================================
@@ -5244,10 +5240,16 @@ button.link-desativado,
     border-radius: 50%;
     background: rgba(255,255,255,0.05);
 }
-.notif-bell:hover {
-    color: var(--cor-secundaria, #fa9848);
-    background: rgba(255,255,255,0.1);
-    transform: scale(1.05);
+/* Só aplica o hover em dispositivos com ponteiro fino (mouse). Em touch,
+   o :hover pode "grudar" após o toque, e o transform criaria um novo
+   containing block para o .notif-dropdown (position: fixed), quebrando
+   seu posicionamento no mobile. */
+@media (hover: hover) and (pointer: fine) {
+    .notif-bell:hover {
+        color: var(--cor-secundaria, #fa9848);
+        background: rgba(255,255,255,0.1);
+        transform: scale(1.05);
+    }
 }
 .notif-badge {
     position: absolute;
@@ -5286,6 +5288,19 @@ button.link-desativado,
 .notif-dropdown.show {
     display: block;
     animation: fadeInDropdown 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@media (max-width: 480px) {
+    /* No mobile o sino nao fica perto da borda direita da tela, entao um
+       dropdown com largura fixa ancorado via "right: 0" ao sino acaba
+       nascendo parcialmente fora da viewport. position:fixed com left/right
+       relativos a viewport garante que ele sempre caiba na tela. */
+    .notif-dropdown {
+        position: fixed;
+        top: 90px;
+        left: 12px;
+        right: 12px;
+        width: auto;
+    }
 }
 @keyframes fadeInDropdown {
     from { opacity: 0; transform: translateY(-10px); }
