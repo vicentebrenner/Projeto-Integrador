@@ -4224,6 +4224,7 @@ button.link-desativado,
     }
 
     /* Coluna ÃÂºnica para os cards de caminho */
+    /* Coluna ÃƒÂºnica para os cards de caminho */
     .caminhos .container {
         grid-template-columns: 1fr;
     }
@@ -4252,7 +4253,7 @@ button.link-desativado,
 
     .financeiro-main-grid,
     .financeiro-bottom-grid,
-    .repertorio-grid {
+    .repertorio-main {
         grid-template-columns: 1fr;
         /* Coluna ÃÂºnica */
     }
