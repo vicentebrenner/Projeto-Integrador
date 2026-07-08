@@ -59,7 +59,37 @@
     <main class="banda-container">
         <div class="container">
 
-            <div class="banda-tabs" id="bandaTabs">
+            <!-- EMPTY STATE PARA MÚSICO SEM BANDA -->
+            <div id="bandaEmptyState" class="empty-state" style="display: none; padding: 40px; margin-top: 20px;">
+                <div class="content-header" style="text-align: center; margin-bottom: 30px;">
+                    <h2>Aguardando Convite</h2>
+                </div>
+                <div class="card-style profile-card" style="display: flex; flex-direction: column; gap: 20px; max-width: 600px; margin: 0 auto;">
+                    <div style="background: rgba(46, 204, 113, 0.1); border-left: 4px solid #2ecc71; padding: 20px; border-radius: 8px;">
+                        <h3 style="margin-top: 0; color: #2ecc71;"><i class="fas fa-clock"></i> Perfil Ativo</h3>
+                        <p style="margin-bottom: 0;">Gestores de banda poderão te encontrar pelo seu username ou pelo seu nome na busca. Fique de olho na aba de convites no seu perfil.</p>
+                    </div>
+                    
+                    <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
+                        <h3 style="margin-top: 0;">Seu Username</h3>
+                        <p>Compartilhe seu username com um gestor de banda para facilitar o convite:</p>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <input type="text" id="bandaEmptyStateUsername" class="input-modern" readonly value="@carregando..." style="background: rgba(0,0,0,0.2); font-weight: bold; color: #fa9848; flex: 1;">
+                            <button class="btn-primary" id="btnCopiarUsernameBanda" style="padding: 10px 15px; white-space: nowrap;"><i class="fas fa-copy"></i> Copiar</button>
+                        </div>
+                    </div>
+                    
+                    <div style="background: rgba(250, 152, 72, 0.1); border-left: 4px solid #fa9848; padding: 20px; border-radius: 8px;">
+                        <h3 style="margin-top: 0; color: #fa9848;"><i class="fas fa-guitar"></i> Quer gerenciar sua própria banda?</h3>
+                        <p>Se você tem uma banda e deseja gerenciar integrantes, agenda e repertório, você pode transformar esta conta em uma conta de <strong>Gestor</strong>.</p>
+                        <button class="btn-secondary" id="btnMudarParaGestorBanda" style="margin-top: 15px; border-color: #fa9848; color: #fa9848; width: 100%;"><i class="fas fa-sync-alt"></i> Mudar para Gestor</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONTEÚDO DASHBOARD BANDA -->
+            <div id="bandaDashboardContent">
+                <div class="banda-tabs" id="bandaTabs">
                 <button class="tab-link ativo" data-tab="agenda">Agenda</button>
                 <button class="tab-link" data-tab="financeiro">Financeiro</button>
                 <button class="tab-link" data-tab="membros">Membros</button>
@@ -363,6 +393,7 @@
                 </div>
             </div>
 
+            </div> <!-- fim bandaDashboardContent -->
         </div>
     </main>
 

@@ -172,13 +172,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 showSnackbar("Perfil salvo com sucesso!");
 
-                // IR PARA A ABA DE VISÃO GERAL
+                // IR PARA A PÁGINA DA BANDA
                 setTimeout(() => {
-                    const tabVisaoGeral = document.querySelector('[data-tab="visao-geral"]');
-                    if (tabVisaoGeral) {
-                        tabVisaoGeral.click();
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }
+                    window.location.href = 'banda.html';
                 }, 1000);
             })
             .catch(err => {
@@ -265,9 +261,6 @@ document.addEventListener('DOMContentLoaded', function () {
     function carregarPerfil() {
         if (document.getElementById('perfilNome')) document.getElementById('perfilNome').value = dadosPerfil.nome;
         if (document.getElementById('perfilUsername')) document.getElementById('perfilUsername').value = dadosPerfil.username || "";
-        if (document.getElementById('visaoGeralUsername')) {
-            document.getElementById('visaoGeralUsername').value = dadosPerfil.username ? `@${dadosPerfil.username}` : '@seu_username';
-        }
         if(document.getElementById("perfilWhatsapp")) document.getElementById("perfilWhatsapp").value = dadosPerfil.whatsapp || "";
         if(document.getElementById("perfilDataNascimento")) document.getElementById("perfilDataNascimento").value = dadosPerfil.dataNascimento || "";
         
@@ -1444,55 +1437,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
-
-    const btnCopiar = document.getElementById('btnCopiarUsername');
-    if (btnCopiar) {
-        btnCopiar.addEventListener('click', () => {
-            const inputUsername = document.getElementById('visaoGeralUsername');
-            if (inputUsername && inputUsername.value !== '@carregando...' && inputUsername.value !== '@seu_username') {
-                navigator.clipboard.writeText(inputUsername.value).then(() => {
-                    showSuccessPopup('Username copiado para a área de transferência!');
-                }).catch(err => {
-                    showSnackbar('Erro ao copiar username.', 'error');
-                });
-            } else {
-                showSnackbar('Você precisa definir um username primeiro na aba Meu Perfil.', 'error');
-            }
-        });
-    }
-
-    const btnMudarParaGestor = document.getElementById('btnMudarParaGestor');
-    if (btnMudarParaGestor) {
-        btnMudarParaGestor.addEventListener('click', async () => {
-            if (await showConfirmPopup('Mudar para Gestor', 'Tem certeza que deseja transformar sua conta em Gestor? Você será desconectado e precisará fazer login novamente para aplicar a mudança.', 'Confirmar e Sair', 'Cancelar')) {
-                try {
-                    const resp = await fetch(getApiUrl(`/api/usuarios/${usuarioLogado.id}/tipo`), {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-                        },
-                        body: JSON.stringify({ tipoUsuario: 'GESTOR' })
-                    });
-                    if (resp.ok) {
-                        localStorage.removeItem('usuarioLogado');
-                        localStorage.removeItem('authToken');
-                        localStorage.removeItem('primeiroAcesso');
-                        localStorage.removeItem('perfilConfigurado');
-                        showSuccessPopup('Conta alterada com sucesso! Faça login novamente.', () => {
-                            window.location.href = 'login.html';
-                        });
-                    } else {
-                        showSnackbar('Erro ao alterar tipo de conta.', 'error');
-                    }
-                } catch (err) {
-                    showSnackbar('Erro de conexão com o servidor.', 'error');
-                }
-            }
-        });
-    }
-
-
 
 });
 
