@@ -6524,6 +6524,7 @@ button.link-desativado,
     justify-content: center;
     min-height: 60vh;
     padding: 40px 20px;
+    box-sizing: border-box;
 }
 
 .empty-state-card {
@@ -6533,6 +6534,7 @@ button.link-desativado,
     padding: 50px 40px;
     max-width: 600px;
     width: 100%;
+    box-sizing: border-box;
     text-align: center;
     position: relative;
     overflow: hidden;
@@ -6574,6 +6576,8 @@ button.link-desativado,
     color: var(--cor-primaria);
     font-size: 2.2rem;
     margin-bottom: 15px;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 .empty-state-description {
@@ -6581,6 +6585,7 @@ button.link-desativado,
     font-size: 1.1rem;
     line-height: 1.6;
     margin-bottom: 40px;
+    overflow-wrap: break-word;
 }
 
 .username-share-box {
@@ -6589,6 +6594,7 @@ button.link-desativado,
     border-radius: 16px;
     padding: 25px;
     margin-bottom: 30px;
+    box-sizing: border-box;
 }
 
 .username-label {
@@ -6609,14 +6615,19 @@ button.link-desativado,
 
 .input-modern-glass {
     flex: 1;
+    min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
     background: var(--cor-fundo-card);
     border: 1px solid var(--cor-borda);
     border-radius: 12px;
-    padding: 14px 20px;
+    padding: 14px 16px;
     color: var(--cor-secundaria);
     font-weight: 700;
     font-size: 1.1rem;
     text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
     outline: none;
     transition: all 0.3s ease;
 }
@@ -6721,11 +6732,45 @@ button.link-desativado,
 }
 
 @media (max-width: 560px) {
+    .empty-state-modern {
+        padding: 25px 12px;
+        min-height: 0;
+    }
+
     .empty-state-card {
-        padding: 35px 22px;
+        padding: 30px 20px;
+    }
+
+    .gradient-text {
+        font-size: 1.7rem;
+    }
+
+    .empty-state-description {
+        font-size: 1rem;
+        margin-bottom: 30px;
     }
 
     .username-input-group {
         flex-direction: column;
+    }
+
+    .input-modern-glass {
+        font-size: 1rem;
+        text-align: left;
+        padding: 12px 14px;
+    }
+
+    .gestor-upgrade-text h3 {
+        font-size: 1.15rem;
+    }
+}
+
+@media (max-width: 360px) {
+    .empty-state-card {
+        padding: 25px 16px;
+    }
+
+    .gradient-text {
+        font-size: 1.5rem;
     }
 }
